@@ -17,17 +17,44 @@
             <div class="col-sm-5 bg-light rounded py-3">
                 <h2 class="text-center">Login</h2>
                 <form action="" method="post">
-                    <div class="form-group m">
+                    <div class="form-group mt-2">
                         <label for="_email">email</label>
                         <input type="text" name="user_email" id="_email" class="form-control" placeholder="Email" required>
                     </div>
-                    <div class="form-group m">
+                    <div class="form-group mt-2">
                         <label for="_email">password</label>
                         <input type="text" name="user_password" id="user_password" class="form-control" placeholder="password" required>
                     </div>
                     <button type="submit" class="mt-2 btn btn-primary">LOGIN</button>
                 </form>
             </div>
+            <div class="col-sm-6 bg-light rounded border py-3 offset-sm-1">
+                <h2 class="text-center">Register</h2>
+                <form action="/register" method="post" novalidate>
+                    <div class="form-group">
+                        <label for="_name">email</label>
+                        <input type="text" name="user_name" id="_rname" class="form-control" placeholder="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="_name">password</label>
+                        <input type="text" name="user_name" id="_rname" class="form-control" placeholder="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="_name">name</label>
+                        <input type="text" name="user_name" id="_rname" class="form-control" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="_name">lname</label>
+                        <input type="text" name="user_name" id="_rname" class="form-control" placeholder="lname">
+                    </div>
+                    <div class="form-group">
+                        <label for="_name">phone</label>
+                        <input type="text" name="user_name" id="_rname" class="form-control" placeholder="phone">
+                    </div>
+                    <button type="submit" class="mt-2 btn btn-success">Sign up</button>
+                </form>
+            </div>
+
         </div>
     </div>
 </body>
