@@ -61,8 +61,32 @@ app.post('/register', ifLoggedIn,[
     body('user_name', 'Username os empty!').trim().not().isEmpty(),
     body('User_pass', 'The password must be of minimun length 6 characters').trim().isLength({ min:6}),
 ],//end of post data validation
+    (req, res, next) =>{
+        const validation_result = validationResult(req);
+        const { user_name, user_pass, user_email } = req.body;
+        if(validation_result.isEmpty()){
+            bcrypt.hash(user_pass, 12).then((hash_pass) =>{
+                    dbConnection.execute("INSERT INTO users (email, password, name, lname, phone)",[user_name])
+                    .then(result =>{
+                        res.send('Your account has been created successfully, Now you can <a href="/">Login</a>');
+                    }).catch(err =>{
+                        if(err) throw err;
+                    })
+            }).catch(err =>{
+                if(err) throw err;
+            })
+        } else{
+            let allErrors = validation_result.error.map((error) => {
+                return error.msg;
+            })
 
-)
+            res.render('login-register', {
+                register_error: allErrors,
+                old_data: req.body
+            })
+        }
+    })
+
 
 
 app.listen(3000, () => console.log("Server is running..."))
