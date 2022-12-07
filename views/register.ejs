@@ -7,10 +7,14 @@
     <form action="" method="POST">
         <label for="user_name">Name</label>
         <input type="text" class="input" name="_name" autocomplete="off" id="user_name" placeholder="Enter your name">
+        <label for="user_lname">Last Name</label>
+        <input type="text" class="input" name="_lname" autocomplete="off" id="user_lname" placeholder="Enter your Lname">
         <label for="user_email">Email</label>
         <input type="email" class="input" name="_email" autocomplete="off" id="user_email" placeholder="Enter your email">
         <label for="user_pass">Password</label>
         <input type="password" class="input" name="_password" id="user_pass" placeholder="Enter new password">
+        <label for="user_phone">Phone</label>
+        <input type="text" class="input" name="_phone" autocomplete="off" id="user_phone" placeholder="Enter your phone number">
         <% if(typeof msg != 'undefined'){ %>
         <div class="success-msg"><%= msg %></div><% }
         if(typeof error !== 'undefined'){ %>

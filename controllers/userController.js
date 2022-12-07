@@ -47,8 +47,8 @@ exports.register = async (req, res, next) => {
         const hashPass = await bcrypt.hash(body._password, 12);
 
         const [rows] = await dbConnection.execute(
-            "INSERT INTO account (name, email, password ) VALUES(?,?,?)",
-            [body._name, body._email, hashPass]
+            "INSERT INTO account (name, lname, email, password, phone) VALUES(?,?,?,?,?)",
+            [body._name,body._lname, body._email, hashPass, body._phone]
         );
 
         if (rows.affectedRows !== 1) {
