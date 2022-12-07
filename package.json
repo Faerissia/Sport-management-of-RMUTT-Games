@@ -1,30 +1,21 @@
 {
-  "name": "thesis",
+  "name": "nodejs-login-registration",
   "version": "1.0.0",
-  "description": "",
+  "description": "Node JS Login And Registration System",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index"
+    "start":"nodemon index"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Faerissia/Thesis.git"
-  },
-  "keywords": [],
-  "author": "",
+  "author": "w3jar.com (chandan)",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Faerissia/Thesis/issues"
-  },
-  "homepage": "https://github.com/Faerissia/Thesis#readme",
   "dependencies": {
-    "bcrypt": "^5.1.0",
-    "cookie-session": "^2.0.0",
-    "ejs": "^3.1.8",
-    "express": "^4.18.2",
-    "express-validator": "^6.14.2",
-    "mysql2": "^2.3.3",
+    "bcryptjs": "^2.4.3",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "express-validator": "^6.11.1",
+    "mysql2": "^2.2.5",
     "nodemon": "^2.0.20"
   }
 }
