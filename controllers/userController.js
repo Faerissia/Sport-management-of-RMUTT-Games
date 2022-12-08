@@ -4,7 +4,7 @@ const dbConnection = require("../utils/dbConnection");
 
 // Home Page
 exports.homePage = async (req, res, next) => {
-    const [row] = await dbConnection.execute("SELECT * FROM account WHERE id = ?", [req.session.userID]);
+    const [row] = await dbConnection.execute("SELECT * FROM `account` WHERE `id`=?", [req.session.userID]);
 
     if (row.length !== 1) {
         return res.redirect('/logout');
@@ -34,7 +34,7 @@ exports.register = async (req, res, next) => {
     try {
 
         const [row] = await dbConnection.execute(
-            "SELECT * FROM account WHERE email = ?",
+            "SELECT * FROM `account` WHERE `email`=?",
             [body._email]
         );
 
@@ -47,8 +47,8 @@ exports.register = async (req, res, next) => {
         const hashPass = await bcrypt.hash(body._password, 12);
 
         const [rows] = await dbConnection.execute(
-            "INSERT INTO account (name, lname, email, password, phone) VALUES(?,?,?,?,?)",
-            [body._name,body._lname, body._email, hashPass, body._phone]
+            "INSERT INTO `account`(`name`,`lname`,`email`,`password`,`phone`) VALUES(?,?,?,?,?)",
+            [body._name, body._lname, body._email, hashPass, body._phone]
         );
 
         if (rows.affectedRows !== 1) {
@@ -85,7 +85,7 @@ exports.login = async (req, res, next) => {
 
     try {
 
-        const [row] = await dbConnection.execute('SELECT * FROM account WHERE email = ?', [body._email]);
+        const [row] = await dbConnection.execute('SELECT * FROM `account` WHERE `email`=?', [body._email]);
 
         if (row.length != 1) {
             return res.render('login', {
