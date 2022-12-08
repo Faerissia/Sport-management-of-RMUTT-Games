@@ -10,7 +10,7 @@ exports.homePage = async (req, res, next) => {
         return res.redirect('/logout');
     }
 
-    res.render('home', {
+    res.render('dashboard', {
         user: row[0]
     });
 }
