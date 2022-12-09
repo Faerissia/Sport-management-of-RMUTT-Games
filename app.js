@@ -1,29 +1,52 @@
 const express = require('express');
-const session = require('express-session');
+const routes = require('./routes');
+const http = require('http');
 const path = require('path');
-const routes = require('./routes/login-register');
+const session = require('express-session');
 const app = express();
+const mysql = require('mysql');
+let bodyParser=require("body-parser");
+let flash = require('express-flash');
+const dbConnection = require('./util/db');
 
-app.set('views', path.join(__dirname, 'views'));
+
+dbConnection.connect();
+global.db = dbConnection;
+ 
+
+//routes variable
+const user = require('./routes/user')
+const uni = require('./routes/uni');
+
+
+// all environments
+app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(express.static('public'))
 
-app.use(express.urlencoded({ extended: false }));
+// app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-    name: 'session',
-    secret: 'my_secret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        maxAge: 3600 * 1000, // 1hr
-    }
-}));
+              secret: 'secret',
+              resave: 'true',
+              saveUninitialized: true,
+              cookie: { maxAge: 60000 }
+            }))
+app.use(flash());
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(routes);
+//routes
+app.use('/uni', uni);
 
-app.use((err, req, res, next) => {
-    // console.log(err);
-    return res.send('Internal Server Error');
-});
+// development only
+app.get('/', routes.index);//call for main index page
+app.get('/signup', user.signup);//call for signup page
+app.post('/signup', user.signup);//call for signup post 
+app.get('/login', routes.index);//call for login page
+app.post('/login', user.login);//call for login post
+app.get('/home/dashboard', user.dashboard);//call for dashboard page after login
+app.get('/home/logout', user.logout);//call for logout
+app.get('/home/profile',user.profile);//to render users profile
 
-app.listen(3000, () => console.log('Server is runngin on port 3000'));
+//Middleware
+app.listen(3000)
