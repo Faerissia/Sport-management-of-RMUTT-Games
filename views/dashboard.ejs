@@ -1,9 +1,9 @@
-<%- include('header'); -%>
+<%- include('partials/header'); -%>
 <div class="container">
     <div class="profile">
         <div class="img">👦</div>
         <h2><%= user.name %> <%= user.lname %></h2>
-        <span><%= user.phone%> </span>
+        <h1><%= user.phone %></h1>
         <span><%= user.email %></span>
         <a href="/logout">Log Out</a>
     </div>
