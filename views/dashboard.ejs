@@ -1,11 +1,13 @@
-<%- include('partials/header'); -%>
-<div class="container">
-    <div class="profile">
-        <div class="img">👦</div>
-        <h2><%= user.name %> <%= user.lname %></h2>
-        <h1><%= user.phone %></h1>
-        <span><%= user.email %></span>
-        <a href="/logout">Log Out</a>
-    </div>
-</div>
-<%- include('footer'); -%>
+<html lang="en">
+
+<%- include header %>
+
+<div class="jumbotron">
+	<h1>Welcome</h1>
+	<p>Hello Dashboard</p>
+	<p>
+		<a class="btn btn-lg btn-primary" href="/home/profile" title="">Profile View >></a>
+	</p>
+</div>	
+
+<%- include footer %>
