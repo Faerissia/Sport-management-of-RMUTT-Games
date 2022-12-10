@@ -17,12 +17,18 @@
         <div class="alert alert-success" role="alert"><%= messages.success %></div>
     <% } %>
 
+    <script type="text/javascript">
+        function confirm_delete() {
+          return confirm('are you sure?');
+        }
+        </script>
+
     <div class="card">
         <div class="card-header">
             <ul class="nav nav-pills w-100">
                 <li class="nav-link">รายการมหาวิทยาลัย</li>
                 <li class="nav-link ml-auto">
-                    <a href="/books/add" class="nav-link active">เพิ่มมหาวิทยาลัย</a>
+                    <a href="/uni/add" class="nav-link active">เพิ่มมหาวิทยาลัย</a>
                 </li>
             </ul>
         </div>
@@ -32,9 +38,9 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Author</th>
-                            <th width="200px">Action</th>
+                            <th scope="col">ชื่อมหาวิทยาลัย</th>
+                            <th scope="col">สถานะ</th>
+                            <th width="200px">ตัวเลือก</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,8 +50,8 @@
                                 <td><%= data[i].name %></td>
                                 <td><%= data[i].status %></td>
                                 <td>
-                                    <a href="../books/edit/<%= data[i].id %>" class="btn btn-success edit">แก้ไข</a>
-                                    <a href="../books/delete/<%= data[i].id %>" onclick="return alert('Are you sure?')" class="btn btn-danger delete">ลบ</a>
+                                    <a href="../uni/edit/<%= data[i].uniID %>" class="btn btn-success edit">แก้ไข</a>
+                                    <a href="../uni/delete/<%= data[i].uniID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
                                 </td>
                             </tr>
                         <% } %>
