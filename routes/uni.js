@@ -1,10 +1,13 @@
+const { query } = require('express');
 let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
 
+
+
 // display uni page
 router.get('/', (req, res, next) => {
-    dbConnection.query('SELECT * FROM university ORDER BY uniID asc', (err, rows) => {
+    dbConnection.query('SELECT university.uniID,university.name,COUNT(faculty.uniID) AS count,status FROM university INNER JOIN faculty ON university.uniID = faculty.uniID GROUP BY faculty.uniID ORDER BY uniID asc', (err, rows) => {
         if (err) {
             req.flash('error', err);
             res.render('uni', { data: '' });
@@ -55,20 +58,20 @@ router.post('/add', (req, res, next) =>{
                     status: form_data.status
                 })
             } else {
-                req.flash('success', 'uni successfully added');
+                req.flash('success', 'ได้ทำการเพิ่มมหาวิทยาลัยเรียบร้อย');
                 res.redirect('/uni');
             }
         })
     }
 })
 
-// display edit book page
+// display edit uni page
 router.get('/edit/(:uniID)', (req, res, next) => {
     let uniID = req.params.uniID;
 
     dbConnection.query('SELECT * FROM university WHERE uniID = ' + uniID, (err, rows, fields) => {
         if (rows.length <= 0) {
-            req.flash('error', 'Book not found with id = ' + uniID)
+            req.flash('error', 'uni not found with id = ' + uniID)
             res.redirect('/uni');
         } else {
             res.render('uni/edit', {
