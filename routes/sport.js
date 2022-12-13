@@ -19,7 +19,7 @@ router.get('/add',(req, res, next) => {
     res.render('sport/add',{
         sportName:'',
         sportPlaynum:'',
-        typeID:''
+        type:''
     })
 })
 
@@ -27,7 +27,7 @@ router.get('/add',(req, res, next) => {
 router.post('/add', (req, res, next) =>{
     let sportName = req.body.sportName;
     let sportPlaynum = req.body.sportPlaynum;
-    let typeID = req.body.typeID;
+    let type = req.body.type;
     let errors = false;
 
     if(sportName.length === 0) {
@@ -38,7 +38,7 @@ router.post('/add', (req, res, next) =>{
         res.render('sport/add', {
             sportName: sportName,
             sportPlaynum: sportPlaynum,
-            typeID:typeID
+            type:type
         })
     }
 
@@ -47,7 +47,7 @@ router.post('/add', (req, res, next) =>{
         let form_data = {
             sportName: sportName,
             sportPlaynum: sportPlaynum,
-            typeID:typeID
+            type:type
         }
         // insert query db
         dbConnection.query('INSERT INTO sport SET ?', form_data, (err, result) => {
@@ -57,7 +57,7 @@ router.post('/add', (req, res, next) =>{
                 res.render('sport/add', {
                     sportName: form_data.sportName,
                     sportPlaynum: form_data.sportPlaynum,
-                    typeID: form_data.typeID
+                    type: form_data.type
                 })
             } else {
                 req.flash('success', 'sport successfully added');
@@ -81,7 +81,7 @@ router.get('/edit/(:sportID)', (req, res, next) => {
                 sportID: rows[0].sportID,
                 sportName: rows[0].sportName,
                 sportPlaynum: rows[0].sportPlaynum,
-                typeID: rows[0].typeID
+                type: rows[0].type
             })
         }
     });
@@ -92,7 +92,7 @@ router.post('/update/:sportID', (req, res, next) => {
     let sportID = req.params.sportID;
     let sportName = req.body.sportName;
     let sportPlaynum = req.body.sportPlaynum;
-    let typeID = req.body.typeID;
+    let type = req.body.type;
     let errors = false;
 
     if (sportName.length === 0) {
@@ -102,7 +102,7 @@ router.post('/update/:sportID', (req, res, next) => {
             sportID: req.params.sportID,
             sportName: sportName,
             sportPlaynum: sportPlaynum,
-            typeID: typeID
+            typeI: type
         })
     }
     // if no error
@@ -110,7 +110,7 @@ router.post('/update/:sportID', (req, res, next) => {
         let form_data = {
             sportName:  sportName,
             sportPlaynum: sportPlaynum,
-            typeID: typeID
+            type: type
         }
         // update query
         dbConnection.query("UPDATE sport SET ? WHERE sportID = " + sportID, form_data, (err, result) => {
@@ -120,7 +120,7 @@ router.post('/update/:sportID', (req, res, next) => {
                     sportID: req.params.sportID,
                     sportName: form_data.sportName,
                     sportPlaynum: form_data.sportPlaynum,
-                    typeID: form_data.typeID
+                    type: form_data.type
                 })
             } else {
                 req.flash('success', 'sport successfully updated');

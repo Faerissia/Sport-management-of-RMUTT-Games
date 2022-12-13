@@ -17,6 +17,7 @@
     "express-flash": "^0.0.2",
     "express-session": "^1.16.2",
     "mysql": "^2.17.1",
+    "nodemon": "^2.0.20",
     "req-flash": "0.0.3"
   }
 }
