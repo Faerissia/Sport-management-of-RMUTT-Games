@@ -1,16 +1,23 @@
 {
-  "name": "thesis",
-  "version": "0.0.0",
-  "private": true,
+  "name": "simple_login",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
   "scripts": {
-    "start": "node ./bin/www"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "express": "~4.16.1",
-    "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
-    "morgan": "~1.9.1"
+    "body-parser": "^1.19.0",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.16.2",
+    "mysql": "^2.17.1",
+    "nodemon": "^2.0.20",
+    "req-flash": "0.0.3"
   }
 }
