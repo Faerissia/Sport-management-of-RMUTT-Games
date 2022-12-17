@@ -21,7 +21,7 @@
             เพิ่มคณะ
         </div>
         <div class="card-body">
-            <form action="/faculty/add" method="post">
+            <form action="/faculty/add/(:uniID)" method="post">
                 <div class="form-group">
                     <label>ชื่อคณะ:</label>
                     <input type="text" class="form-control" name="name" value="<%= name %>" autocomplete="off">

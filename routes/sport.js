@@ -102,7 +102,7 @@ router.post('/update/:sportID', (req, res, next) => {
             sportID: req.params.sportID,
             sportName: sportName,
             sportPlaynum: sportPlaynum,
-            typeI: type
+            type: type
         })
     }
     // if no error

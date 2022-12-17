@@ -26,7 +26,7 @@
     <div class="card">
         <div class="card-header">
             <ul class="nav nav-pills w-100">
-                <li class="nav-link">รายการคณะของ </li>
+                <li class="nav-link">รายการคณะของ</li>
                 <li class="nav-link ml-auto">
                     <a href="/faculty/add" class="nav-link active">เพิ่มคณะ</a>
                 </li>
@@ -39,16 +39,14 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">ชื่อคณะ</th>
-                            <th scope="col">มหาวิทยาลัย</th>
                             <th width="200px">ตัวเลือก</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
                             <tr>
-                                <th scope="row"><%= data[i].facultyID %></th>
+                                <th scope="row"><%= i+1 %></th>
                                 <td><%= data[i].name %></td>
-                                <td><%= data[i].uniID %></td>
                                 <td>
                                     <a href="../faculty/edit/<%= data[i].facultyID %>" class="btn btn-warning edit">แก้ไข</a>
                                     <a href="../faculty/delete/<%= data[i].facultyID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>

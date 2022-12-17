@@ -15,10 +15,12 @@ global.db = dbConnection;
  
 
 //routes variable
+const account = require('./routes/account')
 const user = require('./routes/user');
 const uni = require('./routes/uni');
 const faculty = require('./routes/faculty');
 const sport = require('./routes/sport');
+const place = require('./routes/place');
 
 
 // all environments
@@ -38,9 +40,11 @@ app.use(session({
 app.use(flash());
 
 //routes
+app.use('/account', account);
 app.use('/uni', uni);
 app.use('/faculty',faculty);
 app.use('/sport',sport);
+app.use('/place',place);
 
 // development only
 app.get('/', routes.index);//call for main index page

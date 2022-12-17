@@ -3,8 +3,9 @@ let router = express.Router();
 let dbConnection = require('../util/db');
 
 // display faculty list
-router.get('/id', (req, res, next) => {
-    dbConnection.query('SELECT * FROM faculty ORDER BY facultyID asc', (err, rows) => {
+router.get('/(:uniID)', (req, res, next) => {
+    let uniID = req.params.uniID;
+    dbConnection.query('SELECT * FROM faculty WHERE uniID ='+ uniID, (err, rows) => {
         if (err) {
             req.flash('error', err);
             res.render('faculty', { data: '' });
@@ -15,7 +16,7 @@ router.get('/id', (req, res, next) => {
 })
 
 //display add faculty to list
-router.get('/add',(req, res, next) => {
+router.get('/add/',(req, res, next) => {
     res.render('faculty/add',{
         name:'',
         uniID:''
@@ -23,7 +24,7 @@ router.get('/add',(req, res, next) => {
 })
 
 // add new faculty to list
-router.post('/add', (req, res, next) =>{
+router.post('/add/', (req, res, next) =>{
     let name = req.body.name;
     let uniID = req.body.uniID;
     let errors = false;
@@ -33,7 +34,7 @@ router.post('/add', (req, res, next) =>{
         //set flash message
         req.flash('error', 'โปรดกรอก');
         //render to add.ejs with flash message
-        res.render('faculty/add', {
+        res.render('faculty/add/', {
             name: name,
             uniID: uniID
         })

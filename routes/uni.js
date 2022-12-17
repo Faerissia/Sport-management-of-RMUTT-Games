@@ -7,7 +7,7 @@ let dbConnection = require('../util/db');
 
 // display uni page
 router.get('/', (req, res, next) => {
-    dbConnection.query('SELECT university.uniID,university.name,COUNT(faculty.uniID) AS count,status FROM university INNER JOIN faculty ON university.uniID = faculty.uniID GROUP BY faculty.uniID ORDER BY uniID asc', (err, rows) => {
+    dbConnection.query('SELECT university.uniID, university.name,COUNT(faculty.uniID) AS count ,university.status FROM university LEFT JOIN faculty ON university.uniID = faculty.uniID GROUP BY faculty.uniID ORDER BY uniID asc', (err, rows) => {
         if (err) {
             req.flash('error', err);
             res.render('uni', { data: '' });
