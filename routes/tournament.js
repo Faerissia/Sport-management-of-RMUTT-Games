@@ -2,185 +2,176 @@ let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
 
-// display account page
+// const multer = require('multer');
+// const path = require('path');
+
+// let storage = multer.diskStorage({
+//     destination: function (req, file, cb){
+//         cb(null, 'assets/uploads')
+//     },
+//     filename: function (req, file, cb) {
+//         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+//     }
+// })
+
+// const upload = multer({ storage: storage})
+// const multiple = upload.fields([{ name: 'tnmPicture'}, {name: 'tnmFile1', maxCount: 3}])
+
+// display tournament page
 router.get('/', (req, res, next) => {
-    dbConnection.query('SELECT * FROM account ORDER BY accountID asc', (err, rows) => {
+    dbConnection.query('SELECT t.tnmName,s.sportName,t.tnmStartdate FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
         if (err) {
             req.flash('error', err);
-            res.render('account', { data: '' });
+            res.render('tournament', { data: '' });
         } else {
-            res.render('account', { data: rows });
+            res.render('tournament', { data: rows });
         }
     })
 })
 
-//display add account page
-router.get('/add',(req, res, next) => {
-    res.render('account/add',{
-        email:'',
-        password:'',
-        name:'',
-        lname:'',
-        phone:'',
-        level:'',
-        status:''
+//display add tournament page
+router.get('/add', (req, res, next) => {
+    dbConnection.query('SELECT sportID,sportName FROM sport ORDER BY sportID asc', (err, rows) => {
+        if (err) {
+            req.flash('error', err);
+            res.render('tournament/add', { data: '' });
+        } else {
+            res.render('tournament/add', { data: rows,
+            tnmName:'',
+            sportID:'',
+            tnmUrl:'',
+            tnmDetail:''
+        });
+            
+        }
     })
 })
 
-// add new account
-router.post('/add', (req, res, next) =>{
-    let email = req.body.email;
-    let password = req.body.password;
-    let name = req.body.name;
-    let lname = req.body.lname;
-    let phone = req.body.phone;
-    let level = req.body.level;
-    let status = req.body.status;
-    let errors = false;
 
-    if(email.length === 0 || password.legnth === 0 || name.length === 0 || lname.length === 0 || phone === 0) {
+// add new tournament
+router.post('/add', (req, res, next) =>{
+    let tnmName = req.body.tnmName;
+    let sportID = req.body.sportID;
+    let tnmUrl = req.body.tnmUrl;
+    let tnmDetail = req.body.tnmDetail;
+    let errors = false;
+    console.log(tnmName);
+    console.log(sportID);
+    console.log(tnmUrl);
+    console.log(tnmDetail);
+    if(tnmName.length === 0) {
         errors = true;
         //set flash message
-        req.flash('error', 'โปรดกรอกข้อมูลที่มีเครื่องหมาย *');
+        req.flash('error', 'โปรดกรอก');
         //render to add.ejs with flash message
-        res.render('account/add', {
-            email: email,
-            password: password,
-            name: name,
-            lname: lname,
-            phone: phone,
-            level: level,
-            status: status
+        res.render('tournament/add', {
+            tnmName: tnmName,
+            sportID: sportID,
+            tnmUrl: tnmUrl,
+            tnmDetail: tnmDetail
         })
     }
-
     // if no error
     if(!errors) {
         let form_data = {
-            email: email,
-            password: password,
-            name: name,
-            lname: lname,
-            phone: phone,
-            level: level,
-            status: status
+            tnmName: tnmName,
+            sportID: sportID,
+            tnmUrl: tnmUrl,
+            tnmDetail: tnmDetail
         }
         // insert query db
-        dbConnection.query('INSERT INTO account SET ?', form_data, (err, result) => {
+        dbConnection.query('INSERT INTO tournament SET ?', form_data, (err, result) => {
             if (err) {
                 req.flash('error', err)
 
-                res.render('account/add', {
-                    email: form_data.email,
-                    password: form_data.password,
-                    name: form_data.name,
-                    lname: form_data.lname,
-                    phone: form_data.phone,
-                    level: form_data.level,
-                    status: form_data.status
+                res.render('tournament/add', {
+                    tnmName: form_data.tnmName,
+                    sportID: form_data.sportID,
+                    tnmUrl: form_data.tnmUrl,
+                    tnmDetail: form_data.tnmDetail
                 })
             } else {
-                req.flash('success', 'account successfully added');
-                res.redirect('/account');
+                req.flash('success', 'tournament successfully added');
+                res.redirect('/tournament');
             }
         })
     }
 })
 
-// display edit account page
-router.get('/edit/(:accountID)', (req, res, next) => {
-    let accountID = req.params.accountID;
+// display edit book page
+router.get('/edit/(:tournamentID)', (req, res, next) => {
+    let tournamentID = req.params.tournamentID;
 
-    dbConnection.query('SELECT * FROM account WHERE accountID = ' + accountID, (err, rows, fields) => {
+    dbConnection.query('SELECT * FROM tournament WHERE tournamentID = ' + tournamentID, (err, rows, fields) => {
         if (rows.length <= 0) {
-            req.flash('error', 'Book not found with id = ' + accountID)
-            res.redirect('/account');
+            req.flash('error', 'Book not found with id = ' + tournamentID)
+            res.redirect('/tournament');
         } else {
-            res.render('account/edit', {
-                title: 'แก้ไข บัญชี',
-                accountID: rows[0].accountID,
-                email: rows[0].email,
-                password: rows[0].password,
-                name: rows[0].name,
-                lname: rows[0].lname,
-                phone: rows[0].phone,
-                level: rows[0].level,
-                status: rows[0].status
+            res.render('tournament/edit', {
+                title: 'แก้ไข กีฬา',
+                tournamentID: rows[0].tournamentID,
+                tournamentName: rows[0].tournamentName,
+                tournamentPlaynum: rows[0].tournamentPlaynum,
+                type: rows[0].type
             })
         }
     });
 })
 
-// update account page
-router.post('/update/:accountID', (req, res, next) => {
-    let accountID = req.params.accountID;
-    let email = req.body.email;
-    let password = req.body.password;
-    let name = req.body.name;
-    let lname = req.body.lname;
-    let phone = req.body.phone;
-    let level = req.body.level;
-    let status = req.body.status;
+// update book page
+router.post('/update/:tournamentID', (req, res, next) => {
+    let tournamentID = req.params.tournamentID;
+    let tournamentName = req.body.tournamentName;
+    let tournamentPlaynum = req.body.tournamentPlaynum;
+    let type = req.body.type;
     let errors = false;
 
-    if (email.length === 0 && password.legnth === 0 && name.length === 0 && lname.length === 0 && phone === 0) {
+    if (tournamentName.length === 0) {
         errors = true;
         req.flash('error', 'Please enter name and author');
-        res.render('account/edit', {
-            accountID: req.params.accountID,
-            email: email,
-            password: password,
-            name: name,
-            lname: lname,
-            phone: phone,
-            level: level,
-            status: status
+        res.render('tournament/edit', {
+            tournamentID: req.params.tournamentID,
+            tournamentName: tournamentName,
+            tournamentPlaynum: tournamentPlaynum,
+            type: type
         })
     }
     // if no error
     if (!errors) {
         let form_data = {
-            email: email,
-            password: password,
-            name: name,
-            lname: lname,
-            phone: phone,
-            level: level,
-            status: status
+            tournamentName:  tournamentName,
+            tournamentPlaynum: tournamentPlaynum,
+            type: type
         }
         // update query
-        dbConnection.query("UPDATE account SET ? WHERE accountID = " + accountID, form_data, (err, result) => {
+        dbConnection.query("UPDATE tournament SET ? WHERE tournamentID = " + tournamentID, form_data, (err, result) => {
             if (err) {
                 req.flash('error', err);
-                res.render('account/edit', {
-                    accountID: req.params.accountID,
-                    email: form_data.email,
-                    password: form_data.password,
-                    name: form_data.name,
-                    lname: form_data.lname,
-                    phone: form_data.phone,
-                    level: form_data.level,
-                    status: form_data.status
+                res.render('tournament/edit', {
+                    tournamentID: req.params.tournamentID,
+                    tournamentName: form_data.tournamentName,
+                    tournamentPlaynum: form_data.tournamentPlaynum,
+                    type: form_data.type
                 })
             } else {
-                req.flash('success', 'account successfully updated');
-                res.redirect('/account')
+                req.flash('success', 'tournament successfully updated');
+                res.redirect('/tournament')
             }
         })
     }
 })
 
-// delete account
-router.get('/delete/(:accountID)', (req, res, next) => {
-    let accountID = req.params.accountID;
+// delete tournament
+router.get('/delete/(:tnmID)', (req, res, next) => {
+    let tnmID = req.params.tnmID;
 
-    dbConnection.query('DELETE FROM account WHERE accountID = ' + accountID, (err, result) => {
+    dbConnection.query('DELETE FROM tournament WHERE tnmID = ' + tnmID, (err, result) => {
         if (err) {
             req.flash('error', err),
-            res.redirect('/account');
+            res.redirect('/tournament');
         } else {
-            req.flash('success', 'account successfully deleted! ID = ' + accountID);
-            res.redirect('/account');
+            req.flash('success', 'tournament successfully deleted! ID = ' + tnmID);
+            res.redirect('/tournament');
         }
     })
 })

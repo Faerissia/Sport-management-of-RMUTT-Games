@@ -4,14 +4,18 @@ let dbConnection = require('../util/db');
 
 // display account page
 router.get('/', (req, res, next) => {
-    dbConnection.query('SELECT * FROM account ORDER BY accountID asc', (err, rows) => {
-        if (err) {
-            req.flash('error', err);
-            res.render('account', { data: '' });
-        } else {
-            res.render('account', { data: rows });
-        }
-    })
+    if(req.session.loggedin){
+        dbConnection.query('SELECT * FROM account ORDER BY accountID asc', (err, rows) => {
+            if (err) {
+                req.flash('error', err);
+                res.render('account', { data: '' });
+            } else {
+                res.render('account', { data: rows });
+            }
+        })
+      }else{
+      res.render('login.ejs');
+      }
 })
 
 //display add account page

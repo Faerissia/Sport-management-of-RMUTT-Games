@@ -9,19 +9,13 @@ let bodyParser=require("body-parser");
 let flash = require('express-flash');
 const dbConnection = require('./util/db');
 
-
-dbConnection.connect();
-global.db = dbConnection;
- 
-
 //routes variable
 const account = require('./routes/account')
-const user = require('./routes/user');
 const uni = require('./routes/uni');
 const faculty = require('./routes/faculty');
 const sport = require('./routes/sport');
 const place = require('./routes/place');
-
+const tournament = require('./routes/tournament');
 
 // all environments
 app.set('views', __dirname + '/views');
@@ -39,22 +33,60 @@ app.use(session({
             }))
 app.use(flash());
 
+
+app.get('/login',(req, res) => {
+  if(req.session.loggedin){
+    res.render('dashboard.ejs');
+  }else{
+  res.render('login.ejs');
+  }
+})
+
+app.post('/login', function (req, res) {
+  var email = req.body.email;
+  var password = req.body.password;
+
+  if (email && password) {
+      dbConnection.query(
+          "SELECT * FROM account WHERE email = ? AND password = ?",
+          [email, password],
+          function (err, results,) {
+              // console.log(email);
+              if (results.length > 0) {
+                  req.session.loggedin = true;
+                  req.session.email = email;
+                  //response.redirect('/home');
+                  res.redirect('/dashboard');
+              } else {
+                  res.send("Please login to view this page!");
+              }
+              res.end();
+          });
+  }
+})
+
+app.get('/dashboard',(req, res) => {
+  if(req.session.loggedin){
+    res.render('dashboard.ejs');
+  }else{
+  res.render('login.ejs');
+  }
+})
+
+app.get('/logout',function (req, res) {
+  req.session.destroy(function (err) {
+    res.redirect('login');
+  })
+})
+
+
 //routes
 app.use('/account', account);
 app.use('/uni', uni);
 app.use('/faculty',faculty);
 app.use('/sport',sport);
 app.use('/place',place);
-
-// development only
-app.get('/', routes.index);//call for main index page
-app.get('/signup', user.signup);//call for signup page
-app.post('/signup', user.signup);//call for signup post 
-app.get('/login', routes.index);//call for login page
-app.post('/login', user.login);//call for login post
-app.get('/home/dashboard', user.dashboard);//call for dashboard page after login
-app.get('/home/logout', user.logout);//call for logout
-app.get('/home/profile',user.profile);//to render users profile
+app.use('/tournament', tournament);
 
 //Middleware
 app.listen(3000)
