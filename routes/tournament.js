@@ -1,25 +1,13 @@
 let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
+const fileUpload = require('express-fileupload');
 
-// const multer = require('multer');
-// const path = require('path');
-
-// let storage = multer.diskStorage({
-//     destination: function (req, file, cb){
-//         cb(null, 'assets/uploads')
-//     },
-//     filename: function (req, file, cb) {
-//         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-//     }
-// })
-
-// const upload = multer({ storage: storage})
-// const multiple = upload.fields([{ name: 'tnmPicture'}, {name: 'tnmFile1', maxCount: 3}])
+router.use(fileUpload());
 
 // display tournament page
 router.get('/', (req, res, next) => {
-    dbConnection.query('SELECT t.tnmName,s.sportName,t.tnmStartdate FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
+    dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.tnmStartdate FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
         if (err) {
             req.flash('error', err);
             res.render('tournament', { data: '' });
@@ -40,7 +28,8 @@ router.get('/add', (req, res, next) => {
             tnmName:'',
             sportID:'',
             tnmUrl:'',
-            tnmDetail:''
+            tnmDetail:'',
+            tnmPicture:''
         });
             
         }
@@ -54,11 +43,19 @@ router.post('/add', (req, res, next) =>{
     let sportID = req.body.sportID;
     let tnmUrl = req.body.tnmUrl;
     let tnmDetail = req.body.tnmDetail;
+
     let errors = false;
-    console.log(tnmName);
-    console.log(sportID);
-    console.log(tnmUrl);
-    console.log(tnmDetail);
+
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).send('No files were uploaded.');
+    }
+    
+    let tnmPicture = req.files.tnmPicture;
+    let tnmFile1 = req.files.tnmFile1;
+    tnmPicture.mv('./assets/' + tnmPicture.name);
+    tnmFile1.mv('./assets/' + tnmFile1.name);
+
+
     if(tnmName.length === 0) {
         errors = true;
         //set flash message
@@ -68,7 +65,9 @@ router.post('/add', (req, res, next) =>{
             tnmName: tnmName,
             sportID: sportID,
             tnmUrl: tnmUrl,
-            tnmDetail: tnmDetail
+            tnmDetail: tnmDetail,
+            tnmPicture: tnmPicture,
+            tnmFile1: tnmFile1
         })
     }
     // if no error
@@ -77,7 +76,9 @@ router.post('/add', (req, res, next) =>{
             tnmName: tnmName,
             sportID: sportID,
             tnmUrl: tnmUrl,
-            tnmDetail: tnmDetail
+            tnmDetail: tnmDetail,
+            tnmPicture: tnmPicture.name,
+            tnmFile1: tnmFile1.name
         }
         // insert query db
         dbConnection.query('INSERT INTO tournament SET ?', form_data, (err, result) => {
@@ -88,7 +89,9 @@ router.post('/add', (req, res, next) =>{
                     tnmName: form_data.tnmName,
                     sportID: form_data.sportID,
                     tnmUrl: form_data.tnmUrl,
-                    tnmDetail: form_data.tnmDetail
+                    tnmDetail: form_data.tnmDetail,
+                    tnmPicture: form_data.tnmPicture,
+                    tnmFile1: form_data.tnmFile1
                 })
             } else {
                 req.flash('success', 'tournament successfully added');
@@ -98,19 +101,19 @@ router.post('/add', (req, res, next) =>{
     }
 })
 
-// display edit book page
-router.get('/edit/(:tournamentID)', (req, res, next) => {
-    let tournamentID = req.params.tournamentID;
+// display edit tournament page
+router.get('/edit/(:tnmID)', (req, res, next) => {
+    let tnmID = req.params.tnmID;
 
-    dbConnection.query('SELECT * FROM tournament WHERE tournamentID = ' + tournamentID, (err, rows, fields) => {
+    dbConnection.query('SELECT * FROM tournament WHERE tnmID = ' + tnmID, (err, rows, fields) => {
         if (rows.length <= 0) {
-            req.flash('error', 'Book not found with id = ' + tournamentID)
+            req.flash('error', 'tournament not found with id = ' + tnmID)
             res.redirect('/tournament');
         } else {
             res.render('tournament/edit', {
-                title: 'แก้ไข กีฬา',
-                tournamentID: rows[0].tournamentID,
-                tournamentName: rows[0].tournamentName,
+                title: 'แก้ไข การแข่งขัน',
+                tnmID: rows[0].tnmID,
+                tnmName: rows[0].tnmName,
                 tournamentPlaynum: rows[0].tournamentPlaynum,
                 type: rows[0].type
             })
@@ -175,5 +178,6 @@ router.get('/delete/(:tnmID)', (req, res, next) => {
         }
     })
 })
+
 
 module.exports = router;

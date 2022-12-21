@@ -21,18 +21,27 @@
             แก้ไขกีฬา
         </div>
         <div class="card-body">
-            <form action="/tournament/update/<%= tournamentID %>" method="post">
+            <form action="/tournament/update/<%= tnmID %>" method="post">
                 <div class="form-group">
-                    <label>ชื่อกีฬา:</label>
-                    <input type="text" class="form-control" name="tournamentName" value="<%= tournamentName %>" autocomplete="off">
+                    <label>ชื่อการแข่งขัน:</label>
+                    <input type="text" class="form-control" name="tnmName" value="<%= tnmName %>">
+                </div>
+
+                <div class="form-group">
+                    <label>ลิงค์ Url:</label>
+                    <input type="text" class="form-control" name="tnmUrl" value="<%= tnmUrl %>">
                 </div>
                 <div class="form-group">
-                    <label>จำนวนผู้เล่น:</label>
-                    <input type="text" class="form-control" name="tournamentPlaynum" value="<%= tournamentPlaynum %>" autocomplete="off">
+                    <label>รายละเอียด:</label>
+                    <input type="text" class="form-control" name="tnmDetail" value="<%=  %>">
                 </div>
                 <div class="form-group">
-                    <label>ประเภท:</label>
-                    <input type="text" class="form-control" name="type" value="<%= type %>" autocomplete="off">
+                    <label>รูปภาพ:</label>
+                    <input type="file" class="form-control" name="tnmPicture">
+                </div>
+                <div class="form-group">
+                    <label>ไฟล์:</label>
+                    <input type="file" class="form-control" name="tnmFile1">
                 </div>
                 <br>
                 <div class="form-group">

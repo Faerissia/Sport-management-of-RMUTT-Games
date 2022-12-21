@@ -16,13 +16,12 @@
     
     <a href="/tournament" class="btn btn-info">ย้อนกลับ</a>
     <br><br>
-
     <div class="card">
         <div class="card-header">
             เพิ่มการแข่งขัน
         </div>
         <div class="card-body">
-            <form action="/tournament/add" method="post">
+            <form action="/tournament/add" method="post" encType="multipart/form-data">
                 <div class="form-group">
                     <label>ชื่อการแข่งขัน:</label>
                     <input type="text" class="form-control" name="tnmName" autocomplete="off">
