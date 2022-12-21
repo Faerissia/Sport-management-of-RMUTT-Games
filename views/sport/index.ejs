@@ -39,8 +39,8 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">ชื่อกีฬา</th>
-                            <th scope="col">จำนวนผู้เล่น</th>
                             <th scope="col">ประเภท</th>
+                            <th scope="col">จำนวนผู้เล่น</th>
                             <th width="200px">ตัวเลือก</th>
                         </tr>
                     </thead>
@@ -49,10 +49,10 @@
                             <tr>
                                 <th scope="row"><%= data[i].sportID %></th>
                                 <td><%= data[i].sportName %></td>
-                                <td><%= data[i].sportPlaynum %></td>
                                 <td><%= data[i].type %></td>
+                                <td><%= data[i].sportPlaynum %></td>
                                 <td>
-                                    <a href="../sport/edit/<%= data[i].sportID %>" class="btn btn-success edit">แก้ไข</a>
+                                    <a href="../sport/edit/<%= data[i].sportID %>" class="btn btn-warning edit">แก้ไข</a>
                                     <a href="../sport/delete/<%= data[i].sportID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
                                 </td>
                             </tr>
