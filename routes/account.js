@@ -26,8 +26,8 @@ router.get('/add',(req, res, next) => {
         name:'',
         lname:'',
         phone:'',
-        level:'',
-        status:''
+        cpassword:'',
+        level:''
     })
 })
 
@@ -35,17 +35,17 @@ router.get('/add',(req, res, next) => {
 router.post('/add', (req, res, next) =>{
     let email = req.body.email;
     let password = req.body.password;
+    let cpassword = req.body.password;
     let name = req.body.name;
     let lname = req.body.lname;
     let phone = req.body.phone;
     let level = req.body.level;
-    let status = req.body.status;
     let errors = false;
 
     if(email.length === 0 || password.legnth === 0 || name.length === 0 || lname.length === 0 || phone === 0) {
         errors = true;
         //set flash message
-        req.flash('error', 'โปรดกรอกข้อมูลที่มีเครื่องหมาย *');
+        req.flash('error', 'โปรดกรอกข้อมูล *');
         //render to add.ejs with flash message
         res.render('account/add', {
             email: email,
@@ -53,8 +53,20 @@ router.post('/add', (req, res, next) =>{
             name: name,
             lname: lname,
             phone: phone,
-            level: level,
-            status: status
+            level: level
+        })
+    }
+
+    if(cpassword === password) {
+        errors = true;
+        req.flash('error', 'password ไม่ตรงกัน');
+        res.render('account/add', {
+            email: email,
+            password: password,
+            name: name,
+            lname: lname,
+            phone: phone,
+            level: level
         })
     }
 
@@ -66,8 +78,7 @@ router.post('/add', (req, res, next) =>{
             name: name,
             lname: lname,
             phone: phone,
-            level: level,
-            status: status
+            level: level
         }
         // insert query db
         dbConnection.query('INSERT INTO account SET ?', form_data, (err, result) => {

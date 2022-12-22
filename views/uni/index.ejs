@@ -39,8 +39,8 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">ชื่อมหาวิทยาลัย</th>
-                            <th scope="col">จำนวน</th>
-                            <th scope="col">สถานะ</th>
+                            <th scope="col">สถานะการเข้าร่วม</th>
+                            <th scope="col">จำนวนคณะ</th>
                             <th width="200px" class="text-center">ตัวเลือก</th>
                         </tr>
                     </thead>
@@ -49,8 +49,8 @@
                             <tr>
                                 <th scope="row"><%= i+1 %></th>
                                 <td><%= data[i].name %></td>
-                                <td><%= data[i].count %></td>
                                 <td><%= data[i].status %></td>
+                                <td><%= data[i].count %></td>
                                 <td>
                                     <a href="../faculty/<%= data[i].uniID %>" class="btn btn-primary">ดู</a>
                                     <a href="../uni/edit/<%= data[i].uniID %>" class="btn btn-warning edit">แก้ไข</a>
