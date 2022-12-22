@@ -5,11 +5,10 @@ let dbConnection = require('../util/db');
 // display faculty list
 router.get('/(:uniID)', (req, res, next) => {
     let uniID = req.params.uniID;
-    dbConnection.query('SELECT f.name as facultyName,u.name as uniName FROM faculty f LEFT JOIN university u ON f.uniID = u.uniID WHERE u.uniID = '+ uniID, (err, rows) => {
+    dbConnection.query('SELECT u.uniID, f.name as facultyName,u.name as uniName FROM faculty f LEFT JOIN university u ON f.uniID = u.uniID WHERE u.uniID = '+ uniID, (err, rows) => {
         if (!rows.length) {
             dbConnection.query('SELECT u.uniID,u.name as uniName FROM university u  WHERE u.uniID = '+ uniID , (err, rows) => {
                 res.render('faculty', { data: rows });
-                console.log(rows);
             })
             
         } else {
@@ -19,7 +18,7 @@ router.get('/(:uniID)', (req, res, next) => {
 })
 
 //display add faculty to list
-router.get('/add/',(req, res, next) => {
+router.get('/add',(req, res, next) => {
     res.render('faculty/add',{
         name:'',
         uniID:''
@@ -27,7 +26,7 @@ router.get('/add/',(req, res, next) => {
 })
 
 // add new faculty to list
-router.post('/add/', (req, res, next) =>{
+router.post('/add', (req, res, next) =>{
     let name = req.body.name;
     let uniID = req.body.uniID;
     let errors = false;
@@ -37,7 +36,7 @@ router.post('/add/', (req, res, next) =>{
         //set flash message
         req.flash('error', 'โปรดกรอก');
         //render to add.ejs with flash message
-        res.render('faculty/add/', {
+        res.render('faculty/add', {
             name: name,
             uniID: uniID
         })

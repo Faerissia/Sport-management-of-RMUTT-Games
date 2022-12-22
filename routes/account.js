@@ -1,19 +1,21 @@
 let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
-let status_login ;
+
 // display account page
 router.get('/', (req, res, next) => {
-    
+    if(req.session.loggedin){
         dbConnection.query('SELECT * FROM account ORDER BY accountID asc', (err, rows) => {
             if (err) {
                 req.flash('error', err);
-                res.render('account', { data: '', status_login:req.session.loggedin });
+                res.render('account', { data: '' });
             } else {
-                res.render('account', { data: rows ,status_login:req.session.loggedin });
+                res.render('account', { data: rows });
             }
         })
-      
+      }else{
+      res.render('login.ejs');
+      }
 })
 
 //display add account page
@@ -24,9 +26,8 @@ router.get('/add',(req, res, next) => {
         name:'',
         lname:'',
         phone:'',
-        level:'',
-        status:'',
-        status_login:req.session.loggedin 
+        cpassword:'',
+        level:''
     })
 })
 
@@ -34,17 +35,17 @@ router.get('/add',(req, res, next) => {
 router.post('/add', (req, res, next) =>{
     let email = req.body.email;
     let password = req.body.password;
+    let cpassword = req.body.password;
     let name = req.body.name;
     let lname = req.body.lname;
     let phone = req.body.phone;
     let level = req.body.level;
-    let status = req.body.status;
     let errors = false;
 
     if(email.length === 0 || password.legnth === 0 || name.length === 0 || lname.length === 0 || phone === 0) {
         errors = true;
         //set flash message
-        req.flash('error', 'โปรดกรอกข้อมูลที่มีเครื่องหมาย *');
+        req.flash('error', 'โปรดกรอกข้อมูล *');
         //render to add.ejs with flash message
         res.render('account/add', {
             email: email,
@@ -52,9 +53,20 @@ router.post('/add', (req, res, next) =>{
             name: name,
             lname: lname,
             phone: phone,
-            level: level,
-            status: status,
-            status_login:req.session.loggedin 
+            level: level
+        })
+    }
+
+    if(cpassword === password) {
+        errors = true;
+        req.flash('error', 'password ไม่ตรงกัน');
+        res.render('account/add', {
+            email: email,
+            password: password,
+            name: name,
+            lname: lname,
+            phone: phone,
+            level: level
         })
     }
 
@@ -66,8 +78,7 @@ router.post('/add', (req, res, next) =>{
             name: name,
             lname: lname,
             phone: phone,
-            level: level,
-            status: status
+            level: level
         }
         // insert query db
         dbConnection.query('INSERT INTO account SET ?', form_data, (err, result) => {
@@ -109,8 +120,7 @@ router.get('/edit/(:accountID)', (req, res, next) => {
                 lname: rows[0].lname,
                 phone: rows[0].phone,
                 level: rows[0].level,
-                status: rows[0].status,
-                status_login:req.session.loggedin 
+                status: rows[0].status
             })
         }
     });
@@ -139,8 +149,7 @@ router.post('/update/:accountID', (req, res, next) => {
             lname: lname,
             phone: phone,
             level: level,
-            status: status,
-            status_login:req.session.loggedin 
+            status: status
         })
     }
     // if no error
