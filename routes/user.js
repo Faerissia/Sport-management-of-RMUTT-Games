@@ -25,7 +25,7 @@ exports.signup = function(req, res){
 exports.login = function(req, res){
    var message = '';
    var sess = req.session; 
-
+   
    if(req.method == "POST"){
       var post  = req.body;
       var email= post.user_name;

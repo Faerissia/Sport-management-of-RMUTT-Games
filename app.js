@@ -16,6 +16,7 @@ const faculty = require("./routes/faculty");
 const sport = require("./routes/sport");
 const place = require("./routes/place");
 const tournament = require("./routes/tournament");
+const { log, profile } = require("console");
 
 // all environments
 app.set("views", __dirname + "/views");
@@ -35,19 +36,24 @@ app.use(
 );
 app.use(flash());
 
+
+
 // gobla variable
 let status_login;
-var User_name;
-let name_log;
+var profile_user;
+var User;
 
 app.get("/login", (req, res) => {
   if (req.session.loggedin) {
     res.render("dashboard.ejs", {
       status_login: req.session.loggedin,
-      User_name: req.body.name,
+      User: User,
     });
   } else {
-    res.render("login.ejs", { status_login: req.session.loggedin });
+    res.render("login.ejs", {
+      status_login: req.session.loggedin,
+      User: User,
+    });
   }
 });
 
@@ -55,21 +61,27 @@ app.post("/login", function (req, res) {
   console.log(req.body);
   var email = req.body.email;
   var password = req.body.password;
-  var name = req.body.name;
-  console.log(name);
+
   if (email && password) {
     dbConnection.query(
       "SELECT * FROM account WHERE email = ? AND password = ?",
       [email, password],
       function (err, results) {
-        // console.log(email);
         if (results.length > 0) {
           req.session.loggedin = true;
           req.session.email = email;
-          req.session.name = name;
-      
-
-          //response.redirect('/home');
+          req.session.password = password;
+          const query =
+            "SELECT * FROM `account` WHERE email = '" +
+            email +
+            "' AND password = '" +
+            password +
+            "'";
+          dbConnection.query(query, (error, results) => {
+            if (error) throw error;
+            profile_user = results[0];
+            User = results[0].name + " " + results[0].lname;
+          });
           res.redirect("/dashboard");
         } else {
           res.send("Please login to view this page!");
@@ -79,19 +91,15 @@ app.post("/login", function (req, res) {
     );
   }
 });
-
 app.get("/dashboard", (req, res) => {
-  let s = bodyParser.json;
-  var name_log = req.session.name;
-  console.log("log 2=" + name_log);
-  console.log("name v1=" + req.body);
-  console.log("name v2=" + req.session.user);
-  console.log("name v3=" + req.body.name);
-  console.log("name v4=" + s);
   if (req.session.loggedin) {
-    res.render("dashboard.ejs", { status_login: req.session.loggedin });
+    res.render("dashboard.ejs", {
+      status_login: req.session.loggedin,
+      User: User,
+      data:profile_user
+    });
   } else {
-    res.render("login.ejs", { status_login: req.session.loggedin });
+    res.render("login.ejs", { status_login: req.session.loggedin, User: User });
   }
 });
 

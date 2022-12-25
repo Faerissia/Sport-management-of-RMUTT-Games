@@ -7,6 +7,10 @@
 				<p>Hello Dashboard</p>
 				<p>
 					<a class="btn btn-lg btn-primary" href="/home/profile" title="">Profile View >></a>
+
+					<% Object.keys(data).forEach(function(key) { %>
+						<p><%= key %> = <%= data[key] %></p>
+					  <% }); %>
 				</p>
 			</div>
 

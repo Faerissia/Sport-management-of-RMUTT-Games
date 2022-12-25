@@ -3,7 +3,7 @@ let express = require("express");
 let router = express.Router();
 let dbConnection = require("../util/db");
 let status_login;
-
+let User;
 // display uni page
 router.get("/", (req, res, next) => {
   dbConnection.query(
@@ -11,9 +11,17 @@ router.get("/", (req, res, next) => {
     (err, rows) => {
       if (err) {
         req.flash("error", err);
-        res.render("uni", { data: "", status_login: req.session.loggedin });
+        res.render("uni", {
+          data: "",
+          status_login: req.session.loggedin,
+          User: User,
+        });
       } else {
-        res.render("uni", { data: rows, status_login: req.session.loggedin });
+        res.render("uni", {
+          data: rows,
+          status_login: req.session.loggedin,
+          User: User,
+        });
       }
     }
   );
@@ -25,6 +33,7 @@ router.get("/add", (req, res, next) => {
     name: "",
     status: "",
     status_login: req.session.loggedin,
+    User: User,
   });
 });
 
@@ -42,6 +51,8 @@ router.post("/add", (req, res, next) => {
     res.render("uni/add", {
       name: name,
       status: status,
+      status_login: req.session.loggedin,
+      User: User,
     });
   }
 
@@ -63,6 +74,7 @@ router.post("/add", (req, res, next) => {
             name: form_data.name,
             status: form_data.status,
             status_login: req.session.loggedin,
+            User: User,
           });
         } else {
           req.flash("success", "ได้ทำการเพิ่มมหาวิทยาลัยเรียบร้อย");
@@ -90,6 +102,7 @@ router.get("/edit/(:uniID)", (req, res, next) => {
           name: rows[0].name,
           status: rows[0].status,
           status_login: req.session.loggedin,
+          User: User,
         });
       }
     }
@@ -111,6 +124,7 @@ router.post("/update/:uniID", (req, res, next) => {
       name: name,
       status: status,
       status_login: req.session.loggedin,
+      User: User,
     });
   }
   // if no error
@@ -131,6 +145,7 @@ router.post("/update/:uniID", (req, res, next) => {
             name: form_data.name,
             status: form_data.status,
             status_login: req.session.loggedin,
+            User: User,
           });
         } else {
           req.flash("success", "Book successfully updated");

@@ -1,6 +1,9 @@
 let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
+let status_login;
+let User ;
+
 
 // display account page
 router.get('/', (req, res, next) => {
@@ -8,13 +11,13 @@ router.get('/', (req, res, next) => {
         dbConnection.query('SELECT * FROM account ORDER BY accountID asc', (err, rows) => {
             if (err) {
                 req.flash('error', err);
-                res.render('account', { data: '' });
+                res.render('account', { data: '' ,status_login: req.session.loggedin,User: User});
             } else {
-                res.render('account', { data: rows });
+                res.render('account', { data: rows ,status_login: req.session.loggedin,User: User});
             }
         })
       }else{
-      res.render('login.ejs');
+      res.render('login.ejs',{status_login: req.session.loggedin,User: User});
       }
 })
 
@@ -27,7 +30,9 @@ router.get('/add',(req, res, next) => {
         lname:'',
         phone:'',
         cpassword:'',
-        level:''
+        level:'',
+        status_login: req.session.loggedin,
+        User: User
     })
 })
 
@@ -53,7 +58,9 @@ router.post('/add', (req, res, next) =>{
             name: name,
             lname: lname,
             phone: phone,
-            level: level
+            level: level,
+            status_login: req.session.loggedin,
+            User: User
         })
     }
 
@@ -66,7 +73,9 @@ router.post('/add', (req, res, next) =>{
             name: name,
             lname: lname,
             phone: phone,
-            level: level
+            level: level,
+            status_login: req.session.loggedin,
+            User: User
         })
     }
 
@@ -92,7 +101,9 @@ router.post('/add', (req, res, next) =>{
                     lname: form_data.lname,
                     phone: form_data.phone,
                     level: form_data.level,
-                    status: form_data.status
+                    status: form_data.status,
+                    status_login: req.session.loggedin,
+                    User: User
                 })
             } else {
                 req.flash('success', 'account successfully added');
@@ -120,7 +131,9 @@ router.get('/edit/(:accountID)', (req, res, next) => {
                 lname: rows[0].lname,
                 phone: rows[0].phone,
                 level: rows[0].level,
-                status: rows[0].status
+                status: rows[0].status,
+                status_login: req.session.loggedin,
+                User: User
             })
         }
     });
@@ -149,7 +162,9 @@ router.post('/update/:accountID', (req, res, next) => {
             lname: lname,
             phone: phone,
             level: level,
-            status: status
+            status: status,
+            status_login: req.session.loggedin,
+            User: User
         })
     }
     // if no error
@@ -175,7 +190,9 @@ router.post('/update/:accountID', (req, res, next) => {
                     lname: form_data.lname,
                     phone: form_data.phone,
                     level: form_data.level,
-                    status: form_data.status
+                    status: form_data.status,
+                    status_login: req.session.loggedin,
+                    User: User
                 })
             } else {
                 req.flash('success', 'account successfully updated');

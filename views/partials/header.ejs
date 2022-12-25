@@ -22,19 +22,16 @@
       </div>
       <div class="justify-content-end " id="navbarNavAltMarkup">
         <div class="navbar-nav ml-auto">
-          <% var a=1 %>
-              <% if(status_login){ %>
-                <span class="text-white fs-5 p-2 me-4">     </span>
-                <a class="nav-link text-white fs-5 p me-4" href="/logout">ออกจากระบบ
-                </a>
-                <% }else{ %>
 
-
-                  <a class="nav-link text-white fs-5 p me-4" href="/login">เข้าสู่ระบบ show
-                  </a>
-
-
-                  <% } %>
+          <% if(status_login){ %>
+            <span class="text-white fs-5 p-2 ">
+              <%=User%> <span class="text-white fs-5 p-2 ms-1">| </span>
+            </span>
+            <a class="nav-link text-white fs-5 p me-4" href="/logout">ออกจากระบบ
+            </a>
+            <%}else{ %>
+                  <a class=" nav-link text-white fs-5 p me-4" href="/login">เข้าสู่ระบบ</a>
+              <% } %>
 
 
 
@@ -43,7 +40,7 @@
 
 
 
-                    <!-- <a class="nav-link text-white fs-5 p me-4" href="/login">เข้าสู่ระบบ
+                <!-- <a class="nav-link text-white fs-5 p me-4" href="/login">เข้าสู่ระบบ
           </a> -->
         </div>
       </div>
