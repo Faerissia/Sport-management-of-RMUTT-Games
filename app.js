@@ -1,6 +1,4 @@
 const express = require('express');
-const routes = require('./routes');
-const http = require('http');
 const path = require('path');
 const session = require('express-session');
 const app = express();
@@ -10,12 +8,17 @@ let flash = require('express-flash');
 const dbConnection = require('./util/db');
 
 //routes variable
-const account = require('./routes/account')
+const dashboard = require('./routes/dashboard');
+const account = require('./routes/account');
 const uni = require('./routes/uni');
 const faculty = require('./routes/faculty');
 const sport = require('./routes/sport');
 const place = require('./routes/place');
 const tournament = require('./routes/tournament');
+const tnmcheck = require('./routes/tnmcheck');
+const tnmsetdp = require('./routes/tnmsetdp');
+const tnmsave = require('./routes/tnmsave');
+const uindex = require('./routes/userside/uindex');
 
 // all environments
 app.set('views', __dirname + '/views');
@@ -34,18 +37,24 @@ app.use(session({
 app.use(flash());
 
 
-app.get('/login',(req, res) => {
-  if(req.session.loggedin){
-    res.render('dashboard.ejs');
-  }else{
-  res.render('login.ejs');
+
+function authcheck(req, res, next) {
+  if (req.session.loggedin) {
+    return next();
+  } else {
+    res.render('login');
   }
+}
+
+
+app.get('/login',authcheck,(req, res) => {
+    res.render('dashboard.ejs');
 })
+
 
 app.post('/login', function (req, res) {
   var email = req.body.email;
   var password = req.body.password;
-
   if (email && password) {
       dbConnection.query(
           "SELECT * FROM account WHERE email = ? AND password = ?",
@@ -65,14 +74,6 @@ app.post('/login', function (req, res) {
   }
 })
 
-app.get('/dashboard',(req, res) => {
-  if(req.session.loggedin){
-    res.render('dashboard.ejs');
-  }else{
-  res.render('login.ejs');
-  }
-})
-
 app.get('/logout',function (req, res) {
   req.session.destroy(function (err) {
     res.redirect('login');
@@ -81,12 +82,20 @@ app.get('/logout',function (req, res) {
 
 
 //routes
+app.use('/dashboard', dashboard);
 app.use('/account', account);
 app.use('/uni', uni);
 app.use('/faculty',faculty);
 app.use('/sport',sport);
 app.use('/place',place);
 app.use('/tournament', tournament);
+app.use('/tnmcheck',tnmcheck);
+app.use('/tnmsetdp',tnmsetdp);
+app.use('/tnmsave',tnmsave);
+
+app.use('/',uindex);
 
 //Middleware
 app.listen(3000)
+
+module.exports = authcheck;

@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sport</title>
+    <title>tournament</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
@@ -27,8 +27,8 @@
         }
         </script>
 
-<h1>รายการกีฬา</h1>
-<a href="/sport/add" class="btn btn-primary">เพิ่มกีฬา</a>
+        <h1>รายการแข่งขันที่ต้องตรวจสอบผู้สมัคร</h1>
+        <a href="/tournament/add" class="btn btn-primary">เพิ่มการแข่งขัน</a>
     <div class="card">
         <div class="card-header">
             <ul class="nav nav-pills w-100">
@@ -42,23 +42,27 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">ชื่อกีฬา</th>
-                            <th scope="col">ประเภท</th>
-                            <th scope="col">จำนวนผู้เล่น</th>
+                            <th scope="col">ชื่อการแข่งขัน</th>
+                            <th scope="col">ประเภทกีฬา</th>
+                            <th scope="col">ปิดรับสมัคร</th>
+                            <th scope="col">รอตรวจสอบ</th>
+                            <th scope="col">ปฏิเสธ</th>
+                            <th scope="col">อนุมัติ</th>
                             <th width="200px">ตัวเลือก</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
                             <tr>
-                                <th scope="row"><%= data[i].sportID %></th>
+                                <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
-                                <td><%= data[i].type %></td>
-                                <td><%= data[i].sportPlaynum %></td>
+                                <td><%= data[i].Renddate %></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td>
-                                    <a href="../sport/edit/<%= data[i].sportID %>" class="btn btn-warning edit">แก้ไข</a>
-                                    <a href="../sport/delete/<%= data[i].sportID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
+                                    <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
+                                    <a href="../tnmcheck/candidate/" class="btn btn-primary page">ดู</a>
                                 </td>
                             </tr>
                         <% } %>
@@ -68,7 +72,7 @@
 
             <!-- if result is empty-->
             <% if(!data.length) { %>
-                <p class="text-center">ไม่พบรายการกีฬา</p>
+                <p class="text-center">ไม่พบรายการของการแข่งขัน</p>
             <% } %>
         </div>
     </div>

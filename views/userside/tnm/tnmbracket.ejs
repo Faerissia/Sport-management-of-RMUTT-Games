@@ -1,0 +1,29 @@
+<%- include("../../partials/header") %>
+        <div class="col-10 py-3">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container text-center" style="margin-left:250px;">
+        หน้าสายการแข่งขัน
+        <ul class="nav nav-pills w-100">
+        <td>
+            <a href="/tnmdetail/<%= data[0].tnmID %>" class="nav-link active">ข้อมูลการแข่งขัน</a>
+            <a href="/tnmbracket/<%= data[0].tnmID %>" class="nav-link active">สายการแข่งขัน</a>
+            <a href="/tnmparticipant/<%= data[0].tnmID %>" class="nav-link active">ผู้เข้าร่วม</a>
+            <a href="/tnmmatch/<%= data[0].tnmID %>" class="nav-link active">แมทช์การแข่งขัน</a>
+            <a href="/tnmrank/<%= data[0].tnmID %>" class="nav-link active">อันดับ</a>
+            <a href="/tnmhighlight/<%= data[0].tnmID %>" class="nav-link active">ไฮไลต์</a>
+        </td>
+        </ul>
+    </div>
+    
+    
+</body>
+</html>
+</div>

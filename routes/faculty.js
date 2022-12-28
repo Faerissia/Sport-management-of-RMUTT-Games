@@ -2,15 +2,17 @@ let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
 
+
+
+
+
 // display faculty list
 router.get('/(:uniID)', (req, res, next) => {
     let uniID = req.params.uniID;
-    dbConnection.query('SELECT u.uniID, f.name as facultyName,u.name as uniName FROM faculty f LEFT JOIN university u ON f.uniID = u.uniID WHERE u.uniID = '+ uniID, (err, rows) => {
-        if (!rows.length) {
-            dbConnection.query('SELECT u.uniID,u.name as uniName FROM university u  WHERE u.uniID = '+ uniID , (err, rows) => {
-                res.render('faculty', { data: rows });
-            })
-            
+    dbConnection.query('SELECT u.uniID , f.name AS facName ,u.name AS uniName FROM faculty f LEFT JOIN university u ON f.uniID = u.uniID WHERE u.uniID = '+ uniID, (err, rows) => {
+        if (err) {
+            req.flash('error', err);
+            res.render('faculty', { data: '' });
         } else {
             res.render('faculty', { data: rows });
         }
@@ -18,11 +20,15 @@ router.get('/(:uniID)', (req, res, next) => {
 })
 
 //display add faculty to list
-router.get('/add',(req, res, next) => {
+router.get('/add/(:uniID)',(req, res, next) => {
+    let uniID = req.params.uniID;
+    dbConnection.query('SELECT uniID FROM faculty WHERE uniID =  '+ uniID, (err, result) => {
     res.render('faculty/add',{
         name:'',
         uniID:''
     })
+    console.log(uniID)
+})
 })
 
 // add new faculty to list
@@ -30,11 +36,12 @@ router.post('/add', (req, res, next) =>{
     let name = req.body.name;
     let uniID = req.body.uniID;
     let errors = false;
+    console.log(uniID)
 
     if(name.length === 0) {
         errors = true;
         //set flash message
-        req.flash('error', 'โปรดกรอก');
+        req.flash('error', 'โปรดกรอกชื่อคณะ');
         //render to add.ejs with flash message
         res.render('faculty/add', {
             name: name,
@@ -59,7 +66,7 @@ router.post('/add', (req, res, next) =>{
                 })
             } else {
                 req.flash('success', 'faculty successfully added');
-                res.redirect('/faculty');
+                res.redirect('/faculty/');
             }
         })
     }
@@ -85,7 +92,7 @@ router.get('/edit/(:facultyID)', (req, res, next) => {
 })
 
 // update faculty page
-router.post('/update/:facultyID', (req, res, next) => {
+router.post('/update/(:facultyID)', (req, res, next) => {
     let facultyID = req.params.facultyID;
     let name = req.body.name;
     let uniID = req.body.uniID;
@@ -126,7 +133,6 @@ router.post('/update/:facultyID', (req, res, next) => {
 // delete faculty
 router.get('/delete/(:facultyID)', (req, res, next) => {
     let facultyID = req.params.facultyID;
-
     dbConnection.query('DELETE FROM faculty WHERE facultyID = ' + facultyID, (err, result) => {
         if (err) {
             req.flash('error', err),
