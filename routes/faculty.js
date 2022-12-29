@@ -2,17 +2,13 @@ let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
 
-
-
-
-
 // display faculty list
 router.get('/(:uniID)', (req, res, next) => {
     let uniID = req.params.uniID;
-    dbConnection.query('SELECT u.uniID , f.name AS facName ,u.name AS uniName FROM faculty f LEFT JOIN university u ON f.uniID = u.uniID WHERE u.uniID = '+ uniID, (err, rows) => {
+    dbConnection.query('SELECT u.uniID , f.name AS facName ,u.name AS uniName,f.facultyID FROM faculty f LEFT JOIN university u ON f.uniID = u.uniID WHERE u.uniID = '+ uniID, (err, rows) => {
         if (err) {
             req.flash('error', err);
-            res.render('faculty', { data: '' });
+            res.render('faculty', { data: rows });
         } else {
             res.render('faculty', { data: rows });
         }
@@ -22,12 +18,8 @@ router.get('/(:uniID)', (req, res, next) => {
 //display add faculty to list
 router.get('/add/(:uniID)',(req, res, next) => {
     let uniID = req.params.uniID;
-    dbConnection.query('SELECT uniID FROM faculty WHERE uniID =  '+ uniID, (err, result) => {
-    res.render('faculty/add',{
-        name:'',
-        uniID:''
-    })
-    console.log(uniID)
+    dbConnection.query('SELECT uniID FROM faculty WHERE uniID =  '+ uniID, (err, rows) => {
+    res.render('faculty/add',{ data: rows });
 })
 })
 
@@ -65,8 +57,8 @@ router.post('/add', (req, res, next) =>{
                     uniID: form_data.uniID
                 })
             } else {
-                req.flash('success', 'faculty successfully added');
-                res.redirect('/faculty/');
+                req.flash('success', 'เพิ่มคณะเรียบร้อยแล้ว');
+                res.redirect('/uni');
             }
         })
     }
@@ -85,7 +77,6 @@ router.get('/edit/(:facultyID)', (req, res, next) => {
                 title: 'แก้ไข มหาวิทยาลัย',
                 facultyID: rows[0].facultyID,
                 name: rows[0].name,
-                uniID: rows[0].uniID
             })
         }
     });
@@ -95,7 +86,6 @@ router.get('/edit/(:facultyID)', (req, res, next) => {
 router.post('/update/(:facultyID)', (req, res, next) => {
     let facultyID = req.params.facultyID;
     let name = req.body.name;
-    let uniID = req.body.uniID;
     let errors = false;
 
     if (name.length === 0) {
@@ -103,15 +93,13 @@ router.post('/update/(:facultyID)', (req, res, next) => {
         req.flash('error', 'Please enter name and author');
         res.render('faculty/edit', {
             uniID: req.params.facultyID,
-            name: name,
-            uniID: uniID
+            name: name
         })
     }
     // if no error
     if (!errors) {
         let form_data = {
-            name: name,
-            uniID: uniID
+            name: name
         }
         // update query
         dbConnection.query("UPDATE faculty SET ? WHERE facultyID = " + facultyID, form_data, (err, result) => {
@@ -119,12 +107,11 @@ router.post('/update/(:facultyID)', (req, res, next) => {
                 req.flash('error', err);
                 res.render('books/edit', {
                     facultyID: req.params.facultyID,
-                    name: form_data.name,
-                    uniID: form_data.uniID
+                    name: form_data.name
                 })
             } else {
                 req.flash('success', 'Book successfully updated');
-                res.redirect('/faculty')
+                res.redirect('/uni')
             }
         })
     }
@@ -133,13 +120,14 @@ router.post('/update/(:facultyID)', (req, res, next) => {
 // delete faculty
 router.get('/delete/(:facultyID)', (req, res, next) => {
     let facultyID = req.params.facultyID;
+    console.log(facultyID)
     dbConnection.query('DELETE FROM faculty WHERE facultyID = ' + facultyID, (err, result) => {
         if (err) {
             req.flash('error', err),
-            res.redirect('/faculty');
+            res.redirect('/uni');
         } else {
             req.flash('success', 'Book successfully deleted! ID = ' + facultyID);
-            res.redirect('/faculty');
+            res.redirect('/uni');
         }
     })
 })

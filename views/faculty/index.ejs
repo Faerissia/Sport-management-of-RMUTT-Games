@@ -23,7 +23,7 @@
 
     <script type="text/javascript">
         function confirm_delete() {
-          return confirm('are you sure?');}
+          return confirm('ท่านแน่ใจแล้วใช่ไหม?');}
     </script>
     <% if(data && data[0]) { %>
 <h1>รายการคณะของ<%= data[0].uniName %></h1>
@@ -53,8 +53,8 @@
                                 <th scope="row"><%= i+1 %></th>
                                 <td><%= data[i].facName %></td>
                                 <td>
-                                    <a href="../faculty/delete/<%= data[i].uniID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                    <a href="../faculty/edit/<%= data[i].uniID %>" class="btn btn-warning edit">แก้ไข</a>
+                                    <a href="../faculty/delete/<%= data[i].facultyID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
+                                    <a href="../faculty/edit/<%= data[i].facultyID %>" class="btn btn-warning edit">แก้ไข</a>
                                 </td>
                             </tr>
                         <% } %>
