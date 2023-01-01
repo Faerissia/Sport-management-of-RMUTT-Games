@@ -1,8 +1,8 @@
 let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
-let status_login;
-let User ;
+var status_login;
+var User ;
 
 
 // display account page

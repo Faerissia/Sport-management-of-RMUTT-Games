@@ -1,16 +1,32 @@
 <html lang="en">
 <%- include('./partials/header.ejs') %>
 	<%- include('./partials/sidebar.ejs') %>
-		<div class="col-10 py-3">
+		<div class=" col-10 py-3  ">
 			<div class="jumbotron">
 				<h1>Welcome</h1>
 				<p>Hello Dashboard</p>
 				<p>
 					<a class="btn btn-lg btn-primary" href="/home/profile" title="">Profile View >></a>
+					<div class="d-flex">
+					<div class="card d-flex">
+						<div class="card-body">
+						  <h5 class="card-title">Card title</h5>
+						  <% Object.keys(data).forEach(function(key) { %>
+							<p>
+								
+	
+									<%= key %> = <%= data[key] %>
+								
+							</p>
+							<% }); %>
+						
+						</div>
+					  </div>
+					  
+					  
+					
+					</div>
 
-					<% Object.keys(data).forEach(function(key) { %>
-						<p><%= key %> = <%= data[key] %></p>
-					  <% }); %>
 				</p>
 			</div>
 

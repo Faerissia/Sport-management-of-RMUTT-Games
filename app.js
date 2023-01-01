@@ -122,3 +122,13 @@ app.use("/tournament", tournament);
 app.listen(3000, () => {
   console.log("Openlink with http://localhost:3000/login");
 });
+
+
+app.get("/", (req, res) => {
+ 
+    res.render("framework", {
+      status_login: req.session.loggedin,
+      User: User,
+    });
+  
+});

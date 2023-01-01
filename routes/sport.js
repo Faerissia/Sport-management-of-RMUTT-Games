@@ -1,7 +1,7 @@
 let express = require("express");
 let router = express.Router();
 let dbConnection = require("../util/db");
-let User;
+var User;
 
 // display sport page
 router.get("/", (req, res, next) => {
