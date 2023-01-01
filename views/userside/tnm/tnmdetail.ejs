@@ -9,7 +9,7 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="container text-center" style="margin-left:250px;">
+    <div class="container" >
         
         <ul class="nav nav-pills w-100" style="margin-top: 50;">
         <td>
@@ -23,9 +23,21 @@
         </ul>
 
         <div class="card-body border">
-            <h1><%= data[0].tnmName %></h1>
+            <h1><%= data[0].tnmName %></h1><a class="btn btn-warning" href="/singlereg/<%= data[0].tnmID %>">สมัครแข่งขัน</a>
             <img src="../<%= data[0].tnmPicture %>" style="height: 300px; width: 300px;">
-            <a class="btn btn-warning" href="/singlereg/<%= data[0].tnmID %>">สมัครแข่งขัน</a>
+            <h5 style="float: left;">รายละเอียด</h5>
+
+            <div class="card-body border">
+                เริ่มการแข่งขันวันที่ <%= data[0].tnmStartdate %> - <%= data[0].tnmEnddate %>
+                ระบบการแข่งขัน <%= data[0].tnmTypegame %>
+                ทีมที่เข้าร่วม
+                สนาม
+                ไฟล์แนบ <a href="../testfile.pdf" download>download</a>
+
+            </div>
+            <div class="card-body border">
+                <%= data[0].tnmDetail %>
+            </div>  
         </div>
     </div>
     

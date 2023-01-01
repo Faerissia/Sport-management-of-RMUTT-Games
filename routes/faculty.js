@@ -35,7 +35,7 @@ router.post('/add', (req, res, next) =>{
         //set flash message
         req.flash('error', 'โปรดกรอกชื่อคณะ');
         //render to add.ejs with flash message
-        res.render('faculty/add', {
+        res.render('faculty/add/'+uniID, {
             name: name,
             uniID: uniID
         })
@@ -52,13 +52,13 @@ router.post('/add', (req, res, next) =>{
             if (err) {
                 req.flash('error', err)
 
-                res.render('faculty/add', {
+                res.render('faculty/add/'+uniID, {
                     name: form_data.name,
                     uniID: form_data.uniID
                 })
             } else {
                 req.flash('success', 'เพิ่มคณะเรียบร้อยแล้ว');
-                res.redirect('/uni');
+                res.redirect('/faculty/'+ uniID);
             }
         })
     }
@@ -77,6 +77,7 @@ router.get('/edit/(:facultyID)', (req, res, next) => {
                 title: 'แก้ไข มหาวิทยาลัย',
                 facultyID: rows[0].facultyID,
                 name: rows[0].name,
+                uniID: rows[0].uniID
             })
         }
     });
@@ -86,6 +87,7 @@ router.get('/edit/(:facultyID)', (req, res, next) => {
 router.post('/update/(:facultyID)', (req, res, next) => {
     let facultyID = req.params.facultyID;
     let name = req.body.name;
+    let uniID = req.body.uniID;
     let errors = false;
 
     if (name.length === 0) {
@@ -93,7 +95,8 @@ router.post('/update/(:facultyID)', (req, res, next) => {
         req.flash('error', 'Please enter name and author');
         res.render('faculty/edit', {
             uniID: req.params.facultyID,
-            name: name
+            name: name,
+            uniID: uniID
         })
     }
     // if no error
@@ -105,13 +108,14 @@ router.post('/update/(:facultyID)', (req, res, next) => {
         dbConnection.query("UPDATE faculty SET ? WHERE facultyID = " + facultyID, form_data, (err, result) => {
             if (err) {
                 req.flash('error', err);
-                res.render('books/edit', {
+                res.render('faculty/edit', {
                     facultyID: req.params.facultyID,
-                    name: form_data.name
+                    name: form_data.name,
+                    uniID: form_data.uniID
                 })
             } else {
-                req.flash('success', 'Book successfully updated');
-                res.redirect('/uni')
+                req.flash('success', 'คณะ '+name+' ได้รับการแก้ไข');
+                res.redirect('/faculty/'+uniID)
             }
         })
     }
@@ -120,11 +124,10 @@ router.post('/update/(:facultyID)', (req, res, next) => {
 // delete faculty
 router.get('/delete/(:facultyID)', (req, res, next) => {
     let facultyID = req.params.facultyID;
-    console.log(facultyID)
     dbConnection.query('DELETE FROM faculty WHERE facultyID = ' + facultyID, (err, result) => {
         if (err) {
             req.flash('error', err),
-            res.redirect('/uni');
+            res.redirect('/faculty');
         } else {
             req.flash('success', 'Book successfully deleted! ID = ' + facultyID);
             res.redirect('/uni');
