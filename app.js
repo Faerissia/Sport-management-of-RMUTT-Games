@@ -38,17 +38,8 @@ app.use(flash());
 
 
 
-function authcheck(req, res, next) {
-  if (req.session.loggedin) {
-    return next();
-  } else {
-    res.render('login');
-  }
-}
-
-
-app.get('/login',authcheck,(req, res) => {
-    res.render('dashboard.ejs');
+app.get('/login',(req, res) => {
+    res.render('login.ejs');
 })
 
 
@@ -97,5 +88,3 @@ app.use('/',uindex);
 
 //Middleware
 app.listen(3000)
-
-module.exports = authcheck;
