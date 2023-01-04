@@ -1,12 +1,21 @@
-<%- include('./partials/header.ejs') %>
+<%- include("partials/header") %>
+        <div class="col-10 py-3">
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Sample Site</title>
-    <!-- <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"/> -->
    
 </head>
-<body id="clrblk">
+<body>
+    <% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+    <% } %>
+    
+    <% if (messages.success) { %>
+        <div class="alert alert-success" role="alert"><%= messages.success %></div>
+    <% } %>
+    
         <div class="container">   
         <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                   
             <div class="panel panel-info" >
@@ -71,3 +80,4 @@
     </div>
 </body>
 </html>
+</div>

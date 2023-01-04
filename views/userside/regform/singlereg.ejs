@@ -1,0 +1,80 @@
+<%- include("../../partials/header") %>
+        <div class="col-10 py-3">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container text-center">
+        
+        <h1 style="margin-top: 20;">แบบฟอร์มสมัคร<%= data[0].tnmName %></h1>
+        <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+        <form action="/userside/regform/singlereg" method="post" encType="multipart/form-data">
+            <div class="form-group">
+                <label>ชื่อ:</label>
+                <input type="text" class="form-control" name="playerFName"  autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>นามสกุล:</label>
+                <input type="text" class="form-control" name="playerLName"  autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label style="margin-top: 15px;">เพศ:</label>
+                <select name="playerGender">
+                    <option value="<%= playerGender='ชาย' %>">ชาย</option>
+                    <option value="<%= playerGender='หญิง' %>">หญิง</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>วัน/เดือน/ปีเกิด:</label>
+                <input type="date" class="form-control" name="playerBirthday"  autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>เบอร์โทรศัพท์:</label>
+                <input type="text" class="form-control" name="playerPhone"  autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>อีเมล:</label>
+                <input type="email" class="form-control" name="playerEmail"  autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label style="margin-top: 15px;">มหาวิทยาลัย:</label>
+                <select name="uniID">
+                    <% for(let i = 0; i < data.length; i++) { %>
+                        <option value="<%= data[i].uniID %>"><%= data[i].uniName %></option>
+                        <% } %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label style="margin-top: 15px;">คณะ:</label>
+                <select name="facultyID">
+                    <% for(let i = 0; i < data.length; i++) { %>
+                        <option value="<%= data[i].facultyID %>"><%= data[i].facName %></option>
+                        <% } %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>รหัสประจำตัวประชาชน:</label>
+                <input type="text" class="form-control" name="playerIDCard"  autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>รหัสนักศึกษา:</label>
+                <input type="text" class="form-control" name="playerIDCard"  autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>ไฟล์แนบ:</label>
+                <input type="file" class="form-control" name="playerFile1"  autocomplete="off">
+            </div>
+
+        </form>
+
+    </div>
+    
+    
+</body>
+</html>
+</div>

@@ -1,12 +1,15 @@
-<%- include('../partials/header.ejs') %>
-<%- include('../partials/sidebar.ejs') %>
-            <div class="col-10 py-3 ">
-                <h1 style="background-color: blueviolet;">
-                    <!DOCTYPE html>
+<%- include("../partials/header") %>
+<%- include("../partials/sidebar") %>
+        <div class="col-10 py-3">
 
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>account</title>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
 
@@ -23,13 +26,13 @@
           return confirm('are you sure?');
         }
         </script>
-
+<h1>รายการบัญชีผู้ใช้งาน</h1>
+<a href="/account/add" class="btn btn-primary">เพิ่มผู้ใช้งาน</a>
     <div class="card">
         <div class="card-header">
             <ul class="nav nav-pills w-100">
-                <li class="nav-link">รายการบัญชีผู้ใช้งาน</li>
                 <li class="nav-link ml-auto">
-                    <a href="/account/add" class="nav-link active">เพิ่มผู้ใช้งาน</a>
+                    
                 </li>
             </ul>
         </div>
@@ -71,5 +74,4 @@
 
 </body>
 </html>
-                </h1>
-            </div>
+    </div>

@@ -5,11 +5,13 @@ let dbConnection = require('../util/db');
 // display place page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT * FROM place ORDER BY placeID asc', (err, rows) => {
-        if (err) {
+        if (req.session.loggedin) {
+            res.render('place', { data: rows,status_login: req.session.loggedin,user: user });
+        }else if(err){
             req.flash('error', err);
             res.render('place', { data: '' });
         } else {
-            res.render('place', { data: rows });
+            res.render('login',{status_login: req.session.loggedin,user: user});
         }
     })
 })

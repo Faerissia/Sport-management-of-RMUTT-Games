@@ -1,25 +1,20 @@
 let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
-var status_login;
-var User ;
-
 
 // display account page
 router.get('/', (req, res, next) => {
-    if(req.session.loggedin){
         dbConnection.query('SELECT * FROM account ORDER BY accountID asc', (err, rows) => {
-            if (err) {
+            if (req.session.loggedin) {
+                res.render('account', { data: rows ,status_login: req.session.loggedin,user: user});
+            }else if(err){
                 req.flash('error', err);
-                res.render('account', { data: '' ,status_login: req.session.loggedin,User: User});
-            } else {
-                res.render('account', { data: rows ,status_login: req.session.loggedin,User: User});
+                res.render('account', { data: '' });
+            }else{
+                res.render('login',{status_login: req.session.loggedin,user: user});
             }
         })
-      }else{
-      res.render('login.ejs',{status_login: req.session.loggedin,User: User});
-      }
-})
+    })
 
 //display add account page
 router.get('/add',(req, res, next) => {
@@ -30,9 +25,7 @@ router.get('/add',(req, res, next) => {
         lname:'',
         phone:'',
         cpassword:'',
-        level:'',
-        status_login: req.session.loggedin,
-        User: User
+        level:'',status_login: req.session.loggedin,user: user
     })
 })
 
@@ -58,13 +51,11 @@ router.post('/add', (req, res, next) =>{
             name: name,
             lname: lname,
             phone: phone,
-            level: level,
-            status_login: req.session.loggedin,
-            User: User
+            level: level,status_login: req.session.loggedin
         })
     }
 
-    if(cpassword === password) {
+    if(cpassword != password) {
         errors = true;
         req.flash('error', 'password ไม่ตรงกัน');
         res.render('account/add', {
@@ -73,9 +64,7 @@ router.post('/add', (req, res, next) =>{
             name: name,
             lname: lname,
             phone: phone,
-            level: level,
-            status_login: req.session.loggedin,
-            User: User
+            level: level
         })
     }
 
@@ -101,9 +90,7 @@ router.post('/add', (req, res, next) =>{
                     lname: form_data.lname,
                     phone: form_data.phone,
                     level: form_data.level,
-                    status: form_data.status,
-                    status_login: req.session.loggedin,
-                    User: User
+                    status: form_data.status
                 })
             } else {
                 req.flash('success', 'account successfully added');
@@ -131,9 +118,7 @@ router.get('/edit/(:accountID)', (req, res, next) => {
                 lname: rows[0].lname,
                 phone: rows[0].phone,
                 level: rows[0].level,
-                status: rows[0].status,
-                status_login: req.session.loggedin,
-                User: User
+                status: rows[0].status,status_login: req.session.loggedin
             })
         }
     });
@@ -162,9 +147,7 @@ router.post('/update/:accountID', (req, res, next) => {
             lname: lname,
             phone: phone,
             level: level,
-            status: status,
-            status_login: req.session.loggedin,
-            User: User
+            status: status
         })
     }
     // if no error
@@ -190,9 +173,7 @@ router.post('/update/:accountID', (req, res, next) => {
                     lname: form_data.lname,
                     phone: form_data.phone,
                     level: form_data.level,
-                    status: form_data.status,
-                    status_login: req.session.loggedin,
-                    User: User
+                    status: form_data.status
                 })
             } else {
                 req.flash('success', 'account successfully updated');
