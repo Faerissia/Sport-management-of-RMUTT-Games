@@ -5,11 +5,11 @@ let dbConnection = require('../../util/db');
 // display tnmcheck page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT * FROM tournament ORDER BY tnmID asc', (err, rows) => {
-        if (err) {
+         if (err) {
             req.flash('error', err);
             res.render('userside/index', { data: '' });
         } else {
-            res.render('userside/index', { data: rows });
+            res.render('userside/index', { data: rows,status_login: req.session.loggedin});
         }
     })
 })
@@ -20,7 +20,7 @@ router.get('/showall', (req, res, next) => {
             req.flash('error', err);
             res.render('userside/showall', { data: '' });
         } else {
-            res.render('userside/showall', { data: rows });
+            res.render('userside/showall', { data: rows,status_login: req.session.loggedin });
         }
     })
 })
@@ -32,7 +32,7 @@ router.get('/tnmdetail/(:tnmID)', (req, res, next) => {
             req.flash('error', err);
             res.render('userside/tnm/tnmdetail', { data: '' });
         } else {
-            res.render('userside/tnm/tnmdetail', { data: rows });
+            res.render('userside/tnm/tnmdetail', { data: rows,status_login: req.session.loggedin });
         }
     })
 })
@@ -44,7 +44,7 @@ router.get('/tnmbracket/(:tnmID)', (req, res, next) => {
             req.flash('error', err);
             res.render('userside/tnm/tnmbracket', { data: '' });
         } else {
-            res.render('userside/tnm/tnmbracket', { data: rows });
+            res.render('userside/tnm/tnmbracket', { data: rows,status_login: req.session.loggedin });
         }
     })
 })
@@ -56,7 +56,7 @@ router.get('/tnmparticipant/(:tnmID)', (req, res, next) => {
             req.flash('error', err);
             res.render('userside/tnm/tnmparticipant', { data: '' });
         } else {
-            res.render('userside/tnm/tnmparticipant', { data: rows });
+            res.render('userside/tnm/tnmparticipant', { data: rows,status_login: req.session.loggedin });
         }
     })
 })
@@ -68,7 +68,7 @@ router.get('/tnmmatch/(:tnmID)', (req, res, next) => {
             req.flash('error', err);
             res.render('userside/tnm/tnmmatch', { data: '' });
         } else {
-            res.render('userside/tnm/tnmmatch', { data: rows });
+            res.render('userside/tnm/tnmmatch', { data: rows,status_login: req.session.loggedin });
         }
     })
 })
@@ -80,7 +80,7 @@ router.get('/tnmrank/(:tnmID)', (req, res, next) => {
             req.flash('error', err);
             res.render('userside/tnm/tnmrank', { data: '' });
         } else {
-            res.render('userside/tnm/tnmrank', { data: rows });
+            res.render('userside/tnm/tnmrank', { data: rows,status_login: req.session.loggedin });
         }
     })
 })
@@ -92,7 +92,7 @@ router.get('/tnmhighlight/(:tnmID)', (req, res, next) => {
             req.flash('error', err);
             res.render('userside/tnm/tnmhighlight', { data: '' });
         } else {
-            res.render('userside/tnm/tnmhighlight', { data: rows });
+            res.render('userside/tnm/tnmhighlight', { data: rows,status_login: req.session.loggedin });
         }
     })
 })
@@ -106,7 +106,7 @@ router.get('/singlereg/(:tnmID)', (req, res, next) => {
         } else {
             res.render('userside/regform/singlereg', { data: rows,
                 uniID: '',
-                facultyID: ''
+                facultyID: '',status_login: req.session.loggedin
              });
         }
     })
@@ -142,7 +142,7 @@ router.post('/singlereg', (req, res, next) =>{
             uniID: uniID,
             facultyID: facultyID,
             playerIDCard: playerIDCard,
-            playerFile1: playerFile1
+            playerFile1: playerFile1,status_login: req.session.loggedin
         })
     }
 
@@ -176,11 +176,11 @@ router.post('/singlereg', (req, res, next) =>{
                     uniID: form_data.uniID,
                     facultyID: form_data.facultyID,
                     playerIDCard: form_data.playerIDCard,
-                    playerFile1: form_data.playerFile1
+                    playerFile1: form_data.playerFile1,status_login: req.session.loggedin
                 })
             } else {
                 req.flash('success', 'sport successfully added');
-                res.redirect('/tnmdetail/:uniID');
+                res.redirect('/tnmdetail/:uniID',{status_login: req.session.loggedin});
             }
         })
     }

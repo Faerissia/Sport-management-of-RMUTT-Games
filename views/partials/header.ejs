@@ -11,19 +11,27 @@
 <header class="">
   <nav class="navbar navbar-expand-lg " style="background-color: #437fc7 ">
     <div class="container-fluid  px-0 m-0">
+      <% if(status_login){ %>
       <div class="me-auto">
-        <!-- ใช้ localไฟล์ -->
-        <!-- <a class="navbar-brand" href="#"><img src="stylesheets/RMUTT.png" class="nav-logo" alt="logo"
-            style="width: 15rem;" /></a> -->
-
-        <a class="navbar-brand" href="/"><img
+        <a class="navbar-brand" href="/dashboard"><img
             src="https://www.rmutt.ac.th/wp-content/uploads/2020/03/20200310-LOGO-RMUTT.png" class="nav-logo ms-2"
             alt="logo" style="width: 15rem;" /></a>
       </div>
       <div class="justify-content-end" id="navbarNavAltMarkup">
-          <a class="text-white" style="margin-right: 30px;" href="/login">เข้าสู่ระบบ</a>
-
+        <%= user %>
+        <a class="text-white" style="margin-right: 30px;" href="/logout">ออกจากระบบ</a>
         </div>
+        <% }else{ %>
+          <div class="me-auto">
+          <a class="navbar-brand" href="/"><img
+              src="https://www.rmutt.ac.th/wp-content/uploads/2020/03/20200310-LOGO-RMUTT.png" class="nav-logo ms-2"
+              alt="logo" style="width: 15rem;" /></a>
+        </div>
+          <div class="justify-content-end" id="navbarNavAltMarkup">
+                <a class="text-white" style="margin-right: 30px;" href="/login">เข้าสู่ระบบ</a>
+            </div>
+            <% } %>
+
     </div>
   </nav>
 

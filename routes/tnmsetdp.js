@@ -8,11 +8,13 @@ router.use(fileUpload());
 // display tnmsetdp page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.Renddate FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
-        if (err) {
+        if (req.session.loggedin) {
+            res.render('tnmsetdp', { data: rows,status_login: req.session.loggedin,user: user });
+        }else if(err){
             req.flash('error', err);
             res.render('tnmsetdp', { data: '' });
         } else {
-            res.render('tnmsetdp', { data: rows });
+            res.render('login',{status_login: req.session.loggedin,user: user});
         }
     })
 })

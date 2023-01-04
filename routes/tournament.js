@@ -8,11 +8,13 @@ router.use(fileUpload());
 // display tournament page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.tnmStartdate FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
-        if (err) {
+        if (req.session.loggedin) {
+            res.render('tournament', { data: rows,status_login: req.session.loggedin,user: user });
+        }else if(err){
             req.flash('error', err);
             res.render('tournament', { data: '' });
         } else {
-            res.render('tournament', { data: rows });
+            res.render('login',{status_login: req.session.loggedin,user: user});
         }
     })
 })

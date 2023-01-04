@@ -5,22 +5,28 @@ let dbConnection = require('../util/db');
 // display sport page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT * FROM sport ORDER BY sportID asc', (err, rows) => {
-        if (err) {
+        if (req.session.loggedin) {
+            res.render('sport', { data: rows,status_login: req.session.loggedin,user: user });
+        }else if(err){
             req.flash('error', err);
             res.render('sport', { data: '' });
-        } else {
-            res.render('sport', { data: rows });
+        }else {
+            res.render('login',{status_login: req.session.loggedin,user: user});
         }
     })
 })
 
 //display add sport page
 router.get('/add',(req, res, next) => {
+    if(req.session.loggedin){
     res.render('sport/add',{
         sportName:'',
         sportPlaynum:'',
-        type:''
+        type:'',status_login: req.session.loggedin,user: user
     })
+}else{
+    res.render('login',{status_login: req.session.loggedin,user: user});
+}
 })
 
 // add new sport
@@ -81,7 +87,7 @@ router.get('/edit/(:sportID)', (req, res, next) => {
                 sportID: rows[0].sportID,
                 sportName: rows[0].sportName,
                 sportPlaynum: rows[0].sportPlaynum,
-                type: rows[0].type
+                type: rows[0].type,status_login: req.session.loggedin,user: user
             })
         }
     });

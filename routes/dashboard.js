@@ -4,14 +4,16 @@ let dbConnection = require('../util/db');
 const fileUpload = require('express-fileupload');
 
 router.use(fileUpload());
-
 // display tnmcheck page
 router.get('/', (req, res, err) => {
-        if (err) {
-            req.flash('error', err);
-            res.render('dashboard', { data: '' });
-        } else {
-            res.render('dashboard', { data: rows });
+        if (req.session.loggedin) {
+            res.render('dashboard', {
+                status_login: req.session.loggedin,user: user,role: role  });
+            }else if(err){
+                req.flash('error', err);
+                res.render('dashboard', { data: '' });
+            }else {
+            res.redirect('login');
         }
     })
 

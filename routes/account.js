@@ -5,11 +5,13 @@ let dbConnection = require('../util/db');
 // display account page
 router.get('/', (req, res, next) => {
         dbConnection.query('SELECT * FROM account ORDER BY accountID asc', (err, rows) => {
-            if (err) {
+            if (req.session.loggedin) {
+                res.render('account', { data: rows ,status_login: req.session.loggedin,user: user});
+            }else if(err){
                 req.flash('error', err);
                 res.render('account', { data: '' });
-            } else {
-                res.render('account', { data: rows });
+            }else{
+                res.render('login',{status_login: req.session.loggedin,user: user});
             }
         })
     })
@@ -23,7 +25,7 @@ router.get('/add',(req, res, next) => {
         lname:'',
         phone:'',
         cpassword:'',
-        level:''
+        level:'',status_login: req.session.loggedin,user: user
     })
 })
 
@@ -49,11 +51,11 @@ router.post('/add', (req, res, next) =>{
             name: name,
             lname: lname,
             phone: phone,
-            level: level
+            level: level,status_login: req.session.loggedin
         })
     }
 
-    if(cpassword === password) {
+    if(cpassword != password) {
         errors = true;
         req.flash('error', 'password ไม่ตรงกัน');
         res.render('account/add', {
@@ -116,7 +118,7 @@ router.get('/edit/(:accountID)', (req, res, next) => {
                 lname: rows[0].lname,
                 phone: rows[0].phone,
                 level: rows[0].level,
-                status: rows[0].status
+                status: rows[0].status,status_login: req.session.loggedin
             })
         }
     });
