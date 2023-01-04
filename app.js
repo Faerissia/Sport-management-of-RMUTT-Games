@@ -7,8 +7,6 @@ let flash = require('express-flash');
 const dbConnection = require('./util/db');
 const session = require('express-session');
 
-const authen = require('./routes/auth');
-
 //routes variable
 const dashboard = require('./routes/dashboard');
 const account = require('./routes/account');
@@ -21,6 +19,12 @@ const tnmcheck = require('./routes/tnmcheck');
 const tnmsetdp = require('./routes/tnmsetdp');
 const tnmsave = require('./routes/tnmsave');
 const uindex = require('./routes/userside/uindex');
+
+
+global.status_login;
+global.role;
+global.user;
+var auth;
 
 // all environments
 app.set('views', __dirname + '/views');
@@ -42,8 +46,35 @@ app.get('/login',(req, res) => {
 })
 
 
-app.post('/login',authen, (req, res) => {
-  
+app.post('/login', (req, res) => {
+  var email = req.body.email;
+  var password = req.body.password;
+
+
+  if (email && password) {
+    dbConnection.query(
+      "SELECT * FROM account WHERE email = ? AND password = ?",
+      [email, password],
+      function (err, results) {
+        if (results.length > 0) {
+          req.session.loggedin = true;
+          req.session.email = email;
+          req.session.password = password;
+          user = results[0].name + " " + results[0].lname;
+          role = results[0].level;
+          auth = req.session.loggedin;
+          res.redirect("/dashboard");
+        } else {
+          req.flash('error','email หรือ password ไม่ถูกต้อง!')
+          res.redirect('login');
+        }
+        res.end();
+      }
+    );
+  }else{
+    req.flash('error','กรุณากรอกข้อมูลให้ครบถ้วน!')
+    res.redirect('login');
+  }
 });
 
 app.get('/logout', (req, res) => {
@@ -54,6 +85,7 @@ app.get('/logout', (req, res) => {
 
 
 app.use('/',uindex);
+
 //routes
 app.use('/dashboard', dashboard);
 app.use('/account', account);

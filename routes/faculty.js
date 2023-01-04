@@ -8,11 +8,8 @@ router.get('/(:uniID)', (req, res, next) => {
     dbConnection.query('SELECT u.uniID , f.name AS facName ,u.name AS uniName,f.facultyID FROM faculty f LEFT JOIN university u ON f.uniID = u.uniID WHERE u.uniID = '+ uniID, (err, rows) => {
         if(req.session.loggedin){
             res.render('faculty', { data: rows,status_login: req.session.loggedin,user: user });
-        }else if (err) {
-            req.flash('error', err);
-            res.render('faculty', { data: rows });
         } else {
-            res.render('login',{status_login: req.session.loggedin,user: user});
+            res.redirect('login');
         }
       })
 })

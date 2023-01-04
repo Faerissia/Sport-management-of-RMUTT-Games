@@ -9,9 +9,6 @@ router.get('/', (req, res, err) => {
         if (req.session.loggedin) {
             res.render('dashboard', {
                 status_login: req.session.loggedin,user: user,role: role  });
-            }else if(err){
-                req.flash('error', err);
-                res.render('dashboard', { data: '' });
             }else {
             res.redirect('login');
         }

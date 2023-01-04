@@ -7,11 +7,8 @@ router.get('/', (req, res, next) => {
     dbConnection.query('SELECT * FROM sport ORDER BY sportID asc', (err, rows) => {
         if (req.session.loggedin) {
             res.render('sport', { data: rows,status_login: req.session.loggedin,user: user });
-        }else if(err){
-            req.flash('error', err);
-            res.render('sport', { data: '' });
         }else {
-            res.render('login',{status_login: req.session.loggedin,user: user});
+            res.redirect('login');
         }
     })
 })

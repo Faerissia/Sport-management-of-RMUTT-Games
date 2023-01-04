@@ -31,12 +31,16 @@
                     <input type="text" class="form-control" name="placeName" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <label>กีฬา:</label>
-                    <input type="text" class="form-control" name="sportID" autocomplete="off">
+                    <label style="margin-top: 15px;">กีฬา:</label>
+                    <select name="sportID">
+                        <% for(let i = 0; i < data.length; i++) { %>
+                        <option value="<%= data[i].sportID %>"><%= data[i].sportName %></option>
+                        <% } %>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>URL สถานที่:</label>
-                    <input type="url" class="form-control" name="placeUrl" autocomplete="off">
+                    <input type="text" class="form-control" name="placeUrl" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <label>อัพโหลดไฟล์รูปภาพ:</label>

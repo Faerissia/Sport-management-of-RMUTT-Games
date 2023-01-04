@@ -6,12 +6,13 @@ let dbConnection = require('../util/db');
 router.get('/', (req, res, next) => {
         dbConnection.query('SELECT * FROM account ORDER BY accountID asc', (err, rows) => {
             if (req.session.loggedin) {
-                res.render('account', { data: rows ,status_login: req.session.loggedin,user: user});
-            }else if(err){
-                req.flash('error', err);
-                res.render('account', { data: '' });
+                if(role === 'ผู้ดูแลระบบ'){
+                    res.render('account', { data: rows ,status_login: req.session.loggedin,user: user});
+                }else{
+                    res.redirect('login');
+                }
             }else{
-                res.render('login',{status_login: req.session.loggedin,user: user});
+                res.redirect('login');
             }
         })
     })

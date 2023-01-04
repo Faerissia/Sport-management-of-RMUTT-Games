@@ -7,11 +7,8 @@ router.get('/', (req, res, next) => {
     dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.Renddate FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
         if (req.session.loggedin) {
             res.render('tnmcheck', { data: rows,status_login: req.session.loggedin,user: user });
-        }else if(err){
-            req.flash('error', err);
-            res.render('tnmcheck', { data: '' });
         } else {
-            res.render('login',{status_login: req.session.loggedin,user: user});
+            res.redirect('login');
         }
     })
 })

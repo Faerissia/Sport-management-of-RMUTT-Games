@@ -7,24 +7,29 @@ router.get('/', (req, res, next) => {
     dbConnection.query('SELECT * FROM place ORDER BY placeID asc', (err, rows) => {
         if (req.session.loggedin) {
             res.render('place', { data: rows,status_login: req.session.loggedin,user: user });
-        }else if(err){
-            req.flash('error', err);
-            res.render('place', { data: '' });
         } else {
-            res.render('login',{status_login: req.session.loggedin,user: user});
+            res.redirect('login');
         }
     })
 })
 
 //display add place page
 router.get('/add',(req, res, next) => {
-    res.render('place/add',{
+    dbConnection.query('SELECT sportID,sportName FROM sport ORDER BY sportID asc', (err, rows) => {
+        if (err) {
+            req.flash('error', err);
+            res.render('tournament/add', { data: '' });
+        }else{
+    res.render('place/add',{data: rows,
         placeName:'',
         sportID:'',
         placeUrl:'',
         placeFile:'',
-        placeDetail:''
+        placeDetail:'',
+        status_login: req.session.loggedin,user: user
     })
+    }
+})
 })
 
 // add new place
