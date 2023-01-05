@@ -5,13 +5,10 @@ let dbConnection = require('../util/db');
 // display account page
 router.get('/', (req, res, next) => {
         dbConnection.query('SELECT * FROM account ORDER BY accountID asc', (err, rows) => {
-            if (req.session.loggedin) {
-                if(role === 'ผู้ดูแลระบบ'){
+            if(role === 'ผู้ดูแลระบบ'){
                     res.render('account', { data: rows ,status_login: req.session.loggedin,user: user});
-                }else{
-                    res.redirect('login');
-                }
             }else{
+                req.flash('error','ไม่สามารถเข้าถึงได้');
                 res.redirect('login');
             }
         })
@@ -26,9 +23,9 @@ router.get('/add',(req, res, next) => {
         lname:'',
         phone:'',
         cpassword:'',
-        level:'',status_login: req.session.loggedin,user: user
-    })
+        level:'',status_login: req.session.loggedin,user: user});
 })
+
 
 // add new account
 router.post('/add', (req, res, next) =>{
@@ -104,7 +101,6 @@ router.post('/add', (req, res, next) =>{
 // display edit account page
 router.get('/edit/(:accountID)', (req, res, next) => {
     let accountID = req.params.accountID;
-
     dbConnection.query('SELECT * FROM account WHERE accountID = ' + accountID, (err, rows, fields) => {
         if (rows.length <= 0) {
             req.flash('error', 'Book not found with id = ' + accountID)

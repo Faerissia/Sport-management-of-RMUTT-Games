@@ -8,35 +8,34 @@ router.use(fileUpload());
 // display tnmsetdp page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.Renddate FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
-        if (req.session.loggedin) {
+        if(role === 'เจ้าหน้าที่'){
             res.render('tnmsetdp', { data: rows,status_login: req.session.loggedin,user: user });
-        } else {
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
-        }
+    }
     })
 })
 
 //display add tnmsetdp page
 router.get('/add', (req, res, next) => {
     dbConnection.query('SELECT sportID,sportName FROM sport ORDER BY sportID asc', (err, rows) => {
-        if (err) {
-            req.flash('error', err);
-            res.render('tournament/add', { data: '' });
-        } else {
+        if(role === 'เจ้าหน้าที่'){
             res.render('tournament/add', { data: rows,
-            tnmName:'',
-            sportID:'',
-            Rstartdate:'',
-            Renddate:'',
-            tnmStartdate:'',
-            tnmEnddate:'',
-            tnmUrl:'',
-            tnmDetail:'',
-            tnmPicture:''
-        });
-            
+                    tnmName:'',
+                    sportID:'',
+                    Rstartdate:'',
+                    Renddate:'',
+                    tnmStartdate:'',
+                    tnmEnddate:'',
+                    tnmUrl:'',
+                    tnmDetail:'',
+                    tnmPicture:''});
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('login');
         }
-    })
+        })
 })
 
 // delete tnmsetdp

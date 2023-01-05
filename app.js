@@ -24,7 +24,6 @@ const uindex = require('./routes/userside/uindex');
 global.status_login;
 global.role;
 global.user;
-var auth;
 
 // all environments
 app.set('views', __dirname + '/views');
@@ -42,8 +41,12 @@ app.use(session({
 app.use(flash());
 
 app.get('/login',(req, res) => {
+  if (req.session.loggedin) {
+    res.redirect('dashboard');
+  } else {
     res.render('login',{status_login: req.session.loggedin});
-})
+  }
+  })
 
 
 app.post('/login', (req, res) => {
@@ -57,21 +60,26 @@ app.post('/login', (req, res) => {
       [email, password],
       function (err, results) {
         if (results.length > 0) {
+          var active = results[0].status;
+          role = results[0].level;
+          if(active === 'ใช้งาน'){
           req.session.loggedin = true;
           req.session.email = email;
           req.session.password = password;
           user = results[0].name + " " + results[0].lname;
-          role = results[0].level;
-          auth = req.session.loggedin;
-          res.redirect("/dashboard");
-        } else {
+          console.log(role)
+              res.redirect("/dashboard");
+          }else{
+            req.flash('error','กรุณาติดต่อผู้ดูแลระบบ!')
+          res.redirect('login');
+          }
+        }else{
           req.flash('error','email หรือ password ไม่ถูกต้อง!')
           res.redirect('login');
         }
-        res.end();
       }
     );
-  }else{
+  }else {
     req.flash('error','กรุณากรอกข้อมูลให้ครบถ้วน!')
     res.redirect('login');
   }
@@ -87,16 +95,17 @@ app.get('/logout', (req, res) => {
 app.use('/',uindex);
 
 //routes
-app.use('/dashboard', dashboard);
-app.use('/account', account);
-app.use('/uni', uni);
-app.use('/faculty',faculty);
-app.use('/sport',sport);
-app.use('/place',place);
-app.use('/tournament', tournament);
-app.use('/tnmcheck',tnmcheck);
-app.use('/tnmsetdp',tnmsetdp);
-app.use('/tnmsave',tnmsave);
+              app.use('/account', account);
+              app.use('/dashboard', dashboard);
+              app.use('/uni', uni);
+              app.use('/faculty',faculty);
+              app.use('/sport',sport);
+              app.use('/place',place);
+              app.use('/tournament', tournament);
+              app.use('/tnmcheck',tnmcheck);
+              app.use('/tnmsetdp',tnmsetdp);
+              app.use('/tnmsave',tnmsave);
+
 
 
 //Middleware

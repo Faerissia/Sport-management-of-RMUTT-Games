@@ -5,6 +5,15 @@
 <html lang="en">
 
 <body>
+
+	<% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+    <% } %>
+    
+    <% if (messages.success) { %>
+        <div class="alert alert-success" role="alert"><%= messages.success %></div>
+    <% } %>
+
 <div class="jumbotron">
 	<h1>Welcome</h1>
 	<p>Hello Dashboard</p>

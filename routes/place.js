@@ -5,30 +5,31 @@ let dbConnection = require('../util/db');
 // display place page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT * FROM place ORDER BY placeID asc', (err, rows) => {
-        if (req.session.loggedin) {
+        if(role === 'เจ้าหน้าที่'){
             res.render('place', { data: rows,status_login: req.session.loggedin,user: user });
-        } else {
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
         }
-    })
+        })
 })
 
 //display add place page
 router.get('/add',(req, res, next) => {
     dbConnection.query('SELECT sportID,sportName FROM sport ORDER BY sportID asc', (err, rows) => {
-        if (err) {
-            req.flash('error', err);
-            res.render('tournament/add', { data: '' });
-        }else{
-    res.render('place/add',{data: rows,
-        placeName:'',
-        sportID:'',
-        placeUrl:'',
-        placeFile:'',
-        placeDetail:'',
-        status_login: req.session.loggedin,user: user
-    })
-    }
+            if(role === 'เจ้าหน้าที่'){
+                res.render('place/add',{data: rows,
+                    placeName:'',
+                    sportID:'',
+                    placeUrl:'',
+                    placeFile:'',
+                    placeDetail:'',
+                    status_login: req.session.loggedin,user: user
+                })
+            }else{
+                req.flash('error','ไม่มีสิทธิ์เข้าถึง')
+                res.redirect('dashboard');
+            }
 })
 })
 
@@ -87,8 +88,8 @@ router.post('/add', (req, res, next) =>{
 // display edit place page
 router.get('/edit/(:placeID)', (req, res, next) => {
     let placeID = req.params.placeID;
-
     dbConnection.query('SELECT * FROM place WHERE placeID = ' + placeID, (err, rows, fields) => {
+        if(role === 'เจ้าหน้าที่'){
         if (rows.length <= 0) {
             req.flash('error', 'place not found with id = ' + placeID)
             res.redirect('/place');
@@ -103,6 +104,10 @@ router.get('/edit/(:placeID)', (req, res, next) => {
                 placeDetail: rows[0].placeDetail
             })
         }
+    }else{
+        req.flash('error','ไม่สามารถเข้าถึงได้');
+        res.redirect('login');
+    }
     });
 })
 
