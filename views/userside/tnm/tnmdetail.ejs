@@ -1,5 +1,5 @@
 <%- include("../../partials/header") %>
-        <div class="col-10 py-3">
+        <div class="col-10 py-3 mx-auto">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,11 +28,10 @@
             <h5 style="float: left;">รายละเอียด</h5>
 
             <div class="card-body border">
-                เริ่มการแข่งขันวันที่ <%= data[0].tnmStartdate %> - <%= data[0].tnmEnddate %>
-                ระบบการแข่งขัน <%= data[0].tnmTypegame %>
-                ทีมที่เข้าร่วม
-                สนาม
-                ไฟล์แนบ <a href="../testfile.pdf" download>download</a>
+                เริ่มการแข่งขันวันที่ <%= data[0].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %> - <%= data[0].tnmEnddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %>
+                <br>ระบบการแข่งขัน <%= data[0].tnmTypegame %>
+                <br>ทีมที่เข้าร่วม
+                ไฟล์แนบ <a href="..../doc/<%= data[0].tnmFile1%>" download><%= data[0].tnmFile1 %></a>
 
             </div>
             <div class="card-body border">

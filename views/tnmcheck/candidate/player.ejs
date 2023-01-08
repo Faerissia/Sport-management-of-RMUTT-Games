@@ -1,6 +1,6 @@
 <%- include("../../partials/header") %>
 <%- include("../../partials/sidebar") %>
-        <div class="col-10 py-3">
+        <div class="col-10 py-3 mx-auto">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,52 +10,52 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>การแข่งขันปิงปอง ประจำปี 2565</h1>
+    <h1>ผู้สมัครการแข่งขัน <%=data[0].tnmName %> </h1>
     <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-    <form action="/tnmcheck/candidate/page" method="post">
+    <form action="/tnmcheck/player" method="post">
         <div class="form-group">
             <label>ชื่อ:</label>
-            <input type="text" class="form-control" name="name" required>
+            <input type="text" class="form-control" value="<%= data[0].playerFName %>" disabled>
         </div>
             <div class="form-group">
                 <label>นามสกุล:</label>
-                <input type="text" class="form-control" name="name" required>
+                <input type="text" class="form-control" value="<%= data[0].playerLName %>" disabled>
             </div>
             <div class="form-group">
                 <label>เพศ:</label>
-                <input type="text" class="form-control" name="name" required>
+                <input type="text" class="form-control" value="<%= data[0].playerGender %>" disabled>
             </div>
             <div class="form-group">
                 <label>วัน/เดือน/ปี:</label>
-                <input type="date" class="form-control" name="name" required>
+                <input type="text" class="form-control" value="<%= data[0].playerBirthday.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %>" disabled>
             </div>
             <div class="form-group">
                 <label>เบอร์โทร:</label>
-                <input type="text" class="form-control" name="name" required>
+                <input type="text" class="form-control" value="<%= data[0].playerPhone %>" disabled>
             </div>
             <div class="form-group">
                 <label>อีเมล:</label>
-                <input type="email" class="form-control" name="name" required>
+                <input type="email" class="form-control" value="<%= data[0].playerEmail %>" disabled>
             </div>
             <div class="form-group">
                 <label>มหาวิทยาลัย:</label>
-                <input type="text" class="form-control" name="name" required>
+                <input type="text" class="form-control" value="<%= data[0].uniName %>" disabled>
             </div>
             <div class="form-group">
                 <label>คณะ:</label>
-                <input type="text" class="form-control" name="name" required>
+                <input type="text" class="form-control" value="<%= data[0].facName %>" disabled>
             </div>
             <div class="form-group">
                 <label>เลขประจำตัวประชาชน:</label>
-                <input type="text" class="form-control" name="name" required>
+                <input type="text" class="form-control" value="<%= data[0].playerIDCard %>" disabled>
             </div>
             <div class="form-group">
                 <label>รหัสนักศึกษา:</label>
-                <input type="text" class="form-control" name="name" required>
+                <input type="text" class="form-control" value="<%= data[0].playerStudentID %>" disabled>
             </div>
             <div class="form-group">
                 <label>เอกสารยืนยันตัวตน:</label>
-                <input type="file" class="form-control" name="name" required>
+                <input type="file" class="form-control" value="<%= data[0].playerFile1 %>" disabled>
             </div>
 </body>
 </html>

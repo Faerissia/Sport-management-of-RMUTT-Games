@@ -91,20 +91,25 @@ app.get('/logout', (req, res) => {
   })
 })
 
+app.get('/error404', (req, res) => {
+    res.render('error',{status_login: req.session.loggedin});
+})
 
 app.use('/',uindex);
 
 //routes
-              app.use('/account', account);
-              app.use('/dashboard', dashboard);
-              app.use('/uni', uni);
-              app.use('/faculty',faculty);
-              app.use('/sport',sport);
-              app.use('/place',place);
-              app.use('/tournament', tournament);
-              app.use('/tnmcheck',tnmcheck);
-              app.use('/tnmsetdp',tnmsetdp);
-              app.use('/tnmsave',tnmsave);
+app.use('/account', account);
+app.use('/dashboard', dashboard);
+app.use('/uni', uni);
+app.use('/faculty',faculty);
+app.use('/sport',sport);
+app.use('/place',place);
+app.use('/tournament', tournament);
+app.use('/tnmcheck',tnmcheck);
+app.use('/tnmsetdp',tnmsetdp);
+app.use('/tnmsave',tnmsave);
+
+
 
 
 

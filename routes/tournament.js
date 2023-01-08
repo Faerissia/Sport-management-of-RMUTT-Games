@@ -8,12 +8,16 @@ router.use(fileUpload());
 // display tournament page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.tnmStartdate FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
+    if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tournament', { data: rows,status_login: req.session.loggedin,user: user });
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
         }
+    }else{
+        res.redirect('error404');
+    }
         })
 })
 
@@ -203,47 +207,63 @@ router.get('/delete/(:tnmID)', (req, res, next) => {
 //หน้าจัดสาย
 router.get('/bracket/(:tnmID)', (req, res, next)=> {
     dbConnection.query('SELECT * FROM tournament ORDER BY tnmID asc', (err, rows) => {
+        if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tournament/bracket', { data: rows,status_login: req.session.loggedin,user: user});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
     }
+}else{
+    res.redirect('error404');
+}
     })
 })
 
 //หน้าผู้เข้าร่วม
 router.get('/participant/(:tnmID)', (req, res, next)=> {
     dbConnection.query('SELECT * FROM tournament ORDER BY tnmID asc', (err, rows) => {
+        if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tournament/participant', { data: rows,status_login: req.session.loggedin,user: user});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
     }
+}else{
+    res.redirect('error404');
+}
     })
 })
 
 //หน้าแมทช์การแข่งขัน
 router.get('/match/(:tnmID)', (req, res, next)=> {
     dbConnection.query('SELECT * FROM tournament ORDER BY tnmID asc', (err, rows) => {
+        if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tournament/match', { data: rows,status_login: req.session.loggedin,user: user});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
         }
+    }else{
+        res.redirect('error404');
+    }
     })
 })
 
 //หน้าไฮไลท์
 router.get('/highlight/(:tnmID)', (req, res, next)=> {
     dbConnection.query('SELECT * FROM tournament ORDER BY tnmID asc', (err, rows) => {
+    if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tournament/highlight', { data: rows,status_login: req.session.loggedin,user: user});
     }else{
         req.flash('error','ไม่สามารถเข้าถึงได้');
         res.redirect('login');
+    }
+    }else{
+    res.redirect('error404');
     }
     })
 })

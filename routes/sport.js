@@ -5,12 +5,22 @@ let dbConnection = require('../util/db');
 // display sport page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT * FROM sport ORDER BY sportID asc', (err, rows) => {
+        if(req.session.loggedin){
+            if(role === 'เจ้าหน้าที่'){
                 res.render('sport', { data: rows,status_login: req.session.loggedin,user: user });
+            }else{
+                req.flash('error','ไม่สามารถเข้าถึงได้');
+                res.redirect('login');
+            }
+        }else{
+            res.redirect('error404');
+        }
     })
 })
 
 //display add sport page
 router.get('/add',(req, res, next) => {
+    if(req.session.loggedin){
     if(role === 'เจ้าหน้าที่'){
         res.render('sport/add',{
             sportName:'',
@@ -18,9 +28,12 @@ router.get('/add',(req, res, next) => {
             type:'',status_login: req.session.loggedin,user: user
     })
         }else{
-            req.flash('error','ไม่มีสิทธิ์เข้าถึง')
-            res.redirect('dashboard');
+            req.flash('error','ไม่สามารถเข้าถึงได้')
+            res.redirect('login');
         }
+    }else{
+        res.redirect('error404');
+    }
 })
 
 // add new sport

@@ -5,11 +5,15 @@ let dbConnection = require('../util/db');
 // display account page
 router.get('/', (req, res, next) => {
         dbConnection.query('SELECT * FROM account ORDER BY accountID asc', (err, rows) => {
-            if(role === 'ผู้ดูแลระบบ'){
+            if(req.session.loggedin){
+                if(role === 'ผู้ดูแลระบบ'){
                     res.render('account', { data: rows ,status_login: req.session.loggedin,user: user});
+                }else{
+                    req.flash('error','ไม่สามารถเข้าถึงได้');
+                    res.redirect('login');
+                }
             }else{
-                req.flash('error','ไม่สามารถเข้าถึงได้');
-                res.redirect('login');
+                res.redirect('error404');
             }
         })
     })
@@ -37,21 +41,6 @@ router.post('/add', (req, res, next) =>{
     let phone = req.body.phone;
     let level = req.body.level;
     let errors = false;
-
-    if(email.length === 0 || password.legnth === 0 || name.length === 0 || lname.length === 0 || phone === 0) {
-        errors = true;
-        //set flash message
-        req.flash('error', 'โปรดกรอกข้อมูล *');
-        //render to add.ejs with flash message
-        res.render('account/add', {
-            email: email,
-            password: password,
-            name: name,
-            lname: lname,
-            phone: phone,
-            level: level,status_login: req.session.loggedin
-        })
-    }
 
     if(cpassword != password) {
         errors = true;

@@ -6,8 +6,12 @@ const fileUpload = require('express-fileupload');
 router.use(fileUpload());
 // display tnmcheck page
 router.get('/', (req, res, err) => {
+    if(req.session.loggedin){
             res.render('dashboard', {
                 status_login: req.session.loggedin,user: user,role: role  });
-    })
+            }else{
+                res.redirect('error404');
+            }
+            })
 
 module.exports = router;

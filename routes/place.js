@@ -5,19 +5,24 @@ let dbConnection = require('../util/db');
 // display place page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT * FROM place ORDER BY placeID asc', (err, rows) => {
+        if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('place', { data: rows,status_login: req.session.loggedin,user: user });
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
         }
+    }else{
+        res.redirect('error404');
+    }
         })
 })
 
 //display add place page
 router.get('/add',(req, res, next) => {
     dbConnection.query('SELECT sportID,sportName FROM sport ORDER BY sportID asc', (err, rows) => {
-            if(role === 'เจ้าหน้าที่'){
+        if(req.session.loggedin){    
+        if(role === 'เจ้าหน้าที่'){
                 res.render('place/add',{data: rows,
                     placeName:'',
                     sportID:'',
@@ -30,6 +35,9 @@ router.get('/add',(req, res, next) => {
                 req.flash('error','ไม่มีสิทธิ์เข้าถึง')
                 res.redirect('dashboard');
             }
+        }else{
+            res.redirect('error404');
+        }
 })
 })
 

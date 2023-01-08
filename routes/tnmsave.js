@@ -8,18 +8,23 @@ router.use(fileUpload());
 // display tnmsave page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.Renddate FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
-    if(role === 'เจ้าหน้าที่'){ 
+    if(req.session.loggedin){
+        if(role === 'เจ้าหน้าที่'){ 
         res.render('tnmsave', { data: rows,status_login: req.session.loggedin,user: user });
     }else{
         req.flash('error','ไม่สามารถเข้าถึงได้');
         res.redirect('login');
     }
+}else{
+    res.redirect('error404');
+}
     })
 })
 
 //display add tnmsave page
 router.get('/add', (req, res, next) => {
     dbConnection.query('SELECT sportID,sportName FROM sport ORDER BY sportID asc', (err, rows) => {
+    if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tournament/add', { data: rows,
                 tnmName:'',
@@ -36,6 +41,9 @@ router.get('/add', (req, res, next) => {
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
         }
+    }else{
+        res.redirect('error404');
+    }
     })
 })
 

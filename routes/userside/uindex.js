@@ -1,6 +1,9 @@
 let express = require('express');
 let router = express.Router();
+const fileUpload = require('express-fileupload');
 let dbConnection = require('../../util/db');
+
+router.use(fileUpload());
 
 // display tnmcheck page
 router.get('/', (req, res, next) => {
@@ -28,12 +31,7 @@ router.get('/showall', (req, res, next) => {
 router.get('/tnmdetail/(:tnmID)', (req, res, next) => {
     let tnmID = req.params.tnmID;
     dbConnection.query('SELECT * FROM tournament WHERE tnmID =' + tnmID, (err, rows) => {
-        if (err) {
-            req.flash('error', err);
-            res.render('userside/tnm/tnmdetail', { data: '' });
-        } else {
             res.render('userside/tnm/tnmdetail', { data: rows,status_login: req.session.loggedin });
-        }
     })
 })
 
@@ -99,91 +97,66 @@ router.get('/tnmhighlight/(:tnmID)', (req, res, next) => {
 
 router.get('/singlereg/(:tnmID)', (req, res, next) => {
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT t.tnmID, t.tnmName, u.uniID, u.name AS uniName,f.facultyID,f.name AS facName FROM tournament t LEFT JOIN university u LEFT JOIN faculty f ON f.uniID = u.uniID ON t.tnmID =' + tnmID, (err, rows) => {
-        if (err) {
-            req.flash('error', err);
-            res.render('userside/regform/singlereg', { data: '' });
-        } else {
-            res.render('userside/regform/singlereg', { data: rows,
-                uniID: '',
-                facultyID: '',status_login: req.session.loggedin
-             });
-        }
+    dbConnection.query('SELECT u.name, u.uniID,t.tnmID, t.tnmName FROM university u INNER JOIN tournament t WHERE tnmID =' +tnmID, (err, rows) => {
+                res.render('userside/regform/singlereg', { data: rows,status_login: req.session.loggedin
+                 });
     })
 })
 
+
 router.post('/singlereg', (req, res, next) =>{
+    let tnmID = req.body.tnmID;
     let playerFName = req.body.playerFName;
     let playerLName = req.body.playerLName;
     let playerGender = req.body.playerGender;
     let playerBirthday = req.body.playerBirthday;
     let playerPhone = req.body.playerPhone;
     let playerEmail = req.body.playerEmail;
-    let detailDoc = req.body.detailDoc;
-    let uniID = req.body.uniID;
     let facultyID = req.body.facultyID;
     let playerIDCard = req.body.playerIDCard;
-    let playerFile1 = req.body.playerFile1;
+    let playerStudentID = req.body.playerStudentID;
     let errors = false;
-
-    if(sportName.length === 0) {
-        errors = true;
-        //set flash message
-        req.flash('error', 'โปรดกรอก');
-        //render to add.ejs with flash message
-        res.render('userside/regform/singlereg', {
-            playerFName: playerFName,
-            playerLName: playerLName,
-            playerGender: playerGender,
-            playerBirthday: playerBirthday,
-            playerPhone: playerPhone,
-            playerEmail: playerEmail,
-            detailDoc: detailDoc,
-            uniID: uniID,
-            facultyID: facultyID,
-            playerIDCard: playerIDCard,
-            playerFile1: playerFile1,status_login: req.session.loggedin
-        })
-    }
 
     // if no error
     if(!errors) {
         let form_data = {
+            tnmID: tnmID,
             playerFName: playerFName,
             playerLName: playerLName,
             playerGender: playerGender,
             playerBirthday: playerBirthday,
             playerPhone: playerPhone,
             playerEmail: playerEmail,
-            detailDoc: detailDoc,
-            uniID: uniID,
             facultyID: facultyID,
             playerIDCard: playerIDCard,
-            playerFile1: playerFile1
+            playerStudentID: playerStudentID
         }
         // insert query db
-        dbConnection.query('INSERT INTO sport SET ?', form_data, (err, result) => {
+        dbConnection.query('INSERT INTO player SET ?', form_data, (err, result) => {
             if (err) {
+                console.log(JSON.stringify(err));
                 req.flash('error', err)
-                res.render('userside/regform/singlereg', {
-                    playerFName: form_data.playerFName,
-                    playerLName: form_data.playerLName,
-                    playerGender: form_data.playerGender,
-                    playerBirthday: form_data.playerBirthday,
-                    playerPhone: form_data.playerPhone,
-                    playerEmail: form_data.playerEmail,
-                    detailDoc: form_data.detailDoc,
-                    uniID: form_data.uniID,
-                    facultyID: form_data.facultyID,
-                    playerIDCard: form_data.playerIDCard,
-                    playerFile1: form_data.playerFile1,status_login: req.session.loggedin
-                })
+                res.redirect('/')
             } else {
-                req.flash('success', 'sport successfully added');
-                res.redirect('/tnmdetail/:uniID',{status_login: req.session.loggedin});
+                req.flash('success', 'สมัครเข้าร่วมการแข่งขันแล้ว');
+                res.redirect('/');
             }
         })
     }
 })
+
+
+router.post('/get-faculty', function(req, res) {
+    dbConnection.query('SELECT * FROM faculty WHERE uniID = " ' + req.body.uniID + ' "',
+    function(err, rows, fields) {
+    if (err) {
+        res.json({ msg: 'error' });
+    } else {
+        res.json({ msg: 'success', facu: rows});
+
+    }
+});
+});
+
 
 module.exports = router;
