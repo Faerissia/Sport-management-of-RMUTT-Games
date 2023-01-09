@@ -104,12 +104,12 @@ router.get('/edit/(:placeID)', (req, res, next) => {
         } else {
             res.render('place/edit', {
                 title: 'แก้ไข กีฬา',
-                placeID: rows[0].placetID,
+                placeID: rows[0].placeID,
                 placeName: rows[0].placeName,
                 sportID: rows[0].sportID,
                 placeUrl: rows[0].placeUrl,
                 placeFile: rows[0].placeFile,
-                placeDetail: rows[0].placeDetail
+                placeDetail: rows[0].placeDetail,status_login: req.session.loggedin,user: user
             })
         }
     }else{
@@ -120,34 +120,21 @@ router.get('/edit/(:placeID)', (req, res, next) => {
 })
 
 // update place page
-router.post('/update/:placeID', (req, res, next) => {
+router.post('/update/(:placeID)', (req, res, next) => {
     let placeID = req.params.placeID;
     let placeName = req.body.placeName;
     let sportID = req.body.sportID;
     let placeUrl = req.body.placeUrl;
-    let placeFile = req.body.placeFile;
     let placeDetail = req.body.placeDetail;
     let errors = false;
+    console.log(placeID)
 
-    if (placeName.length === 0) {
-        errors = true;
-        req.flash('error', 'Please enter name and author');
-        res.render('place/edit', {
-            placeID: req.params.placeID,
-            placeName: placeName,
-            sportID: sportID,
-            placeUrl: placeUrl,
-            placeFile: placeFile,
-            placeDetail: placeDetail
-        })
-    }
     // if no error
     if (!errors) {
         let form_data = {
             placeName: placeName,
             sportID: sportID,
             placeUrl: placeUrl,
-            placeFile: placeFile,
             placeDetail: placeDetail
         }
         // update query
@@ -159,7 +146,6 @@ router.post('/update/:placeID', (req, res, next) => {
                     placeName: form_data.placeName,
                     sportID: form_data.sportID,
                     placeUrl: form_data.placeUrl,
-                    placeFile: form_data.placeFile,
                     placeDetail: form_data.placeDetail
                 })
             } else {

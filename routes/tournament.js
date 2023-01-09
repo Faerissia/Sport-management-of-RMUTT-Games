@@ -1,9 +1,10 @@
 let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
-const fileUpload = require('express-fileupload');
+let bodyParser = require("body-parser");
+const path = require('path');
 
-router.use(fileUpload());
+    
 
 // display tournament page
 router.get('/', (req, res, next) => {
@@ -25,18 +26,7 @@ router.get('/', (req, res, next) => {
 router.get('/add', (req, res, next) => {
     dbConnection.query('SELECT sportID,sportName FROM sport ORDER BY sportID asc', (err, rows) => {
         if(role === 'เจ้าหน้าที่'){
-            res.render('tournament/add', { data: rows,
-                    tnmName:'',
-                    sportID:'',
-                    Rstartdate:'',
-                    Renddate:'',
-                    tnmStartdate:'',
-                    tnmEnddate:'',
-                    tnmUrl:'',
-                    tnmDetail:'',
-                    tnmPicture:'',
-                    status_login: req.session.loggedin,user: user
-                });
+            res.render('tournament/add', { data: rows,status_login: req.session.loggedin,user: user});
             }else{
                 req.flash('error','ไม่สามารถเข้าถึงได้');
                 res.redirect('login');
@@ -60,8 +50,11 @@ router.post('/add', (req, res, next) =>{
     let tnmPicture = req.files.tnmPicture;
     let tnmFile1 = req.files.tnmFile1;
 
-    tnmPicture.mv('./assets/images/' + tnmPicture.name);
-    tnmFile1.mv('./assets/doc/' + tnmFile1.name);
+    let name_tnmPicture = new Date().getTime() +'_'+tnmPicture.name;
+    let name_tnmFile1 = new Date().getTime() +'_'+tnmFile1.name;
+
+    tnmPicture.mv('./assets/images/' + name_tnmPicture);
+    tnmFile1.mv('./assets/doc/' + name_tnmFile1);
     
 
 
@@ -77,8 +70,8 @@ router.post('/add', (req, res, next) =>{
             tnmEnddate:tnmEnddate,
             tnmUrl: tnmUrl,
             tnmDetail: tnmDetail,
-            tnmPicture: tnmPicture.name,
-            tnmFile1: tnmFile1.name
+            tnmPicture: name_tnmPicture,
+            tnmFile1: name_tnmFile1
         }
 
         // insert query db
@@ -94,8 +87,8 @@ router.post('/add', (req, res, next) =>{
                     tnmEnddate: form_data.tnmEnddate,
                     tnmUrl: form_data.tnmUrl,
                     tnmDetail: form_data.tnmDetail,
-                    tnmPicture: form_data.tnmPicture,
-                    tnmFile1: form_data.tnmFile1
+                    tnmPicture: form_data.name_tnmPicture,
+                    tnmFile1: form_data.name_tnmFile1
                 })
             } else {
                 req.flash('success', 'tournament successfully added');
@@ -114,6 +107,7 @@ router.get('/edit/(:tnmID)', (req, res, next) => {
             req.flash('error', 'tournament not found with id = ' + tnmID)
             res.redirect('/tournament');
         } else  {
+            console.log(rows)
             res.render('tournament/edit', { data:rows,
                 title: 'แก้ไข การแข่งขัน',
                 tnmID: rows[0].tnmID,
@@ -126,7 +120,7 @@ router.get('/edit/(:tnmID)', (req, res, next) => {
                 tnmEnddate: rows[0].tnmEnddate,
                 tnmDetail: rows[0].tnmDetail,
                 tnmPicture: rows[0].tnmPicture,
-                tnmFile1: rows[0].tnmFile1
+                tnmFile1: rows[0].tnmFile1,status_login: req.session.loggedin,user: user
             })
         }
     }else{
@@ -147,9 +141,16 @@ router.post('/update/:tnmID', (req, res, next) => {
     let tnmStartdate = req.body.tnmStartdate;
     let tnmEnddate = req.body.tnmEnddate;
     let tnmDetail = req.body.tnmDetail;
-    let tnmPicture = req.body.tnmPicture;
-    let tnmFile1 = req.body.tnmFile1;
+    let tnmPicture = req.files.tnmPicture;
+    let tnmFile1 = req.files.tnmFile1;
     let errors = false;
+
+    let name_tnmPicture = new Date().getTime() +'_'+tnmPicture.name;
+    let name_tnmFile1 = new Date().getTime() +'_'+tnmFile1.name;
+
+    tnmPicture.mv('./assets/images/' + name_tnmPicture);
+    tnmFile1.mv('./assets/doc/' + name_tnmFile1);
+
 
     // if no error
     if (!errors) {
@@ -162,8 +163,8 @@ router.post('/update/:tnmID', (req, res, next) => {
             tnmStartdate: tnmStartdate,
             tnmEnddate:tnmEnddate,
             tnmDetail: tnmDetail,
-            tnmPicture: tnmPicture,
-            tnmFile1: tnmFile1
+            tnmPicture: name_tnmPicture,
+            tnmFile1: name_tnmFile1
         }
         // update query
         dbConnection.query("UPDATE tournament SET ? WHERE tnmID = " + tnmID, form_data, (err, result) => {
@@ -179,8 +180,8 @@ router.post('/update/:tnmID', (req, res, next) => {
                     tnmEnddate: form_data.tnmEnddate,
                     tnmUrl: form_data.tnmUrl,
                     tnmDetail: form_data.tnmDetail,
-                    tnmPicture: form_data.tnmPicture,
-                    tnmFile1: form_data.tnmFile1
+                    tnmPicture: form_data.name_tnmPicture,
+                    tnmFile1: form_data.name_tnmFile1
                 })
             } else {
                 req.flash('success', 'tournament successfully updated');
@@ -195,7 +196,7 @@ router.get('/delete/(:tnmID)', (req, res, next) => {
     let tnmID = req.params.tnmID;
     dbConnection.query('DELETE FROM tournament WHERE tnmID = ' + tnmID, (err, result) => {
         if (err) {
-            req.flash('error', err),
+            req.flash('error','ไม่สามารถลบการแข่งขันได้'),
             res.redirect('/tournament');
         } else {
             req.flash('success', 'tournament successfully deleted! ID = ' + tnmID);
@@ -206,7 +207,8 @@ router.get('/delete/(:tnmID)', (req, res, next) => {
 
 //หน้าจัดสาย
 router.get('/bracket/(:tnmID)', (req, res, next)=> {
-    dbConnection.query('SELECT * FROM tournament ORDER BY tnmID asc', (err, rows) => {
+    let tnmID = req.params.tnmID;
+    dbConnection.query('SELECT * FROM tournament WHERE tnmID ='+tnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tournament/bracket', { data: rows,status_login: req.session.loggedin,user: user});
@@ -222,7 +224,8 @@ router.get('/bracket/(:tnmID)', (req, res, next)=> {
 
 //หน้าผู้เข้าร่วม
 router.get('/participant/(:tnmID)', (req, res, next)=> {
-    dbConnection.query('SELECT * FROM tournament ORDER BY tnmID asc', (err, rows) => {
+    let tnmID = req.params.tnmID;
+    dbConnection.query('SELECT * FROM tournament WHERE tnmID ='+tnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tournament/participant', { data: rows,status_login: req.session.loggedin,user: user});
@@ -238,7 +241,8 @@ router.get('/participant/(:tnmID)', (req, res, next)=> {
 
 //หน้าแมทช์การแข่งขัน
 router.get('/match/(:tnmID)', (req, res, next)=> {
-    dbConnection.query('SELECT * FROM tournament ORDER BY tnmID asc', (err, rows) => {
+    let tnmID = req.params.tnmID;
+    dbConnection.query('SELECT * FROM tournament WHERE tnmID ='+tnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tournament/match', { data: rows,status_login: req.session.loggedin,user: user});
@@ -254,7 +258,8 @@ router.get('/match/(:tnmID)', (req, res, next)=> {
 
 //หน้าไฮไลท์
 router.get('/highlight/(:tnmID)', (req, res, next)=> {
-    dbConnection.query('SELECT * FROM tournament ORDER BY tnmID asc', (err, rows) => {
+    let tnmID = req.params.tnmID;
+    dbConnection.query('SELECT * FROM tournament WHERE tnmID ='+tnmID, (err, rows) => {
     if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tournament/highlight', { data: rows,status_login: req.session.loggedin,user: user});
@@ -267,5 +272,9 @@ router.get('/highlight/(:tnmID)', (req, res, next)=> {
     }
     })
 })
+
+
+
+
 
 module.exports = router;

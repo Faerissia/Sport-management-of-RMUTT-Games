@@ -1,9 +1,8 @@
 let express = require('express');
 let router = express.Router();
-const fileUpload = require('express-fileupload');
 let dbConnection = require('../../util/db');
-
-router.use(fileUpload());
+let bodyParser=require("body-parser");
+const path = require('path');
 
 // display tnmcheck page
 router.get('/', (req, res, next) => {
@@ -103,7 +102,6 @@ router.get('/singlereg/(:tnmID)', (req, res, next) => {
     })
 })
 
-
 router.post('/singlereg', (req, res, next) =>{
     let tnmID = req.body.tnmID;
     let playerFName = req.body.playerFName;
@@ -115,7 +113,13 @@ router.post('/singlereg', (req, res, next) =>{
     let facultyID = req.body.facultyID;
     let playerIDCard = req.body.playerIDCard;
     let playerStudentID = req.body.playerStudentID;
+    let playerFile1 = req.files.playerFile1;
     let errors = false;
+
+    var name_pfile = new Date().getTime() +'_'+playerFile1.name;
+
+    playerFile1.mv('./assets/player/' + name_pfile);
+
 
     // if no error
     if(!errors) {
@@ -129,7 +133,8 @@ router.post('/singlereg', (req, res, next) =>{
             playerEmail: playerEmail,
             facultyID: facultyID,
             playerIDCard: playerIDCard,
-            playerStudentID: playerStudentID
+            playerStudentID: playerStudentID,
+            playerFile1: name_pfile
         }
         // insert query db
         dbConnection.query('INSERT INTO player SET ?', form_data, (err, result) => {
@@ -144,6 +149,7 @@ router.post('/singlereg', (req, res, next) =>{
         })
     }
 })
+
 
 
 router.post('/get-faculty', function(req, res) {

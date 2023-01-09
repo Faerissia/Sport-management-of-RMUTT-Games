@@ -62,7 +62,7 @@ router.get('/delete/(:tnmID)', (req, res, next) => {
 // display tnmcheck page
 router.get('/candidate/(:tnmID)', (req, res, next) => {
     let thistnmID = req.params.tnmID;
-    dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.teamID,t.tnmID,t.tnmName FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID WHERE t.tnmID ='+thistnmID, (err, rows) => {
+    dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID WHERE t.tnmID ='+thistnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('./tnmcheck/candidate', { data: rows,status_login: req.session.loggedin,user: user });
@@ -89,6 +89,19 @@ router.get('/player/(:playerID)', (req, res, next) => {
     }else{
         res.redirect('error404');
     }
+    })
+})
+
+router.get('/player/accept/(:playerID)', (req, res, next) => {
+    let thisplayerID = req.params.playerID;
+    let form_data = {
+    playerStatus: 'ยอมรับ'
+    }
+    console.log(thisplayerID)
+    console.log(form_data)
+    dbConnection.query('UPDATE player SET ? WHERE playerID ='+thisplayerID,form_data, (err, rows) => {
+        req.flash('success','ยอมรับผู้เล่นเรียบร้อย');
+        res.redirect('/tnmcheck');
     })
 })
 

@@ -7,6 +7,7 @@ let flash = require('express-flash');
 const dbConnection = require('./util/db');
 const session = require('express-session');
 
+
 //routes variable
 const dashboard = require('./routes/dashboard');
 const account = require('./routes/account');
@@ -19,26 +20,28 @@ const tnmcheck = require('./routes/tnmcheck');
 const tnmsetdp = require('./routes/tnmsetdp');
 const tnmsave = require('./routes/tnmsave');
 const uindex = require('./routes/userside/uindex');
-
+const fileUpload = require('express-fileupload');
 
 global.status_login;
 global.role;
 global.user;
 
 // all environments
+
+app.use(fileUpload());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname,"assets")))
-
+app.use(flash());
 app.use(session({
   secret: 'secret',
   resave: 'true',
   saveUninitialized: true,
-  cookie: { maxAge: 60000 }
+  cookie: { maxAge: 60 * 60 * 1000 }
 }))
-app.use(flash());
+
 
 app.get('/login',(req, res) => {
   if (req.session.loggedin) {
@@ -90,6 +93,8 @@ app.get('/logout', (req, res) => {
     res.redirect('login');
   })
 })
+
+app.use(bodyParser. text({type: '/'}));
 
 app.get('/error404', (req, res) => {
     res.render('error',{status_login: req.session.loggedin});
