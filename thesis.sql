@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 09, 2023 at 04:13 PM
+-- Generation Time: Jan 10, 2023 at 09:58 AM
 -- Server version: 10.4.27-MariaDB
--- PHP Version: 8.1.12
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -197,7 +197,7 @@ CREATE TABLE `player` (
   `tnmID` int(3) NOT NULL,
   `detailDoc` varchar(255) DEFAULT NULL,
   `otp` int(10) DEFAULT NULL,
-  `playerStatus` enum('ยอมรับ','ปฏิเสธ','แก้ไข') DEFAULT NULL,
+  `playerStatus` enum('accept','deny','edit') DEFAULT NULL,
   `playerRegDate` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -206,11 +206,11 @@ CREATE TABLE `player` (
 --
 
 INSERT INTO `player` (`playerID`, `playerIDCard`, `playerStudentID`, `playerFName`, `playerLName`, `playerGender`, `playerBirthday`, `playerPhone`, `playerEmail`, `facultyID`, `teamID`, `playerFile1`, `playerFile2`, `playerFile3`, `tnmID`, `detailDoc`, `otp`, `playerStatus`, `playerRegDate`) VALUES
-(6, '1709800339819', '1163304620219', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2023-01-08', '0984926565', 'firstlnw0099@gmail.com', 2, NULL, NULL, NULL, NULL, 18, NULL, NULL, 'ยอมรับ', '2023-01-08'),
-(7, '1163304620326', '1163304620326', 'วสวิญญ์', 'รัตน์โชติ', 'ชาย', '2000-03-30', '0624283195', 'wasawin.14@gmail.com', 2, NULL, NULL, NULL, NULL, 18, NULL, NULL, 'ยอมรับ', '2023-01-08'),
+(6, '1709800339819', '1163304620219', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2023-01-08', '0984926565', 'firstlnw0099@gmail.com', 2, NULL, NULL, NULL, NULL, 18, NULL, NULL, 'accept', '2023-01-08'),
+(7, '1163304620326', '1163304620326', 'วสวิญญ์', 'รัตน์โชติ', 'ชาย', '2000-03-30', '0624283195', 'wasawin.14@gmail.com', 2, NULL, NULL, NULL, NULL, 18, NULL, NULL, NULL, '2023-01-08'),
 (8, '1163304620037', '1163304620037', 'เมธานันท์', 'รัตนปัญญานนท์', 'หญิง', '1999-06-06', '0831140590', 'nun@gmail.com', 2, NULL, NULL, NULL, NULL, 18, NULL, NULL, NULL, '2023-01-08'),
-(9, '1163304620268', '1163304620268', 'จักริน', 'นิลพันธ์', 'ชาย', '2023-01-18', '0613921298', 'jakkarin@gmail.com', 11, NULL, NULL, NULL, NULL, 18, NULL, NULL, 'ยอมรับ', '2023-01-08'),
-(10, '1163304620334', '1163304620334', 'กิตติภพ', 'รักสนิท', 'ชาย', '2022-06-08', '0822354389', 'kittiphop@gmail.com', 17, NULL, NULL, NULL, NULL, 18, NULL, NULL, NULL, '2023-01-08'),
+(9, '1163304620268', '1163304620268', 'จักริน', 'นิลพันธ์', 'ชาย', '2023-01-18', '0613921298', 'jakkarin@gmail.com', 11, NULL, NULL, NULL, NULL, 18, NULL, NULL, NULL, '2023-01-08'),
+(10, '1163304620334', '1163304620334', 'กิตติภพ', 'รักสนิท', 'ชาย', '2022-06-08', '0822354389', 'kittiphop@gmail.com', 17, NULL, NULL, NULL, NULL, 18, NULL, NULL, 'deny', '2023-01-08'),
 (11, '1163304620342', '1163304620342', 'ธีระพล', 'ประทาน', 'ชาย', '2022-06-08', '0928795987', 'theraphon@gmail.com', 32, NULL, NULL, NULL, NULL, 18, NULL, NULL, NULL, '2023-01-08'),
 (15, '1321313213213', '3213213213515', 'tetstststset', 'รักสนิท', 'ชาย', '2023-01-17', '0822354389', 'kittiphop@gmail.com', 7, NULL, '[object Object]', NULL, NULL, 24, NULL, NULL, NULL, '2023-01-09'),
 (16, '1321313131321', '3213215611616', 'ชลธี', 'คำลือ', 'ชาย', '2023-01-15', '0984984094', 'chonlatee1129@gmail.com', 2, NULL, '[object Object]', NULL, NULL, 25, NULL, NULL, NULL, '2023-01-09'),

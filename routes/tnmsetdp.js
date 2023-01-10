@@ -7,7 +7,7 @@ router.use(fileUpload());
 
 // display tnmsetdp page
 router.get('/', (req, res, next) => {
-    dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.Renddate FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
+    dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.Renddate,t.tnmTypegame FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmTypegame IS NULL GROUP BY t.tnmID;', (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tnmsetdp', { data: rows,status_login: req.session.loggedin,user: user });

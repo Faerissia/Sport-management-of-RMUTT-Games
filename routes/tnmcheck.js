@@ -95,7 +95,7 @@ router.get('/player/(:playerID)', (req, res, next) => {
 router.get('/player/accept/(:playerID)', (req, res, next) => {
     let thisplayerID = req.params.playerID;
     let form_data = {
-    playerStatus: 'ยอมรับ'
+    playerStatus: 'accept'
     }
     console.log(thisplayerID)
     console.log(form_data)
@@ -105,4 +105,16 @@ router.get('/player/accept/(:playerID)', (req, res, next) => {
     })
 })
 
+router.get('/player/deny/(:playerID)', (req, res, next) => {
+    let thisplayerID = req.params.playerID;
+    let form_data = {
+    playerStatus: 'deny'
+    }
+    console.log(thisplayerID)
+    console.log(form_data)
+    dbConnection.query('UPDATE player SET ? WHERE playerID ='+thisplayerID,form_data, (err, rows) => {
+        req.flash('success','ปฏิเสธผู้เล่นเรียบร้อย');
+        res.redirect('/tnmcheck');
+    })
+})
 module.exports = router;

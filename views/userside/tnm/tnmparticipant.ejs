@@ -22,7 +22,79 @@
         </td>
         </ul>
     </div>
-    
+    <% if(!data.teamID) { %>
+        <!-- //แบบเดี่ยว -->
+        <div class="card-body">
+            <% if(data.length) { %>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ชื่อผู้เล่นที่เข้าร่วม</th>
+                            <th scope="col">เพศ</th>
+                            <th scope="col">อายุ</th>
+                            <th scope="col">เบอร์ติดต่อ</th>
+                            <th width="200px">ตัวเลือก</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let i = 0; i < data.length; i++) { %>
+                            <% if(data[i].playerStatus === 'accept') { %>
+                            <tr>
+                                <td><%= data[i].playerFName %> <%= data[i].playerLName %></td>
+                                <td><%= data[i].playerGender %></td>
+                                <td><%= data[i].age %></td>
+                                <td><%= data[i].playerPhone%></td>
+                                <td>
+                                    <a href="../tournament/edit/<%= data[i].tnmID %>" class="btn btn-warning edit">แก้ไข</a>
+                                    <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
+                                    <a href="../tournament/bracket/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
+                                </td>
+                            </tr>
+                        <% }} %>
+                    </tbody>
+                </table>
+            <% } %>
+<% } %>
+ <% if(data.teamID) { %>
+<!-- //แบบทีม -->
+        <div class="card-body">
+            <% if(data.length) { %>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ชื่อทีมที่เข้าร่วม</th>
+                            <th scope="col">จำนวนสมาชิก</th>
+                            <th scope="col">ชื่อตัวแทน</th>
+                            <th scope="col">เบอร์ติดต่อ</th>
+                            <th width="200px">ตัวเลือก</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let i = 0; i < data.length; i++) { %>
+                            <tr>
+                                <td><%= data[i].tnmName %></td>
+                                <td><%= data[i].sportName %></td>
+                                <td><%= data[i].tnmStartdate %></td>
+                                <td><%= data[i].tournamentPlaynum %></td>
+                                <td>
+                                    <a href="../tournament/edit/<%= data[i].tnmID %>" class="btn btn-warning edit">แก้ไข</a>
+                                    <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
+                                    <a href="../tournament/bracket/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            <% } %>
+<% } %>
+
+
+
+            <!-- if result is empty-->
+            <% if(!data.length) { %>
+                <p class="text-center">ไม่พบรายการของการแข่งขัน</p>
+            <% } %>
+        </div>
     
 </body>
 </html>
