@@ -44,6 +44,7 @@
                                 <td><%= data[i].name %></td>
                                 <td><%= data[i].status %></td>
                                 <td>
+                                    <a href="../books/look/<%= data[i].id %>" class="btn btn-success edit">ดู</a>
                                     <a href="../books/edit/<%= data[i].id %>" class="btn btn-success edit">แก้ไข</a>
                                     <a href="../books/delete/<%= data[i].id %>" onclick="return alert('Are you sure?')" class="btn btn-danger delete">ลบ</a>
                                 </td>
