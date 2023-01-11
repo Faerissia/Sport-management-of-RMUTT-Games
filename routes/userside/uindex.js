@@ -51,7 +51,7 @@ router.get('/tnmparticipant/(:tnmID)', (req, res, next) => {
     dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID WHERE t.tnmID = ' + tnmID, (err, rows) => {
         if (err) {
             req.flash('error', err);
-            res.render('userside/tnm/tnmparticipant', { data: '' });
+            res.render('userside/tnm/tnmparticipant', { data: '',status_login: req.session.loggedin });
         } else {
             res.render('userside/tnm/tnmparticipant', { data: rows,status_login: req.session.loggedin });
         }
