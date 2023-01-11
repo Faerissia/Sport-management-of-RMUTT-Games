@@ -84,7 +84,7 @@ router.get('/tnmrank/(:tnmID)', (req, res, next) => {
 
 router.get('/tnmhighlight/(:tnmID)', (req, res, next) => {
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT * FROM tournament WHERE tnmID =' + tnmID, (err, rows) => {
+    dbConnection.query('SELECT t.tnmID,t.tnmName,h.tnmID,h.linkvid,h.filePic,h.date,h.description FROM tournament t LEFT JOIN highlight h ON t.tnmID = h.tnmID WHERE t.tnmID = ' + tnmID, (err, rows) => {
         if (err) {
             req.flash('error', err);
             res.render('userside/tnm/tnmhighlight', { data: '' });
