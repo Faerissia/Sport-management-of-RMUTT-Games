@@ -1,29 +1,63 @@
 <%- include("../../partials/header") %>
-        <div class="col-10 py-3">
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <div class="container text-center" style="margin-left:250px;">
-        หน้าสายการแข่งขัน
-        <ul class="nav nav-pills w-100">
-        <td>
-            <a href="/tnmdetail/<%= data[0].tnmID %>" class="nav-link active">ข้อมูลการแข่งขัน</a>
-            <a href="/tnmbracket/<%= data[0].tnmID %>" class="nav-link active">สายการแข่งขัน</a>
-            <a href="/tnmparticipant/<%= data[0].tnmID %>" class="nav-link active">ผู้เข้าร่วม</a>
-            <a href="/tnmmatch/<%= data[0].tnmID %>" class="nav-link active">แมทช์การแข่งขัน</a>
-            <a href="/tnmrank/<%= data[0].tnmID %>" class="nav-link active">อันดับ</a>
-            <a href="/tnmhighlight/<%= data[0].tnmID %>" class="nav-link active">ไฮไลต์</a>
-        </td>
-        </ul>
+    <div class="container-xxl mt-5 px-3">
+        <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+            <title>Document</title>
+        </head>
+
+        <body>
+
+            หน้าสายการแข่งขัน
+            <div class=" d-flex flex-column text-center h-auto mb-5 border   border-dark rounded-3 "
+                style="background:#D9D9D9 ;">
+                <%- include("../../partials/menuuser.ejs") %>
+                    <!-- <div class="d-block" style="height: 1000px;"></div> -->
+                    <div class="row pt-3">
+                    <div class="row row-cols-1">
+                        <div class="col">
+                            <p class="align-seft-start">
+                                <%= data[0].tnmName %>
+                            </p>
+
+                        </div>
+                    </div>
+                    <div class="row row-cols-lg-2 row-cols-sm-1 row-cols-1" >
+                        <div class="col">
+                            <p>ปัจุบันรอบที่ :(data)</p>
+                        </div>
+                        <div class="col">
+                            แข่งขันทั้งหมด (data) รอบ
+                        </div>
+                    </div>
+
+                    <div class="row">
+                    <table class="table table table-bordered border-dark w-75 mx-auto text-center ">
+                        <thead>
+                          <tr style="background-color: #6DAFFE;">
+                            <th scope="col">ลำดับที่</th>
+                            <th scope="col">ชื่อทีม</th>
+                            <th scope="col">คะแนนรวมทั้งหมด</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% for (let i = 0; i <= 5; i++){ %>
+                          <tr class="bg-light">
+                            <th scope="row"><%= i+1 %></th>
+                            <td>ทีมที่<%= i %></td>
+                            <td>คะแนนรวม<%= i %></td>
+                            <!--  SELECT * FROM scores ORDER BY score DESC; -->
+                          </tr>
+                          <% } %>
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+
+                    </div>
+            
+        </body>
+
+        </html>
     </div>
-    
-    
-</body>
-</html>
-</div>
