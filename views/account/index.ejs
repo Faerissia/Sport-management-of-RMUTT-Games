@@ -45,7 +45,7 @@
                             <th scope="col">ชื่อ - นามสกุล</th>
                             <th scope="col">เบอร์โทรศัพท์</th>
                             <th scope="col">สถานะการใช้งาน</th>
-                            <th width="200px">ตัวเลือก</th>
+                            <th width="230px">ตัวเลือก</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,6 +58,7 @@
                                 <td>
                                     <a href="../account/delete/<%= data[i].accountID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
                                     <a href="../account/edit/<%= data[i].accountID %>" class="btn btn-warning edit">แก้ไข</a>
+                                    <a href="../account/page/<%= data[i].accountID %>" class="btn btn-primary">ดูข้อมูล</a>
                                 </td>
                             </tr>
                         <% } %>

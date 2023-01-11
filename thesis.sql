@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 10, 2023 at 09:58 AM
+-- Generation Time: Jan 11, 2023 at 12:09 PM
 -- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- PHP Version: 8.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -104,11 +104,20 @@ INSERT INTO `faculty` (`facultyID`, `name`, `uniID`) VALUES
 
 CREATE TABLE `highlight` (
   `highlightID` int(3) NOT NULL,
+  `linkvid` varchar(255) DEFAULT NULL,
   `tnmID` int(3) NOT NULL,
   `filePic` varchar(255) DEFAULT NULL,
   `date` date DEFAULT curdate(),
   `description` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `highlight`
+--
+
+INSERT INTO `highlight` (`highlightID`, `linkvid`, `tnmID`, `filePic`, `date`, `description`) VALUES
+(1, 'testste', 24, NULL, '2023-01-08', 'testset'),
+(3, NULL, 24, '1673432451365_66kebb6ah7k8ejiakacgi.jpg', '2023-01-11', 'test');
 
 -- --------------------------------------------------------
 
@@ -292,8 +301,8 @@ CREATE TABLE `tournament` (
 --
 
 INSERT INTO `tournament` (`tnmID`, `tnmName`, `sportID`, `tnmUrl`, `Rstartdate`, `Renddate`, `tnmStartdate`, `tnmEnddate`, `tnmTypegame`, `tnmDetail`, `tnmPicture`, `tnmFile1`, `tnmFile2`, `tnmFile3`, `accountID`, `st1`, `nd2`, `rd3`) VALUES
-(18, 'การแข่งขันบาสเกตบอล', 1, '', '2023-01-08', '2023-01-08', '2023-01-08', '2023-01-08', NULL, 'ทดสอบแก้ไข', '1673270940662_basketball.jpg', '1673270940662_basketball.jpg', NULL, NULL, NULL, NULL, NULL, NULL),
-(24, 'การแข่งขันเทนนิสบอลประจำปี', 4, '', '2023-01-08', '2023-01-08', '2023-01-08', '2023-01-08', NULL, 'ะำหะห', '1673271047462_tennis.jfif', '1673271047462_tennis.jfif', NULL, NULL, NULL, NULL, NULL, NULL),
+(18, 'การแข่งขันบาสเกตบอล', 1, '', '2023-01-08', '2023-01-08', '2023-01-08', '2023-01-08', 'single', 'ทดสอบแก้ไข', '1673270940662_basketball.jpg', '1673270940662_basketball.jpg', NULL, NULL, NULL, NULL, NULL, NULL),
+(24, 'การแข่งขันเทนนิสประจำปี', 4, '', '2023-01-07', '2023-01-07', '2023-01-07', '2023-01-07', NULL, 'ะำหะห', '1673435313015_tennis.jfif', '1673435313015_tennis.jfif', NULL, NULL, NULL, NULL, NULL, NULL),
 (25, 'การแข่งขันปิงปองประจำปี', 1, '', '2023-01-08', '2023-01-08', '2023-01-08', '2023-01-08', NULL, 'test', '1673271113110_66kebb6ah7k8ejiakacgi.jpg', '1673271113110_66kebb6ah7k8ejiakacgi.jpg', NULL, NULL, NULL, NULL, NULL, NULL),
 (26, 'การแข่งขันฟุตบอล', 1, '', '2023-01-11', '2023-01-09', '2023-01-09', '2023-01-09', NULL, 'การแข่งขันฟุตบอล', '1673270875902_000_33346NG-728x485.jpg', '1673270875902_000_33346NG-728x485.jpg', NULL, NULL, NULL, NULL, NULL, NULL);
 
@@ -470,7 +479,7 @@ ALTER TABLE `faculty`
 -- AUTO_INCREMENT for table `highlight`
 --
 ALTER TABLE `highlight`
-  MODIFY `highlightID` int(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `highlightID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `match`

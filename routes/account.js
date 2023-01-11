@@ -184,4 +184,25 @@ router.get('/delete/(:accountID)', (req, res, next) => {
     })
 })
 
+router.get('/page/(:accountID)',(req, res, next) => {
+    let accountID = req.params.accountID;
+    dbConnection.query('SELECT * FROM account WHERE accountID = ' + accountID, (err, rows, fields) => {
+        if (rows.length <= 0) {
+            req.flash('error', 'ไม่พบบัญชี id = ' + accountID)
+            res.redirect('/account');
+        } else {
+            res.render('account/page', {
+                accountID: rows[0].accountID,
+                email: rows[0].email,
+                password: rows[0].password,
+                name: rows[0].name,
+                lname: rows[0].lname,
+                phone: rows[0].phone,
+                level: rows[0].level,
+                status: rows[0].status,status_login: req.session.loggedin
+            })
+        }
+    });
+})
+
 module.exports = router;

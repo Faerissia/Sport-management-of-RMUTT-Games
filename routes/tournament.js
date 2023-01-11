@@ -8,7 +8,7 @@ const path = require('path');
 
 // display tournament page
 router.get('/', (req, res, next) => {
-    dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.tnmStartdate FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
+    dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.tnmStartdate,t.tnmTypegame FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmTypegame IS NULL', (err, rows) => {
     if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tournament', { data: rows,status_login: req.session.loggedin,user: user });
@@ -225,7 +225,6 @@ router.get('/bracket/(:tnmID)', (req, res, next)=> {
 //หน้าผู้เข้าร่วม
 router.get('/participant/(:tnmID)', (req, res, next)=> {
     let tnmID = req.params.tnmID;
-    let accept = 'accept';
     dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID WHERE t.tnmID = '+tnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
@@ -260,8 +259,8 @@ router.get('/match/(:tnmID)', (req, res, next)=> {
 //หน้าไฮไลท์
 router.get('/highlight/(:tnmID)', (req, res, next)=> {
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT * FROM tournament WHERE tnmID ='+tnmID, (err, rows) => {
-    if(req.session.loggedin){
+    dbConnection.query('SELECT t.tnmID,t.tnmName,h.tnmID,h.linkvid,h.filePic,h.date,h.description FROM tournament t LEFT JOIN highlight h ON t.tnmID = h.tnmID WHERE t.tnmID = '+tnmID, (err, rows) => {
+        if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tournament/highlight', { data: rows,status_login: req.session.loggedin,user: user});
     }else{
@@ -272,6 +271,89 @@ router.get('/highlight/(:tnmID)', (req, res, next)=> {
     res.redirect('error404');
     }
     })
+})
+
+router.get('/highlight/add/(:tnmID)', (req, res, next)=> {
+    let tnmID = req.params.tnmID;
+    dbConnection.query('SELECT * FROM tournament WHERE tnmID ='+tnmID, (err, rows) => {
+    if(req.session.loggedin){
+        if(role === 'เจ้าหน้าที่'){
+            res.render('tournament/addhl', { data: rows,status_login: req.session.loggedin,user: user});
+    }else{
+        req.flash('error','ไม่สามารถเข้าถึงได้');
+        res.redirect('login');
+    }
+    }else{
+    res.redirect('error404');
+    }
+    })
+})
+
+router.post('/highlight/add/(:tnmID)', (req, res, next)=> {
+    if (req.files) {
+        let tnmID = req.params.tnmID;
+        let date = req.body.date;
+        let description = req.body.description;
+        let filePic = req.files.filePic;
+
+        let name_filePic = new Date().getTime() +'_'+filePic.name;
+        filePic.mv('./assets/images/' + name_filePic);
+
+        let form_data = {
+            tnmID: tnmID,
+            filePic: name_filePic,
+            date: date,
+            description: description
+        }
+        dbConnection.query("INSERT INTO highlight SET ?",form_data, (err, result) => {
+            if (err) {
+                req.flash('error', err);
+                res.render('tournament/addhl', {
+                    data: req.params.tnmID,
+                    filePic: req.files.name_filePic,
+                    date: req.body.date,
+                    description: req.body.description,
+                    status_login: req.session.loggedin,
+                    user: user
+
+                })
+            } else {
+                req.flash('success', 'เพิ่ม Highlight เรียบร้อยแล้ว');
+                res.redirect('/tournament')
+            }
+        })
+    }else{
+        let tnmID = req.params.tnmID;
+        let linkvid = req.body.linkvid;
+        let date = req.body.date;
+        let description = req.body.description;
+
+        let form_data = {
+            tnmID: tnmID,
+            linkvid: linkvid,
+            date: date,
+            description: description
+    }
+    dbConnection.query("INSERT INTO highlight SET ?",form_data, (err, result) => {
+        if (err) {
+            req.flash('error', err);
+            res.render('tournament/addhl', {
+                data: req.params.tnmID,
+                linkvid: linkvid,
+                date: date,
+                description: description,
+                status_login: req.session.loggedin,
+                user: user
+
+            })
+        } else {
+            req.flash('success', 'เพิ่ม Highlight เรียบร้อยแล้ว');
+            res.redirect('/tournament')
+        }
+    })
+
+    }
+
 })
 
 
