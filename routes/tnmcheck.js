@@ -5,37 +5,42 @@ let dbConnection = require('../util/db');
 // display tnmcheck page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.Renddate FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
-        if (req.session.loggedin) {
+    if(req.session.loggedin){
+        if(role === 'เจ้าหน้าที่'){
             res.render('tnmcheck', { data: rows,status_login: req.session.loggedin,user: user });
-        }else if(err){
-            req.flash('error', err);
-            res.render('tnmcheck', { data: '' });
-        } else {
-            res.render('login',{status_login: req.session.loggedin,user: user});
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('login');
         }
+    }else{
+        res.redirect('error404');
+    }
     })
 })
 
 //display add tnmcheck page
 router.get('/add', (req, res, next) => {
     dbConnection.query('SELECT sportID,sportName FROM sport ORDER BY sportID asc', (err, rows) => {
-        if (err) {
-            req.flash('error', err);
-            res.render('tournament/add', { data: '' });
-        } else {
+        if(req.session.loggedin){
+        if(role === 'เจ้าหน้าที่'){
             res.render('tournament/add', { data: rows,
-            tnmName:'',
-            sportID:'',
-            Rstartdate:'',
-            Renddate:'',
-            tnmStartdate:'',
-            tnmEnddate:'',
-            tnmUrl:'',
-            tnmDetail:'',
-            tnmPicture:''
-        });
-            
+                    tnmName:'',
+                    sportID:'',
+                    Rstartdate:'',
+                    Renddate:'',
+                    tnmStartdate:'',
+                    tnmEnddate:'',
+                    tnmUrl:'',
+                    tnmDetail:'',
+                    tnmPicture:''
+                });
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('login');
         }
+    }else{
+        res.redirect('error404');
+    }
     })
 })
 
@@ -55,24 +60,61 @@ router.get('/delete/(:tnmID)', (req, res, next) => {
 })
 
 // display tnmcheck page
-router.get('/candidate', (req, res, next) => {
-    dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.Renddate FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
-        if (err) {
-            res.render('./tnmcheck/candidate', { data: '' });
-        } else {
-            res.render('./tnmcheck/candidate', { data: rows });
+router.get('/candidate/(:tnmID)', (req, res, next) => {
+    let thistnmID = req.params.tnmID;
+    dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID WHERE t.tnmID ='+thistnmID, (err, rows) => {
+        if(req.session.loggedin){
+        if(role === 'เจ้าหน้าที่'){
+            res.render('./tnmcheck/candidate', { data: rows,status_login: req.session.loggedin,user: user });
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('../login');
         }
+    }else{
+        res.redirect('error404');
+    }
+        })
+})
+
+router.get('/player/(:playerID)', (req, res, next) => {
+    let thisplayerID = req.params.playerID;
+    dbConnection.query('SELECT p.playerID,p.playerIDCard,p.playerStudentID,p.playerFName,p.playerLName,p.playerGender,p.playerBirthday,p.playerPhone,p.playerEmail,p.facultyID,p.playerFile1,t.tnmID,t.tnmName,f.uniID,f.facultyID,f.name AS facName,u.uniID,u.name AS uniName FROM player p LEFT JOIN tournament t ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerID ='+thisplayerID, (err, rows) => {
+        if(req.session.loggedin){
+        if(role === 'เจ้าหน้าที่'){
+            res.render('./tnmcheck/candidate/player', { data: rows,status_login: req.session.loggedin,user: user });
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('../../login');
+        }
+    }else{
+        res.redirect('error404');
+    }
     })
 })
 
-router.get('/candidate/page', (req, res, next) => {
-    dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.Renddate FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
-        if (err) {
-            res.render('./tnmcheck/candidate/page', { data: '' });
-        } else {
-            res.render('./tnmcheck/candidate/page', { data: rows });
-        }
+router.get('/player/accept/(:playerID)', (req, res, next) => {
+    let thisplayerID = req.params.playerID;
+    let form_data = {
+    playerStatus: 'accept'
+    }
+    console.log(thisplayerID)
+    console.log(form_data)
+    dbConnection.query('UPDATE player SET ? WHERE playerID ='+thisplayerID,form_data, (err, rows) => {
+        req.flash('success','ยอมรับผู้เล่นเรียบร้อย');
+        res.redirect('/tnmcheck');
     })
 })
 
+router.get('/player/deny/(:playerID)', (req, res, next) => {
+    let thisplayerID = req.params.playerID;
+    let form_data = {
+    playerStatus: 'deny'
+    }
+    console.log(thisplayerID)
+    console.log(form_data)
+    dbConnection.query('UPDATE player SET ? WHERE playerID ='+thisplayerID,form_data, (err, rows) => {
+        req.flash('success','ปฏิเสธผู้เล่นเรียบร้อย');
+        res.redirect('/tnmcheck');
+    })
+})
 module.exports = router;

@@ -7,21 +7,32 @@ router.get('/(:uniID)', (req, res, next) => {
     let uniID = req.params.uniID;
     dbConnection.query('SELECT u.uniID , f.name AS facName ,u.name AS uniName,f.facultyID FROM faculty f LEFT JOIN university u ON f.uniID = u.uniID WHERE u.uniID = '+ uniID, (err, rows) => {
         if(req.session.loggedin){
-            res.render('faculty', { data: rows,status_login: req.session.loggedin,user: user });
-        }else if (err) {
-            req.flash('error', err);
-            res.render('faculty', { data: rows });
-        } else {
-            res.render('login',{status_login: req.session.loggedin,user: user});
-        }
-      })
+            if(role === 'เจ้าหน้าที่'){
+                res.render('faculty', { data: rows,status_login: req.session.loggedin,user: user });
+            }else{
+                req.flash('error','ไม่สามารถเข้าถึงได้');
+                res.redirect('login');
+            }
+    }else{
+        res.redirect('error404');
+    }
+    })
 })
 
 //display add faculty to list
 router.get('/add/(:uniID)',(req, res, next) => {
     let uniID = req.params.uniID;
     dbConnection.query('SELECT uniID FROM faculty WHERE uniID =  '+ uniID, (err, rows) => {
-    res.render('faculty/add',{ data: rows });
+        if(req.session.loggedin){
+        if(role === 'เจ้าหน้าที่'){     
+            res.render('faculty/add',{ data: rows,status_login: req.session.loggedin });
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('login');
+        }
+    }else{
+        res.redirect('error404');
+    }
 })
 })
 
@@ -30,7 +41,6 @@ router.post('/add', (req, res, next) =>{
     let name = req.body.name;
     let uniID = req.body.uniID;
     let errors = false;
-    console.log(uniID)
 
     if(name.length === 0) {
         errors = true;
@@ -53,7 +63,6 @@ router.post('/add', (req, res, next) =>{
         dbConnection.query('INSERT INTO faculty SET ?', form_data, (err, result) => {
             if (err) {
                 req.flash('error', err)
-
                 res.render('faculty/add/'+uniID, {
                     name: form_data.name,
                     uniID: form_data.uniID
@@ -69,8 +78,8 @@ router.post('/add', (req, res, next) =>{
 // display edit faculty to list
 router.get('/edit/(:facultyID)', (req, res, next) => {
     let facultyID = req.params.facultyID;
-
     dbConnection.query('SELECT * FROM faculty WHERE facultyID = ' + facultyID, (err, rows, fields) => {
+        if(role === 'เจ้าหน้าที่'){
         if (rows.length <= 0) {
             req.flash('error', 'Book not found with id = ' + facultyID)
             res.redirect('/faculty');
@@ -81,6 +90,9 @@ router.get('/edit/(:facultyID)', (req, res, next) => {
                 name: rows[0].name,
                 uniID: rows[0].uniID
             })
+        }}else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('login');
         }
     });
 })

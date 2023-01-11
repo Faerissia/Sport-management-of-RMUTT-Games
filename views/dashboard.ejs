@@ -1,12 +1,21 @@
 <%- include("partials/header") %>
 <%- include("partials/sidebar") %>
-        <div class="col-10 py-3">
+        <div class="col-10 py-3 mx-auto">
 
 <html lang="en">
 	<head>
 		<title>Deahboard</title>
 	</head>
 <body>
+
+	<% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+    <% } %>
+    
+    <% if (messages.success) { %>
+        <div class="alert alert-success" role="alert"><%= messages.success %></div>
+    <% } %>
+
 <div class="jumbotron">
 	<h1>Welcome</h1>
 	<p>Hello Dashboard</p>

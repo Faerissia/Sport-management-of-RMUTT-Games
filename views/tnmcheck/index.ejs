@@ -1,6 +1,6 @@
 <%- include("../partials/header") %>
 <%- include("../partials/sidebar") %>
-        <div class="col-10 py-3">
+        <div class="col-10 py-3 mx-auto">
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +22,7 @@
           return confirm('are you sure?');
         }
         </script>
+
 
         <h1>รายการแข่งขันที่ต้องตรวจสอบผู้สมัคร</h1>
         <a href="/tournament/add" class="btn btn-primary">เพิ่มการแข่งขัน</a>
@@ -52,13 +53,13 @@
                             <tr>
                                 <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
-                                <td><%= data[i].Renddate %></td>
+                                <td><%= data[i].Renddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td>
                                     <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                    <a href="../tnmcheck/candidate/" class="btn btn-primary page">ดู</a>
+                                    <a href="../tnmcheck/candidate/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
                                 </td>
                             </tr>
                         <% } %>

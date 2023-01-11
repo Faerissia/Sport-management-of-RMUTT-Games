@@ -6,23 +6,26 @@ let dbConnection = require('../util/db');
 // display uni page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT university.uniID, university.name, COUNT(faculty.uniID) AS count ,university.status FROM university LEFT JOIN faculty ON university.uniID = faculty.uniID GROUP BY university.uniID ORDER BY uniID asc', (err, rows) => {
-        if (req.session.loggedin) {
+        if(role === 'เจ้าหน้าที่'){
             res.render('uni', { data: rows,status_login: req.session.loggedin,user: user  });
-        }else if(err){
-            req.flash('error', err);
-            res.render('uni', { data: '' });
-        } else {
-            res.render('login',{status_login: req.session.loggedin,user: user});
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('login');
         }
-    })
+        })
 })
 
 //display add uni page
 router.get('/add',(req, res, next) => {
-    res.render('uni/add',{
+    if(role === 'เจ้าหน้าที่'){
+        res.render('uni/add',{
         name:'',
         status:''
     })
+    }else{
+        req.flash('error','ไม่สามารถเข้าถึงได้');
+        res.redirect('login');
+}
 })
 
 // add new uni

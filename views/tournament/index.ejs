@@ -1,6 +1,6 @@
 <%- include("../partials/header") %>
 <%- include("../partials/sidebar") %>
-        <div class="col-10 py-3">
+        <div class="col-10 py-3 mx-auto">
 
 <!DOCTYPE html>
 <html lang="en">
@@ -51,7 +51,7 @@
                                 <th scope="row"><%= i+1 %></th>
                                 <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
-                                <td><%= data[i].tnmStartdate %></td>
+                                <td><%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
                                 <td><%= data[i].tournamentPlaynum %></td>
                                 <td>
                                     <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>

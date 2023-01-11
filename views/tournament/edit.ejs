@@ -1,6 +1,6 @@
 
 <%- include("../partials/sidebar") %>
-        <div class="col-10 py-3">
+        <div class="col-10 py-3 mx-auto">
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,8 +13,12 @@
         <div class="alert alert-danger" role="alert"><%= messages.error %></div>
     <% } %>
 
+    <% const CRstartdate = Rstartdate.toISOString().substring(0, 10);%>
+    <% const CRenddate = Renddate.toISOString().substring(0, 10);%>
+    <% const CtnmStartdate = tnmStartdate.toISOString().substring(0, 10);%>
+    <% const CtnmEnddate = tnmEnddate.toISOString().substring(0, 10);%>
     
-    <h1>หน้าแก้ไขการแข่งขัน <%= data[0].tnmID %></h1>
+    <h1>หน้าแก้ไขการแข่งขัน <%= data[0].tnmName %></h1>
             <ul class="nav nav-pills w-100 justify-content-center">
                 <td>
                     <a href="/tournament/edit/<%= data[0].tnmID %>" class="nav-link active">แก้ไขการแข่งขัน</a>
@@ -31,7 +35,7 @@
             แก้ไขกีฬา
         </div>
         <div class="card-body">
-            <form action="/tournament/update/<%= tnmID %>" method="post">
+            <form action="/tournament/update/<%= tnmID %>" method="post" encType="multipart/form-data">
                 <div class="form-group">
                     <label>ชื่อการแข่งขัน:</label>
                     <input type="text" class="form-control" name="tnmName" value="<%= tnmName %>">
@@ -46,19 +50,19 @@
                 </div>
                 <div class="form-group">
                     <label>วันที่เปิดรับสมัคร:</label>
-                    <input type="date" class="form-control" name="Rstartdate" value="<%= Rstartdate %>" autocomplete="off" required>
+                    <input type="date" class="form-control" name="Rstartdate" value="<%= CRstartdate %>" autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label>วันที่ปิดรับสมัคร:</label>
-                    <input type="date" class="form-control" name="Renddate" value="<%= Renddate %>" autocomplete="off" required>
+                    <input type="date" class="form-control" name="Renddate" value="<%= CRenddate %>" autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label>วันที่เริ่มแข่ง:</label>
-                    <input type="date" class="form-control" name="tnmStartdate" value="<%= tnmStartdate %>" autocomplete="off" required>
+                    <input type="date" class="form-control" name="tnmStartdate" value="<%= CtnmStartdate %>" autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label>วันที่สิ้นสุด:</label>
-                    <input type="date" class="form-control" name="tnmEnddate" value="<%= tnmEnddate %>" autocomplete="off" required>
+                    <input type="date" class="form-control" name="tnmEnddate" value="<%= CtnmEnddate %>" autocomplete="off" required>
                 </div>
                 <div class="form-group">
                     <label>เอกสารที่ใช้ในการสมัคร:</label>
@@ -71,7 +75,8 @@
                 <div class="form-group">
                     <label>รูปภาพ:</label>
                     <input type="file" class="form-control" name="tnmPicture" value=" <%= tnmPicture %>">
-                </div>
+                </div><br>
+                <img src="/images/<%=tnmPicture %>" style="height: 300px; width: 300px;">
                 <div class="form-group">
                     <label>ไฟล์:</label>
                     <input type="file" class="form-control" name="tnmFile1" value=" <%= tnmFile1 %>">

@@ -5,13 +5,15 @@ let dbConnection = require('../util/db');
 // display sport page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT * FROM sport ORDER BY sportID asc', (err, rows) => {
-        if (req.session.loggedin) {
-            res.render('sport', { data: rows,status_login: req.session.loggedin,user: user });
-        }else if(err){
-            req.flash('error', err);
-            res.render('sport', { data: '' });
-        }else {
-            res.render('login',{status_login: req.session.loggedin,user: user});
+        if(req.session.loggedin){
+            if(role === 'เจ้าหน้าที่'){
+                res.render('sport', { data: rows,status_login: req.session.loggedin,user: user });
+            }else{
+                req.flash('error','ไม่สามารถเข้าถึงได้');
+                res.redirect('login');
+            }
+        }else{
+            res.redirect('error404');
         }
     })
 })
@@ -19,14 +21,19 @@ router.get('/', (req, res, next) => {
 //display add sport page
 router.get('/add',(req, res, next) => {
     if(req.session.loggedin){
-    res.render('sport/add',{
-        sportName:'',
-        sportPlaynum:'',
-        type:'',status_login: req.session.loggedin,user: user
+    if(role === 'เจ้าหน้าที่'){
+        res.render('sport/add',{
+            sportName:'',
+            sportPlaynum:'',
+            type:'',status_login: req.session.loggedin,user: user
     })
-}else{
-    res.render('login',{status_login: req.session.loggedin,user: user});
-}
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้')
+            res.redirect('login');
+        }
+    }else{
+        res.redirect('error404');
+    }
 })
 
 // add new sport
@@ -76,8 +83,8 @@ router.post('/add', (req, res, next) =>{
 // display edit book page
 router.get('/edit/(:sportID)', (req, res, next) => {
     let sportID = req.params.sportID;
-
     dbConnection.query('SELECT * FROM sport WHERE sportID = ' + sportID, (err, rows, fields) => {
+        if(role === 'เจ้าหน้าที่'){
         if (rows.length <= 0) {
             req.flash('error', 'Book not found with id = ' + sportID)
             res.redirect('/sport');
@@ -89,6 +96,10 @@ router.get('/edit/(:sportID)', (req, res, next) => {
                 sportPlaynum: rows[0].sportPlaynum,
                 type: rows[0].type,status_login: req.session.loggedin,user: user
             })
+        }
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('login');
         }
     });
 })

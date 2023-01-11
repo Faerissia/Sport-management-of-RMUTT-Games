@@ -5,26 +5,40 @@ let dbConnection = require('../util/db');
 // display place page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT * FROM place ORDER BY placeID asc', (err, rows) => {
-        if (req.session.loggedin) {
+        if(req.session.loggedin){
+        if(role === 'เจ้าหน้าที่'){
             res.render('place', { data: rows,status_login: req.session.loggedin,user: user });
-        }else if(err){
-            req.flash('error', err);
-            res.render('place', { data: '' });
-        } else {
-            res.render('login',{status_login: req.session.loggedin,user: user});
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('login');
         }
-    })
+    }else{
+        res.redirect('error404');
+    }
+        })
 })
 
 //display add place page
 router.get('/add',(req, res, next) => {
-    res.render('place/add',{
-        placeName:'',
-        sportID:'',
-        placeUrl:'',
-        placeFile:'',
-        placeDetail:''
-    })
+    dbConnection.query('SELECT sportID,sportName FROM sport ORDER BY sportID asc', (err, rows) => {
+        if(req.session.loggedin){    
+        if(role === 'เจ้าหน้าที่'){
+                res.render('place/add',{data: rows,
+                    placeName:'',
+                    sportID:'',
+                    placeUrl:'',
+                    placeFile:'',
+                    placeDetail:'',
+                    status_login: req.session.loggedin,user: user
+                })
+            }else{
+                req.flash('error','ไม่มีสิทธิ์เข้าถึง')
+                res.redirect('dashboard');
+            }
+        }else{
+            res.redirect('error404');
+        }
+})
 })
 
 // add new place
@@ -82,54 +96,45 @@ router.post('/add', (req, res, next) =>{
 // display edit place page
 router.get('/edit/(:placeID)', (req, res, next) => {
     let placeID = req.params.placeID;
-
     dbConnection.query('SELECT * FROM place WHERE placeID = ' + placeID, (err, rows, fields) => {
+        if(role === 'เจ้าหน้าที่'){
         if (rows.length <= 0) {
             req.flash('error', 'place not found with id = ' + placeID)
             res.redirect('/place');
         } else {
             res.render('place/edit', {
                 title: 'แก้ไข กีฬา',
-                placeID: rows[0].placetID,
+                placeID: rows[0].placeID,
                 placeName: rows[0].placeName,
                 sportID: rows[0].sportID,
                 placeUrl: rows[0].placeUrl,
                 placeFile: rows[0].placeFile,
-                placeDetail: rows[0].placeDetail
+                placeDetail: rows[0].placeDetail,status_login: req.session.loggedin,user: user
             })
         }
+    }else{
+        req.flash('error','ไม่สามารถเข้าถึงได้');
+        res.redirect('login');
+    }
     });
 })
 
 // update place page
-router.post('/update/:placeID', (req, res, next) => {
+router.post('/update/(:placeID)', (req, res, next) => {
     let placeID = req.params.placeID;
     let placeName = req.body.placeName;
     let sportID = req.body.sportID;
     let placeUrl = req.body.placeUrl;
-    let placeFile = req.body.placeFile;
     let placeDetail = req.body.placeDetail;
     let errors = false;
+    console.log(placeID)
 
-    if (placeName.length === 0) {
-        errors = true;
-        req.flash('error', 'Please enter name and author');
-        res.render('place/edit', {
-            placeID: req.params.placeID,
-            placeName: placeName,
-            sportID: sportID,
-            placeUrl: placeUrl,
-            placeFile: placeFile,
-            placeDetail: placeDetail
-        })
-    }
     // if no error
     if (!errors) {
         let form_data = {
             placeName: placeName,
             sportID: sportID,
             placeUrl: placeUrl,
-            placeFile: placeFile,
             placeDetail: placeDetail
         }
         // update query
@@ -141,7 +146,6 @@ router.post('/update/:placeID', (req, res, next) => {
                     placeName: form_data.placeName,
                     sportID: form_data.sportID,
                     placeUrl: form_data.placeUrl,
-                    placeFile: form_data.placeFile,
                     placeDetail: form_data.placeDetail
                 })
             } else {

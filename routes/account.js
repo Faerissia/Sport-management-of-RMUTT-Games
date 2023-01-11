@@ -5,13 +5,15 @@ let dbConnection = require('../util/db');
 // display account page
 router.get('/', (req, res, next) => {
         dbConnection.query('SELECT * FROM account ORDER BY accountID asc', (err, rows) => {
-            if (req.session.loggedin) {
-                res.render('account', { data: rows ,status_login: req.session.loggedin,user: user});
-            }else if(err){
-                req.flash('error', err);
-                res.render('account', { data: '' });
+            if(req.session.loggedin){
+                if(role === 'ผู้ดูแลระบบ'){
+                    res.render('account', { data: rows ,status_login: req.session.loggedin,user: user});
+                }else{
+                    req.flash('error','ไม่สามารถเข้าถึงได้');
+                    res.redirect('login');
+                }
             }else{
-                res.render('login',{status_login: req.session.loggedin,user: user});
+                res.redirect('error404');
             }
         })
     })
@@ -25,9 +27,9 @@ router.get('/add',(req, res, next) => {
         lname:'',
         phone:'',
         cpassword:'',
-        level:'',status_login: req.session.loggedin,user: user
-    })
+        level:'',status_login: req.session.loggedin,user: user});
 })
+
 
 // add new account
 router.post('/add', (req, res, next) =>{
@@ -39,21 +41,6 @@ router.post('/add', (req, res, next) =>{
     let phone = req.body.phone;
     let level = req.body.level;
     let errors = false;
-
-    if(email.length === 0 || password.legnth === 0 || name.length === 0 || lname.length === 0 || phone === 0) {
-        errors = true;
-        //set flash message
-        req.flash('error', 'โปรดกรอกข้อมูล *');
-        //render to add.ejs with flash message
-        res.render('account/add', {
-            email: email,
-            password: password,
-            name: name,
-            lname: lname,
-            phone: phone,
-            level: level,status_login: req.session.loggedin
-        })
-    }
 
     if(cpassword != password) {
         errors = true;
@@ -103,7 +90,6 @@ router.post('/add', (req, res, next) =>{
 // display edit account page
 router.get('/edit/(:accountID)', (req, res, next) => {
     let accountID = req.params.accountID;
-
     dbConnection.query('SELECT * FROM account WHERE accountID = ' + accountID, (err, rows, fields) => {
         if (rows.length <= 0) {
             req.flash('error', 'Book not found with id = ' + accountID)
@@ -196,6 +182,27 @@ router.get('/delete/(:accountID)', (req, res, next) => {
             res.redirect('/account');
         }
     })
+})
+
+router.get('/page/(:accountID)',(req, res, next) => {
+    let accountID = req.params.accountID;
+    dbConnection.query('SELECT * FROM account WHERE accountID = ' + accountID, (err, rows, fields) => {
+        if (rows.length <= 0) {
+            req.flash('error', 'ไม่พบบัญชี id = ' + accountID)
+            res.redirect('/account');
+        } else {
+            res.render('account/page', {
+                accountID: rows[0].accountID,
+                email: rows[0].email,
+                password: rows[0].password,
+                name: rows[0].name,
+                lname: rows[0].lname,
+                phone: rows[0].phone,
+                level: rows[0].level,
+                status: rows[0].status,status_login: req.session.loggedin
+            })
+        }
+    });
 })
 
 module.exports = router;
