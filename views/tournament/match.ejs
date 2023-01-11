@@ -1,0 +1,67 @@
+<%- include("../partials/header") %>
+<%- include("../partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>match</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+</head>
+<body>
+
+    <h1>หน้าแมตช์การแข่งขัน <%= data[0].tnmName %></h1>
+            <ul class="nav nav-pills w-100">
+                <td>
+                    <a href="/tournament/edit/<%= data[0].tnmID %>" class="nav-link active">แก้ไขการแข่งขัน</a>
+                    <a href="/tournament/bracket/<%= data[0].tnmID %>" class="nav-link active">จัดสายการแข่งขัน</a>
+                    <a href="/tournament/participant/<%= data[0].tnmID %>" class="nav-link active">ผู้เข้าร่วม</a>
+                    <a href="/tournament/match/<%= data[0].tnmID %>" class="nav-link active">แมทช์การแข่งขัน</a>
+                    <a href="/tournament/highlight/<%= data[0].tnmID %>" class="nav-link active">ไฮไลต์</a>
+                </td>
+            </ul>
+            
+
+        <div class="card-body">
+            <% if(data.length) { %>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Round</th>
+                            <th scope="col">Date & Time</th>
+                            <th scope="col">สถานที่การแข่งขัน</th>
+                            <th scope="col">คู่ระหว่าง</th>
+                            <th scope="col">คะแนน</th>
+                            <th width="200px">ตัวเลือก</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let i = 0; i < data.length; i++) { %>
+                            <tr>
+                                <td><%= data[i].tnmName %></td>
+                                <td><%= data[i].tnmName %></td>
+                                <td><%= data[i].sportName %></td>
+                                <td><%= data[i].tnmStartdate %></td>
+                                <td><%= data[i].tournamentPlaynum %></td>
+                                <td>
+                                    <a href="../tournament/edit/<%= data[i].tnmID %>" class="btn btn-warning edit">แก้ไข</a>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            <% } %>
+
+             <!-- if result is empty-->
+             <% if(!data.length) { %>
+                <p class="text-center">ไม่พบรายการของการแข่งขัน</p>
+            <% } %>
+        </div>
+
+</body>
+</html>
+</div>
