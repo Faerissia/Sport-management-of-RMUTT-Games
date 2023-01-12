@@ -1,4 +1,5 @@
 <%- include("../../partials/header") %>
+<<<<<<< Updated upstream
         <div class="col-10 py-3 mx-auto">
 <!DOCTYPE html>
 <html lang="en">
@@ -27,3 +28,60 @@
 </body>
 </html>
 </div>
+=======
+    <div class="container-xxl mt-5 px-3">
+        <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+            <title>Document</title>
+        </head>
+
+        <body>
+
+            หน้าแมทช์การแข่งขัน
+            <div class=" d-flex flex-column text-center h-auto mb-5 border   border-dark rounded-3 "
+                style="background:#D9D9D9 ;">
+                <%- include("../../partials/menuuser.ejs") %>
+                    <!-- <div class="d-block" style="height: 1000px;"></div> -->
+                    <div class="row py-5">
+                      <% if(data.length){ %>
+                        <h1>ไม่พบรายการ</h1>
+                        <% } %>
+                      <% if(!data.length){ %>
+                    <div class="row">
+                    <table class="table table table-bordered border-dark w-75 mx-auto text-center ">
+                        <thead>
+                          <tr style="background-color: #6DAFFE;">
+                            <th scope="col">Match</th>
+                            <th scope="col">Date & Time</th>
+                            <th scope="col">สถานที่การแข่งขัน</th>
+                            <th scope="col">คู่ระหว่าง</th>
+
+                            <th scope="col">คะแนน</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% for (let i = 0; i <= 3; i++){ %>
+                          <tr class="bg-light">
+                            <th scope="row"><%= i+1 %></th>
+                            
+                            <td>วันที่<%= i %></td>
+                            <td>สนามที่<%= i %></td>
+                            <td>ทีม <%= i %> vs ทีม <%= i %></td>
+                            <td><%= i %> - <%= i %></td>
+                            <!--  SELECT * FROM scores ORDER BY score DESC; -->
+                          </tr>
+                          <% } %>
+                        </tbody>
+                      </table>
+                      
+                    </div>
+                </div>
+                    </div>
+            <%}%>
+        </body>
+
+        </html>
+    </div>
+>>>>>>> Stashed changes

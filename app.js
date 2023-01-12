@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const mysql = require('mysql');
 let bodyParser=require("body-parser");
 let flash = require('express-flash');
 const dbConnection = require('./util/db');
@@ -31,8 +30,8 @@ global.user;
 app.use(fileUpload());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname,"assets")))
 app.use(flash());
 app.use(session({

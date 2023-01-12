@@ -4,7 +4,9 @@ let dbConnection = require('../util/db');
 
 // display tnmcheck page
 router.get('/', (req, res, next) => {
-    dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.Renddate FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
+    const sql = "SELECT t.tnmID,t.tnmName,t.Renddate,s.sportID,s.sportName, SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count, SUM(CASE p.playerStatus WHEN 'deny' THEN 1 ELSE 0 END) AS deny_count, SUM(CASE WHEN p.playerStatus IS NULL THEN 1 ELSE 0 END) AS null_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p on t.tnmID = p.tnmID GROUP BY t.tnmID;";
+
+    dbConnection.query(sql, (err, rows) => {
     if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tnmcheck', { data: rows,status_login: req.session.loggedin,user: user });
@@ -44,28 +46,13 @@ router.get('/add', (req, res, next) => {
     })
 })
 
-// delete tnmcheck
-router.get('/delete/(:tnmID)', (req, res, next) => {
-    let tnmID = req.params.tnmID;
-
-    dbConnection.query('DELETE FROM tournament WHERE tnmID = ' + tnmID, (err, result) => {
-        if (err) {
-            req.flash('error', err),
-            res.redirect('/tnmcheck');
-        } else {
-            req.flash('success', 'tnmcheck successfully deleted! ID = ' + tnmID);
-            res.redirect('/tnmcheck');
-        }
-    })
-})
-
 // display tnmcheck page
 router.get('/candidate/(:tnmID)', (req, res, next) => {
     let thistnmID = req.params.tnmID;
     dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID WHERE t.tnmID ='+thistnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
-            res.render('./tnmcheck/candidate', { data: rows,status_login: req.session.loggedin,user: user });
+            res.render('./tnmcheck/candidate', { data: rows,thistnmID: thistnmID,status_login: req.session.loggedin,user: user });
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('../login');
@@ -94,27 +81,27 @@ router.get('/player/(:playerID)', (req, res, next) => {
 
 router.get('/player/accept/(:playerID)', (req, res, next) => {
     let thisplayerID = req.params.playerID;
-    let form_data = {
-    playerStatus: 'accept'
-    }
-    console.log(thisplayerID)
-    console.log(form_data)
+    
+    dbConnection.query('SELECT * FROM player WHERE playerID ='+thisplayerID, (err, rows) => {
+    let tnmID = rows[0].tnmID;
+    let form_data = { playerStatus: 'accept' }
     dbConnection.query('UPDATE player SET ? WHERE playerID ='+thisplayerID,form_data, (err, rows) => {
         req.flash('success','ยอมรับผู้เล่นเรียบร้อย');
-        res.redirect('/tnmcheck');
+        res.redirect('/tnmcheck/candidate/'+tnmID);
     })
+    })
+
 })
 
 router.get('/player/deny/(:playerID)', (req, res, next) => {
     let thisplayerID = req.params.playerID;
-    let form_data = {
-    playerStatus: 'deny'
-    }
-    console.log(thisplayerID)
-    console.log(form_data)
+    dbConnection.query('SELECT * FROM player WHERE playerID ='+thisplayerID, (err, rows) => {
+    let tnmID = rows[0].tnmID;
+    let form_data = { playerStatus: 'deny'}
     dbConnection.query('UPDATE player SET ? WHERE playerID ='+thisplayerID,form_data, (err, rows) => {
         req.flash('success','ปฏิเสธผู้เล่นเรียบร้อย');
-        res.redirect('/tnmcheck');
+        res.redirect('/tnmcheck/candidate/'+tnmID);
     })
+})
 })
 module.exports = router;

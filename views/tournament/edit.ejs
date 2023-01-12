@@ -23,15 +23,8 @@
     <% const CtnmEnddate = tnmEnddate.toISOString().substring(0, 10);%>
     
     <h1>หน้าแก้ไขการแข่งขัน <%= data[0].tnmName %></h1>
-            <ul class="nav nav-pills w-100 justify-content-center">
-                <td>
-                    <a href="/tournament/edit/<%= data[0].tnmID %>" class="nav-link active">แก้ไขการแข่งขัน</a>
-                    <a href="/tournament/bracket/<%= data[0].tnmID %>" class="nav-link active">จัดสายการแข่งขัน</a>
-                    <a href="/tournament/participant/<%= data[0].tnmID %>" class="nav-link active">ผู้เข้าร่วม</a>
-                    <a href="/tournament/match/<%= data[0].tnmID %>" class="nav-link active">แมทช์การแข่งขัน</a>
-                    <a href="/tournament/highlight/<%= data[0].tnmID %>" class="nav-link active">ไฮไลต์</a>
-                </td>
-            </ul>
+           
+    <%- include("../partials/menu_staff.ejs") %>
 
             
     <div class="card">

@@ -162,7 +162,7 @@ router.post('/update/:accountID', (req, res, next) => {
                     status: form_data.status
                 })
             } else {
-                req.flash('success', 'account successfully updated');
+                req.flash('success', 'ได้ทำการเพิ่มบัญชีผู้ใช้งานเรียบร้อยแล้ว');
                 res.redirect('/account')
             }
         })
@@ -178,7 +178,7 @@ router.get('/delete/(:accountID)', (req, res, next) => {
             req.flash('error', err),
             res.redirect('/account');
         } else {
-            req.flash('success', 'account successfully deleted! ID = ' + accountID);
+            req.flash('success', 'ได้ทำการลบบัญชีผู้ใช้งานเรียบร้อยแล้ว' + accountID);
             res.redirect('/account');
         }
     })

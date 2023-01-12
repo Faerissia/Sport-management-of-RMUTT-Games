@@ -13,17 +13,10 @@
 
 </head>
 <body>
-
+    
+    <% if(data && data[0]) { %>
     <h1>หน้าผู้เข้าร่วม <%= data[0].tnmName %></h1>
-            <ul class="nav nav-pills w-100">
-                <td>
-                    <a href="/tournament/edit/<%= data[0].tnmID %>" class="nav-link active">แก้ไขการแข่งขัน</a>
-                    <a href="/tournament/bracket/<%= data[0].tnmID %>" class="nav-link active">จัดสายการแข่งขัน</a>
-                    <a href="/tournament/participant/<%= data[0].tnmID %>" class="nav-link active">ผู้เข้าร่วม</a>
-                    <a href="/tournament/match/<%= data[0].tnmID %>" class="nav-link active">แมทช์การแข่งขัน</a>
-                    <a href="/tournament/highlight/<%= data[0].tnmID %>" class="nav-link active">ไฮไลต์</a>
-                </td>
-            </ul>
+    <%- include("../partials/menu_staff.ejs") %>
 
  <% if(!data.teamID) { %>
         <!-- //แบบเดี่ยว -->
@@ -89,12 +82,13 @@
                     </tbody>
                 </table>
             <% } %>
-<% } %>
+<% }} %>
 
 
 
             <!-- if result is empty-->
             <% if(!data.length) { %>
+                <%- include("../partials/menu_staff.ejs") %>
                 <p class="text-center">ไม่พบรายการของการแข่งขัน</p>
             <% } %>
         </div>
