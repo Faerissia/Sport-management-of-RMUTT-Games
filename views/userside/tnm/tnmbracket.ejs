@@ -1,63 +1,29 @@
+<!-- for user  -->
 <%- include("../../partials/header") %>
-    <div class="container-xxl mt-5 px-3">
-        <!DOCTYPE html>
-        <html lang="en">
+<div class="container-xxl mt-5 px-3">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Document</title>
+</head>
+<body>
 
-        <head>
-            <title>Document</title>
-        </head>
 
-        <body>
+หน้าสายการแข่งขัน
+<!-- กรอบ box  -->
+<div class=" d-flex flex-column text-center h-auto mb-5 border   border-dark rounded-3 "
+style="background:#D9D9D9 ;">
 
-            หน้าสายการแข่งขัน
-            <div class=" d-flex flex-column text-center h-auto mb-5 border   border-dark rounded-3 "
-                style="background:#D9D9D9 ;">
-                <%- include("../../partials/menuuser.ejs") %>
-                    <!-- <div class="d-block" style="height: 1000px;"></div> -->
-                    <div class="row pt-3">
-                    <div class="row row-cols-1">
-                        <div class="col">
-                            <p class="align-seft-start">
-                                <%= data[0].tnmName %>
-                            </p>
+<!-- menubar -->
+<%- include("../../partials/menuuser.ejs") %>
 
-                        </div>
-                    </div>
-                    <div class="row row-cols-lg-2 row-cols-sm-1 row-cols-1" >
-                        <div class="col">
-                            <p>ปัจุบันรอบที่ :(data)</p>
-                        </div>
-                        <div class="col">
-                            แข่งขันทั้งหมด (data) รอบ
-                        </div>
-                    </div>
+    <!-- เนื้อหาด้านใน ใส่แค่ให้รู้พื้นที่ ลบด้วย -->
+    <div class="d-block" style="height: 1000px;"></div>
 
-                    <div class="row">
-                    <table class="table table table-bordered border-dark w-75 mx-auto text-center ">
-                        <thead>
-                          <tr style="background-color: #6DAFFE;">
-                            <th scope="col">ลำดับที่</th>
-                            <th scope="col">ชื่อทีม</th>
-                            <th scope="col">คะแนนรวมทั้งหมด</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <% for (let i = 0; i <= 5; i++){ %>
-                          <tr class="bg-light">
-                            <th scope="row"><%= i+1 %></th>
-                            <td>ทีมที่<%= i %></td>
-                            <td>คะแนนรวม<%= i %></td>
-                            <!--  SELECT * FROM scores ORDER BY score DESC; -->
-                          </tr>
-                          <% } %>
-                        </tbody>
-                      </table>
-                    </div>
-                </div>
 
-                    </div>
-            
-        </body>
 
-        </html>
-    </div>
+    <!-- outbox -->
+</div>
+</body>
+</html>
+</div>

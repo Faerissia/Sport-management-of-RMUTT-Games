@@ -29,11 +29,11 @@
                         <div class="card mx-3 my-4 rounded-5 bg-light  " style="width: 16rem">
                             <a href="/tnmdetail/<%= data[i].tnmID %>"
                                 class="text-decoration-none text-dark  fw-bolder">
-                                <div class="card-header bg-transparent text-truncate">
+                                <div class="card-header bg-transparent text-truncate text-truncate">
                                     <%= data[i].tnmName %>
                                 </div>
 
-                                <img src="<%= data[i].tnmPicture %>"
+                                <img src="images/<%= data[i].tnmPicture %>"
                                     class="card-img-top img-fluid rounded-0" style="height: 15rem">
                                 <div class="card-body">
                                     <%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit'
