@@ -1,5 +1,5 @@
 
-<%- include("../partials/header.ejs") %>
+<%- include("../partials/header") %>
 <%- include("../partials/sidebar") %>
         <div class="col-10 py-3 mx-auto">
 
@@ -31,7 +31,7 @@
         <div class="card-body">
            <!--_________________ Form _________________-->
            <form action="/tournament/update/<%= tnmID %>" method="post" encType="multipart/form-data"
-            class="form needs-validation was-validated">
+            class="form needs-validation ">
             <!--  -->
             <div class="row my-2  p row-cols-2">
                 <div class="col-2 ">
@@ -104,7 +104,7 @@
                 <div class="col-auto">
                     <select class="form-select border-dark" id="validationFile_doc" name="tnmUrl"
                         required>
-                        <option selected disabled value="<%= tnmUrl %>"><%= tnmUrl %></option>
+                        <option selected  value="<%= tnmUrl %>"><%= tnmUrl %></option>
                         <option value="บัตรประชาชน และ บัตรประจำตัวนักศึกษา">บัตรประชาชน และ
                             บัตรประจำตัวนักศึกษา</option>
                         <option value="บัตรประชาชน">บัตรประชาชน</option>
@@ -115,12 +115,12 @@
             </div>
             <!--  -->
             <div class="row my-2   row-cols-2">
-                <div class="col-2 ">
+                <div class="col-2 h-auto" style="max-height: 300px; min-height: 100px;">
                     <label for="validationdetail" class="col-form-label">รายละเอียด</label>
                 </div>
                 <div class="col-4">
-                    <textarea class="form-control border-dark" id="validationdetail"
-                    value="<%= tnmDetail %>"    name="tnmDetail" autocomplete="off" required><%= tnmDetail %></textarea>
+                    <textarea class="form-control border-dark text-break text-wrap " id="validationdetail"
+                    value="<%= tnmDetail %>"    name="tnmDetail" autocomplete="off" required  style="resize: none; min-height: 100px;"><%= tnmDetail %></textarea>
                 </div>
             </div>
             <!--  -->

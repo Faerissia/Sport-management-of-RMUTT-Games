@@ -21,6 +21,8 @@ router.get('/add',(req, res, next) => {
         res.render('uni/add',{
         name:'',
         status:''
+        
+        
     })
     }else{
         req.flash('error','ไม่สามารถเข้าถึงได้');

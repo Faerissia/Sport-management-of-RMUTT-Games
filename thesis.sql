@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 11, 2023 at 12:09 PM
+-- Generation Time: Jan 12, 2023 at 01:39 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -46,7 +46,7 @@ INSERT INTO `account` (`accountID`, `email`, `password`, `name`, `lname`, `phone
 (0, 'genxiuyin29@gmail.com', '1234567890', 'nun', 'rat', '0831140590', 'ผู้ดูแลระบบ', 'ใช้งาน'),
 (1, 'admin', 'admin', 'admin', 'admin', '0984926565', 'ผู้ดูแลระบบ', 'ใช้งาน'),
 (2, 'staff', 'staff', 'staff', 'staff', 'staff', 'เจ้าหน้าที่', 'ใช้งาน'),
-(4, 'firstlnw0099@gmail.com', 'f1478fd087', 'Nonthphat', 'Ruaklittichai', '0984926565', 'เจ้าหน้าที่', 'ลาออก');
+(9, 'firstlnw0099@gmail.com', 'f1478fd087', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', '0984926565', 'ผู้ดูแลระบบ', 'ใช้งาน');
 
 -- --------------------------------------------------------
 
@@ -78,23 +78,8 @@ CREATE TABLE `faculty` (
 --
 
 INSERT INTO `faculty` (`facultyID`, `name`, `uniID`) VALUES
-(2, 'คณะวิศวกรรมศาสตร์', 1),
-(3, 'คณะบริหาร', 1),
-(4, 'คณะจิตรกรรม', 1),
-(5, 'คณะคหกรรม', 1),
-(6, 'คณะบัญชี', 1),
-(7, 'คณะมัลติมีเดียร์', 2),
-(8, 'คณะรัฐศาสตร์', 2),
-(9, 'คณะนิเทศ', 2),
-(10, 'คณะสถาปัต', 2),
-(11, 'คณะวิศวกรรมศาสตร์', 3),
-(12, 'คณะวิศวกรรมศาสตร์', 4),
-(13, 'วิศวกรรมศาสตร์', 6),
-(14, 'วิศวกรรมศาสตร์', 7),
-(15, 'วิศวกรรมศาสตร์', 5),
-(16, 'วิศวกรรมศาสตร์', 8),
-(17, 'วิศวกรรมศาสตร์', 9),
-(32, 'สถาปัตยกรรม', 3);
+(1, 'คณะวิศวกรรมศาสตร์', 1),
+(2, 'คณะศิลปศาสตร์', 1);
 
 -- --------------------------------------------------------
 
@@ -110,14 +95,6 @@ CREATE TABLE `highlight` (
   `date` date DEFAULT curdate(),
   `description` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `highlight`
---
-
-INSERT INTO `highlight` (`highlightID`, `linkvid`, `tnmID`, `filePic`, `date`, `description`) VALUES
-(1, 'testste', 24, NULL, '2023-01-08', 'testset'),
-(3, NULL, 24, '1673432451365_66kebb6ah7k8ejiakacgi.jpg', '2023-01-11', 'test');
 
 -- --------------------------------------------------------
 
@@ -215,15 +192,9 @@ CREATE TABLE `player` (
 --
 
 INSERT INTO `player` (`playerID`, `playerIDCard`, `playerStudentID`, `playerFName`, `playerLName`, `playerGender`, `playerBirthday`, `playerPhone`, `playerEmail`, `facultyID`, `teamID`, `playerFile1`, `playerFile2`, `playerFile3`, `tnmID`, `detailDoc`, `otp`, `playerStatus`, `playerRegDate`) VALUES
-(6, '1709800339819', '1163304620219', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2023-01-08', '0984926565', 'firstlnw0099@gmail.com', 2, NULL, NULL, NULL, NULL, 18, NULL, NULL, 'accept', '2023-01-08'),
-(7, '1163304620326', '1163304620326', 'วสวิญญ์', 'รัตน์โชติ', 'ชาย', '2000-03-30', '0624283195', 'wasawin.14@gmail.com', 2, NULL, NULL, NULL, NULL, 18, NULL, NULL, NULL, '2023-01-08'),
-(8, '1163304620037', '1163304620037', 'เมธานันท์', 'รัตนปัญญานนท์', 'หญิง', '1999-06-06', '0831140590', 'nun@gmail.com', 2, NULL, NULL, NULL, NULL, 18, NULL, NULL, NULL, '2023-01-08'),
-(9, '1163304620268', '1163304620268', 'จักริน', 'นิลพันธ์', 'ชาย', '2023-01-18', '0613921298', 'jakkarin@gmail.com', 11, NULL, NULL, NULL, NULL, 18, NULL, NULL, NULL, '2023-01-08'),
-(10, '1163304620334', '1163304620334', 'กิตติภพ', 'รักสนิท', 'ชาย', '2022-06-08', '0822354389', 'kittiphop@gmail.com', 17, NULL, NULL, NULL, NULL, 18, NULL, NULL, 'deny', '2023-01-08'),
-(11, '1163304620342', '1163304620342', 'ธีระพล', 'ประทาน', 'ชาย', '2022-06-08', '0928795987', 'theraphon@gmail.com', 32, NULL, NULL, NULL, NULL, 18, NULL, NULL, NULL, '2023-01-08'),
-(15, '1321313213213', '3213213213515', 'tetstststset', 'รักสนิท', 'ชาย', '2023-01-17', '0822354389', 'kittiphop@gmail.com', 7, NULL, '[object Object]', NULL, NULL, 24, NULL, NULL, NULL, '2023-01-09'),
-(16, '1321313131321', '3213215611616', 'ชลธี', 'คำลือ', 'ชาย', '2023-01-15', '0984984094', 'chonlatee1129@gmail.com', 2, NULL, '[object Object]', NULL, NULL, 25, NULL, NULL, NULL, '2023-01-09'),
-(18, '5190849840984', '9084094894098', 'tests', 'teststset', 'ชาย', '2023-01-19', '0928795987', 'theraphon@gmail.com', 2, NULL, '1673256883276_314483767_10229694130162582_7508051945406572572_n.jpg', NULL, NULL, 25, NULL, NULL, NULL, '2023-01-09');
+(1, '1709800339819', '1163304620219', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2000-05-26', '0984926565', 'firstlnw0099@gmail.com', 1, NULL, '1673517589499_kl.jpg', NULL, NULL, 2, NULL, NULL, NULL, '2023-01-12'),
+(4, '1163304620219', '1163304620219', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2023-01-13', '0984984094', 'firstlnw0099@gmail.com', 1, 4, '1673527055925_kl.jpg', NULL, NULL, 1, NULL, NULL, NULL, '2023-01-12'),
+(5, '1163031321321', '6516506161601', 'ชลธี', 'คำลือ', 'ชาย', '2023-01-12', '0984984094', 'chonlatee1129@gmail.com', 1, 4, '1673527055929_kl.jpg', NULL, NULL, 1, NULL, NULL, NULL, '2023-01-12');
 
 -- --------------------------------------------------------
 
@@ -243,12 +214,11 @@ CREATE TABLE `sport` (
 --
 
 INSERT INTO `sport` (`sportID`, `sportName`, `sportPlaynum`, `type`) VALUES
-(1, 'ฟุตบอล', 11, 'เดี่ยว'),
-(3, 'แบตมินตัน', 1, 'เดี่ยว'),
-(4, 'บาสเก็ตบอล', 9, 'ทีม'),
-(6, 'ปิงปอง', 1, 'เดี่ยว'),
-(7, 'เทนนิส', 2, 'คู่'),
-(8, 'ไทย', 1, 'เดี่ยว');
+(1, 'แบดมินตัน ประเภทเดี่ยว', 1, 'เดี่ยว'),
+(2, 'แบดมินตัน ประเภทคู่', 2, 'คู่'),
+(3, 'วอลเลย์บอล', 6, 'ทีม'),
+(4, 'บาสเก็ตบอล', 5, 'ทีม'),
+(5, 'เปตอง', 1, 'เดี่ยว');
 
 -- --------------------------------------------------------
 
@@ -258,6 +228,7 @@ INSERT INTO `sport` (`sportID`, `sportName`, `sportPlaynum`, `type`) VALUES
 
 CREATE TABLE `team` (
   `teamID` int(3) NOT NULL,
+  `teamName` varchar(50) NOT NULL,
   `NameAgent` varchar(50) NOT NULL,
   `LnameAgent` varchar(50) NOT NULL,
   `teamPhoneA` varchar(10) DEFAULT NULL,
@@ -268,6 +239,13 @@ CREATE TABLE `team` (
   `detailDoc` varchar(255) DEFAULT NULL,
   `otp` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `team`
+--
+
+INSERT INTO `team` (`teamID`, `teamName`, `NameAgent`, `LnameAgent`, `teamPhoneA`, `teamEmailA`, `teamStatus`, `teamPic`, `tnmID`, `detailDoc`, `otp`) VALUES
+(4, 'coach', 'coach', 'coach', '0984926565', 'coach@gmail.com', NULL, '1673527055925_kl.jpg', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -301,10 +279,8 @@ CREATE TABLE `tournament` (
 --
 
 INSERT INTO `tournament` (`tnmID`, `tnmName`, `sportID`, `tnmUrl`, `Rstartdate`, `Renddate`, `tnmStartdate`, `tnmEnddate`, `tnmTypegame`, `tnmDetail`, `tnmPicture`, `tnmFile1`, `tnmFile2`, `tnmFile3`, `accountID`, `st1`, `nd2`, `rd3`) VALUES
-(18, 'การแข่งขันบาสเกตบอล', 1, '', '2023-01-08', '2023-01-08', '2023-01-08', '2023-01-08', 'single', 'ทดสอบแก้ไข', '1673270940662_basketball.jpg', '1673270940662_basketball.jpg', NULL, NULL, NULL, NULL, NULL, NULL),
-(24, 'การแข่งขันเทนนิสประจำปี', 4, '', '2023-01-07', '2023-01-07', '2023-01-07', '2023-01-07', NULL, 'ะำหะห', '1673435313015_tennis.jfif', '1673435313015_tennis.jfif', NULL, NULL, NULL, NULL, NULL, NULL),
-(25, 'การแข่งขันปิงปองประจำปี', 1, '', '2023-01-08', '2023-01-08', '2023-01-08', '2023-01-08', NULL, 'test', '1673271113110_66kebb6ah7k8ejiakacgi.jpg', '1673271113110_66kebb6ah7k8ejiakacgi.jpg', NULL, NULL, NULL, NULL, NULL, NULL),
-(26, 'การแข่งขันฟุตบอล', 1, '', '2023-01-11', '2023-01-09', '2023-01-09', '2023-01-09', NULL, 'การแข่งขันฟุตบอล', '1673270875902_000_33346NG-728x485.jpg', '1673270875902_000_33346NG-728x485.jpg', NULL, NULL, NULL, NULL, NULL, NULL);
+(1, 'การแข่งขันแบดมินตัน ประเภทคู่', 2, '', '2023-01-12', '2023-01-16', '2023-01-17', '2023-01-21', NULL, 'การแข่งขันแบดมินตันประเภทคู่\r\nเริ่มเปิดรับสมัครในวันที่ 12 มกราคม 2566 - 16 มกราคม 2566\r\nเริ่มการแข่งขันในวันที่ 17 มกราคาม 2566 - 21 มกราคม 2566', '1673502377914_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', '1673502377914_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 'การแข่งขันเปตองเดี่ยว', 5, '', '2023-01-12', '2023-01-17', '2023-01-18', '2023-01-23', NULL, 'การแข่งขันเปตองเดี่ยว', '1673512299128_kl.jpg', '1673512299128_kl.jpg', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -461,7 +437,7 @@ ALTER TABLE `useplace`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `accountID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `accountID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `detailmatch`
@@ -473,13 +449,13 @@ ALTER TABLE `detailmatch`
 -- AUTO_INCREMENT for table `faculty`
 --
 ALTER TABLE `faculty`
-  MODIFY `facultyID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `facultyID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `highlight`
 --
 ALTER TABLE `highlight`
-  MODIFY `highlightID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `highlightID` int(3) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `match`
@@ -503,25 +479,25 @@ ALTER TABLE `place_opening`
 -- AUTO_INCREMENT for table `player`
 --
 ALTER TABLE `player`
-  MODIFY `playerID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `playerID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `sport`
 --
 ALTER TABLE `sport`
-  MODIFY `sportID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `sportID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `team`
 --
 ALTER TABLE `team`
-  MODIFY `teamID` int(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `teamID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tournament`
 --
 ALTER TABLE `tournament`
-  MODIFY `tnmID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `tnmID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `university`

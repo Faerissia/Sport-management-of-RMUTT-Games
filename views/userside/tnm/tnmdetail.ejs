@@ -24,8 +24,12 @@
                             <p class="display-5 mb-0 text-start  text-wrap text-break t">
                                 <%= data[0].tnmName %>
                             </p>
-
-                            <a class="btn btn-warning " href="/singlereg/<%= data[0].tnmID %>">สมัครแข่งขัน</a>
+                            <% if(data[0].type === 'เดี่ยว'){ %>
+                                <a class="btn btn-warning " href="/singlereg/<%= data[0].tnmID %>">สมัครแข่งขัน</a>
+                                    <% }else{ %>
+                                    <a class="btn btn-warning " href="/teamreg/<%= data[0].tnmID %>">สมัครแข่งขัน</a>
+                                        <% } %>
+                            
 
                         </div>
 
