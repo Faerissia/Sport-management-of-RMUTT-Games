@@ -5,10 +5,10 @@ let dbConnection = require('../util/db');
 // display faculty list
 router.get('/(:uniID)', (req, res, next) => {
     let uniID = req.params.uniID;
-    dbConnection.query('SELECT u.uniID , f.name AS facName ,u.name AS uniName,f.facultyID FROM faculty f LEFT JOIN university u ON f.uniID = u.uniID WHERE u.uniID = '+ uniID, (err, rows) => {
+    dbConnection.query('SELECT u.uniID , f.name AS facName ,u.name AS uniName,f.facultyID FROM  faculty f LEFT JOIN university u ON f.uniID = u.uniID WHERE u.uniID = '+ uniID, (err, rows) => {
         if(req.session.loggedin){
             if(role === 'เจ้าหน้าที่'){
-                res.render('faculty', { data: rows,status_login: req.session.loggedin,user: user });
+                res.render('faculty', { data: rows,uniID: uniID,status_login: req.session.loggedin,user: user });
             }else{
                 req.flash('error','ไม่สามารถเข้าถึงได้');
                 res.redirect('login');
@@ -22,7 +22,7 @@ router.get('/(:uniID)', (req, res, next) => {
 //display add faculty to list
 router.get('/add/(:uniID)',(req, res, next) => {
     let uniID = req.params.uniID;
-    dbConnection.query('SELECT uniID FROM faculty WHERE uniID =  '+ uniID, (err, rows) => {
+    dbConnection.query('SELECT uniID FROM university WHERE uniID = '+ uniID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){     
             res.render('faculty/add',{ data: rows,status_login: req.session.loggedin });
@@ -129,7 +129,7 @@ router.post('/update/(:facultyID)', (req, res, next) => {
                 })
             } else {
                 req.flash('success', 'คณะ '+name+' ได้รับการแก้ไข');
-                res.redirect('/faculty/'+uniID)
+                res.redirect('/faculty/'+uniID);
             }
         })
     }
@@ -143,7 +143,7 @@ router.get('/delete/(:facultyID)', (req, res, next) => {
             req.flash('error', err),
             res.redirect('/faculty');
         } else {
-            req.flash('success', 'Book successfully deleted! ID = ' + facultyID);
+            req.flash('success', 'ลบคณะเรียบร้อยแล้ว ' + facultyID);
             res.redirect('/uni');
         }
     })

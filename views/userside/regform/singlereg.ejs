@@ -3,9 +3,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -44,19 +41,17 @@
             </div>
             <div class="form-group">
                 <label style="margin-top: 15px;">มหาวิทยาลัย:</label>
-                <select name='uniID' id="uni-dropdown" required>
+                <select name="university" id="university">
                     <option value="">เลือกมหาวิทยาลัย</option>
-                <% if(data.length){ %>
-                    <% for(var i = 0; i< data.length; i++) { %> 
-                    <option value="<%= data[i].uniID%>">
-                    <%= data[i].name%>
-                    </option>
-                    <% } } %>
+                    <% data.forEach(function(university) { %>
+                        <option value="<%= university.uniID %>"><%= university.name %></option>
+                    <% }); %>
                 </select>
             </div>
             <div class="form-group">
                 <label style="margin-top: 15px;">คณะ:</label>
-                <select name ='facultyID' id="fac-dropdown" required>
+                <select name="facultyID" id="faculty">
+                    <option value="">เลือกคณะ</option>
                 </select>
             </div>
             <div class="form-group">
@@ -71,7 +66,7 @@
                 <label>ไฟล์แนบ:</label>
                 <input type="file" class="form-control" name="playerFile1" required>
             </div>
-            <input type="hidden" name="tnmID" value="<%= data[0].tnmID%>">
+            <input type="text" name="tnmID" value="<%= tnmID%>">
             <div class="form-group" style="margin-top: 10px;">
                 <input type="submit" class="btn btn-success" value="ตกลง">
             </div>
@@ -79,31 +74,31 @@
         </form>
     </div>
     
+    
     <script>
-        $(document).ready(function() {
-        $('#uni-dropdown').on('change', function() {
-        var uniID = this.value;
-        $("#fac-dropdown").html('');
-        $.ajax({
-        url: "http://localhost:3000/get-faculty",
-        type: "POST",
-        data: {
-        name: 'university',
-        uniID: uniID,
-        },
-        dataType: 'json',
-        success: function(result) {
-        $('#fac-dropdown').html('<option value="">เลือกคณะ</option>');
-        $.each(result.facu, function(key, value) {
-        $("#fac-dropdown").append('<option value="' + value.facultyID + '">' + value.name + '</option>');
-        });
-        }
-        });
-        });
+        $(document).ready(function(){
+            $("#university").change(function(){
+                var uniID = $(this).val();
+                $.ajax({
+                    url:"http://localhost:3000/fetch_faculty",
+                    method:"POST",
+                    data:{uniID:uniID},
+                    dataType:"json",
+                    success:function(data)
+                    {
+                        var options = '<option value="">เลือกคณะ</option>';
+                        for (var i = 0; i < data.length; i++) {
+                            options += '<option value="' + data[i].facultyID + '">' + data[i].name + '</option>';
+                        }
+                        $('#faculty').html(options);
+                    }
+                });
+            });
         });
     </script>
-    
-    
+
+
+
 </body>
 </html>
 </div>

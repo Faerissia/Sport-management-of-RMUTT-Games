@@ -8,7 +8,9 @@ const path = require('path');
 
 // display tournament page
 router.get('/', (req, res, next) => {
-    dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.tnmStartdate,t.tnmTypegame FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmTypegame IS NULL', (err, rows) => {
+    sql ="SELECT t.tnmID, t.tnmName,s.sportName,t.tnmStartdate,t.tnmTypegame,SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmTypegame IS NULL GROUP BY t.tnmID;";
+
+    dbConnection.query(sql, (err, rows) => {
     if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tournament', { data: rows,status_login: req.session.loggedin,user: user });
@@ -107,7 +109,6 @@ router.get('/edit/(:tnmID)', (req, res, next) => {
             req.flash('error', 'tournament not found with id = ' + tnmID)
             res.redirect('/tournament');
         } else  {
-            console.log(rows)
             res.render('tournament/edit', { data:rows,
                 title: 'แก้ไข การแข่งขัน',
                 tnmID: rows[0].tnmID,
@@ -211,7 +212,7 @@ router.get('/bracket/(:tnmID)', (req, res, next)=> {
     dbConnection.query('SELECT * FROM tournament WHERE tnmID ='+tnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
-            res.render('tournament/bracket', { data: rows,status_login: req.session.loggedin,user: user});
+            res.render('tournament/bracket', { data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
@@ -228,7 +229,7 @@ router.get('/participant/(:tnmID)', (req, res, next)=> {
     dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID WHERE t.tnmID = '+tnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
-            res.render('tournament/participant', { data: rows,status_login: req.session.loggedin,user: user});
+            res.render('tournament/participant', { data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
@@ -245,7 +246,7 @@ router.get('/match/(:tnmID)', (req, res, next)=> {
     dbConnection.query('SELECT * FROM tournament WHERE tnmID ='+tnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
-            res.render('tournament/match', { data: rows,status_login: req.session.loggedin,user: user});
+            res.render('tournament/match', { data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
@@ -262,7 +263,7 @@ router.get('/highlight/(:tnmID)', (req, res, next)=> {
     dbConnection.query('SELECT t.tnmID,t.tnmName,h.tnmID,h.linkvid,h.filePic,h.date,h.description FROM tournament t LEFT JOIN highlight h ON t.tnmID = h.tnmID WHERE t.tnmID = '+tnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
-            res.render('tournament/highlight', { data: rows,status_login: req.session.loggedin,user: user});
+            res.render('tournament/highlight', { data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user});
     }else{
         req.flash('error','ไม่สามารถเข้าถึงได้');
         res.redirect('login');
@@ -278,7 +279,7 @@ router.get('/highlight/add/(:tnmID)', (req, res, next)=> {
     dbConnection.query('SELECT * FROM tournament WHERE tnmID ='+tnmID, (err, rows) => {
     if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
-            res.render('tournament/addhl', { data: rows,status_login: req.session.loggedin,user: user});
+            res.render('tournament/addhl', { data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user});
     }else{
         req.flash('error','ไม่สามารถเข้าถึงได้');
         res.redirect('login');

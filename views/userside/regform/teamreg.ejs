@@ -1,0 +1,139 @@
+<%- include("../../partials/header") %>
+        <div class="col-10 py-3 mx-auto">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>แบบฟอร์มสมัครเข้าร่วมการแข่งขัน</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container text-center">
+
+        <h1 style="margin-top: 20;">แบบฟอร์มสมัครเข้าร่วม <%=data[0].tnmName%></h1>
+        <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+        <form action="/teamreg/" method="post" encType="multipart/form-data">
+            <div class="form-group">
+                <label>ชื่อทีม:</label>
+                <input type="text" class="form-control" name="teamName"  autocomplete="off" required>
+            </div>
+            <div class="form-group">
+                <label>ชื่อ:</label>
+                <input type="text" class="form-control" name="NameAgent"  autocomplete="off" required>
+            </div>
+            <div class="form-group">
+                <label>นามสกุล:</label>
+                <input type="text" class="form-control" name="LnameAgent"  autocomplete="off" required>
+            </div>
+            <div class="form-group">
+                <label>เบอร์โทรศัพท์:</label>
+                <input type="text" class="form-control" name="teamPhoneA"  autocomplete="off" required pattern="[0-9]{10}" minlength="10" maxlength="10">
+            </div>
+            <div class="form-group">
+                <label>อีเมล:</label>
+                <input type="text" class="form-control" name="teamEmailA"  autocomplete="off" required>
+            </div>
+            <div class="form-group">
+                <label>teamPic:</label>
+                <input type="file" class="form-control" name="teamPic"  autocomplete="off" required>
+            </div>
+            <input type="hidden" name="tnmID" value="<%= data[0].tnmID%>">
+            <br>
+            <hr style="height:2px;border-width:0;color:black;background-color:black">
+            <br>
+            <% for(let i=0; i < data[0].sportPlaynum; i++) { %>
+            <p>ผู้เล่นคนที่ <%= i+1 %></p>
+            <div class="form-group">
+                <label>ชื่อ:</label>
+                <input type="text" class="form-control" name="playerFName"  autocomplete="off" required>
+            </div>
+            <div class="form-group">
+                <label>นามสกุล:</label>
+                <input type="text" class="form-control" name="playerLName"  autocomplete="off" required>
+            </div>
+            <div class="form-group">
+                <label style="margin-top: 15px;">เพศ:</label>
+                <select name="playerGender">
+                    <option value="<%= playerGender='ชาย' %>">ชาย</option>
+                    <option value="<%= playerGender='หญิง' %>">หญิง</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>วัน/เดือน/ปีเกิด:</label>
+                <input type="date" class="form-control" name="playerBirthday"  autocomplete="off" required>
+            </div>
+            <div class="form-group">
+                <label>เบอร์โทรศัพท์:</label>
+                <input type="text" class="form-control" name="playerPhone"  autocomplete="off" required pattern="[0-9]{10}" minlength="10" maxlength="10">
+            </div>
+            <div class="form-group">
+                <label>อีเมล:</label>
+                <input type="email" class="form-control" name="playerEmail"  autocomplete="off" required>
+            </div>
+            <div class="form-group">
+                <label style="margin-top: 15px;">มหาวิทยาลัย:</label>
+                <select data-index="<%= i %>" name="university" id="university_<%= i %>">
+                    <option value="">เลือกมหาวิทยาลัย</option>
+                    <% data.forEach(function(university) { %>
+                        <option value="<%= university.uniID %>"><%= university.name %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label style="margin-top: 15px;">คณะ:</label>
+                <select data-index="<%= i %>" name="facultyID" id="faculty_<%= i %>">
+                    <option value="">เลือกคณะ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>รหัสประจำตัวประชาชน:</label>
+                <input type="text" class="form-control" name="playerIDCard" required pattern="[0-9]{13}" minlength="13" maxlength="13">
+            </div>
+            <div class="form-group">
+                <label>รหัสนักศึกษา:</label>
+                <input type="text" class="form-control" name="playerStudentID" required pattern="[0-9]{13}" minlength="13" maxlength="13">
+            </div>
+            <div class="form-group">
+                <label>ไฟล์แนบ:</label>
+                <input type="file" class="form-control" name="playerFile1" required>
+            </div>
+            <br>
+            <hr style="height:2px;border-width:0;color:black;background-color:black">
+            <br>
+            <input type="hidden" name="tnmID" value="<%= data[0].tnmID%>">
+            <% } %>
+            <div class="form-group" style="margin-top: 10px;">
+                <input type="submit" class="btn btn-success" value="ตกลง">
+            </div>
+
+        </form>
+    </div> 
+
+    <script>
+       $(document).ready(function(){
+        $("[id^=university_]").change(function(){
+        var uniID = $(this).val();
+        var index = $(this).data('index');
+        $.ajax({
+                    url:"http://localhost:3000/fetch_faculty",
+                    method:"POST",
+                    data:{uniID:uniID},
+                    dataType:"json",
+                    success:function(data)
+                    {
+                        var options = '<option value="">Select Faculty</option>';
+                for (var j = 0; j < data.length; j++) {
+                    options += '<option value="' + data[j].facultyID + '">' + data[j].name + '</option>';
+                }
+                $('[data-index="'+index+'"]#faculty_'+index).html(options);
+            }
+                });
+            });
+        });
+    </script>
+
+
+
+    
+</body>
+</html>
+</div>
