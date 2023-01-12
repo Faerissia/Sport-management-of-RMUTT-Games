@@ -1,23 +1,13 @@
 <%- include("../partials/header") %>
-        <div class="col-10 py-3 mx-auto">
+<%- include("../partials/banner") %>
+        <div class="container-sm py-3 mx-auto">
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
-<<<<<<< Updated upstream
-    <div class="container text-center">
-    <h1>USER INDEX</h1>
-    
-
-    <div class="card">
-        <div class="card-header" style="border: solid;">
-            <h3>การแข่งขันที่ดำเนินการอยู่</h3>
-=======
     <div class=" text-center">
    <!---------------------------------------------------------------------------------------------->
 <div class="card rounded-2 mt-5  mx-5">
@@ -57,29 +47,13 @@
                                     <% if(!data.length) { %>
                                         <p class="text-center text-wrap">ไม่พบรายการแข่งขัน</p>
                                         <% } %>
->>>>>>> Stashed changes
         </div>
-
-            <div class="d-flex justify-content-center flex-wrap">
-                <% if(data.length) { %>
-                    <% for(let i = 0; i < data.length; i++) { %>
-                    <div class="card" style="width: 300px; height: 500px;">
-                <a href="/tnmdetail/<%= data[i].tnmID %>">
-                    <div class="card-header"><%= data[i].tnmName %></div>
-                    <img src="images/<%= data[i].tnmPicture %>" style="height: 300px; width: 300px;">
-                    <div class="card-body"><%= data[i].tnmStartdate %></div>
-                </a>
-                    </div>
-
-                    <% } %>
-                <% } %>
-
-
-        <% if(!data.length) { %>
-            <p class="text-center">ไม่พบรายการแข่งขัน</p>
-        <% } %>
     </div>
+</div>
+<!---------------------------------------------------------------------------------------------->
     </div>
 </body>
 </html>
 </div>
+
+
