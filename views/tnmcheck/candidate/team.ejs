@@ -1,0 +1,72 @@
+<%- include("../../partials/header") %>
+<%- include("../../partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>ผู้สมัครการแข่งขัน <%=data[0].tnmName %> </h1>
+    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+    <form action="/tnmcheck/team" method="post">
+        <div class="form-group">
+            <label>ชื่อ:</label>
+            <input type="text" class="form-control" value="<%= data[0].playerFName %>" disabled>
+        </div>
+            <div class="form-group">
+                <label>นามสกุล:</label>
+                <input type="text" class="form-control" value="<%= data[0].playerLName %>" disabled>
+            </div>
+            <div class="form-group">
+                <label>เพศ:</label>
+                <input type="text" class="form-control" value="<%= data[0].playerGender %>" disabled>
+            </div>
+            <div class="form-group">
+                <label>วัน/เดือน/ปี:</label>
+                <input type="text" class="form-control" value="<%= data[0].playerBirthday.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %>" disabled>
+            </div>
+            <div class="form-group">
+                <label>เบอร์โทร:</label>
+                <input type="text" class="form-control" value="<%= data[0].playerPhone %>" disabled>
+            </div>
+            <div class="form-group">
+                <label>อีเมล:</label>
+                <input type="email" class="form-control" value="<%= data[0].playerEmail %>" disabled>
+            </div>
+            <div class="form-group">
+                <label>มหาวิทยาลัย:</label>
+                <input type="text" class="form-control" value="<%= data[0].uniName %>" disabled>
+            </div>
+            <div class="form-group">
+                <label>คณะ:</label>
+                <input type="text" class="form-control" value="<%= data[0].facName %>" disabled>
+            </div>
+            <div class="form-group">
+                <label>เลขประจำตัวประชาชน:</label>
+                <input type="text" class="form-control" value="<%= data[0].playerIDCard %>" disabled>
+            </div>
+            <div class="form-group">
+                <label>รหัสนักศึกษา:</label>
+                <input type="text" class="form-control" value="<%= data[0].playerStudentID %>" disabled>
+            </div><% data[0].tnmID %>
+            <div class="form-group">
+                <label>เอกสารยืนยันตัวตน:</label>
+                <a href="../../player/<%= data[0].playerFile1%>" download="<%= data[0].playerFile1 %>"><%= data[0].playerFile1 %></a>
+            </div>
+            <div class="form-group" style="margin-top: 10px;">
+                <a href="/tnmcheck/candidate/<%= data[0].tnmID %>" class="btn btn-primary" value="back">ย้อนกลับ</a>
+                <a href="/" class="btn btn-warning" value="edit">แก้ไข</a>
+                <a href="/tnmcheck/player/deny/<%= data[0].playerID%>" class="btn btn-danger" value="deny">ปฏิเสธ</a>
+                <a href="/tnmcheck/player/accept/<%= data[0].playerID%>" class="btn btn-success" value="accept">ยอมรับ</a>
+                <a href="/" class="btn btn-primary" value="otp">ส่งอีเมล</a>
+
+            </div>
+        </form>
+            
+</body>
+</html>
+</div>

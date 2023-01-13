@@ -104,4 +104,22 @@ router.get('/player/deny/(:playerID)', (req, res, next) => {
     })
 })
 })
+
+router.get('/team/(:teamID)', (req, res, next) => {
+    let thisteamID = req.params.team;
+    dbConnection.query(''+thisteamID, (err, rows) => {
+        if(req.session.loggedin){
+        if(role === 'เจ้าหน้าที่'){
+            res.render('./tnmcheck/candidate/team', { data: rows,status_login: req.session.loggedin,user: user });
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('../../login');
+        }
+    }else{
+        res.redirect('error404');
+    }
+    })
+})
+
+
 module.exports = router;
