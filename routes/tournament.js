@@ -276,7 +276,7 @@ router.get('/highlight/(:tnmID)', (req, res, next)=> {
 
 router.get('/highlight/add/(:tnmID)', (req, res, next)=> {
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT * FROM tournament WHERE tnmID ='+tnmID, (err, rows) => {
+    dbConnection.query('SELECT t.tnmID,t.tnmName,h.tnmID,h.linkvid,h.filePic,h.date,h.description FROM tournament t LEFT JOIN highlight h ON t.tnmID = h.tnmID WHERE t.tnmID = '+tnmID, (err, rows) => {
     if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tournament/addhl', { data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user});
@@ -349,7 +349,7 @@ router.post('/highlight/add/(:tnmID)', (req, res, next)=> {
             })
         } else {
             req.flash('success', 'เพิ่ม Highlight เรียบร้อยแล้ว');
-            res.redirect('/tournament')
+            res.redirect('/tournament/bracket/'+tnmID)
         }
     })
 

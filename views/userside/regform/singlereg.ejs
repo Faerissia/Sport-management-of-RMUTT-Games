@@ -1,104 +1,192 @@
 <%- include("../../partials/header") %>
-        <div class="col-10 py-3 mx-auto">
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Document</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-</head>
-<body>
-    <div class="container text-center">
+    <div class="col-10 py-3 mx-auto">
+        <!DOCTYPE html>
+        <html lang="en">
 
-        <h1 style="margin-top: 20;">แบบฟอร์มสมัครเข้าร่วม <%=data[0].tnmName%></h1>
-        <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-        <form action="/singlereg/" method="post" encType="multipart/form-data">
-            <div class="form-group">
-                <label>ชื่อ:</label>
-                <input type="text" class="form-control" name="playerFName"  autocomplete="off" required>
-            </div>
-            <div class="form-group">
-                <label>นามสกุล:</label>
-                <input type="text" class="form-control" name="playerLName"  autocomplete="off" required>
-            </div>
-            <div class="form-group">
-                <label style="margin-top: 15px;">เพศ:</label>
-                <select name="playerGender">
-                    <option value="<%= playerGender='ชาย' %>">ชาย</option>
-                    <option value="<%= playerGender='หญิง' %>">หญิง</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>วัน/เดือน/ปีเกิด:</label>
-                <input type="date" class="form-control" name="playerBirthday"  autocomplete="off" required>
-            </div>
-            <div class="form-group">
-                <label>เบอร์โทรศัพท์:</label>
-                <input type="text" class="form-control" name="playerPhone"  autocomplete="off" required pattern="[0-9]{10}" minlength="10" maxlength="10">
-            </div>
-            <div class="form-group">
-                <label>อีเมล:</label>
-                <input type="email" class="form-control" name="playerEmail"  autocomplete="off" required>
-            </div>
-            <div class="form-group">
-                <label style="margin-top: 15px;">มหาวิทยาลัย:</label>
-                <select name="university" id="university">
-                    <option value="">เลือกมหาวิทยาลัย</option>
-                    <% data.forEach(function(university) { %>
-                        <option value="<%= university.uniID %>"><%= university.name %></option>
-                    <% }); %>
-                </select>
-            </div>
-            <div class="form-group">
-                <label style="margin-top: 15px;">คณะ:</label>
-                <select name="facultyID" id="faculty">
-                    <option value="">เลือกคณะ</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>รหัสประจำตัวประชาชน:</label>
-                <input type="text" class="form-control" name="playerIDCard" required pattern="[0-9]{13}" minlength="13" maxlength="13">
-            </div>
-            <div class="form-group">
-                <label>รหัสนักศึกษา:</label>
-                <input type="text" class="form-control" name="playerStudentID" required pattern="[0-9]{13}" minlength="13" maxlength="13">
-            </div>
-            <div class="form-group">
-                <label>ไฟล์แนบ:</label>
-                <input type="file" class="form-control" name="playerFile1" required>
-            </div>
-            <input type="text" name="tnmID" value="<%= tnmID%>">
-            <div class="form-group" style="margin-top: 10px;">
-                <input type="submit" class="btn btn-success" value="ตกลง">
+        <head>
+            <title>Document</title>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        </head>
+
+        <body>
+            <div class="container text-center">
+
+                <h1 style="margin-top: 20;">แบบฟอร์มสมัครเข้าร่วม <%=data[0].tnmName%>
+                </h1>
+                <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+                <form action="/singlereg/" method="post" encType="multipart/form-data" class="needs-validation ">
+                    <div class="form-group">
+
+
+                        <div class="row my-2   row-cols-2">
+                            <div class="col-2 text-start">
+                                <label for="validationFname" class="col-form-label">ชื่อ</label>
+                            </div>
+                            <div class="col-4">
+                                <input type="text" class="form-control border-dark" id="validationFname" value=""
+                                    name="playerFName" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <!-- -------------------------------------------------------------- -->
+                        <div class="row my-2   row-cols-2">
+                            <div class="col-2 text-start">
+                                <label for="validationLname" class="col-form-label">นามสกุล</label>
+                            </div>
+                            <div class="col-4">
+                                <input type="text" class="form-control border-dark" id="validationLname" value=""
+                                    name="playerLName" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <!-- -------------------------------------------------------------- -->
+                        <div class="row my-2   row-cols-2">
+                            <div class="col-2 text-start">
+                                <label for="validation" class="col-form-label">เพศ</label>
+                            </div>
+                            <div class="col-auto">
+                                <select class="form-select border-dark" id="validation" name="playerGender" required>
+                                    <option selected disabled value="">เพศ</option>
+                                    <option value="<%= playerGender='ชาย' %>">ชาย</option>
+                                    <option value="<%= playerGender='หญิง' %>">หญิง</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- -------------------------------------------------------------- -->
+                        <div class="row my-2   row-cols-2">
+                            <div class="col-2 text-start">
+                                <label for="validationplayerBirthday" class="col-form-label">วัน/เดือน/เกิด</label>
+                            </div>
+                            <div class="col-auto">
+                                <input type="date" class="form-control border-dark" id="validationplayerBirthday"
+                                    value="" name="playerBirthday" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <!-- -------------------------------------------------------------- -->
+                        <div class="row my-2   row-cols-2">
+                            <div class="col-2 text-start">
+                                <label for="validationTel" class="col-form-label">เบอร์โทรศัพท์</label>
+                            </div>
+                            <div class="col-2">
+                                <input type="text" class="form-control border-dark" id="validationTel" value=""
+                                    name="playerPhone" autocomplete="off" pattern="[0-9]{10}" minlength="10"
+                                    maxlength="10" required>
+                            </div>
+                        </div>
+                        <!-- -------------------------------------------------------------- -->
+                        <div class="row my-2   row-cols-2">
+                            <div class="col-2 text-start">
+                                <label for="validationEmail" class="col-form-label">อีเมล</label>
+                            </div>
+                            <div class="col-2">
+                                <input type="email" class="form-control border-dark" id="validationEmail" value=""
+                                    name="playerEmail" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <!-- -------------------------------------------------------------- -->
+                        <div class="row my-2   row-cols-2">
+                            <div class="col-2 text-start">
+                                <label for="validationUni" class="col-form-label">มหาวิทยาลัย</label>
+                            </div>
+                            <div class="col-auto">
+                                <select class="form-select border-dark" name='uniID' id="uni-dropdown" required>
+                                    <option selected disabled value="">เลือกมหาวิทยาลัย</option>
+                                    <% if(data.length){ %>
+                                        <% for(var i=0; i< data.length; i++) { %>
+                                            <option value="<%= data[i].uniID%>">
+                                                <%= data[i].name%>
+                                            </option>
+                                            <% } } %>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- -------------------------------------------------------------- -->
+                        <div class="row my-2   row-cols-2">
+                            <div class="col-2 text-start">
+                                <label for="validation" class="col-form-label">คณะ</label>
+                            </div>
+                            <div class="col-auto">
+                                <select class="form-select border-dark" name='facultyID' id="fac-dropdown" required>
+                                    <option selected disabled value="">เลือกมหาคณะ</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- -------------------------------------------------------------- -->
+                        <div class="row my-2   row-cols-2">
+                            <div class="col-2 text-start">
+                                <label for="validationCard" class="col-form-label">เลขประจำตัวประชาชน</label>
+                            </div>
+                            <div class="col-2" text-start>
+                                <input type="text" class="form-control border-dark" id="validationCard" value=""
+                                    name="playerIDCard" autocomplete="off" pattern="[0-9]{13}" minlength="13"
+                                    maxlength="13" required>
+                            </div>
+                        </div>
+                        <!-- -------------------------------------------------------------- -->
+                        <div class="row my-2   row-cols-2">
+                            <div class="col-2 text-start">
+                                <label for="validationSiD" class="col-form-label">รหัสนักศึกษา</label>
+                            </div>
+                            <div class="col-2">
+                                <input type="text" class="form-control border-dark" id="validationSiD" value=""
+                                    name="playerStudentID" autocomplete="off" pattern="[0-9]{13}" minlength="13"
+                                    maxlength="13" required>
+                            </div>
+                        </div>
+                        <!-- -------------------------------------------------------------- -->
+                        <div class="row my-2   row-cols-2">
+                            <div class="col-2 text-start">
+                                <label for="validationFile" class="col-form-label">เอกสารยืนยันตัวตน</label>
+                            </div>
+                            <div class="col-3">
+                                <input type="file" class="form-control border-dark" id="validationFile" value=""
+                                    name="playerFile1" required>
+                            </div>
+                        </div>
+
+                        <!-- คืออะไรนิ -->
+                        <input type="hidden" class="" name="tnmID" value="<%= data[0].tnmID%>">
+
+                    </div>
+
+                    <div class="row row-cols-2 mt-5  text-center d-flex justify-content-center">
+                        <div class="col-2">
+                            <a href="/tnmdetail/<%= tnmID %>" class="btn btn-danger">ย้อนกลับ</a>
+                        </div>
+                        <div class="col-2">
+                            <input type="submit" class="btn btn-success" value="ตกลง">
+                        </div>
+                    </div>
+
+
+
+                </form>
             </div>
 
-        </form>
-    </div>
-    
-    
-    <script>
-        $(document).ready(function(){
-            $("#university").change(function(){
-                var uniID = $(this).val();
-                $.ajax({
-                    url:"http://localhost:3000/fetch_faculty",
-                    method:"POST",
-                    data:{uniID:uniID},
-                    dataType:"json",
-                    success:function(data)
-                    {
-                        var options = '<option value="">เลือกคณะ</option>';
-                        for (var i = 0; i < data.length; i++) {
-                            options += '<option value="' + data[i].facultyID + '">' + data[i].name + '</option>';
-                        }
-                        $('#faculty').html(options);
-                    }
+            <script>
+                $(document).ready(function () {
+                    $('#uni-dropdown').on('change', function () {
+                        var uniID = this.value;
+                        $("#fac-dropdown").html('');
+                        $.ajax({
+                            url: "http://localhost:3000/get-faculty",
+                            type: "POST",
+                            data: {
+                                name: 'university',
+                                uniID: uniID,
+                            },
+                            dataType: 'json',
+                            success: function (result) {
+                                $('#fac-dropdown').html('<option value="">เลือกคณะ</option>');
+                                $.each(result.facu, function (key, value) {
+                                    $("#fac-dropdown").append('<option value="' + value.facultyID + '">' + value.name + '</option>');
+                                });
+                            }
+                        });
+                    });
                 });
-            });
-        });
-    </script>
+            </script>
 
 
+        </body>
 
-</body>
-</html>
-</div>
+        </html>
+    </div>

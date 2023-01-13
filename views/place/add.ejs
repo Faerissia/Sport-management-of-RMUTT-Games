@@ -1,59 +1,298 @@
 <%- include("../partials/header") %>
 <%- include("../partials/sidebar") %>
-        <div class="col-10 py-3 mx-auto">
+    <div class="col-10 py-3 mx-auto">
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>place</title>
-</head>
-<body>
+        <!DOCTYPE html>
+        <html lang="en">
 
-    <% if (messages.error) { %>
-        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
-    <% } %>
-    
-    <a href="/place" class="btn btn-info">ย้อนกลับ</a>
-    <br><br>
+        <head>
+           
+            <title>place</title>
+        </head>
 
-    <div class="card">
-        <div class="card-header">
-            เพิ่มสถานที่
-        </div>
-        <div class="card-body">
-            <form action="/place/add" method="post">
-                <div class="form-group">
-                    <label>ชื่อสถานที่:</label>
-                    <input type="text" class="form-control" name="placeName" autocomplete="off">
+        <body>
+
+            <% if (messages.error) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= messages.error %>
                 </div>
-                <div class="form-group">
-                    <label style="margin-top: 15px;">กีฬา:</label>
-                    <select name="sportID">
-                        <% for(let i = 0; i < data.length; i++) { %>
-                        <option value="<%= data[i].sportID %>"><%= data[i].sportName %></option>
-                        <% } %>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>URL สถานที่:</label>
-                    <input type="text" class="form-control" name="placeUrl" autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label>อัพโหลดไฟล์รูปภาพ:</label>
-                    <input type="file" class="form-control" name="placeFile" autocomplete="off"> 
-                </div>
-                <div class="form-group">
-                    <label>รายละเอียดสถานที่:</label>
-                    <textarea input type="text" class="form-control" name="placeDetail" autocomplete="off">
-                        </textarea>
-                </div>
-                <div class="form-group" style="margin-top: 10px;">
-                    <input type="submit" class="btn btn-info" value="เพิ่ม">
-                </div>
-            </form>
-        </div>
+                <% } %>
+
+                    <a href="/place" class="btn btn-info">ย้อนกลับ</a>
+                    <br><br>
+
+                    <div class="card">
+                        <div class="card-header display-6 mb-0">
+                            เพิ่มสถานที่
+                        </div>
+                        <div class="card-body">
+
+
+                            <form action="/place/add" method="post" class="form needs-validation">
+
+                                <!--  -->
+                                <div class="row my-2  p row-cols-2">
+                                    <div class="col-2 ">
+                                        <label class="col-form-label">ชื่อสถานที่</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="text" class="form-control border-dark" name="placeName"
+                                            autocomplete="off" required>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div class="row my-2  p row-cols-2">
+                                    <div class="col-2 ">
+                                        <label style="margin-top: 15px;">กีฬา</label>
+                                    </div>
+                                    <div class="col-auto">
+                                        <select name="sportID" class="form-select border-dark" required>
+                                           
+                                            <% for(let i = 0; i < data.length; i++) { %>
+                                                <option value="<%= data[i].sportID %>"><%= data[i].sportName %></option>
+                                                <% } %>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div class="row my-2  p row-cols-2">
+                                    <div class="col-2 ">
+                                        <label class="col-form-label">URL สถานที่</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="text" class="form-control border-dark" name="placeUrl"
+                                            autocomplete="off" required>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div class="row my-2  p row-cols-2">
+                                    <div class="col-2 ">
+                                        <label class="col-form-label">อัพโหลดไฟล์รูปภาพ</label>
+                                    </div>
+                                    <div class="col-4 ">
+                                        <input type="file" class="form-control border-dark" name="placeFile"
+                                            autocomplete="off" required>
+                                    </div>
+                                </div>
+                                <!--  -->
+                                <div class="row my-2  p row-cols-2">
+                                    <div class="col-2 h-auto" style="max-height: 300px; min-height: 100px;">
+                                        <label class="col-form-label">รายละเอียดสถานที่</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <textarea input type="text" class="form-control border-dark" name="placeDetail"
+                                            autocomplete="off" required>
+                                    </textarea>
+                                    </div>
+                                </div>
+
+<!--                                 
+                                <div class="row my-2  p row-cols-2 w-100">
+                                    <div class="col-2 ">
+                                        <label class="col-form-label ">วันที่ทำการ</label>
+
+                                    </div>
+                                    <div class="col-5 ">
+                                        <div class="row row-cols-1 ">
+                                            <div class="col-3">
+                                                <div class="form-check ">
+                                                    <input class="" type="checkbox" value="" style=" width: 20px;
+                                                        height: 20px;" id="flexCheckDefault">
+                                                    <label class="col-form-label " for="flexCheckDefault">
+                                                        จันทร์
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <label class="col-form-label">เวลาทำการ</label>
+
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="time" class="form-control border-dark" name="placeName"
+                                                    autocomplete="off">
+                                            </div>
+                                            <div class="col-auto">
+                                                <label class="col-form-label">ถึง</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="time" class="form-control border-dark" name="placeName"
+                                                    autocomplete="off">
+                                            </div>
+
+                                        </div>
+                                        <div class="row row-cols-1 ">
+                                            <div class="col-3">
+                                                <div class="form-check ">
+                                                    <input class="" type="checkbox" value="" style=" width: 20px;
+                                                        height: 20px;" id="flexCheckDefault">
+                                                    <label class="col-form-label " for="flexCheckDefault">
+                                                        อังคาร
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <label class="col-form-label">เวลาทำการ</label>
+
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="time" class="form-control border-dark" name="placeName"
+                                                    autocomplete="off">
+                                            </div>
+                                            <div class="col-auto">
+                                                <label class="col-form-label">ถึง</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="time" class="form-control border-dark" name="placeName"
+                                                    autocomplete="off">
+                                            </div>
+
+                                        </div>
+                                        <div class="row row-cols-1 ">
+                                            <div class="col-3">
+                                                <div class="form-check ">
+                                                    <input class="" type="checkbox" value="" style=" width: 20px;
+                                                        height: 20px;" id="flexCheckDefault">
+                                                    <label class="col-form-label " for="flexCheckDefault">
+                                                        พุธ
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <label class="col-form-label">เวลาทำการ</label>
+
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="time" class="form-control border-dark" name="placeName"
+                                                    autocomplete="off">
+                                            </div>
+                                            <div class="col-auto">
+                                                <label class="col-form-label">ถึง</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="time" class="form-control border-dark" name="placeName"
+                                                    autocomplete="off">
+                                            </div>
+
+                                        </div>
+                                        <div class="row row-cols-1 ">
+                                            <div class="col-3">
+                                                <div class="form-check ">
+                                                    <input class="" type="checkbox" value="" style=" width: 20px;
+                                                        height: 20px;" id="flexCheckDefault">
+                                                    <label class="col-form-label " for="flexCheckDefault">
+                                                        พฤหัสบดี
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <label class="col-form-label">เวลาทำการ</label>
+
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="time" class="form-control border-dark" name="placeName"
+                                                    autocomplete="off">
+                                            </div>
+                                            <div class="col-auto">
+                                                <label class="col-form-label">ถึง</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="time" class="form-control border-dark" name="placeName"
+                                                    autocomplete="off">
+                                            </div>
+
+                                        </div>
+                                        <div class="row row-cols-1 ">
+                                            <div class="col-3">
+                                                <div class="form-check ">
+                                                    <input class="" type="checkbox" value="" style=" width: 20px;
+                                                        height: 20px;" id="flexCheckDefault">
+                                                    <label class="col-form-label " for="flexCheckDefault">
+                                                        ศุกร์
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <label class="col-form-label">เวลาทำการ</label>
+
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="time" class="form-control border-dark" name="placeName"
+                                                    autocomplete="off">
+                                            </div>
+                                            <div class="col-auto">
+                                                <label class="col-form-label">ถึง</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="time" class="form-control border-dark" name="placeName"
+                                                    autocomplete="off">
+                                            </div>
+
+                                        </div>
+                                        <div class="row row-cols-1 ">
+                                            <div class="col-3">
+                                                <div class="form-check ">
+                                                    <input class="" type="checkbox" value="" style=" width: 20px;
+                                                        height: 20px;" id="flexCheckDefault">
+                                                    <label class="col-form-label " for="flexCheckDefault">
+                                                        เสาร์
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <label class="col-form-label">เวลาทำการ</label>
+
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="time" class="form-control border-dark" name="placeName"
+                                                    autocomplete="off">
+                                            </div>
+                                            <div class="col-auto">
+                                                <label class="col-form-label">ถึง</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="time" class="form-control border-dark" name="placeName"
+                                                    autocomplete="off">
+                                            </div>
+
+                                        </div>
+                                        <div class="row row-cols-1 ">
+                                            <div class="col-3">
+                                                <div class="form-check ">
+                                                    <input class="" type="checkbox" value="" style=" width: 20px;
+                                                        height: 20px;" id="flexCheckDefault">
+                                                    <label class="col-form-label " for="flexCheckDefault">
+                                                        อาทิตย์
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <label class="col-form-label">เวลาทำการ</label>
+
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="time" class="form-control border-dark" name="placeName"
+                                                    autocomplete="off">
+                                            </div>
+                                            <div class="col-auto">
+                                                <label class="col-form-label">ถึง</label>
+                                            </div>
+                                            <div class="col-auto">
+                                                <input type="time" class="form-control border-dark" name="placeName"
+                                                    autocomplete="off">
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div> -->
+                                <div class="form-group" style="margin-top: 10px;">
+                                    <input type="submit" class="btn btn-info" value="เพิ่ม">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+        </body>
+
+        </html>
     </div>
-
-</body>
-</html>
-</div>
