@@ -15,8 +15,10 @@
                 <%- include("../../partials/menuuser.ejs") %>
                     <!-- <div class="d-block" style="height: 1000px;"></div> -->
                     <div class="row py-5">
-                    
-
+                      <% if(data.length){ %>
+                        <h1>ไม่พบรายการ</h1>
+                        <% } %>
+                      <% if(!data.length){ %>
                     <div class="row">
                     <table class="table table table-bordered border-dark w-75 mx-auto text-center ">
                         <thead>
@@ -43,11 +45,11 @@
                           <% } %>
                         </tbody>
                       </table>
+                      
                     </div>
                 </div>
-
                     </div>
-            
+            <%}%>
         </body>
 
         </html>

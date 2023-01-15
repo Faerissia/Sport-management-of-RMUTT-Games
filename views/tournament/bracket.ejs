@@ -1,42 +1,20 @@
 <%- include("../partials/header") %>
-    <%- include("../partials/sidebar") %>
-        <div class="col-10 py-3 px-5  mx-auto">
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <title>bracket</title>
-            </head>
-            <body>
+<%- include("../partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto">
 
-               
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
 
-                <div class="row row-cols-1">
-                    <div class="col">
-                        <h1>หน้าจัดสายการแข่งขัน <%= data[0].tnmName %> </h1>
-                    </div>
-                    <div class="col">
-                        <%- include("../partials/menu_staff.ejs") %>
-                    </div>
+</head>
+<body>
 
+    <h1>หน้าจัดสายการแข่งขัน <%= data[0].tnmName %></h1>
 
+        <%- include("../partials/menu_staff.ejs") %>
 
-                    <div class="col">   
-                        <div class=" text-center border border-dark rounded-3" style="height: 700px;">
-
-
-                        </div>
-                    </div>
-                </div>
-
-        </div>
-
-
-
-
-
-
-
-        </body>
-
-        </html>
-        </div>
+          
+</body>
+</html>
+</div>

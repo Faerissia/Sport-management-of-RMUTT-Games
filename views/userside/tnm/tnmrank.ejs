@@ -23,7 +23,10 @@
 
                         </div>
                     </div>
-                    
+                    <% if(data.length){ %>
+                      <h1>ไม่พบรายการ</h1>
+                      <% } %>
+                      <% if(!data.length){ %>
                     <div class="row">
                     <table class="table table table-bordered border-dark w-75 mx-auto text-center  mb-5">
                         <thead>
@@ -45,6 +48,7 @@
                         </tbody>
                       </table>
                     </div>
+                    <% } %>
                 </div>
 
                     </div>

@@ -24,13 +24,13 @@
                             <p class="display-5 mb-0 text-start  text-wrap text-break t">
                                 <%= data[0].tnmName %>
                             </p>
-                            <% if(data[0].type === 'เดี่ยว'){ %>
-                                <a class="btn btn-warning " href="/singlereg/<%= data[0].tnmID %>">สมัครแข่งขัน</a>
-                                    <% }else{ %>
-                                    <a class="btn btn-warning " href="/teamreg/<%= data[0].tnmID %>">สมัครแข่งขัน</a>
-                                        <% } %>
-                            
 
+                            <% if(data[0].type === 'เดี่ยว'){ %>
+                            <a class="btn btn-warning " href="/singlereg/<%= data[0].tnmID %>">สมัครแข่งขัน</a>
+                                <% }else{ %>
+                                <a class="btn btn-warning " href="/teamreg/<%= data[0].tnmID %>">สมัครแข่งขัน</a>
+                                    <% } %>
+                                
                         </div>
 
                         <div class="w-100  d-flex flex-row justify-content-evenly mt-3 text-center align-items-center ">
@@ -56,22 +56,13 @@
                                     <div class="row row-cols-6 ">
                                         <div class="col-1"><iconify-icon width="25" height="25"
                                                 icon="mdi:tournament"></iconify-icon></div>
-                                        <div class="col-auto"> (show =<%= data[0].tnmTypegame %> ) จำลอง(Single
-                                                Elimination)</div>
+                                        <div class="col-auto"> <%= data[0].tnmTypegame %>  </div>
                                     </div>
 
                                     <div class="row row-cols-6 ">
                                         <div class="col-1"><iconify-icon width="25" height="25"
                                                 icon="fluent:people-community-28-filled"></iconify-icon></div>
-                                        <div class="col-auto">ทีมที่เข้าร่วม 4 ทีม / ผู้เล่น 11 คนต่อ 1 ทีม</div>
-
-                                    </div>
-
-                                    <div class="row row-cols-6 ">
-                                        <div class="col-1"><iconify-icon icon="akar-icons:video" width="20"
-                                                height="20"></iconify-icon></div>
-                                        <div class="col-auto">สนามฟุตบอล</div>
-
+                                        <div class="col-auto">ทีมที่เข้าร่วม</div>
                                     </div>
 
                                     <div class="row row-cols-6 ">
