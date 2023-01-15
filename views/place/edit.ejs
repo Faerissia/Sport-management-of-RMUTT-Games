@@ -17,31 +17,70 @@
     <br><br>
 
     <div class="card">
-        <div class="card-header">
+        <div class="card-header display-6">
             แก้ไขสถานที่
         </div>
         <div class="card-body">
-            <form action="/place/update/<%= placeID %>" method="post">
-                <div class="form-group">
-                    <label>ชื่อสถานที่:</label>
-                    <input type="text" class="form-control" name="placeName" value="<%= placeName %>" autocomplete="off">
+            <form action="/place/update/<%= placeID %>" method="post" class="form needs-validation">
+                <!--  -->
+                <div class="row my-2  p row-cols-2">
+                    <div class="col-2 ">
+                        <label class="col-form-label">ชื่อสถานที่</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control border-dark" name="placeName"
+                            autocomplete="off" required value="<%= placeName %>">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>กีฬา:</label>
-                    <input type="text" class="form-control" name="sportID" value="<%= sportID %>" autocomplete="off">
+                <!--  -->
+                <div class="row my-2  p row-cols-2">
+                    <div class="col-2 ">
+                        <label style="margin-top: 15px;">กีฬา</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" class="form-control border-dark" name="sportID" value="<%= sportID %>" autocomplete="off" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>URL สถานที่:</label>
-                    <input type="text" class="form-control" name="placeUrl" value="<%= placeUrl %>" autocomplete="off">
+                <!--  -->
+                <div class="row my-2  p row-cols-2">
+                    <div class="col-2 ">
+                        <label class="col-form-label">URL สถานที่</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control border-dark" name="placeUrl"
+                            autocomplete="off"  value="<%= placeUrl %>" required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>รายละเอียดสถานที่:</label>
-                    <input type="text" class="form-control" name="placeDetail" value="<%= placeDetail %>" autocomplete="off">
+                <!--  -->
+                <div class="row my-2  p row-cols-2">
+                    <div class="col-2 ">
+                        <label class="col-form-label">อัพโหลดไฟล์รูปภาพ</label>
+                    </div>
+                    <div class="col-4 ">
+                        <input type="file" class="form-control border-dark" name="placeFile"
+                            autocomplete="off" >
+                    </div>
                 </div>
-                <div class="form-group">
-                    <a href="/place" class="btn btn-info">ย้อนกลับ</a>
-                    <input type="submit" class="btn btn-info" value="Update">
+                <!--  -->
+                <div class="row my-2  p row-cols-2">
+                    <div class="col-2 h-auto" style="max-height: 300px; min-height: 100px;">
+                        <label class="col-form-label">รายละเอียดสถานที่</label>
+                    </div>
+                    <div class="col-4">
+                        <textarea input type="text" class="form-control border-dark" name="placeDetail"
+                            autocomplete="off" value="<%= placeDetail %>" required><%= placeDetail %>
+                    </textarea>
+                    </div>
                 </div>
+               <!--  -->
+               <div class="row row-cols-2 mt-5 text-center d-flex justify-content-center">
+                <div class="col-2">
+                    <a href="/place" class="btn btn-danger">ย้อนกลับ</a>
+                </div>
+                <div class="col-2">
+                    <button class="btn btn-success" type="submit">Update</button>
+                </div>
+            </div>
             </form>
         </div>
     </div>
