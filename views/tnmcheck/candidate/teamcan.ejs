@@ -39,28 +39,24 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">ชื่อ - นามสกุล</th>
-                            <th scope="col">เพศ</th>
-                            <th scope="col">อายุ</th>
-                            <th scope="col">เบอร์โทรศัพท์</th>
+                            <th scope="col">ชื่อทีม</th>
+                            <th scope="col">ชื่อ - นามสกุลตัวแทน</th>
+                            <th scope="col">เบอร์โทรศัพท์ตัวแทน</th>
                             <th scope="col">วันที่สมัคร</th>
-                            <th scope="col">หมายเหตุ</th>
                             <th width="200px">ตัวเลือก</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
                             <% const date = new Date(data[i].playerRegDate); %>
-                            <% if(data[i].playerStatus === null) { %>
+                            <% if(data[i].teamStatus === null) { %>
                             <tr>
-                                <td><%= data[i].playerFName %> <%= data[i].playerLName %></td>
-                                <td><%= data[i].playerGender %></td>
-                                <td><%= data[i].age %></td>
-                                <td><%= data[i].playerPhone %></td>
-                                <td><%= date.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
+                                <td><%= data[i].teamName %></td>
+                                <td><%= data[i].NameAgent %> <%= data[i].LnameAgent %></td>
+                                <td><%= data[i].teamPhoneA %></td>
                                 <td></td>
                                 <td>
-                                <a href="../player/<%=data[i].playerID%>" class="btn btn-primary page">ดู</a>
+                                <a href="../team/<%=data[i].teamID%>" class="btn btn-primary page">ดู</a>
                                 </td>
                             </tr>
                             <% } }%>
@@ -74,41 +70,6 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">ชื่อ - นามสกุล</th>
-                            <th scope="col">เพศ</th>
-                            <th scope="col">อายุ</th>
-                            <th scope="col">เบอร์โทรศัพท์</th>
-                            <th scope="col">วันที่สมัคร</th>
-                            <th width="200px">ตัวเลือก</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% for(let i = 0; i < data.length; i++) { %>
-                        <% if(data[i].playerStatus === 'accept') { %>
-                        <tr>
-                            <td><%= data[i].playerFName %> <%= data[i].playerLName %></td>
-                                <td><%= data[i].playerGender %></td>
-                                <td><%= data[i].age %></td>
-                                <td><%= data[i].playerPhone %></td>
-                                <td><%= data[i].playerRegDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
-                            <td>
-                                <a href="../candidate/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                <a href="../candidate/edit/<%= data[i].tnmID %>" class="btn btn-warning edit">แก้ไข</a>
-                                <a href="../candidate/bracket/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
-                            </td>
-                        </tr>
-                    <% }} %>
-                </tbody>
-            </table>
-    </div>
-
-    <% if(data[0].teamID){ %>
-    <!-- ทีม -->
-    <div class="card-body">
-        <% if(data.length) { %>
-            <table class="table">
-                <thead>
-                    <tr>
                         <th scope="col">ชื่อทีม</th>
                             <th scope="col">ชื่อ - นามสกุลตัวแทน</th>
                             <th scope="col">เบอร์โทรศัพท์ตัวแทน</th>
@@ -118,25 +79,23 @@
                 </thead>
                 <tbody>
                     <% for(let i = 0; i < data.length; i++) { %>
+                        <% if(data[i].teamStatus === 'accept') { %>
                         <tr>
-                            <td><%= data[i].tnmName %></td>
-                            <td><%= data[i].sportName %></td>
-                            <td><%= data[i].Renddate %></td>
-                            <td></td>
+                            <td><%= data[i].teamName %></td>
+                                <td><%= data[i].NameAgent %><%= data[i].LnameAgent %></td>
+                                <td><%= data[i].teamPhoneA %></td>
+                                <td></td>
                             <td>
                                 <a href="../candidate/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
                                 <a href="../candidate/edit/<%= data[i].tnmID %>" class="btn btn-warning edit">แก้ไข</a>
                                 <a href="../candidate/bracket/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
                             </td>
                         </tr>
-                    <% } %>
+                    <% }} %>
                 </tbody>
             </table>
+        </div>
         <% } %>
-    </div>
-<% } %>
-
-<% } %>
             <!-- if result is empty-->
             <% if(!data.length) { %>
                 <div class="text-center">

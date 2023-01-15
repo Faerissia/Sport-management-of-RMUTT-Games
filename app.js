@@ -55,7 +55,6 @@ app.post('/login', (req, res) => {
   var email = req.body.email;
   var password = req.body.password;
 
-
   if (email && password) {
     dbConnection.query(
       "SELECT * FROM account WHERE email = ? AND password = ?",

@@ -46,7 +46,8 @@
                 </table>
             <% } %>
 <% } %>
- <% if(data.teamID) { %>
+
+ <% if(data[0].teamID) { %>
 <!-- //แบบทีม -->
         <div class="card-body">
             <% if(data.length) { %>
@@ -62,6 +63,7 @@
                     </thead>
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
+                            <% if(data[i].teamStatus === 'accept') { %>
                             <tr>
                                 <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
@@ -73,7 +75,7 @@
                                     <a href="../tournament/bracket/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
                                 </td>
                             </tr>
-                        <% } %>
+                        <% }} %>
                     </tbody>
                 </table>
             <% } %>
