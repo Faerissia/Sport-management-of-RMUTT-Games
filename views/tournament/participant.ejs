@@ -6,6 +6,7 @@
 <html lang="en">
 <head>
     <title>participant</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     
@@ -47,7 +48,7 @@
             <% } %>
 <% } %>
 
- <% if(data[0].teamID) { %>
+
 <!-- //แบบทีม -->
         <div class="card-body">
             <% if(data.length) { %>
@@ -65,21 +66,21 @@
                         <% for(let i = 0; i < data.length; i++) { %>
                             <% if(data[i].teamStatus === 'accept') { %>
                             <tr>
-                                <td><%= data[i].tnmName %></td>
-                                <td><%= data[i].sportName %></td>
-                                <td><%= data[i].tnmStartdate %></td>
-                                <td><%= data[i].tournamentPlaynum %></td>
+                                <td><%= data[i].teamName %></td>
+                                <td></td>
+                                <td><%= data[i].NameAgent %></td>
+                                <td><%= data[i].teamPhoneA %></td>
                                 <td>
-                                    <a href="../tournament/edit/<%= data[i].tnmID %>" class="btn btn-warning edit">แก้ไข</a>
-                                    <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                    <a href="../tournament/bracket/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
+                                    <a href="../tournament/edit/<%= data[i].teamID %>" class="btn btn-warning edit">แก้ไข</a>
+                                    <a href="../tournament/delete/<%= data[i].teamID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
+                                    <a href="/tnmcheck/team/<%= data[i].teamID %>" class="btn btn-primary page">ดู</a>
                                 </td>
                             </tr>
                         <% }} %>
                     </tbody>
                 </table>
             <% } %>
-<% }} %>
+<% } %>
 
 
 
@@ -90,6 +91,7 @@
             <% } %>
         </div>
 
+        
 </body>
 </html>
 </div>
