@@ -14,7 +14,7 @@
     <h1>หน้าผู้เข้าร่วม <%= data[0].tnmName %></h1>
     <%- include("../partials/menu_staff.ejs") %>
 
- <% if(!data.teamID) { %>
+ <% if(!data[0].teamID) { %>
         <!-- //แบบเดี่ยว -->
         <div class="card-body">
             <% if(data.length) { %>
@@ -51,7 +51,7 @@
 
 <!-- //แบบทีม -->
         <div class="card-body">
-            <% if(data.length) { %>
+            <% if(data[0].teamID) { %>
                 <table class="table">
                     <thead>
                         <tr>
@@ -92,6 +92,7 @@
         </div>
 
         
-</body>
+    </body>
+
 </html>
 </div>
