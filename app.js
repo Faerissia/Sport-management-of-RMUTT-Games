@@ -26,19 +26,8 @@ global.role;
 global.user;
 
 // all environments
-
-process.on('SIGINT', function() {
-  fs.writeFileSync(path.join(__dirname, 'title.txt'), process.title);
-  process.exit();
-});
-
-// Read the title from the file on server start
-try {
   const title = fs.readFileSync(path.join(__dirname,'title.txt'), 'utf-8');
   process.title = title;
-} catch (err) {
-  console.log("Error: ",err.message);
-}
 
 app.use(fileUpload());
 app.set('views', __dirname + '/views');
@@ -57,6 +46,7 @@ app.use(session({
 
 app.post('/change-title', function(req, res) {
   process.title = req.body.title;
+  fs.writeFileSync(path.join(__dirname, 'title.txt'), process.title);
   res.redirect('/');
 });
 
@@ -64,7 +54,7 @@ app.get('/login',(req, res) => {
   if (req.session.loggedin) {
     res.redirect('dashboard');
   } else {
-    res.render('login',{process,status_login: req.session.loggedin});
+    res.render('login',{status_login: req.session.loggedin});
   }
   })
 
