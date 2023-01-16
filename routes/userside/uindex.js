@@ -11,7 +11,7 @@ router.get('/', (req, res, next) => {
             req.flash('error', err);
             res.render('userside/index', { data: '' });
         } else {
-            res.render('userside/index', { data: rows,status_login: req.session.loggedin});
+                res.render('userside/index', { data: rows,process,status_login: req.session.loggedin});
         }
     })
 })

@@ -19,6 +19,11 @@
 <div class="jumbotron">
 	<h1>Welcome</h1>
 	<p>Hello Dashboard</p>
+    <form action="/change-title" method="post">
+        <label for="title">ชื่อระบบ:</label>
+        <input type="text" id="title" name="title" value="<%= process.title %>">
+        <input type="submit" value="ตกลง">
+      </form>
 </div>	
 
 </body>

@@ -5,7 +5,7 @@ let bodyParser=require("body-parser");
 let flash = require('express-flash');
 const dbConnection = require('./util/db');
 const session = require('express-session');
-
+const fs = require('fs');
 
 //routes variable
 const dashboard = require('./routes/dashboard');
@@ -27,6 +27,19 @@ global.user;
 
 // all environments
 
+process.on('SIGINT', function() {
+  fs.writeFileSync(path.join(__dirname, 'title.txt'), process.title);
+  process.exit();
+});
+
+// Read the title from the file on server start
+try {
+  const title = fs.readFileSync(path.join(__dirname,'title.txt'), 'utf-8');
+  process.title = title;
+} catch (err) {
+  console.log("Error: ",err.message);
+}
+
 app.use(fileUpload());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -42,11 +55,16 @@ app.use(session({
 }))
 
 
+app.post('/change-title', function(req, res) {
+  process.title = req.body.title;
+  res.redirect('/');
+});
+
 app.get('/login',(req, res) => {
   if (req.session.loggedin) {
     res.redirect('dashboard');
   } else {
-    res.render('login',{status_login: req.session.loggedin});
+    res.render('login',{process,status_login: req.session.loggedin});
   }
   })
 
