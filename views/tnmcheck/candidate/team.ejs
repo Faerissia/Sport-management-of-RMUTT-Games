@@ -16,7 +16,7 @@
     <form action="/tnmcheck/team" method="post">
         <div class="form-grou">
             <!--  -->
-            <div class="row row-cols-3">
+            <div class="row row-cols-2">
                 <div class="col-6">
                     <div class="row mt-2">
                         <div class="col-5 text-start">
@@ -73,15 +73,14 @@
 
                     }
                 </script>
-                <div class="col-1">
+                <!-- <div class="col-1"> -->
                     <!-- ช่องว่างเว้น -->
-                </div>
+                <!-- </div> -->
 
-                <div class="col-auto ">
+                <div class="col-4 my-auto">
                     <img src="/team/<%=data[0].teamPic %>" id="imgpreview" class=" w-75 rounded mx-auto mb-2 " alt=""
                                 style="height: 10rem; ">
-                            <input type="file" class="form-control border-dark" id="validationImage"
-                                value="<%= data[0].teamPic %>" name="teamPic"  onchange="preview()">
+                            
                 </div>
 
 
@@ -205,9 +204,8 @@
                             <div class="col-3 text-start ">
                                 <label for="validationFile" class="col-form-label">เอกสารยืนยันตัวตน</label>
                             </div>
-                            <div class="col ">
-                                <input type="file" class="form-control border-dark" id="validationFile"
-                                    value="" name="playerFile1" required>
+                            <div class="col-auto">
+                                <a href="../../player/<%= data[i].playerFile1%>" download="<%= data[i].playerFile1 %>"><%= data[i].playerFile1 %></a>
                             </div>
                         </div>
                     </div>
@@ -230,7 +228,7 @@
 
         
                 <div class="form-group" style="margin-top: 10px;">
-                    <a href="/tnmcheck/candidateteam/<%= data[0].tnmID %>" class="btn btn-primary" value="back">ย้อนกลับ</a>
+                    <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
                     <a href="/" class="btn btn-warning" value="edit">แก้ไข</a>
                     <a href="/tnmcheck/team/deny/<%= data[0].teamID%>" class="btn btn-danger" value="deny">ปฏิเสธ</a>
                     <a href="/tnmcheck/team/accept/<%= data[0].teamID%>" class="btn btn-success" value="accept">ยอมรับ</a>
