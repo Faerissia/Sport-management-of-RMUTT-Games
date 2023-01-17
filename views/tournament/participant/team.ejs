@@ -77,10 +77,9 @@
                     <!-- ช่องว่างเว้น -->
                 <!-- </div> -->
 
-                <div class="col-4 my-auto">
+                <div class="col-4 my-auto text-center">
                     <img src="/team/<%=data[0].teamPic %>" id="imgpreview" class=" w-75 rounded mx-auto mb-2 " alt=""
                                 style="height: 10rem; ">
-                            
                 </div>
 
 
@@ -230,9 +229,7 @@
                 <div class="form-group" style="margin-top: 10px;">
                     <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
                     <a href="/" class="btn btn-warning" value="edit">แก้ไข</a>
-                    <a href="/tnmcheck/team/deny/<%= data[0].teamID%>" class="btn btn-danger" value="deny">ปฏิเสธ</a>
-                    <a href="/tnmcheck/team/accept/<%= data[0].teamID%>" class="btn btn-success" value="accept">ยอมรับ</a>
-                    <a href="/" class="btn btn-primary" value="otp">ส่งอีเมล</a>
+
                 </div>
 
     </form>

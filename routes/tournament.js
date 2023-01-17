@@ -3,7 +3,7 @@ let router = express.Router();
 let dbConnection = require('../util/db');
 let bodyParser = require("body-parser");
 const path = require('path');
-
+const url = require('url');
     
 
 // display tournament page
@@ -226,16 +226,16 @@ router.get('/bracket/(:tnmID)', (req, res, next)=> {
 //หน้าผู้เข้าร่วม
 router.get('/participant/(:tnmID)', (req, res, next)=> {
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID WHERE t.tnmID = '+tnmID, (err, rows) => {
+    dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName,team.teamPic,team.teamName,s.type FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN team team ON team.teamID = p.teamID WHERE t.tnmID = '+tnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             if(rows[0].teamID === null){
             res.render('tournament/participant', { data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user});
-        }else{
-            dbConnection.query('SELECT team.*,t.* FROM team team LEFT JOIN tournament t ON team.tnmID = t.tnmID WHERE t.tnmID = '+tnmID,(err, rows) => {
-                res.render('tournament/participant', { data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user});
-            })
-        }
+            }else{
+                dbConnection.query('SELECT * FROM team WHERE tnmID = '+tnmID, (err, rows) => {
+                    res.render('tournament/participant', { data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user});
+                })
+            }
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
@@ -269,6 +269,7 @@ router.get('/highlight/(:tnmID)', (req, res, next)=> {
     dbConnection.query('SELECT t.tnmID,t.tnmName,h.tnmID,h.linkvid,h.filePic,h.date,h.description FROM tournament t LEFT JOIN highlight h ON t.tnmID = h.tnmID WHERE t.tnmID = '+tnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
+
             res.render('tournament/highlight', { data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user});
     }else{
         req.flash('error','ไม่สามารถเข้าถึงได้');
@@ -326,7 +327,7 @@ router.post('/highlight/add/(:tnmID)', (req, res, next)=> {
                 })
             } else {
                 req.flash('success', 'เพิ่ม Highlight เรียบร้อยแล้ว');
-                res.redirect('/tournament')
+                res.redirect('/tournament/highlight/'+tnmID)
             }
         })
     }else{
@@ -334,6 +335,7 @@ router.post('/highlight/add/(:tnmID)', (req, res, next)=> {
         let linkvid = req.body.linkvid;
         let date = req.body.date;
         let description = req.body.description;
+        let videoId = linkvid.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
 
         let form_data = {
             tnmID: tnmID,
@@ -355,7 +357,7 @@ router.post('/highlight/add/(:tnmID)', (req, res, next)=> {
             })
         } else {
             req.flash('success', 'เพิ่ม Highlight เรียบร้อยแล้ว');
-            res.redirect('/tournament/bracket/'+tnmID)
+            res.redirect('/tournament/highlight/'+tnmID)
         }
     })
 
@@ -363,8 +365,36 @@ router.post('/highlight/add/(:tnmID)', (req, res, next)=> {
 
 })
 
+router.get('/participant/team/(:teamID)', (req, res, next) => {
+    let thisteamID = req.params.teamID;
+    dbConnection.query('SELECT t.*, p.*,f.name AS facName,u.name AS uniName FROM team t JOIN player p ON t.teamID = p.teamID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE t.teamID = '+thisteamID, (err, rows) => {
+        if(req.session.loggedin){
+        if(role === 'เจ้าหน้าที่'){
+            res.render('./tournament/participant/team', { data: rows,status_login: req.session.loggedin,user: user });
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('../../login');
+        }
+    }else{
+        res.redirect('error404');
+    }
+    })
+})
 
-
-
+router.get('/participant/player/(:playerID)', (req, res, next) => {
+    let thisplayerID = req.params.playerID;
+    dbConnection.query('SELECT p.playerID,p.playerIDCard,p.playerStudentID,p.playerFName,p.playerLName,p.playerGender,p.playerBirthday,p.playerPhone,p.playerEmail,p.facultyID,p.playerFile1,t.tnmID,t.tnmName,f.uniID,f.facultyID,f.name AS facName,u.uniID,u.name AS uniName FROM player p LEFT JOIN tournament t ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerID ='+thisplayerID, (err, rows) => {
+        if(req.session.loggedin){
+        if(role === 'เจ้าหน้าที่'){
+            res.render('./tournament/participant/player', { data: rows,status_login: req.session.loggedin,user: user });
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('../../login');
+        }
+    }else{
+        res.redirect('error404');
+    }
+    })
+})
 
 module.exports = router;

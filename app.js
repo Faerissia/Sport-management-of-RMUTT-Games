@@ -5,7 +5,7 @@ let bodyParser=require("body-parser");
 let flash = require('express-flash');
 const dbConnection = require('./util/db');
 const session = require('express-session');
-
+const fs = require('fs');
 
 //routes variable
 const dashboard = require('./routes/dashboard');
@@ -26,6 +26,8 @@ global.role;
 global.user;
 
 // all environments
+  const title = fs.readFileSync(path.join(__dirname,'title.txt'), 'utf-8');
+  process.title = title;
 
 app.use(fileUpload());
 app.set('views', __dirname + '/views');
@@ -41,6 +43,12 @@ app.use(session({
   cookie: { maxAge: 60 * 60 * 1000 }
 }))
 
+
+app.post('/change-title', function(req, res) {
+  process.title = req.body.title;
+  fs.writeFileSync(path.join(__dirname, 'title.txt'), process.title);
+  res.redirect('/');
+});
 
 app.get('/login',(req, res) => {
   if (req.session.loggedin) {

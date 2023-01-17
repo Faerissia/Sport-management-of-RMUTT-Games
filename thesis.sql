@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 13, 2023 at 04:44 AM
+-- Generation Time: Jan 15, 2023 at 04:10 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -35,7 +35,7 @@ CREATE TABLE `account` (
   `lname` varchar(50) NOT NULL,
   `phone` varchar(10) NOT NULL,
   `level` enum('เจ้าหน้าที่','ผู้ดูแลระบบ') NOT NULL DEFAULT 'เจ้าหน้าที่' COMMENT 'ระดับสิทธิ์ 0 = แอดมิน,1 = เจ้าหน้าที่',
-  `status` enum('ใช้งาน','ลาออก') NOT NULL DEFAULT 'ใช้งาน' COMMENT 'สถานะการทำงาน 0 = ลาออก ,1 = ใช้งาน'
+  `status` enum('ใช้งาน','ปิดการใช้งาน') NOT NULL DEFAULT 'ใช้งาน'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -46,7 +46,7 @@ INSERT INTO `account` (`accountID`, `email`, `password`, `name`, `lname`, `phone
 (0, 'genxiuyin29@gmail.com', '1234567890', 'nun', 'rat', '0831140590', 'ผู้ดูแลระบบ', 'ใช้งาน'),
 (1, 'admin', 'admin', 'admin', 'admin', '0984926565', 'ผู้ดูแลระบบ', 'ใช้งาน'),
 (2, 'staff', 'staff', 'staff', 'staff', 'staff', 'เจ้าหน้าที่', 'ใช้งาน'),
-(9, 'firstlnw0099@gmail.com', 'f1478fd087', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', '0984926565', 'ผู้ดูแลระบบ', 'ใช้งาน');
+(9, 'firstlnw0099@gmail.com', 'f1478fd087', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', '0984926565', 'ผู้ดูแลระบบ', 'ปิดการใช้งาน');
 
 -- --------------------------------------------------------
 
@@ -199,7 +199,7 @@ CREATE TABLE `player` (
 --
 
 INSERT INTO `player` (`playerID`, `playerIDCard`, `playerStudentID`, `playerFName`, `playerLName`, `playerGender`, `playerBirthday`, `playerPhone`, `playerEmail`, `facultyID`, `teamID`, `playerFile1`, `playerFile2`, `playerFile3`, `tnmID`, `detailDoc`, `otp`, `playerStatus`, `playerRegDate`) VALUES
-(1, '1709800339819', '1163304620219', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2000-05-26', '0984926565', 'firstlnw0099@gmail.com', 1, NULL, '1673517589499_kl.jpg', NULL, NULL, 2, NULL, NULL, NULL, '2023-01-12'),
+(1, '1709800339819', '1163304620219', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2000-05-26', '0984926565', 'firstlnw0099@gmail.com', 1, NULL, '1673517589499_kl.jpg', NULL, NULL, 2, NULL, NULL, 'accept', '2023-01-12'),
 (4, '1163304620219', '1163304620219', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2023-01-13', '0984984094', 'firstlnw0099@gmail.com', 1, 4, '1673527055925_kl.jpg', NULL, NULL, 1, NULL, NULL, NULL, '2023-01-12'),
 (5, '1163031321321', '6516506161601', 'ชลธี', 'คำลือ', 'ชาย', '2023-01-12', '0984984094', 'chonlatee1129@gmail.com', 1, 4, '1673527055929_kl.jpg', NULL, NULL, 1, NULL, NULL, NULL, '2023-01-12'),
 (6, '1163304620219', '1165165161651', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2023-01-03', '0984984094', 'firstlnw0099@gmail.com', 1, 5, '1673527678168_basketball.jpg', NULL, NULL, 1, NULL, NULL, NULL, '2023-01-12'),
@@ -256,7 +256,7 @@ CREATE TABLE `team` (
 --
 
 INSERT INTO `team` (`teamID`, `teamName`, `NameAgent`, `LnameAgent`, `teamPhoneA`, `teamEmailA`, `teamStatus`, `teamPic`, `tnmID`, `detailDoc`, `otp`) VALUES
-(4, 'coach', 'coach', 'coach', '0984926565', 'coach@gmail.com', NULL, '1673527055925_kl.jpg', 1, NULL, NULL),
+(4, 'coach', 'coach', 'coach', '0984926565', 'coach@gmail.com', 'accept', '1673527055925_kl.jpg', 1, NULL, NULL),
 (5, 'teamcoach', 'teamcoach', 'teamcoach', '0984984949', 'coachteam@gmail.com', NULL, '1673527678167_basketball.jpg', 1, NULL, NULL),
 (6, 'test', 'test', 'etst', '0984926565', 'coach@gmail.com', NULL, '1673579350773_basketball.jpg', 1, NULL, NULL);
 

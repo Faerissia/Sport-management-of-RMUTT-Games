@@ -109,15 +109,18 @@
                 <div class="d-flex justify-content-center flex-wrap">
                 <% for(let i = 0; i < data.length; i++) { %>
                     <% if(data[i].linkvid) { %>
+                      <% let videoUrl = data[i].linkvid; %>
+                      <% videoID = videoUrl.split("/").pop(); %>
+
                 <div class="card" style="width: 350px; height: 300px;">
                     <%= data[i].date.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%>
-                <%= data[i].linkvid %>
-                <%= data[i].description %>
+                    <iframe src="https://youtube.com/embed/<%= videoID %>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <%= data[i].description %>
                 </div>
                 <% } %>
                  <%if(data[i].filePic){ %>
                     <div class="card" style="width: 350px; height: 300px;">
-                    <%= data[i].date.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%> <p>test</p>
+                    <%= data[i].date.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%>
                     <img id="myImg" src="../../images/<%=data[i].filePic%>" alt="<%= data[i].description%>">
                         <!-- The Modal -->
                         <div id="myModal" class="modal">
@@ -132,9 +135,10 @@
 
 
         <% if(!data.length){ %>
+          <div class="row py-5">
             <h1>ไม่พบรายการ</h1>
+            </div>
             <% } %>
-
             </div>
 
 
@@ -150,6 +154,7 @@
     var img = document.getElementById("myImg");
     var modalImg = document.getElementById("img01");
     var captionText = document.getElementById("caption");
+    
     img.onclick = function(){
       modal.style.display = "block";
       modalImg.src = this.src;
