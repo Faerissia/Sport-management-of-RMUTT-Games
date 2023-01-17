@@ -24,6 +24,12 @@
         </script>
 <h1>รายการบัญชีผู้ใช้งาน</h1>
 <a href="/account/add" class="btn btn-primary">เพิ่มผู้ใช้งาน</a>
+<div class="float-end">
+<form action="/account/search-account" method="post">
+    <input type="text" name="search" placeholder="ค้นหา...">
+    <button type="submit" class="btn btn-primary" >ค้นหา</button>
+</form>
+</div>
     <div class="card">
         <div class="card-header">
             <ul class="nav nav-pills w-100">
@@ -64,7 +70,7 @@
 
             <!-- if result is empty-->
             <% if(!data.length) { %>
-                <p class="text-center">ไม่พบรายการกีฬา</p>
+                <p class="text-center">ไม่พบรายการบัญชี</p>
             <% } %>
         </div>
     </div>

@@ -2,6 +2,8 @@ let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
 
+
+
 // display faculty list
 router.get('/(:uniID)', (req, res, next) => {
     let uniID = req.params.uniID;
@@ -88,7 +90,7 @@ router.get('/edit/(:facultyID)', (req, res, next) => {
                 title: 'แก้ไข มหาวิทยาลัย',
                 facultyID: rows[0].facultyID,
                 name: rows[0].name,
-                uniID: rows[0].uniID
+                uniID: rows[0].uniID,status_login: req.session.loggedin
             })
         }}else{
             req.flash('error','ไม่สามารถเข้าถึงได้');

@@ -47,7 +47,7 @@ app.use(session({
 app.post('/change-title', function(req, res) {
   process.title = req.body.title;
   fs.writeFileSync(path.join(__dirname, 'title.txt'), process.title);
-  res.redirect('/');
+  res.redirect('/dashboard');
 });
 
 app.get('/login',(req, res) => {

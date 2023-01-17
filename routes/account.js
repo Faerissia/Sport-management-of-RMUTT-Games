@@ -2,6 +2,17 @@ let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
 
+router.post('/search-account', (req, res) => {
+    let query = req.body.search;
+    let sql = 'SELECT * FROM account WHERE name LIKE ?';
+    let like = ['%' + query + '%'];
+    dbConnection.query(sql, like, (err, results) => {
+        if(err) throw err;
+        console.log(results)
+        res.render('account', {data: results,status_login: req.session.loggedin,user: user});
+    });
+});
+
 // display account page
 router.get('/', (req, res, next) => {
         dbConnection.query('SELECT * FROM account ORDER BY accountID asc', (err, rows) => {
