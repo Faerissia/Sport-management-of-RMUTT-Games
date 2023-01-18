@@ -1,50 +1,76 @@
 <%- include("../partials/header") %>
-<%- include("../partials/sidebar") %>
-        <div class="col-10 py-3 mx-auto">
+    <%- include("../partials/sidebar") %>
+        <div class="col py-3 mx-auto">
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>sport</title>
-</head>
-<body>
+            <!DOCTYPE html>
+            <html lang="en">
 
-    <% if (messages.error) { %>
-        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
-    <% } %>
-    
-    <br><br>
+            <head>
+                <title>sport</title>
+            </head>
 
-    <div class="card">
-        <div class="card-header">
-            เพิ่มกีฬา
+            <body>
+
+                <% if (messages.error) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= messages.error %>
+                    </div>
+                    <% } %>
+
+                        <br><br>
+
+                        <div class="card">
+                            <div class="card-header display-6">
+                                เพิ่มกีฬา
+                            </div>
+                            <div class="card-body">
+                                <form action="/sport/add" method="post" class="needs-validation">
+                                    <div class="form-group">
+                                        <div class="row row-cols-1">
+                                            <div class="row g-2">
+                                                <div class="col-5">
+                                                    <label class="form-label">ชื่อกีฬา</label>
+                                                    <input type="text" class="form-control border border-dark"
+                                                        name="sportName" value="<%= sportName %>" autocomplete="off"
+                                                        required>
+                                                </div>
+                                            </div>
+
+                                            <div class="row g-2">
+                                                <div class="col-auto">
+                                                    <label class="form-label">ประเภท</label>
+                                                    <select name="type" class="form-select border border-dark"
+                                                        autocomplete="off" required>
+                                                        <option selected disabled value="">เลือกประเภท</option>
+                                                        <option value="<%= type='คู่' %>">คู่</option>
+                                                        <option value="<%= type='ทีม' %>">ทีม</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-1">
+                                                    <label class="form-label">จำนวนผู้เล่น</label>
+                                                    <input type="text" class="form-control border border-dark"
+                                                        name="sportPlaynum" value="<%= sportPlaynum %>"
+                                                        autocomplete="off" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row row-cols-2 mt-5 text-center d-flex justify-content-center">
+                                        <div class="col-2">
+                                            <a href="javascript:history.back()" class="btn btn-danger">ยกเลิก</a>
+                                        </div>
+                                        <div class="col-2">
+                                            <button class="btn btn-success" type="submit">ยืนยัน</button>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+
+            </body>
+
+            </html>
         </div>
-        <div class="card-body">
-            <form action="/sport/add" method="post">
-                <div class="form-group">
-                    <label>ชื่อกีฬา:</label>
-                    <input type="text" class="form-control" name="sportName" value="<%= sportName %>" autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label style="margin-top: 15px;">ประเภท:</label>
-                    <select name="type">
-                        <option value="<%= type='เดี่ยว' %>">เดี่ยว</option>
-                        <option value="<%= type='คู่' %>">คู่</option>
-                        <option value="<%= type='ทีม' %>">ทีม</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label style="margin-top: 10px;">จำนวนผู้เล่น:</label>
-                    <input type="text" class="form-control" name="sportPlaynum" value="<%= sportPlaynum %>" autocomplete="off">
-                </div>
-                <div class="form-group" style="margin-top: 10px;">
-                    <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
-                    <input type="submit" class="btn btn-info" value="เพิ่ม">
-                </div>
-            </form>
-        </div>
-    </div>
-
-</body>
-</html>
-</div>

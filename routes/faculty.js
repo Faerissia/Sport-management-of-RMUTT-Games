@@ -89,6 +89,7 @@ router.get('/edit/(:facultyID)', (req, res, next) => {
                 facultyID: rows[0].facultyID,
                 name: rows[0].name,
                 uniID: rows[0].uniID
+                ,status_login: req.session.loggedin
             })
         }}else{
             req.flash('error','ไม่สามารถเข้าถึงได้');

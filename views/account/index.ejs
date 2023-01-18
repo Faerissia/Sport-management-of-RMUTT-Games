@@ -1,74 +1,102 @@
 <%- include("../partials/header") %>
-<%- include("../partials/sidebar") %>
-        <div class="col-10 py-3 mx-auto">
+    <%- include("../partials/sidebar") %>
+        <div class="col py-3 mx-auto">
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>account</title>
-</head>
-<body>
+            <!DOCTYPE html>
+            <html lang="en">
 
-    <% if (messages.error) { %>
-        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
-    <% } %>
-    
-    <% if (messages.success) { %>
-        <div class="alert alert-success" role="alert"><%= messages.success %></div>
-    <% } %>
+            <head>
+                <title>account</title>
+            </head>
 
-    <script type="text/javascript">
-        function confirm_delete() {
-          return confirm('are you sure?');
-        }
-        </script>
-<h1>รายการบัญชีผู้ใช้งาน</h1>
-<a href="/account/add" class="btn btn-primary">เพิ่มผู้ใช้งาน</a>
-    <div class="card">
-        <div class="card-header">
-            <ul class="nav nav-pills w-100">
-                <li class="nav-link ml-auto">
-                    
-                </li>
-            </ul>
+            <body>
+
+                <% if (messages.error) { %>
+                    <div class="alert alert-danger " role="alert">
+                        <%= messages.error %>
+                    </div>
+                    <% } %>
+
+                        <% if (messages.success) { %>
+                            <div class="alert alert-success" role="alert">
+                                <%= messages.success %>
+                            </div>
+                            <% } %>
+
+                                <script type="text/javascript">
+                                    function confirm_delete() {
+                                        return confirm('are you sure?');
+                                    }
+                                </script>
+                                <h1>รายการบัญชีผู้ใช้งาน</h1>
+                                <a href="/account/add" class="btn btn-primary">เพิ่มผู้ใช้งาน</a>
+                                <div class="float-end">
+                                    <form action="/account/search-account" method="post">
+                                        <div class="input-group ">
+                                            <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา...">
+                                            <button type="submit" class="btn btn-primary">ค้นหา</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card w-100">
+                                    <div class="card-header">
+                                        <ul class="nav nav-pills w-100">
+                                            <li class="nav-link ml-auto">
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body">
+                                        <% if(data.length) { %>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">ระดับผู้ใช้งาน</th>
+                                                        <th scope="col">ชื่อ - นามสกุล</th>
+                                                        <th scope="col">เบอร์โทรศัพท์</th>
+                                                        <th scope="col">สถานะการใช้งาน</th>
+                                                        <th width="230px">ตัวเลือก</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% for(let i=0; i < data.length; i++) { %>
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <%= data[i].level %>
+                                                            </th>
+                                                            <td>
+                                                                <%= data[i].name %>
+                                                                    <%= data[i].lname %>
+                                                            </td>
+                                                            <td>
+                                                                <%= data[i].phone %>
+                                                            </td>
+                                                            <td>
+                                                                <%= data[i].status %>
+                                                            </td>
+                                                            <td>
+                                                                <a href="../account/delete/<%= data[i].accountID %>"
+                                                                    onclick="return confirm_delete()"
+                                                                    class="btn btn-danger delete">ลบ</a>
+                                                                <a href="../account/edit/<%= data[i].accountID %>"
+                                                                    class="btn btn-warning edit">แก้ไข</a>
+                                                                <a href="../account/page/<%= data[i].accountID %>"
+                                                                    class="btn btn-primary">ดูข้อมูล</a>
+                                                            </td>
+                                                        </tr>
+                                                        <% } %>
+                                                </tbody>
+                                            </table>
+                                            <% } %>
+
+                                                <!-- if result is empty-->
+                                                <% if(!data.length) { %>
+                                                    <p class="text-center">ไม่พบรายการบัญชี</p>
+                                                    <% } %>
+                                    </div>
+                                </div>
+
+            </body>
+
+            </html>
         </div>
-        <div class="card-body">
-            <% if(data.length) { %>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">ระดับผู้ใช้งาน</th>
-                            <th scope="col">ชื่อ - นามสกุล</th>
-                            <th scope="col">เบอร์โทรศัพท์</th>
-                            <th scope="col">สถานะการใช้งาน</th>
-                            <th width="230px">ตัวเลือก</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for(let i = 0; i < data.length; i++) { %>
-                            <tr>
-                                <th scope="row"><%= data[i].level %></th>
-                                <td><%= data[i].name %> <%= data[i].lname %></td>
-                                <td><%= data[i].phone %></td>
-                                <td><%= data[i].status %></td>
-                                <td>
-                                    <a href="../account/delete/<%= data[i].accountID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                    <a href="../account/edit/<%= data[i].accountID %>" class="btn btn-warning edit">แก้ไข</a>
-                                    <a href="../account/page/<%= data[i].accountID %>" class="btn btn-primary">ดูข้อมูล</a>
-                                </td>
-                            </tr>
-                        <% } %>
-                    </tbody>
-                </table>
-            <% } %>
-
-            <!-- if result is empty-->
-            <% if(!data.length) { %>
-                <p class="text-center">ไม่พบรายการกีฬา</p>
-            <% } %>
-        </div>
-    </div>
-
-</body>
-</html>
-    </div>
