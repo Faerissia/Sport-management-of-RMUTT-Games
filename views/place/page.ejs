@@ -18,10 +18,9 @@
 
     <div class="card">
         <div class="card-header display-6">
-            แก้ไขสถานที่
+            ข้อมูลสถานที่
         </div>
         <div class="card-body">
-            <form action="/place/update/<%= placeID %>" method="post" class="form needs-validation">
                 <!--  -->
                 <div class="row my-2  p row-cols-2">
                     <div class="col-2 ">
@@ -29,7 +28,7 @@
                     </div>
                     <div class="col-4">
                         <input type="text" class="form-control border-dark" name="placeName"
-                            autocomplete="off" required value="<%= placeName %>">
+                            autocomplete="off" required value="<%= data[0].placeName %>">
                     </div>
                 </div>
                 <!--  -->
@@ -38,7 +37,7 @@
                         <label style="margin-top: 15px;">กีฬา</label>
                     </div>
                     <div class="col-auto">
-                        <input type="text" class="form-control border-dark" name="typeID" value="<%= typeID %>" autocomplete="off" required>
+                        <input type="text" class="form-control border-dark" name="typeID" value="<%= data[0].typeID %>" autocomplete="off" required>
                     </div>
                 </div>
                 <!--  -->
@@ -48,7 +47,7 @@
                     </div>
                     <div class="col-4">
                         <input type="text" class="form-control border-dark" name="placeUrl"
-                            autocomplete="off"  value="<%= placeUrl %>" required>
+                            autocomplete="off"  value="<%= data[0].placeUrl %>" required>
                     </div>
                 </div>
                 <!--  -->
@@ -68,7 +67,7 @@
                     </div>
                     <div class="col-4">
                         <textarea input type="text" class="form-control border-dark" name="placeDetail"
-                            autocomplete="off" value="<%= placeDetail %>" required><%= placeDetail %>
+                            autocomplete="off" value="<%= data[0].placeDetail %>" required><%= data[0].placeDetail %>
                     </textarea>
                     </div>
                 </div>
@@ -77,11 +76,7 @@
                 <div class="col-2">
                     <a href="/place" class="btn btn-danger">ย้อนกลับ</a>
                 </div>
-                <div class="col-2">
-                    <button class="btn btn-success" type="submit">Update</button>
-                </div>
             </div>
-            </form>
         </div>
     </div>
 

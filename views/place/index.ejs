@@ -23,9 +23,17 @@
         }
         </script>
 
-<h1>รายการสถานที่</h1>
+<h1>รายการสถานที่แข่งขัน</h1>
 <a href="/place/add" class="btn btn-primary">เพิ่มสถานที่</a>
-    <div class="card">
+<div class="float-end">
+    <form action="/place/search-place" method="post">
+        <div class="input-group ">
+        <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา...">
+        <button type="submit" class="btn btn-primary" >ค้นหา</button>
+    </div>
+    </form>
+    </div>
+    <div class="card w-100">
         <div class="card-header">
             <ul class="nav nav-pills w-100">
                 <li class="nav-link ml-auto">
@@ -51,6 +59,7 @@
                                 <td>
                                     <a href="../place/edit/<%= data[i].placeID %>" class="btn btn-warning edit">แก้ไข</a>
                                     <a href="../place/delete/<%= data[i].placeID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
+                                    <a href="../place/page/<%= data[i].placeID %>" class="btn btn-primary edit">ดู</a>
                                 </td>
                             </tr>
                         <% } %>

@@ -5,17 +5,19 @@ let dbConnection = require('../util/db');
 
 router.post('/search-tnmcheck', (req, res) => {
     let query = req.body.search;
-    if(!query){
-        res.redirect('/tnmcheck');
-    }else{ 
+    let sql ;
+    let like = [];
+    if(query){
         sql = "SELECT t.tnmID,t.tnmName,t.Renddate,s.sportID,s.sportName,s.sportPlaynum, SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count, SUM(CASE p.playerStatus WHEN 'deny' THEN 1 ELSE 0 END) AS deny_count, SUM(CASE p.playerStatus WHEN 'wait' THEN 1 ELSE 0 END) AS wait_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p on t.tnmID = p.tnmID WHERE tnmName LIKE ? GROUP BY t.tnmID";
-        let like =['%' + query + '%'];
-    
+        like.push('%' + query + '%');
+    }else{ 
+        sql = "SELECT t.tnmID,t.tnmName,t.Renddate,s.sportID,s.sportName,s.sportPlaynum, SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count, SUM(CASE p.playerStatus WHEN 'deny' THEN 1 ELSE 0 END) AS deny_count, SUM(CASE p.playerStatus WHEN 'wait' THEN 1 ELSE 0 END) AS wait_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p on t.tnmID = p.tnmID GROUP BY t.tnmID";
+    }
     dbConnection.query(sql, like, (err, results) => {
         if(err) throw err;
         res.render('tnmcheck', {data: results,status_login: req.session.loggedin,user: user});
     });
-}
+
 });
 
 // display tnmcheck page

@@ -5,10 +5,23 @@ let bodyParser = require("body-parser");
 const path = require('path');
 const url = require('url');
     
+router.post('/search-tournament', (req, res) => {
+    let query = req.body.search;
+    if(!query) {
+        res.redirect('/tournament');
+    } else {
+        let sql = 'SELECT t.tnmID, t.tnmName,s.sportName,t.tnmStartdate,s.sportPlaynum,t.tnmTypegame, SUM(CASE p.playerStatus WHEN "accept" THEN 1 ELSE 0 END) AS accept_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmTypegame IS NULL AND t.tnmName LIKE ? GROUP BY t.tnmID';
+        let like = ['%' + query + '%'];
+        dbConnection.query(sql, like, (err, results) => {
+            if(err) throw err;
+            res.render('tournament', {data: results,status_login: req.session.loggedin,user: user});
+        });
+    }
+});
 
 // display tournament page
 router.get('/', (req, res, next) => {
-    sql ="SELECT t.tnmID, t.tnmName,s.sportName,t.tnmStartdate,t.tnmTypegame,SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmTypegame IS NULL GROUP BY t.tnmID;";
+    sql = "SELECT t.tnmID, t.tnmName,s.sportName,t.tnmStartdate,s.sportPlaynum,t.tnmTypegame, SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmTypegame IS NULL GROUP BY t.tnmID;";
 
     dbConnection.query(sql, (err, rows) => {
     if(req.session.loggedin){

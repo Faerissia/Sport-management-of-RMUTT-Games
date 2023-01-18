@@ -24,8 +24,17 @@
     <% if(data.length) { %>
         <h1>รายการคณะของ<%= data[0].uniName %></h1>
 <a href="/faculty/add/<%= uniID %>" class="btn btn-primary">เพิ่มคณะ</a>
-<% } %>
-    <div class="card">
+
+<div class="float-end">
+    <form action="/faculty/search-fac" method="post">
+        <div class="input-group ">
+            <input type="hidden" name="uniID" value="<%= data[0].uniID %>">
+            <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา...">
+            <button type="submit" class="btn btn-primary">ค้นหา</button>
+        </div>
+    </form>
+</div>
+    <div class="card w-100">
         <div class="card-header">
             <ul class="nav nav-pills w-100">
                 <li class="nav-link ml-auto">
@@ -55,9 +64,19 @@
                         <% } %>
                     </tbody>
                 </table>
+                <% } %>
                 <!-- if result is empty-->
             <% if(!data.length) { %>
                 <a href="/faculty/add/<%= uniID %>" class="btn btn-primary">เพิ่มคณะ</a>
+                <div class="float-end">
+                    <form action="/faculty/search-fac" method="post">
+                        <div class="input-group ">
+                            <input type="hidden" name="uniID" value="<%= uniID %>">
+                            <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา...">
+                            <button type="submit" class="btn btn-primary">ค้นหา</button>
+                        </div>
+                    </form>
+                </div>
                 <p class="text-center">ไม่พบรายการคณะ</p>
             <% } %>
         </div>

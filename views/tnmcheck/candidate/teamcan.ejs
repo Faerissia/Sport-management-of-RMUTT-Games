@@ -49,7 +49,7 @@
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
                             <% const date = new Date(data[i].playerRegDate); %>
-                            <% if(data[i].teamStatus === null) { %>
+                            <% if(data[i].teamStatus === 'wait') { %>
                             <tr>
                                 <td><%= data[i].teamName %></td>
                                 <td><%= data[i].NameAgent %> <%= data[i].LnameAgent %></td>

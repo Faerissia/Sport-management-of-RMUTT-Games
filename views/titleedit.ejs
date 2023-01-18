@@ -21,8 +21,8 @@
 	<p>Hello Dashboard</p>
     <form action="/change-title" method="post">
         <label for="title">ชื่อระบบ:</label>
-        <h4><%= process.title %> </h4>
-        <a  href="/dashboard/edit" class="btn-warning btn">แก้ไข</a>
+        <input type="text" id="title" name="title" value="<%= process.title %>">
+        <input type="submit" value="ตกลง">
       </form>
 </div>	
 

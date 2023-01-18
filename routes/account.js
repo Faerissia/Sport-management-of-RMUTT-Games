@@ -4,13 +4,16 @@ let dbConnection = require('../util/db');
 
 router.post('/search-account', (req, res) => {
     let query = req.body.search;
-    let sql = 'SELECT * FROM account WHERE name LIKE ?';
-    let like = ['%' + query + '%'];
+    if(!query){
+        res.redirect('/account');
+    }else{ 
+        sql = 'SELECT * FROM account WHERE name LIKE ? OR lname LIKE ?';
+        let like = ['%' + query + '%','%' + query +'%'];
     dbConnection.query(sql, like, (err, results) => {
         if(err) throw err;
-        console.log(results)
         res.render('account', {data: results,status_login: req.session.loggedin,user: user});
     });
+}
 });
 
 // display account page

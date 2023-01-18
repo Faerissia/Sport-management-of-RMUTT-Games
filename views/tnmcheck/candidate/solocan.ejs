@@ -51,7 +51,7 @@
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
                             <% const date = new Date(data[i].playerRegDate); %>
-                            <% if(data[i].playerStatus === null) { %>
+                            <% if(data[i].playerStatus === 'wait') { %>
                             <tr>
                                 <td><%= data[i].playerFName %> <%= data[i].playerLName %></td>
                                 <td><%= data[i].playerGender %></td>
@@ -79,6 +79,7 @@
                             <th scope="col">อายุ</th>
                             <th scope="col">เบอร์โทรศัพท์</th>
                             <th scope="col">วันที่สมัคร</th>
+                            <th scope="col">หมายเหตุ</th>
                             <th width="200px">ตัวเลือก</th>
                     </tr>
                 </thead>
@@ -91,7 +92,8 @@
                                 <td><%= data[i].age %></td>
                                 <td><%= data[i].playerPhone %></td>
                                 <td><%= data[i].playerRegDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
-                            <td>
+                                <td></td>
+                                <td>
                                 <a href="../candidate/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
                                 <a href="../candidate/edit/<%= data[i].tnmID %>" class="btn btn-warning edit">แก้ไข</a>
                                 <a href="../player/<%=data[i].playerID%>" class="btn btn-primary page">ดู</a>

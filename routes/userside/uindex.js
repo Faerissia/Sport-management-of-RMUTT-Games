@@ -118,7 +118,6 @@ router.post('/singlereg', (req, res, next) =>{
     let errors = false;
 
     var name_pfile = new Date().getTime() +'_'+playerFile1.name;
-
     playerFile1.mv('./assets/player/' + name_pfile);
 
 
@@ -193,17 +192,6 @@ router.post('/teamreg', (req, res, next) =>{
                 playerFile1[i].mv('./assets/player/' + name_pfile);
                 player_photo = name_pfile
         }
-        console.log(playerFName[i])
-        console.log(playerLName[i])
-        console.log(playerGender[i])
-        console.log(playerBirthday[i])
-        console.log(playerPhone[i])
-        console.log(playerEmail[i])
-        console.log(facultyID[i])
-        console.log(playerIDCard[i])
-        console.log(playerStudentID[i])
-        console.log(player_photo[i])
-        console.log(tnmID)
         values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], playerStudentID[i],player_photo, tnmID])
         }
     
@@ -222,7 +210,8 @@ router.post('/teamreg', (req, res, next) =>{
         dbConnection.query(sql_player, [values], function (err, result) {
             if (err) throw err;
             console.log("Number of persons inserted: " + result.affectedRows);
-            res.redirect('/');
+            req.flash('success', 'สมัครเข้าร่วมการแข่งขันแล้ว');
+            res.redirect('/tnmdetail/'+tnmID);
                 
         })
     })

@@ -2,6 +2,23 @@ let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
 
+
+
+router.post('/search-uni', (req, res) => {
+    let query = req.body.search;
+    if(!query) {
+        res.redirect('/uni');
+    } else {
+        let sql = 'SELECT university.uniID, university.name, COUNT(faculty.uniID) AS count ,university.status FROM university LEFT JOIN faculty ON university.uniID = faculty.uniID WHERE university.name LIKE ? GROUP BY university.uniID';
+        let data = ['%' + query + '%'];
+        dbConnection.query(sql, data, (err, results) => {
+            if(err) throw err;
+            res.render('uni', {data: results,status_login: req.session.loggedin,user: user});
+        });
+    }
+});
+
+
 // display uni page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT university.uniID, university.name, COUNT(faculty.uniID) AS count ,university.status FROM university LEFT JOIN faculty ON university.uniID = faculty.uniID GROUP BY university.uniID ORDER BY uniID asc', (err, rows) => {

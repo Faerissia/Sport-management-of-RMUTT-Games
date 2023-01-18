@@ -33,10 +33,10 @@
                                 <%= data[0].tnmName %>
                             </p>
 
-                            <% if(data[0].type === 'เดี่ยว'){ %>
-                            <a class="btn btn-warning " href="/singlereg/<%= data[0].tnmID %>">สมัครแข่งขัน</a>
-                                <% }else{ %>
+                            <% if(data[0].sportPlaynum > 1){ %>
                                 <a class="btn btn-warning " href="/teamreg/<%= data[0].tnmID %>">สมัครแข่งขัน</a>
+                                <% }else{ %>
+                                <a class="btn btn-warning " href="/singlereg/<%= data[0].tnmID %>">สมัครแข่งขัน</a>
                                     <% } %>
                                 
                         </div>
