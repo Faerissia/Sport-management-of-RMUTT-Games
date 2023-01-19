@@ -120,34 +120,61 @@ router.post('/singlereg', (req, res, next) =>{
     var name_pfile = new Date().getTime() +'_'+playerFile1.name;
     playerFile1.mv('./assets/player/' + name_pfile);
 
-
-    // if no error
-    if(!errors) {
-        let form_data = {
-            tnmID: tnmID,
-            playerFName: playerFName,
-            playerLName: playerLName,
-            playerGender: playerGender,
-            playerBirthday: playerBirthday,
-            playerPhone: playerPhone,
-            playerEmail: playerEmail,
-            facultyID: facultyID,
-            playerIDCard: playerIDCard,
-            playerStudentID: playerStudentID,
-            playerFile1: name_pfile
-        }
-        // insert query db
-        dbConnection.query('INSERT INTO player SET ?', form_data, (err, result) => {
-            if (err) {
-                console.log(JSON.stringify(err));
-                req.flash('error', err)
-                res.redirect('/tnmdetail/'+tnmID)
-            } else {
-                req.flash('success', 'สมัครเข้าร่วมการแข่งขันแล้ว');
-                res.redirect('/tnmdetail/'+tnmID);
+    dbConnection.query('SELECT * FROM player WHERE playerIDCard = ? AND tnmID = ?',[playerIDCard, tnmID] ,(err,rows) => {
+        if(rows.length > 0){
+            let form_data = {
+                tnmID: tnmID,
+                playerFName: playerFName,
+                playerLName: playerLName,
+                playerGender: playerGender,
+                playerBirthday: playerBirthday,
+                playerPhone: playerPhone,
+                playerEmail: playerEmail,
+                facultyID: facultyID,
+                playerIDCard: playerIDCard,
+                playerStudentID: playerStudentID,
+                playerFile1: name_pfile,
+                detailDoc: 'สมัครซ้ำ'
             }
-        })
-    }
+            console.log('ซ้ำ')
+            dbConnection.query('INSERT INTO player SET ?', form_data, (err, result) => {
+                if (err) {
+                    console.log(JSON.stringify(err));
+                    req.flash('error', err)
+                    res.redirect('/tnmdetail/'+tnmID)
+                } else {
+                    req.flash('success', 'สมัครเข้าร่วมการแข่งขันแล้ว');
+                    res.redirect('/tnmdetail/'+tnmID);
+                }
+            })
+        }else{
+            let form_data = {
+                tnmID: tnmID,
+                playerFName: playerFName,
+                playerLName: playerLName,
+                playerGender: playerGender,
+                playerBirthday: playerBirthday,
+                playerPhone: playerPhone,
+                playerEmail: playerEmail,
+                facultyID: facultyID,
+                playerIDCard: playerIDCard,
+                playerStudentID: playerStudentID,
+                playerFile1: name_pfile
+            }
+            console.log('ไม่ซ้ำ')
+            dbConnection.query('INSERT INTO player SET ?', form_data, (err, result) => {
+                if (err) {
+                    console.log(JSON.stringify(err));
+                    req.flash('error', err)
+                    res.redirect('/tnmdetail/'+tnmID)
+                } else {
+                    req.flash('success', 'สมัครเข้าร่วมการแข่งขันแล้ว');
+                    res.redirect('/tnmdetail/'+tnmID);
+                }
+            })
+        }
+    })
+        
 })
 
 router.get('/teamreg/(:tnmID)', (req, res, next) => {

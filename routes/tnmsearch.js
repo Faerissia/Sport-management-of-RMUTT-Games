@@ -1,33 +1,54 @@
+const { createArrayCsvWriter } = require('csv-writer');
 let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const iconv = require('iconv-lite');
+const fs = require('fs');
 
 
 router.post('/search-tnmcheck', (req, res) => {
     let query = req.body.search;
-    let sql ;
-    let like = [];
-    if(query){
-        sql = "SELECT t.tnmID,t.tnmName,t.Renddate,s.sportID,s.sportName,s.sportPlaynum, SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count, SUM(CASE p.playerStatus WHEN 'deny' THEN 1 ELSE 0 END) AS deny_count, SUM(CASE p.playerStatus WHEN 'wait' THEN 1 ELSE 0 END) AS wait_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p on t.tnmID = p.tnmID WHERE tnmName LIKE ? GROUP BY t.tnmID";
-        like.push('%' + query + '%');
+    if(!query){
+        res.redirect('/tnmcheck');
     }else{ 
-        sql = "SELECT t.tnmID,t.tnmName,t.Renddate,s.sportID,s.sportName,s.sportPlaynum, SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count, SUM(CASE p.playerStatus WHEN 'deny' THEN 1 ELSE 0 END) AS deny_count, SUM(CASE p.playerStatus WHEN 'wait' THEN 1 ELSE 0 END) AS wait_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p on t.tnmID = p.tnmID GROUP BY t.tnmID";
-    }
+        sql = "";
+        let like =['%' + query + '%'];
+    
     dbConnection.query(sql, like, (err, results) => {
         if(err) throw err;
         res.render('tnmcheck', {data: results,status_login: req.session.loggedin,user: user});
     });
-
+}
 });
 
 // display tnmcheck page
 router.get('/', (req, res, next) => {
-    const sql = "SELECT t.tnmID,t.tnmName,t.Renddate,s.sportID,s.sportName,s.sportPlaynum, SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count, SUM(CASE p.playerStatus WHEN 'deny' THEN 1 ELSE 0 END) AS deny_count, SUM(CASE p.playerStatus WHEN 'wait' THEN 1 ELSE 0 END) AS wait_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p on t.tnmID = p.tnmID GROUP BY t.tnmID;";
+    const sql = "SELECT t.*,s.* FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID ORDER BY tnmID asc;";
 
     dbConnection.query(sql, (err, rows) => {
     if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
-            res.render('tnmcheck', { data: rows,status_login: req.session.loggedin,user: user });
+            const csvWriter = createCsvWriter({
+                path: 'assets/data.csv',
+                header:[
+                    {id: 'tnmName', title:'ชื่อการแข่งขัน'},
+                    {id: 'sportName', title:'ประเภทกีฬา'},
+                    {id: 'tnmStartdate', title:'วันที่เริ่มแข่งขัน'},
+                    {id: 'tnmEnddate', title:'วันที่สิ้นสุด'}
+                ],
+                encoding: 'utf8'
+            });
+           
+            csvWriter.writeRecords(rows)
+            .then(() => {
+                console.log('...Done');
+            });
+            let csv = fs.readFileSync('assets/data.csv');
+            csv = iconv.encode(csv, 'utf8');
+            fs.writeFileSync('assets/data.csv', csv);
+
+            res.render('tnmsearch', { data: rows,status_login: req.session.loggedin,user: user });
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');

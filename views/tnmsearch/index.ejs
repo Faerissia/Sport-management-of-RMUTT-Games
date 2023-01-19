@@ -6,6 +6,7 @@
 <html lang="en">
 <head>
     <title>tournament</title>
+    <meta charset="UTF-8">
 </head>
 <body>
 
@@ -22,9 +23,10 @@
           return confirm('are you sure?');
         }
         </script>
-<h1>รายการของการแข่งขันที่ต้องกำหนดรูปแบบ</h1>
-<a href="/tournament/add" class="btn btn-primary">เพิ่มการแข่งขัน</a>
-<div class="float-end">
+<h1>ค้าหารายการแข่งขัน</h1>
+
+<div class="float-start">
+    <a href="/tournament/add" class="btn btn-primary">เพิ่มการแข่งขัน</a>
     <form action="/tournament/search-tournament" method="post">
         <div class="input-group ">
             <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา...">
@@ -32,6 +34,9 @@
         </div>
     </form>
 </div>
+
+<button class="btn btn-success float-end" id="download-button">Download CSV</button>
+
     <div class="card w-100">
         <div class="card-header">
             <ul class="nav nav-pills w-100">
@@ -48,22 +53,19 @@
                             <th scope="col">#</th>
                             <th scope="col">ชื่อการแข่งขัน</th>
                             <th scope="col">ประเภทกีฬา</th>
-                            <th scope="col">วันที่เริ่มแข่ง</th>
-                            <th scope="col">จำนวนผู้เข้าร่วม</th>
+                            <th scope="col">วันที่เริ่มแข่งขัน</th>
+                            <th scope="col">วันที่สิ้นสุดการแข่งขัน</th>
                             <th width="200px">ตัวเลือก</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
                             <tr>
-                                <% if(data[i].type !== 'เดี่ยว'){ %>
-                                    <% data[i].accept_count = data[i].accept_count / data[i].sportPlaynum %>
-                                    <% } %>
                                 <th scope="row"><%= i+1 %></th>
                                 <td><%= data[i].tnmName %></td>
-                                <td><%= data[i].sportName %></td>
-                                <td><%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
-                                <td><%= data[i].accept_count %></td>
+                                <td><%= data[i].sportName%></td>
+                                <td><%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%></td>
+                                <td><%= data[i].tnmEnddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%></td>
                                 <td>
                                     <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
                                     <a href="../tournament/bracket/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
@@ -80,6 +82,19 @@
             <% } %>
         </div>
     </div>
+
+<script>
+document.getElementById("download-button").addEventListener("click", function(){
+    var fileUrl = "data.csv";
+    var a = document.createElement("a");
+    a.href = fileUrl;
+    a.download = fileUrl.substr(fileUrl.lastIndexOf("/") + 1);
+    a.setAttribute("charset", "UTF-8");
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+});
+</script>
 
 </body>
 </html>

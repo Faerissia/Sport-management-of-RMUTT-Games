@@ -92,7 +92,7 @@ router.post('/add', (req, res, next) =>{
 // display edit place page
 router.get('/edit/(:placeID)', (req, res, next) => {
     let placeID = req.params.placeID;
-    dbConnection.query('SELECT * FROM place WHERE placeID = ' + placeID, (err, rows, fields) => {
+    dbConnection.query('SELECT s.*,p.* FROM place p LEFT JOIN sport_type s ON s.typeID = p.typeID WHERE placeID = ' + placeID, (err, rows, fields) => {
         if(role === 'เจ้าหน้าที่'){
         if (rows.length <= 0) {
             req.flash('error', 'place not found with id = ' + placeID)
@@ -100,6 +100,7 @@ router.get('/edit/(:placeID)', (req, res, next) => {
         } else {
             res.render('place/edit', {
                 title: 'แก้ไข กีฬา',
+                data: rows,
                 placeID: rows[0].placeID,
                 placeName: rows[0].placeName,
                 typeID: rows[0].typeID,
@@ -169,7 +170,7 @@ router.get('/delete/(:placeID)', (req, res, next) => {
 
 router.get('/page/(:placeID)', (req, res, next) => {
     let placeID = req.params.placeID;
-    dbConnection.query('SELECT * FROM place WHERE placeID = ' + placeID, (err, rows) => {
+    dbConnection.query('SELECT p.*,s.* FROM place p LEFT JOIN sport_type s ON p.typeID = s.typeID WHERE placeID =' + placeID, (err, rows) => {
         if(role === 'เจ้าหน้าที่'){
         if (rows.length <= 0) {
             req.flash('error', 'ไม่พบสถานที่แข่งขัน ' + placeID)

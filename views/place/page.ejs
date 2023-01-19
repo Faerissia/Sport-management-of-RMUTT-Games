@@ -27,8 +27,7 @@
                         <label class="col-form-label">ชื่อสถานที่</label>
                     </div>
                     <div class="col-4">
-                        <input type="text" class="form-control border-dark" name="placeName"
-                            autocomplete="off" required value="<%= data[0].placeName %>">
+                        <%= data[0].placeName %>
                     </div>
                 </div>
                 <!--  -->
@@ -37,7 +36,7 @@
                         <label style="margin-top: 15px;">กีฬา</label>
                     </div>
                     <div class="col-auto">
-                        <input type="text" class="form-control border-dark" name="typeID" value="<%= data[0].typeID %>" autocomplete="off" required>
+                        <%= data[0].nameType %>
                     </div>
                 </div>
                 <!--  -->
@@ -46,17 +45,16 @@
                         <label class="col-form-label">URL สถานที่</label>
                     </div>
                     <div class="col-4">
-                        <input type="text" class="form-control border-dark" name="placeUrl"
-                            autocomplete="off"  value="<%= data[0].placeUrl %>" required>
+                        <%- data[0].placeUrl %>
                     </div>
                 </div>
                 <!--  -->
                 <div class="row my-2  p row-cols-2">
                     <div class="col-2 ">
-                        <label class="col-form-label">อัพโหลดไฟล์รูปภาพ</label>
+                        <label class="col-form-label">รูปภาพ</label>
                     </div>
                     <div class="col-4 ">
-                        <input type="file" class="form-control border-dark" name="placeFile"
+                        <image src="/place/<%= data[0].placeFile %>" id="imgpreview" class="form-control" name="placeFile"
                             autocomplete="off" >
                     </div>
                 </div>
@@ -66,9 +64,7 @@
                         <label class="col-form-label">รายละเอียดสถานที่</label>
                     </div>
                     <div class="col-4">
-                        <textarea input type="text" class="form-control border-dark" name="placeDetail"
-                            autocomplete="off" value="<%= data[0].placeDetail %>" required><%= data[0].placeDetail %>
-                    </textarea>
+                        <textarea input type="text" class="form-control border-dark" name="placeDetail" value="<%= data[0].placeDetail %>" disabled><%= data[0].placeDetail %></textarea>
                     </div>
                 </div>
                <!--  -->
@@ -79,7 +75,13 @@
             </div>
         </div>
     </div>
+    <script>
+        function preview() {
+            imgpreview.src = URL.createObjectURL(event.target.files[0]);
+            imgpreview.style.display = "block";
 
+        }
+    </script>
 </body>
 </html>
 </div>

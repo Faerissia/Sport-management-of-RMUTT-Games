@@ -38,7 +38,12 @@
                         <label style="margin-top: 15px;">กีฬา</label>
                     </div>
                     <div class="col-auto">
-                        <input type="text" class="form-control border-dark" name="typeID" value="<%= typeID %>" autocomplete="off" required>
+                        <select name="typeID" value="<%= data[0].typeID%>" class="form-select border-dark" required>
+                           
+                            <% for(let i = 0; i < data.length; i++) { %>
+                                <option value="<%= data[i].typeID %>"><%= data[i].nameType %></option>
+                                <% } %>
+                        </select>
                     </div>
                 </div>
                 <!--  -->
@@ -57,8 +62,11 @@
                         <label class="col-form-label">อัพโหลดไฟล์รูปภาพ</label>
                     </div>
                     <div class="col-4 ">
-                        <input type="file" class="form-control border-dark" name="placeFile"
+                        <input type="file" class="form-control border-dark" value="<%= placeFile %>" name="placeFile"
                             autocomplete="off" >
+                            
+                            <image src="/place/<%= placeFile %>" class="form-control" id="imgpreview">
+                            
                     </div>
                 </div>
                 <!--  -->
@@ -68,8 +76,7 @@
                     </div>
                     <div class="col-4">
                         <textarea input type="text" class="form-control border-dark" name="placeDetail"
-                            autocomplete="off" value="<%= placeDetail %>" required><%= placeDetail %>
-                    </textarea>
+                            autocomplete="off" value="<%= placeDetail %>" required><%= placeDetail %></textarea>
                     </div>
                 </div>
                <!--  -->
@@ -84,7 +91,13 @@
             </form>
         </div>
     </div>
+    <script>
+        function preview() {
+            imgpreview.src = URL.createObjectURL(event.target.files[0]);
+            imgpreview.style.display = "block";
 
+        }
+    </script>
 </body>
 </html>
 </div>

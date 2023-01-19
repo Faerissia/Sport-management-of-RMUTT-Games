@@ -65,7 +65,7 @@ router.get('/add', (req, res, next) => {
 // display tnmcheck page
 router.get('/candidatesolo/(:tnmID)', (req, res, next) => {
     let thistnmID = req.params.tnmID;
-    dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName,team.teamName,team.NameAgent,team.LnameAgent,team.teamPhoneA,team.teamEmailA,team.teamStatus FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID LEFT JOIN team ON team.teamID = p.teamID LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID = '+thistnmID, (err, rows) => {
+    dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,p.detailDoc,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName,team.teamName,team.NameAgent,team.LnameAgent,team.teamPhoneA,team.teamEmailA,team.teamStatus FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID LEFT JOIN team ON team.teamID = p.teamID LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID = '+thistnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('./tnmcheck/candidate/solocan', { data: rows,thistnmID: thistnmID,status_login: req.session.loggedin,user: user });
@@ -82,7 +82,7 @@ router.get('/candidatesolo/(:tnmID)', (req, res, next) => {
 // display tnmcheck page
 router.get('/candidateteam/(:tnmID)', (req, res, next) => {
     let thistnmID = req.params.tnmID;
-    dbConnection.query('SELECT t.tnmID,team.teamID,t.tnmName,team.teamName,team.NameAgent,team.LnameAgent,team.teamPhoneA,team.teamEmailA,team.teamStatus FROM tournament t LEFT JOIN team ON team.tnmID = t.tnmID LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID = '+thistnmID, (err, rows) => {
+    dbConnection.query('SELECT t.tnmID,team.teamID,t.tnmName,team.teamName,team.NameAgent,team.LnameAgent,team.teamPhoneA,team.teamEmailA,team.teamStatus,team.teamRegDate FROM tournament t LEFT JOIN team ON team.tnmID = t.tnmID LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID = '+thistnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('./tnmcheck/candidate/teamcan', { data: rows,thistnmID: thistnmID,status_login: req.session.loggedin,user: user });
