@@ -21,6 +21,7 @@ const tnmsetdp = require('./routes/tnmsetdp');
 const tnmsave = require('./routes/tnmsave');
 const uindex = require('./routes/userside/uindex');
 const fileUpload = require('express-fileupload');
+const placetable = require('./routes/placetable');
 
 global.status_login;
 global.role;
@@ -121,6 +122,7 @@ app.use('/tournament', tournament);
 app.use('/tnmcheck',tnmcheck);
 app.use('/tnmsetdp',tnmsetdp);
 app.use('/tnmsave',tnmsave);
+app.use('/placetable',placetable);
 
 
 

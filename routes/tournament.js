@@ -219,6 +219,22 @@ router.get('/delete/(:tnmID)', (req, res, next) => {
     })
 })
 
+router.get('/detail/(:tnmID)', (req, res, next) => {
+    let tnmID = req.params.tnmID;
+    dbConnection.query('SELECT t.*,s.* FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID = ' + tnmID, (err, rows, fields) => {
+        if(req.session.loggedin){
+            if(role === 'เจ้าหน้าที่'){
+                res.render('tournament/detail', { data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user});
+            }else{
+                req.flash('error','ไม่สามารถเข้าถึงได้');
+                res.redirect('login');
+        }
+    }else{
+        res.redirect('error404');
+    }
+        })
+    })
+
 //หน้าจัดสาย
 router.get('/bracket/(:tnmID)', (req, res, next)=> {
     let tnmID = req.params.tnmID;
