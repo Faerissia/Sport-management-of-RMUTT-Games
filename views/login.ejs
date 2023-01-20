@@ -25,19 +25,15 @@
                 <input type="password" class="form-control" id="floatingPassword" placeholder="Password"  name="password">
                 <label for="floatingPassword">Password</label>
               </div>
-          
+              <% if (messages.error) { %>
+                <div class="alert alert-danger w-100 mx-auto" role="alert"><%= messages.error %></div>
+            <% } %>
               <div class="text-center">
                   <button class="mt-5 w-25  btn btn-lg btn-success" type="submit">Sign in</button>
               </div>
             </form>
           </main>
-          <% if (messages.error) { %>
-            <div class="alert alert-danger w-100 mx-auto" role="alert"><%= messages.error %></div>
-        <% } %>
-        
-        <% if (messages.success) { %>
-            <div class="alert alert-success w-100 mx-auto" role="alert"><%= messages.success %></div>
-        <% } %>
+          
     </div>
 </body>
 </html>

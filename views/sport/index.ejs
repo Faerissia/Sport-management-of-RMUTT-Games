@@ -25,7 +25,15 @@
 
 <h1>รายการกีฬา</h1>
 <a href="/sport/add" class="btn btn-primary">เพิ่มกีฬา</a>
-    <div class="card">
+<div class="float-end">
+    <form action="/sport/search-sport" method="post">
+        <div class="input-group ">
+            <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา...">
+            <button type="submit" class="btn btn-primary">ค้นหา</button>
+        </div>
+    </form>
+</div>
+    <div class="card w-100">
         <div class="card-header">
             <ul class="nav nav-pills w-100">
                 <li class="nav-link ml-auto">
@@ -40,7 +48,6 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">ชื่อกีฬา</th>
-                            <th scope="col">ประเภท</th>
                             <th scope="col">จำนวนผู้เล่น</th>
                             <th width="200px">ตัวเลือก</th>
                         </tr>
@@ -50,7 +57,6 @@
                             <tr>
                                 <th scope="row"><%= data[i].sportID %></th>
                                 <td><%= data[i].sportName %></td>
-                                <td><%= data[i].type %></td>
                                 <td><%= data[i].sportPlaynum %></td>
                                 <td>
                                     <a href="../sport/edit/<%= data[i].sportID %>" class="btn btn-warning edit">แก้ไข</a>

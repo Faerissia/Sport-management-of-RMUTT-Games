@@ -1,0 +1,87 @@
+<%- include("../partials/header") %>
+<%- include("../partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>place</title>
+</head>
+<body>
+
+    <% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+    <% } %>
+    
+    
+    <br><br>
+
+    <div class="card">
+        <div class="card-header display-6">
+            ข้อมูลสถานที่
+        </div>
+        <div class="card-body">
+                <!--  -->
+                <div class="row my-2  p row-cols-2">
+                    <div class="col-2 ">
+                        <label class="col-form-label">ชื่อสถานที่</label>
+                    </div>
+                    <div class="col-4">
+                        <%= data[0].placeName %>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="row my-2  p row-cols-2">
+                    <div class="col-2 ">
+                        <label style="margin-top: 15px;">กีฬา</label>
+                    </div>
+                    <div class="col-auto">
+                        <%= data[0].nameType %>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="row my-2  p row-cols-2">
+                    <div class="col-2 ">
+                        <label class="col-form-label">URL สถานที่</label>
+                    </div>
+                    <div class="col-4">
+                        <%- data[0].placeUrl %>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="row my-2  p row-cols-2">
+                    <div class="col-2 ">
+                        <label class="col-form-label">รูปภาพ</label>
+                    </div>
+                    <div class="col-4 ">
+                        <image src="/place/<%= data[0].placeFile %>" id="imgpreview" class="form-control" name="placeFile"
+                            autocomplete="off" >
+                    </div>
+                </div>
+                <!--  -->
+                <div class="row my-2  p row-cols-2">
+                    <div class="col-2 h-auto" style="max-height: 300px; min-height: 100px;">
+                        <label class="col-form-label">รายละเอียดสถานที่</label>
+                    </div>
+                    <div class="col-4">
+                        <textarea input type="text" class="form-control border-dark" name="placeDetail" value="<%= data[0].placeDetail %>" disabled><%= data[0].placeDetail %></textarea>
+                    </div>
+                </div>
+               <!--  -->
+               <div class="row row-cols-2 mt-5 text-center d-flex justify-content-center">
+                <div class="col-2">
+                    <a href="/place" class="btn btn-danger">ย้อนกลับ</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function preview() {
+            imgpreview.src = URL.createObjectURL(event.target.files[0]);
+            imgpreview.style.display = "block";
+
+        }
+    </script>
+</body>
+</html>
+</div>

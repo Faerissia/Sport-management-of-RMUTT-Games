@@ -2,6 +2,22 @@ let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
 
+router.post('/search-fac', (req, res) => {
+    let uniName = req.body.uniName;
+    let query = req.body.search;
+    let uniID = req.body.uniID;
+    if(!query) {
+        res.redirect('/faculty/'+uniID);
+    } else {
+        let sql = 'SELECT u.uniID , f.name AS facName ,u.name AS uniName,f.facultyID FROM  faculty f LEFT JOIN university u ON f.uniID = u.uniID WHERE u.uniID = ? and f.name LIKE ?';
+        let data = [uniID,'%' + query + '%'];
+        dbConnection.query(sql, data, (err, results) => {
+            if(err) throw err;
+            res.render('faculty', {data: results,uniID,uniName,status_login: req.session.loggedin,user: user});
+        });
+    }
+});
+
 // display faculty list
 router.get('/(:uniID)', (req, res, next) => {
     let uniID = req.params.uniID;
@@ -89,7 +105,6 @@ router.get('/edit/(:facultyID)', (req, res, next) => {
                 facultyID: rows[0].facultyID,
                 name: rows[0].name,
                 uniID: rows[0].uniID
-                ,status_login: req.session.loggedin
             })
         }}else{
             req.flash('error','ไม่สามารถเข้าถึงได้');

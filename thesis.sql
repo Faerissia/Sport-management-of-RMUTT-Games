@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 15, 2023 at 04:10 PM
+-- Generation Time: Jan 19, 2023 at 06:42 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -36,7 +36,7 @@ CREATE TABLE `account` (
   `phone` varchar(10) NOT NULL,
   `level` enum('เจ้าหน้าที่','ผู้ดูแลระบบ') NOT NULL DEFAULT 'เจ้าหน้าที่' COMMENT 'ระดับสิทธิ์ 0 = แอดมิน,1 = เจ้าหน้าที่',
   `status` enum('ใช้งาน','ปิดการใช้งาน') NOT NULL DEFAULT 'ใช้งาน'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `account`
@@ -59,7 +59,7 @@ CREATE TABLE `detailmatch` (
   `matchID` int(3) NOT NULL,
   `playerID` int(3) NOT NULL,
   `score` varchar(3) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -71,7 +71,7 @@ CREATE TABLE `faculty` (
   `facultyID` int(3) NOT NULL,
   `name` varchar(255) NOT NULL,
   `uniID` int(3) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `faculty`
@@ -94,14 +94,7 @@ CREATE TABLE `highlight` (
   `filePic` varchar(255) DEFAULT NULL,
   `date` date DEFAULT curdate(),
   `description` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `highlight`
---
-
-INSERT INTO `highlight` (`highlightID`, `linkvid`, `tnmID`, `filePic`, `date`, `description`) VALUES
-(1, NULL, 1, '1673580859829_tennis.jfif', '2023-01-06', 'ทดสอบการแสดงภาพไฮไลท์แบบ popup');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -116,7 +109,7 @@ CREATE TABLE `match` (
   `dateMatch` date DEFAULT curdate(),
   `placeID` int(3) NOT NULL,
   `winner` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -127,7 +120,7 @@ CREATE TABLE `match` (
 CREATE TABLE `note` (
   `IDCard` varchar(13) NOT NULL,
   `note` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -138,19 +131,18 @@ CREATE TABLE `note` (
 CREATE TABLE `place` (
   `placeID` int(3) NOT NULL,
   `placeName` varchar(255) NOT NULL,
-  `sportID` int(3) NOT NULL,
-  `placeUrl` varchar(255) DEFAULT NULL,
-  `placeFile` varchar(255) DEFAULT NULL,
-  `placeDetail` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `typeID` int(11) NOT NULL,
+  `placeUrl` varchar(1000) NOT NULL,
+  `placeFile` varchar(255) NOT NULL,
+  `placeDetail` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `place`
 --
 
-INSERT INTO `place` (`placeID`, `placeName`, `sportID`, `placeUrl`, `placeFile`, `placeDetail`) VALUES
-(5, 'สนามฟุตบอล', 1, 'test', '', 'test'),
-(7, 'สนามปิงปอง', 6, 'สนามปิงปอง', '66kebb6ah7k8ejiakacgi.jpg', 'สนามปิงปอง');
+INSERT INTO `place` (`placeID`, `placeName`, `typeID`, `placeUrl`, `placeFile`, `placeDetail`) VALUES
+(1, 'สนามวอลเลย์บอล คอร์ที่ 1 โดมโรงอาหาร', 2, '<iframe src=\"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d590.3092687467347!2d100.72467593033114!3d14.034888405443532!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sth!2sth!4v1674098805838!5m2!1sth!2sth\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', '1674098322898_à¸ªà¸à¸²à¸¡.png', 'สนามวอลเลย์บอล คอร์ที่ 1 โดมโรงอาหาร');
 
 -- --------------------------------------------------------
 
@@ -161,10 +153,23 @@ INSERT INTO `place` (`placeID`, `placeName`, `sportID`, `placeUrl`, `placeFile`,
 CREATE TABLE `place_opening` (
   `openingID` int(3) NOT NULL,
   `placeID` int(3) NOT NULL,
-  `day` date DEFAULT curdate(),
+  `day` varchar(50) DEFAULT NULL,
   `timeOpen` time DEFAULT curtime(),
   `timeClose` time DEFAULT curtime()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `place_opening`
+--
+
+INSERT INTO `place_opening` (`openingID`, `placeID`, `day`, `timeOpen`, `timeClose`) VALUES
+(1, 1, 'จันทร์', '08:30:00', '21:00:00'),
+(2, 1, 'อังคาร', '08:30:00', '21:00:00'),
+(3, 1, 'พุธ', '08:30:00', '21:00:00'),
+(4, 1, 'พฤหัสบดี', '08:30:00', '21:00:00'),
+(5, 1, 'ศุกร์', '08:30:00', '21:00:00'),
+(6, 1, 'เสาร์', '13:00:00', '21:00:00'),
+(7, 1, 'อาทิตย์', '13:00:00', '21:00:00');
 
 -- --------------------------------------------------------
 
@@ -190,22 +195,24 @@ CREATE TABLE `player` (
   `tnmID` int(3) NOT NULL,
   `detailDoc` varchar(255) DEFAULT NULL,
   `otp` int(10) DEFAULT NULL,
-  `playerStatus` enum('accept','deny','edit') DEFAULT NULL,
+  `playerStatus` enum('accept','deny','edit','wait') DEFAULT 'wait',
   `playerRegDate` date NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `player`
 --
 
 INSERT INTO `player` (`playerID`, `playerIDCard`, `playerStudentID`, `playerFName`, `playerLName`, `playerGender`, `playerBirthday`, `playerPhone`, `playerEmail`, `facultyID`, `teamID`, `playerFile1`, `playerFile2`, `playerFile3`, `tnmID`, `detailDoc`, `otp`, `playerStatus`, `playerRegDate`) VALUES
-(1, '1709800339819', '1163304620219', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2000-05-26', '0984926565', 'firstlnw0099@gmail.com', 1, NULL, '1673517589499_kl.jpg', NULL, NULL, 2, NULL, NULL, 'accept', '2023-01-12'),
-(4, '1163304620219', '1163304620219', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2023-01-13', '0984984094', 'firstlnw0099@gmail.com', 1, 4, '1673527055925_kl.jpg', NULL, NULL, 1, NULL, NULL, NULL, '2023-01-12'),
-(5, '1163031321321', '6516506161601', 'ชลธี', 'คำลือ', 'ชาย', '2023-01-12', '0984984094', 'chonlatee1129@gmail.com', 1, 4, '1673527055929_kl.jpg', NULL, NULL, 1, NULL, NULL, NULL, '2023-01-12'),
-(6, '1163304620219', '1165165161651', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2023-01-03', '0984984094', 'firstlnw0099@gmail.com', 1, 5, '1673527678168_basketball.jpg', NULL, NULL, 1, NULL, NULL, NULL, '2023-01-12'),
-(7, '1321321313131', '3216351031503', 'ชลธี', 'คำลือ', 'ชาย', '2023-01-11', '0984984094', 'chonlatee1129@gmail.com', 2, 5, '1673527678172_basketball.jpg', NULL, NULL, 1, NULL, NULL, NULL, '2023-01-12'),
-(8, '1098091908109', '0981901981099', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'หญิง', '2022-06-28', '0984984094', 'firstlnw0099@gmail.com', 1, 6, '1673579350774_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', NULL, NULL, 1, NULL, NULL, NULL, '2023-01-13'),
-(9, '5061651061061', '0651650161651', 'ชลธี', 'คำลือ', 'ชาย', '2023-01-10', '0984984094', 'chonlatee1129@gmail.com', 2, 6, '1673579350777_kl.jpg', NULL, NULL, 1, NULL, NULL, NULL, '2023-01-13');
+(21, '1709800339819', '1163304620219', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2000-05-26', '0984926565', 'firstlnw0099@gmail.com', 1, NULL, '1674065029626_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', NULL, NULL, 7, NULL, NULL, 'wait', '2023-01-19'),
+(22, '1163304620243', '1163304620243', 'ชลธี', 'คำลือ', 'ชาย', '1999-05-20', '0984984094', 'chonlatee1129@gmail.com', 1, 10, '1674065333930_basketball.jpg', NULL, NULL, 8, NULL, NULL, 'wait', '2023-01-19'),
+(23, '1163304620219', '1163304620219', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2000-05-26', '0984984094', 'firstlnw0099@gmail.com', 2, 10, '1674065333930_basketball.jpg', NULL, NULL, 8, NULL, NULL, 'wait', '2023-01-19'),
+(24, '1709800339819', '1163304620219', 'วสวิญญ์', 'รัตน์โชติ', 'ชาย', '2000-06-13', '0624283195', 'wasawin@gmail.com', 1, 10, '1674065333930_basketball.jpg', NULL, NULL, 8, NULL, NULL, 'wait', '2023-01-19'),
+(25, '1166061065165', '6051650165106', 'กิตติภพ', 'รักสนิท', 'ชาย', '2000-01-18', '0822354389', 'kittiphop@gmail.com', 1, 10, '1674065333930_kl.jpg', NULL, NULL, 8, NULL, NULL, 'wait', '2023-01-19'),
+(26, '0651061651061', '6516106510616', 'เมธานันท์', 'รัตนปัญญานนท์', 'หญิง', '2000-08-30', '0984984984', 'nun@gmail.com', 1, 10, '1674065333930_basketball.jpg', NULL, NULL, 8, NULL, NULL, 'wait', '2023-01-19'),
+(27, '6501610616510', '6051610610616', 'ชลธี', 'คำลือ', 'ชาย', '2000-05-17', '0984984094', 'chonlatee1129@gmail.com', 1, 11, '1674065634445_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', NULL, NULL, 9, NULL, NULL, 'wait', '2023-01-19'),
+(28, '5161616156161', '6165106510651', 'กิตติภพ', 'รักสนิท', 'ชาย', '2001-05-19', '2013132103', 'awealw@gmail.com', 1, 11, '1674065634445_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', NULL, NULL, 9, NULL, NULL, 'wait', '2023-01-19'),
+(29, '1709800339819', '1163304620219', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2000-05-16', '0984984094', 'firstlnw0099@gmail.com', 1, NULL, '1674092492544_tennis.jfif', NULL, NULL, 7, 'สมัครซ้ำ', NULL, 'wait', '2023-01-19');
 
 -- --------------------------------------------------------
 
@@ -214,22 +221,43 @@ INSERT INTO `player` (`playerID`, `playerIDCard`, `playerStudentID`, `playerFNam
 --
 
 CREATE TABLE `sport` (
-  `sportID` int(3) NOT NULL,
+  `sportID` int(11) NOT NULL,
   `sportName` varchar(50) NOT NULL,
   `sportPlaynum` int(2) NOT NULL,
-  `type` enum('เดี่ยว','คู่','ทีม') NOT NULL DEFAULT 'เดี่ยว'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `typeID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `sport`
 --
 
-INSERT INTO `sport` (`sportID`, `sportName`, `sportPlaynum`, `type`) VALUES
-(1, 'แบดมินตัน ประเภทเดี่ยว', 1, 'เดี่ยว'),
-(2, 'แบดมินตัน ประเภทคู่', 2, 'คู่'),
-(3, 'วอลเลย์บอล', 6, 'ทีม'),
-(4, 'บาสเก็ตบอล', 5, 'ทีม'),
-(5, 'เปตอง', 1, 'เดี่ยว');
+INSERT INTO `sport` (`sportID`, `sportName`, `sportPlaynum`, `typeID`) VALUES
+(1, 'แบดมินตัน ประเภทเดี่ยว', 1, 1),
+(2, 'แบดมินตัน ประเภทคู่', 2, 1),
+(3, 'วอลเลย์บอล', 6, 2),
+(4, 'บาสเกตบอล', 5, 3),
+(5, 'เปตอง ประเภทเดี่ยว', 1, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sport_type`
+--
+
+CREATE TABLE `sport_type` (
+  `typeID` int(11) NOT NULL,
+  `nameType` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `sport_type`
+--
+
+INSERT INTO `sport_type` (`typeID`, `nameType`) VALUES
+(1, 'แบดมินตัน'),
+(2, 'วอลเลย์บอล'),
+(3, 'บาสเกตบอล'),
+(4, 'เปตอง');
 
 -- --------------------------------------------------------
 
@@ -244,21 +272,21 @@ CREATE TABLE `team` (
   `LnameAgent` varchar(50) NOT NULL,
   `teamPhoneA` varchar(10) DEFAULT NULL,
   `teamEmailA` varchar(50) DEFAULT NULL,
-  `teamStatus` enum('cancle','accept','waitedit','waitinspection') DEFAULT NULL,
+  `teamStatus` enum('deny','accept','wait','edit') DEFAULT 'wait',
   `teamPic` varchar(255) DEFAULT NULL,
   `tnmID` int(3) NOT NULL,
   `detailDoc` varchar(255) DEFAULT NULL,
-  `otp` int(10) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `otp` int(10) DEFAULT NULL,
+  `teamRegDate` date NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `team`
 --
 
-INSERT INTO `team` (`teamID`, `teamName`, `NameAgent`, `LnameAgent`, `teamPhoneA`, `teamEmailA`, `teamStatus`, `teamPic`, `tnmID`, `detailDoc`, `otp`) VALUES
-(4, 'coach', 'coach', 'coach', '0984926565', 'coach@gmail.com', 'accept', '1673527055925_kl.jpg', 1, NULL, NULL),
-(5, 'teamcoach', 'teamcoach', 'teamcoach', '0984984949', 'coachteam@gmail.com', NULL, '1673527678167_basketball.jpg', 1, NULL, NULL),
-(6, 'test', 'test', 'etst', '0984926565', 'coach@gmail.com', NULL, '1673579350773_basketball.jpg', 1, NULL, NULL);
+INSERT INTO `team` (`teamID`, `teamName`, `NameAgent`, `LnameAgent`, `teamPhoneA`, `teamEmailA`, `teamStatus`, `teamPic`, `tnmID`, `detailDoc`, `otp`, `teamRegDate`) VALUES
+(10, 'team A', 'coachA', 'coachA', '0984926565', 'coachA@gmail.com', 'wait', '1674065333930_basketball.jpg', 8, NULL, NULL, '2023-01-19'),
+(11, 'teamB', 'coachB', 'coachB', '2013132103', 'awealw@gmail.com', 'wait', '1674065634444_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', 9, NULL, NULL, '2023-01-19');
 
 -- --------------------------------------------------------
 
@@ -285,16 +313,16 @@ CREATE TABLE `tournament` (
   `st1` varchar(255) DEFAULT NULL,
   `nd2` varchar(255) DEFAULT NULL,
   `rd3` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tournament`
 --
 
 INSERT INTO `tournament` (`tnmID`, `tnmName`, `sportID`, `tnmUrl`, `Rstartdate`, `Renddate`, `tnmStartdate`, `tnmEnddate`, `tnmTypegame`, `tnmDetail`, `tnmPicture`, `tnmFile1`, `tnmFile2`, `tnmFile3`, `accountID`, `st1`, `nd2`, `rd3`) VALUES
-(1, 'การแข่งขันแบดมินตัน ประเภทคู่', 2, '', '2023-01-12', '2023-01-16', '2023-01-17', '2023-01-21', NULL, 'การแข่งขันแบดมินตันประเภทคู่\r\nเริ่มเปิดรับสมัครในวันที่ 12 มกราคม 2566 - 16 มกราคม 2566\r\nเริ่มการแข่งขันในวันที่ 17 มกราคาม 2566 - 21 มกราคม 2566', '1673502377914_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', '1673502377914_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 'การแข่งขันเปตองเดี่ยว', 5, '', '2023-01-12', '2023-01-17', '2023-01-18', '2023-01-23', NULL, 'การแข่งขันเปตองเดี่ยว', '1673512299128_kl.jpg', '1673512299128_kl.jpg', NULL, NULL, NULL, NULL, NULL, NULL),
-(3, 'ทดสอบวันที่', 1, '', '2023-01-04', '2023-01-12', '2023-01-13', '2023-01-13', NULL, 'ะำหะ', '1673546331852_kl.jpg', '1673546331852_basketball.jpg', NULL, NULL, NULL, NULL, NULL, NULL);
+(7, 'การแข่งขันแบดมินตัน ประเภทเดี่ยว ประจำปี 2566', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-01-19', '2023-01-22', '2023-01-23', '2023-01-26', NULL, 'การแข่งขันแบดมินตัน ประเภทเดี่ยว ประจำปี 2566', '1674063992207_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', '1674063992207_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', NULL, NULL, NULL, NULL, NULL, NULL),
+(8, 'การแข่งขันบาสเกตบอลประจำปี 2566', 4, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-01-19', '2023-01-22', '2023-01-23', '2023-01-26', NULL, 'การแข่งขันบาสเกตบอลประจำปี 2566', '1674064032851_basketball.jpg', '1674064032851_basketball.jpg', NULL, NULL, NULL, NULL, NULL, NULL),
+(9, 'การแข่งขันแบดมินตัน ประเภทคู่ ประจำปี 2566', 2, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-01-19', '2023-01-22', '2023-01-23', '2023-01-26', NULL, 'การแข่งขันแบดมินตัน ประเภทคู่ ประจำปี 2566', '1674064096922_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', '1674064096922_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -306,7 +334,7 @@ CREATE TABLE `university` (
   `uniID` int(3) NOT NULL,
   `name` varchar(255) NOT NULL,
   `status` enum('ไม่เข้าร่วม','เข้าร่วม') NOT NULL DEFAULT 'ไม่เข้าร่วม' COMMENT 'ระดับสิทธิ์ 0 = ไม่ได้เข้าร่วม,1 = เข้าร่วม'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `university`
@@ -336,7 +364,7 @@ CREATE TABLE `useplace` (
   `timeStart` time DEFAULT curtime(),
   `timeEnd` time DEFAULT curtime(),
   `tnmID` int(3) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Indexes for dumped tables
@@ -390,7 +418,7 @@ ALTER TABLE `note`
 --
 ALTER TABLE `place`
   ADD PRIMARY KEY (`placeID`),
-  ADD KEY `sportID` (`sportID`);
+  ADD KEY `typeID` (`typeID`);
 
 --
 -- Indexes for table `place_opening`
@@ -412,7 +440,14 @@ ALTER TABLE `player`
 -- Indexes for table `sport`
 --
 ALTER TABLE `sport`
-  ADD PRIMARY KEY (`sportID`);
+  ADD PRIMARY KEY (`sportID`),
+  ADD KEY `typeID` (`typeID`);
+
+--
+-- Indexes for table `sport_type`
+--
+ALTER TABLE `sport_type`
+  ADD PRIMARY KEY (`typeID`);
 
 --
 -- Indexes for table `team`
@@ -469,7 +504,7 @@ ALTER TABLE `faculty`
 -- AUTO_INCREMENT for table `highlight`
 --
 ALTER TABLE `highlight`
-  MODIFY `highlightID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `highlightID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `match`
@@ -481,37 +516,43 @@ ALTER TABLE `match`
 -- AUTO_INCREMENT for table `place`
 --
 ALTER TABLE `place`
-  MODIFY `placeID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `placeID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `place_opening`
 --
 ALTER TABLE `place_opening`
-  MODIFY `openingID` int(3) NOT NULL AUTO_INCREMENT;
+  MODIFY `openingID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `player`
 --
 ALTER TABLE `player`
-  MODIFY `playerID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `playerID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `sport`
 --
 ALTER TABLE `sport`
-  MODIFY `sportID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `sportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `sport_type`
+--
+ALTER TABLE `sport_type`
+  MODIFY `typeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `team`
 --
 ALTER TABLE `team`
-  MODIFY `teamID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `teamID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tournament`
 --
 ALTER TABLE `tournament`
-  MODIFY `tnmID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `tnmID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `university`
@@ -559,7 +600,7 @@ ALTER TABLE `match`
 -- Constraints for table `place`
 --
 ALTER TABLE `place`
-  ADD CONSTRAINT `place_ibfk_1` FOREIGN KEY (`sportID`) REFERENCES `sport` (`sportID`);
+  ADD CONSTRAINT `place_ibfk_1` FOREIGN KEY (`typeID`) REFERENCES `sport_type` (`typeID`);
 
 --
 -- Constraints for table `place_opening`
@@ -574,6 +615,12 @@ ALTER TABLE `player`
   ADD CONSTRAINT `player_ibfk_1` FOREIGN KEY (`facultyID`) REFERENCES `faculty` (`facultyID`),
   ADD CONSTRAINT `player_ibfk_2` FOREIGN KEY (`teamID`) REFERENCES `team` (`teamID`),
   ADD CONSTRAINT `player_ibfk_3` FOREIGN KEY (`tnmID`) REFERENCES `tournament` (`tnmID`);
+
+--
+-- Constraints for table `sport`
+--
+ALTER TABLE `sport`
+  ADD CONSTRAINT `sport_ibfk_1` FOREIGN KEY (`typeID`) REFERENCES `sport_type` (`typeID`);
 
 --
 -- Constraints for table `team`

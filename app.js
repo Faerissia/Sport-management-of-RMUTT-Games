@@ -15,11 +15,13 @@ const faculty = require('./routes/faculty');
 const sport = require('./routes/sport');
 const place = require('./routes/place');
 const tournament = require('./routes/tournament');
+const tnmsearch = require('./routes/tnmsearch');
 const tnmcheck = require('./routes/tnmcheck');
 const tnmsetdp = require('./routes/tnmsetdp');
 const tnmsave = require('./routes/tnmsave');
 const uindex = require('./routes/userside/uindex');
 const fileUpload = require('express-fileupload');
+const placetable = require('./routes/placetable');
 
 global.status_login;
 global.role;
@@ -47,7 +49,7 @@ app.use(session({
 app.post('/change-title', function(req, res) {
   process.title = req.body.title;
   fs.writeFileSync(path.join(__dirname, 'title.txt'), process.title);
-  res.redirect('/');
+  res.redirect('/dashboard');
 });
 
 app.get('/login',(req, res) => {
@@ -115,10 +117,12 @@ app.use('/uni', uni);
 app.use('/faculty',faculty);
 app.use('/sport',sport);
 app.use('/place',place);
+app.use('/tnmsearch',tnmsearch);
 app.use('/tournament', tournament);
 app.use('/tnmcheck',tnmcheck);
 app.use('/tnmsetdp',tnmsetdp);
 app.use('/tnmsave',tnmsave);
+app.use('/placetable',placetable);
 
 
 

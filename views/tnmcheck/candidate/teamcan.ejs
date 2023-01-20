@@ -43,17 +43,19 @@
                             <th scope="col">ชื่อ - นามสกุลตัวแทน</th>
                             <th scope="col">เบอร์โทรศัพท์ตัวแทน</th>
                             <th scope="col">วันที่สมัคร</th>
+                            <th scope="col">หมายเหตุ</th>
                             <th width="200px">ตัวเลือก</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
-                            <% const date = new Date(data[i].playerRegDate); %>
-                            <% if(data[i].teamStatus === null) { %>
+                            <% const date = new Date(data[i].teamRegDate); %>
+                            <% if(data[i].teamStatus === 'wait') { %>
                             <tr>
                                 <td><%= data[i].teamName %></td>
                                 <td><%= data[i].NameAgent %> <%= data[i].LnameAgent %></td>
                                 <td><%= data[i].teamPhoneA %></td>
+                                <td><%= date.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
                                 <td></td>
                                 <td>
                                 <a href="../team/<%=data[i].teamID%>" class="btn btn-primary page">ดู</a>

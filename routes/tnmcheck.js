@@ -2,9 +2,25 @@ let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
 
+
+router.post('/search-tnmcheck', (req, res) => {
+    let query = req.body.search;
+    if(!query){
+        res.redirect('/tnmcheck');
+    }else{ 
+        sql = "SELECT t.tnmID,t.tnmName,t.Renddate,s.sportID,s.sportName,s.sportPlaynum, SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count, SUM(CASE p.playerStatus WHEN 'deny' THEN 1 ELSE 0 END) AS deny_count, SUM(CASE p.playerStatus WHEN 'wait' THEN 1 ELSE 0 END) AS wait_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p on t.tnmID = p.tnmID WHERE tnmName LIKE ? GROUP BY t.tnmID";
+        let like =['%' + query + '%'];
+    
+    dbConnection.query(sql, like, (err, results) => {
+        if(err) throw err;
+        res.render('tnmcheck', {data: results,status_login: req.session.loggedin,user: user});
+    });
+}
+});
+
 // display tnmcheck page
 router.get('/', (req, res, next) => {
-    const sql = "SELECT t.tnmID,t.tnmName,t.Renddate,s.sportID,s.sportName,s.type, SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count, SUM(CASE p.playerStatus WHEN 'deny' THEN 1 ELSE 0 END) AS deny_count, SUM(CASE WHEN p.playerStatus IS NULL THEN 1 ELSE 0 END) AS null_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p on t.tnmID = p.tnmID GROUP BY t.tnmID;";
+    const sql = "SELECT t.tnmID,t.tnmName,t.Renddate,s.sportID,s.sportName,s.sportPlaynum, SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count, SUM(CASE p.playerStatus WHEN 'deny' THEN 1 ELSE 0 END) AS deny_count, SUM(CASE p.playerStatus WHEN 'wait' THEN 1 ELSE 0 END) AS wait_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p on t.tnmID = p.tnmID GROUP BY t.tnmID;";
 
     dbConnection.query(sql, (err, rows) => {
     if(req.session.loggedin){
@@ -49,7 +65,7 @@ router.get('/add', (req, res, next) => {
 // display tnmcheck page
 router.get('/candidatesolo/(:tnmID)', (req, res, next) => {
     let thistnmID = req.params.tnmID;
-    dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName,s.type,team.teamName,team.NameAgent,team.LnameAgent,team.teamPhoneA,team.teamEmailA,team.teamStatus FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID LEFT JOIN team ON team.teamID = p.teamID LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID ='+thistnmID, (err, rows) => {
+    dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,p.detailDoc,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName,team.teamName,team.NameAgent,team.LnameAgent,team.teamPhoneA,team.teamEmailA,team.teamStatus FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID LEFT JOIN team ON team.teamID = p.teamID LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID = '+thistnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('./tnmcheck/candidate/solocan', { data: rows,thistnmID: thistnmID,status_login: req.session.loggedin,user: user });
@@ -66,7 +82,7 @@ router.get('/candidatesolo/(:tnmID)', (req, res, next) => {
 // display tnmcheck page
 router.get('/candidateteam/(:tnmID)', (req, res, next) => {
     let thistnmID = req.params.tnmID;
-    dbConnection.query('SELECT t.tnmID,team.teamID,t.tnmName,s.type,team.teamName,team.NameAgent,team.LnameAgent,team.teamPhoneA,team.teamEmailA,team.teamStatus FROM tournament t LEFT JOIN team ON team.tnmID = t.tnmID LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID = '+thistnmID, (err, rows) => {
+    dbConnection.query('SELECT t.tnmID,team.teamID,t.tnmName,team.teamName,team.NameAgent,team.LnameAgent,team.teamPhoneA,team.teamEmailA,team.teamStatus,team.teamRegDate FROM tournament t LEFT JOIN team ON team.tnmID = t.tnmID LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID = '+thistnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('./tnmcheck/candidate/teamcan', { data: rows,thistnmID: thistnmID,status_login: req.session.loggedin,user: user });
@@ -133,11 +149,17 @@ router.get('/team/accept/(:teamID)', (req, res, next) => {
     let tnmID = rows[0].tnmID;
     let form_data = { teamStatus: 'accept' }
     dbConnection.query('UPDATE team SET ? WHERE teamID ='+thisteamID,form_data, (err, rows) => {
+        dbConnection.query('SELECT * FROM player WHERE teamID ='+thisteamID, (err, rows) => {
+
+                let p_status = { playerStatus: 'accept' }
+                dbConnection.query('UPDATE player SET ? WHERE teamID ='+thisteamID,p_status)
+        
         req.flash('success','ยอมรับผู้เล่นเรียบร้อย');
         res.redirect('/tnmcheck/candidateteam/'+tnmID);
     })
     })
 
+})
 })
 
 router.get('/player/deny/(:playerID)', (req, res, next) => {

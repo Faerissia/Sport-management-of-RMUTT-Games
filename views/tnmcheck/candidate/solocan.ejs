@@ -51,14 +51,14 @@
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
                             <% const date = new Date(data[i].playerRegDate); %>
-                            <% if(data[i].playerStatus === null) { %>
+                            <% if(data[i].playerStatus === 'wait') { %>
                             <tr>
                                 <td><%= data[i].playerFName %> <%= data[i].playerLName %></td>
                                 <td><%= data[i].playerGender %></td>
                                 <td><%= data[i].age %></td>
                                 <td><%= data[i].playerPhone %></td>
                                 <td><%= date.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
-                                <td></td>
+                                <td><p style="color:red"><%= data[i].detailDoc%></p></td>
                                 <td>
                                 <a href="../player/<%=data[i].playerID%>" class="btn btn-primary page">ดู</a>
                                 </td>
@@ -91,7 +91,7 @@
                                 <td><%= data[i].age %></td>
                                 <td><%= data[i].playerPhone %></td>
                                 <td><%= data[i].playerRegDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
-                            <td>
+                                <td>
                                 <a href="../candidate/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
                                 <a href="../candidate/edit/<%= data[i].tnmID %>" class="btn btn-warning edit">แก้ไข</a>
                                 <a href="../player/<%=data[i].playerID%>" class="btn btn-primary page">ดู</a>
