@@ -1,0 +1,22 @@
+<%- include("../../partials/header") %>
+<div class="col-10 py-3 mx-auto">
+            <!DOCTYPE html>
+            <html lang="en">
+
+            <head>
+                <title>Document</title>
+            </head>
+
+            <body>
+                
+                <form action="/verifyteam" method="post">
+                    <label for="otp">Enter the OTP from your email:</label>
+                    <input type="text" name="otp" id="otp" required>
+                    <input type="hidden" name="RestoredOTP" value="<%= OTP %>">
+                    <input type="submit" value="Verify">
+                </form>
+
+            </body>
+
+            </html>
+        </div>

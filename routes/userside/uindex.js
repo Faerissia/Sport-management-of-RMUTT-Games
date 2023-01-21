@@ -92,6 +92,10 @@ router.post('/verifysingle', (req, res) => {
     }
 });
 
+router.post('/verifysingle', (req, res) => {
+
+})
+
 
 
 // display tnmcheck page
@@ -256,7 +260,7 @@ router.get('/teamreg/(:tnmID)', (req, res, next) => {
     })
 })
 
-router.post('/teamreg', (req, res, next) =>{
+router.post('/teamreg', async (req, res, next) =>{
     //ทีม
     let teamName = req.body.teamName;
     let NameAgent = req.body.NameAgent;
@@ -279,23 +283,40 @@ router.post('/teamreg', (req, res, next) =>{
     let playerIDCard = req.body.playerIDCard;
     let playerStudentID = req.body.playerStudentID;
     
-    var values = []
+    var values = [];
 
     var playerFile1 = req.files.playerFile1;
 
-        for (var i = 0; i < playerFName.length; i++) {
-            var player_photo = null;
-            if(playerFile1[i]){
-                var name_pfile = new Date().getTime() +'_'+playerFile1[i].name;
-                playerFile1[i].mv('./assets/player/' + name_pfile);
-                player_photo = name_pfile
+    
+
+    for (var i = 0; i < playerFName.length; i++) {
+        var player_photo = null;
+        if(playerFile1[i]){
+            var name_pfile = new Date().getTime() +'_'+playerFile1[i].name;
+            playerFile1[i].mv('./assets/player/' + name_pfile);
+            player_photo = name_pfile;
         }
-        values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], playerStudentID[i],player_photo, tnmID])
+
+        let checkreg =  new Promise((resolve,reject) =>{
+            dbConnection.query('SELECT * FROM player WHERE playerIDCard = ? AND tnmID = ?', [playerIDCard[i], tnmID], (err, rows) => {
+                if(err) reject(err)
+                resolve(rows);
+                console.log(rows)
+            });
+        });
+        if(checkreg.length > 0){
+            let  detailDoc = 'สมัครซ้ำ';
+            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], playerStudentID[i], player_photo, detailDoc, tnmID])
+        }else{
+            let detailDoc = null;
+            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], playerStudentID[i], player_photo, detailDoc, tnmID])
         }
+    }
+        
     
 
     var sql_team = "INSERT INTO team (teamName, NameAgent, LnameAgent, teamPhoneA, teamEmailA, teamPic, tnmID) VALUES ?";
-    var sql_player = "INSERT INTO player (playerFName, playerLName, playerGender, playerBirthday, playerPhone, playerEmail, facultyID, playerIDCard, playerStudentID, playerFile1, tnmID,teamID) VALUES ?";
+    var sql_player = "INSERT INTO player (playerFName, playerLName, playerGender, playerBirthday, playerPhone, playerEmail, facultyID, playerIDCard, playerStudentID, playerFile1, detailDoc, tnmID,teamID) VALUES ?";
         
         // insert query db
         dbConnection.query(sql_team,[[[teamName, NameAgent, LnameAgent, teamPhoneA,teamEmailA, teamfile, tnmID]]], (err, result) => {
