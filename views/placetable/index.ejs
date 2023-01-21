@@ -45,21 +45,27 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">ชื่อกีฬา</th>
-                            <th width="200px">ตัวเลือก</th>
+                            <th scope="col">ช่วงเวลา/สนาม</th>
+                            <th scope="col">08:00 - 09:00</th>
+                            <th scope="col">09:00 - 10:00</th>
+                            <th scope="col">10:00 - 11:00</th>
+                            <th scope="col">11:00 - 12:00</th>
+                            <th scope="col">12:00 - 13:00</th>
+                            <th scope="col">13:00 - 14:00</th>
+                            <th scope="col">14:00 - 15:00</th>
+                            <th scope="col">15:00 - 16:00</th>
+                            <th scope="col">16:00 - 17:00</th>
+                            <th scope="col">17:00 - 18:00</th>
+                            <th scope="col">18:00 - 19:00</th>
+                            <th scope="col">19:00 - 20:00</th>
+                            <th scope="col">20:00 - 21:00</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
                             <tr>
                                 <th scope="row"><%= i+1 %></th>
-                                <td><%= data[i].placeName %></td>
-                                <td>
-                                    <a href="../place/edit/<%= data[i].placeID %>" class="btn btn-warning edit">แก้ไข</a>
-                                    <a href="../place/delete/<%= data[i].placeID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                    <a href="../place/page/<%= data[i].placeID %>" class="btn btn-primary edit">ดู</a>
-                                </td>
+                                <td></td>
                             </tr>
                         <% } %>
                     </tbody>

@@ -2,6 +2,96 @@ let express = require('express');
 let router = express.Router();
 let dbConnection = require('../../util/db');
 const path = require('path');
+const nodemailer = require('nodemailer');
+
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'thesissportmanage@gmail.com',
+      pass: 'vtevtgdhgebnyqog'
+    }
+  });
+
+
+
+router.post('/verifysingle', (req, res) => {
+    let RestoredOTP = req.body.RestoredOTP;
+    let otp = req.body.otp;
+
+    let playerFName = req.body.playerFName;
+    let playerLName = req.body.playerLName;
+    let playerGender = req.body.playerGender;
+    let playerBirthday = req.body.playerBirthday;
+    let playerPhone = req.body.playerPhone;
+    let playerEmail = req.body.playerEmail;
+    let facultyID = req.body.facultyID;
+    let playerIDCard = req.body.playerIDCard;
+    let playerStudentID = req.body.playerStudentID;
+    let playerFile1 = req.body.playerFile1;
+    let tnmID =req.body.tnmID;
+
+
+    if (otp === RestoredOTP) {
+        dbConnection.query('SELECT * FROM player WHERE playerIDCard = ? AND tnmID = ?',[playerIDCard, tnmID] ,(err,rows) => {
+            if(rows.length > 0){
+                let form_data = {
+                    tnmID: tnmID,
+                    playerFName: playerFName,
+                    playerLName: playerLName,
+                    playerGender: playerGender,
+                    playerBirthday: playerBirthday,
+                    playerPhone: playerPhone,
+                    playerEmail: playerEmail,
+                    facultyID: facultyID,
+                    playerIDCard: playerIDCard,
+                    playerStudentID: playerStudentID,
+                    playerFile1: playerFile1,
+                    detailDoc: 'สมัครซ้ำ'
+                }
+                console.log('ซ้ำ')
+                dbConnection.query('INSERT INTO player SET ?', form_data, (err, result) => {
+                    if (err) {
+                        console.log(JSON.stringify(err));
+                        req.flash('error', err)
+                        res.redirect('/tnmdetail/'+tnmID)
+                    } else {
+                        req.flash('success', 'สมัครเข้าร่วมการแข่งขันแล้ว');
+                        res.redirect('/tnmdetail/'+tnmID);
+                    }
+                })
+            }else{
+                let form_data = {
+                    tnmID: tnmID,
+                    playerFName: playerFName,
+                    playerLName: playerLName,
+                    playerGender: playerGender,
+                    playerBirthday: playerBirthday,
+                    playerPhone: playerPhone,
+                    playerEmail: playerEmail,
+                    facultyID: facultyID,
+                    playerIDCard: playerIDCard,
+                    playerStudentID: playerStudentID,
+                    playerFile1: playerFile1
+                }
+                console.log('ไม่ซ้ำ')
+                dbConnection.query('INSERT INTO player SET ?', form_data, (err, result) => {
+                    if (err) {
+                        console.log(JSON.stringify(err));
+                        req.flash('error', err)
+                        res.redirect('/tnmdetail/'+tnmID)
+                    } else {
+                        req.flash('success', 'สมัครเข้าร่วมการแข่งขันแล้ว');
+                        res.redirect('/tnmdetail/'+tnmID);
+                    }
+                })
+            }
+        })
+
+    } else {
+        res.send('Invalid OTP');
+    }
+});
+
 
 
 // display tnmcheck page
@@ -104,6 +194,7 @@ router.get('/singlereg/(:tnmID)', (req, res, next) => {
 })
 
 router.post('/singlereg', (req, res, next) =>{
+
     let playerFName = req.body.playerFName;
     let playerLName = req.body.playerLName;
     let playerGender = req.body.playerGender;
@@ -115,66 +206,46 @@ router.post('/singlereg', (req, res, next) =>{
     let playerStudentID = req.body.playerStudentID;
     let playerFile1 = req.files.playerFile1;
     let tnmID =req.body.tnmID;
-    let errors = false;
 
+    
     var name_pfile = new Date().getTime() +'_'+playerFile1.name;
     playerFile1.mv('./assets/player/' + name_pfile);
 
-    dbConnection.query('SELECT * FROM player WHERE playerIDCard = ? AND tnmID = ?',[playerIDCard, tnmID] ,(err,rows) => {
-        if(rows.length > 0){
-            let form_data = {
-                tnmID: tnmID,
-                playerFName: playerFName,
-                playerLName: playerLName,
-                playerGender: playerGender,
-                playerBirthday: playerBirthday,
-                playerPhone: playerPhone,
-                playerEmail: playerEmail,
-                facultyID: facultyID,
-                playerIDCard: playerIDCard,
-                playerStudentID: playerStudentID,
-                playerFile1: name_pfile,
-                detailDoc: 'สมัครซ้ำ'
-            }
-            console.log('ซ้ำ')
-            dbConnection.query('INSERT INTO player SET ?', form_data, (err, result) => {
-                if (err) {
-                    console.log(JSON.stringify(err));
-                    req.flash('error', err)
-                    res.redirect('/tnmdetail/'+tnmID)
-                } else {
-                    req.flash('success', 'สมัครเข้าร่วมการแข่งขันแล้ว');
-                    res.redirect('/tnmdetail/'+tnmID);
-                }
-            })
-        }else{
-            let form_data = {
-                tnmID: tnmID,
-                playerFName: playerFName,
-                playerLName: playerLName,
-                playerGender: playerGender,
-                playerBirthday: playerBirthday,
-                playerPhone: playerPhone,
-                playerEmail: playerEmail,
-                facultyID: facultyID,
-                playerIDCard: playerIDCard,
-                playerStudentID: playerStudentID,
-                playerFile1: name_pfile
-            }
-            console.log('ไม่ซ้ำ')
-            dbConnection.query('INSERT INTO player SET ?', form_data, (err, result) => {
-                if (err) {
-                    console.log(JSON.stringify(err));
-                    req.flash('error', err)
-                    res.redirect('/tnmdetail/'+tnmID)
-                } else {
-                    req.flash('success', 'สมัครเข้าร่วมการแข่งขันแล้ว');
-                    res.redirect('/tnmdetail/'+tnmID);
-                }
-            })
+
+    let OTP = Math.floor(1000 + Math.random() * 9000);
+
+    let mailOptions = {
+        from: 'thesissportmanagement@gmail.com',
+        to: playerEmail,
+        subject: 'รหัส OTP สำหรับการยืนยันอีเมลสมัครเข้าร่วมการแข่งขัน',
+        text: 'รหัส OTP ของคุณคือ : ' + OTP
+      };
+
+      console.log(OTP);
+      console.log(req.session.storedOTP);
+
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+          res.render('userside/regform/otpsingle',{
+            playerEmail: playerEmail,
+            status_login: req.session.loggedin,
+            OTP: OTP,
+            tnmID: tnmID,
+            playerFName: playerFName,
+            playerLName: playerLName,
+            playerGender: playerGender,
+            playerBirthday: playerBirthday,
+            playerPhone: playerPhone,
+            playerEmail: playerEmail,
+            facultyID: facultyID,
+            playerIDCard: playerIDCard,
+            playerStudentID: playerStudentID,
+            playerFile1: name_pfile})
         }
-    })
-        
+      });
 })
 
 router.get('/teamreg/(:tnmID)', (req, res, next) => {
