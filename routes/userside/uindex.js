@@ -88,11 +88,93 @@ router.post('/verifysingle', (req, res) => {
         })
 
     } else {
-        res.send('Invalid OTP');
+        res.flash('error','รหัส OTP ไม่ถูกต้อง');
+        res.render('userside/regform/otpsingle',{
+            playerEmail: playerEmail,
+            RestoredOTP: RestoredOTP,
+            tnmID: tnmID,
+            playerFName: playerFName,
+            playerLName: playerLName,
+            playerGender: playerGender,
+            playerBirthday: playerBirthday,
+            playerPhone: playerPhone,
+            playerEmail: playerEmail,
+            facultyID: facultyID,
+            playerIDCard: playerIDCard,
+            playerStudentID: playerStudentID,
+            playerFile1: name_pfile,
+            status_login: req.session.loggedin
+        })
+        
     }
 });
 
-router.post('/verifysingle', (req, res) => {
+router.post('/verifyteam', (req, res) => {
+    let otp = req.body.otp;
+    let teamOTP = req.body.teamOTP;
+    let teamName = req.body.teamName;
+    let NameAgent = req.body.NameAgent;
+    let LnameAgent = req.body.LnameAgent;
+    let teamPhoneA = req.body.teamPhoneA;
+    let teamEmailA = req.body.teamEmailA;
+    let teamfile = req.body.teamfile;
+    let tnmID = req.body.tnmID;
+
+    let playerFName = req.body.playerFName;
+    let playerLName = req.body.playerLName;
+    let playerGender = req.body.playerGender;
+    let playerBirthday = req.body.playerBirthday;
+    let playerPhone = req.body.playerPhone;
+    let playerEmail = req.body.playerEmail;
+    let facultyID = req.body.facultyID;
+    let playerIDCard = req.body.playerIDCard;
+    let playerStudentID = req.body.playerStudentID;
+    let player_photo = req.body.player_photo;
+    let detailDoc = req.body.detailDoc;
+
+    let values = [];
+
+    for (let i = 0; i < playerFName.length; i++) {
+    values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], playerStudentID[i], player_photo[i], detailDoc[i], tnmID])
+    }
+
+
+    if(otp === teamOTP){
+
+    let sql_team = "INSERT INTO team (teamName, NameAgent, LnameAgent, teamPhoneA, teamEmailA, teamPic, tnmID) VALUES ?";
+    let sql_player = "INSERT INTO player (playerFName, playerLName, playerGender, playerBirthday, playerPhone, playerEmail, facultyID, playerIDCard, playerStudentID, playerFile1, detailDoc, tnmID,teamID) VALUES ?";
+        
+        // insert query db
+        dbConnection.query(sql_team,[[[teamName, NameAgent, LnameAgent, teamPhoneA,teamEmailA, teamfile, tnmID]]], (err, result) => {
+            if (err) throw err;
+            console.log("Number of teams inserted: " + result.affectedRows);
+            let teamID = result.insertId;
+            for (let i = 0; i < values.length; i++) {
+                values[i].push(teamID)
+        }
+        dbConnection.query(sql_player, [values], function (err, result) {
+            if (err) throw err;
+            console.log("Number of persons inserted: " + result.affectedRows);
+            req.flash('success', 'สมัครเข้าร่วมการแข่งขันแล้ว');
+            res.redirect('/tnmdetail/'+tnmID);
+                
+        })
+        
+    })
+}else{
+    req.flash('error','รหัส OTP ไม่ถูกต้อง');
+    res.render('userside/regform/otpteam',{
+        teamOTP: teamOTP,
+        tnmID: tnmID,
+        teamName: teamName,
+        NameAgent: NameAgent,
+        LnameAgent: LnameAgent,
+        teamPhoneA: teamPhoneA,
+        teamEmailA: teamEmailA,
+        teamfile: teamfile,
+        values: values,
+        status_login: req.session.loggedin,})
+}
 
 })
 
@@ -225,9 +307,6 @@ router.post('/singlereg', (req, res, next) =>{
         text: 'รหัส OTP ของคุณคือ : ' + OTP
       };
 
-      console.log(OTP);
-      console.log(req.session.storedOTP);
-
       transporter.sendMail(mailOptions, function(error, info){
         if (error) {
           console.log(error);
@@ -283,57 +362,74 @@ router.post('/teamreg', async (req, res, next) =>{
     let playerIDCard = req.body.playerIDCard;
     let playerStudentID = req.body.playerStudentID;
     
-    var values = [];
+    let values = [];
 
-    var playerFile1 = req.files.playerFile1;
+    let playerFile1 = req.files.playerFile1;
 
     
 
-    for (var i = 0; i < playerFName.length; i++) {
-        var player_photo = null;
+    for (let i = 0; i < playerFName.length; i++) {
+        let player_photo = null;
         if(playerFile1[i]){
-            var name_pfile = new Date().getTime() +'_'+playerFile1[i].name;
+            let name_pfile = new Date().getTime() +'_'+playerFile1[i].name;
             playerFile1[i].mv('./assets/player/' + name_pfile);
             player_photo = name_pfile;
         }
-
-        let checkreg =  new Promise((resolve,reject) =>{
-            dbConnection.query('SELECT * FROM player WHERE playerIDCard = ? AND tnmID = ?', [playerIDCard[i], tnmID], (err, rows) => {
-                if(err) reject(err)
-                resolve(rows);
-                console.log(rows)
-            });
-        });
-        if(checkreg.length > 0){
+    
+        try{
+        
+    let rows = await dbConnection.query('SELECT * FROM player WHERE playerIDCard = ? AND tnmID = ?', [playerIDCard[i], tnmID], (err, rows) => {
+            if(err) reject(err)
+        console.log(rows);
+        if(rows.length > 0){
             let  detailDoc = 'สมัครซ้ำ';
             values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], playerStudentID[i], player_photo, detailDoc, tnmID])
+            console.log('ซ้ำ',values);
         }else{
             let detailDoc = null;
             values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], playerStudentID[i], player_photo, detailDoc, tnmID])
+       console.log('ไม่ซ้ำ',values);
         }
-    }
-        
-    
+    });
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+}
 
-    var sql_team = "INSERT INTO team (teamName, NameAgent, LnameAgent, teamPhoneA, teamEmailA, teamPic, tnmID) VALUES ?";
-    var sql_player = "INSERT INTO player (playerFName, playerLName, playerGender, playerBirthday, playerPhone, playerEmail, facultyID, playerIDCard, playerStudentID, playerFile1, detailDoc, tnmID,teamID) VALUES ?";
-        
-        // insert query db
-        dbConnection.query(sql_team,[[[teamName, NameAgent, LnameAgent, teamPhoneA,teamEmailA, teamfile, tnmID]]], (err, result) => {
-            if (err) throw err;
-            console.log("Number of teams inserted: " + result.affectedRows);
-            var teamID = result.insertId;
-            for (var i = 0; i < values.length; i++) {
-                values[i].push(teamID)
-        }
-        dbConnection.query(sql_player, [values], function (err, result) {
-            if (err) throw err;
-            console.log("Number of persons inserted: " + result.affectedRows);
-            req.flash('success', 'สมัครเข้าร่วมการแข่งขันแล้ว');
-            res.redirect('/tnmdetail/'+tnmID);
-                
-        })
-    })
+
+        let teamOTP = Math.floor(1000 + Math.random() * 9000);
+
+        let mailOptions = {
+            from: 'thesissportmanagement@gmail.com',
+            to: teamEmailA,
+            subject: 'รหัส OTP สำหรับการยืนยันอีเมลสมัครเข้าร่วมการแข่งขัน',
+            text: 'รหัส OTP ของคุณคือ : ' + teamOTP
+        };
+
+        transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+              res.render('userside/regform/otpteam',{
+                status_login: req.session.loggedin,
+                teamOTP: teamOTP,
+                tnmID: tnmID,
+                values: values,
+                teamName: teamName,
+                NameAgent: NameAgent,
+                LnameAgent: LnameAgent,
+                teamPhoneA: teamPhoneA,
+                teamEmailA: teamEmailA,
+                teamfile: teamfile
+                })
+            }
+          });
+
+
+
+    
 })
 
 
