@@ -17,7 +17,6 @@ let transporter = nodemailer.createTransport({
 router.post('/verifysingle', (req, res) => {
     let RestoredOTP = req.body.RestoredOTP;
     let otp = req.body.otp;
-
     let playerFName = req.body.playerFName;
     let playerLName = req.body.playerLName;
     let playerGender = req.body.playerGender;
