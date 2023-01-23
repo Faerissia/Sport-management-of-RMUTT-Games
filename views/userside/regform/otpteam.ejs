@@ -1,0 +1,45 @@
+<%- include("../../partials/header") %>
+<div class="col-10 py-3 mx-auto">
+            <!DOCTYPE html>
+            <html lang="en">
+
+            <head>
+                <title>ยืนยัน OTP</title>
+            </head>
+
+            <body>
+                <% if (messages.error) { %>
+                    <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+                <% } %>
+                
+                <form action="/verifyteam" method="post">
+                    <label for="otp">กรุณากรอกรหัส OTP ที่ได้รับในอีเมล :</label>
+                    <input type="text" name="otp" id="otp" required>
+                    <input type="hidden" name="teamOTP" value="<%= teamOTP %>">
+                    <input type="hidden" name="teamName" value="<%= teamName %>" >
+                    <input type="hidden" name="tnmID" value="<%=tnmID %>">
+                    <input type="hidden" name="NameAgent" value="<%=NameAgent%>">
+                    <input type="hidden" name="LnameAgent" value="<%= LnameAgent %>">
+                    <input type="hidden" name="teamPhoneA" value="<%= teamPhoneA %>">
+                    <input type="hidden" name="teamEmailA" value="<%= teamEmailA%>">
+                    <input type="hidden" name="teamfile" value="<%= teamfile %>">
+                    <% for(let i=0; i<values.length; i++){ %>
+                    <input type="hidden" name="playerFName" value="<%= values[i][0] %>">
+                    <input type="hidden" name="playerLName" value="<%= values[i][1] %>">
+                    <input type="hidden" name="playerGender" value="<%= values[i][2] %>">
+                    <input type="hidden" name="playerBirthday" value="<%=values[i][3] %>">
+                    <input type="hidden" name="playerPhone" value="<%= values[i][4] %>">
+                    <input type="hidden" name="playerEmail" value="<%= values[i][5] %>">
+                    <input type="hidden" name="facultyID" value="<%= values[i][6] %>">
+                    <input type="hidden" name="playerIDCard" value="<%= values[i][7] %>">
+                    <input type="hidden" name="playerStudentID" value="<%= values[i][8] %>">
+                    <input type="hidden" name="player_photo" value="<%= values[i][9] %>">
+                    <input type="hidden" name="detailDoc" value="<%= values[i][10] %>">
+                    <% } %>
+                    <input type="submit" value="Verify">
+                </form>
+
+            </body>
+
+            </html>
+        </div>

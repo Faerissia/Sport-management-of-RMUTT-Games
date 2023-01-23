@@ -27,6 +27,8 @@ global.status_login;
 global.role;
 global.user;
 
+global.tournamentName;
+
 // all environments
   const title = fs.readFileSync(path.join(__dirname,'title.txt'), 'utf-8');
   process.title = title;

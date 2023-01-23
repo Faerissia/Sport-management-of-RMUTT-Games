@@ -7,17 +7,17 @@ const iconv = require('iconv-lite');
 const fs = require('fs');
 
 
-router.post('/search-tnmcheck', (req, res) => {
+router.post('/search-tnmsearch', (req, res) => {
     let query = req.body.search;
     if(!query){
-        res.redirect('/tnmcheck');
+        res.redirect('/tnmsearch');
     }else{ 
-        sql = "";
+        sql = "SELECT t.*,s.* FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE tnmName LIKE ? ORDER BY tnmID asc";
         let like =['%' + query + '%'];
     
     dbConnection.query(sql, like, (err, results) => {
         if(err) throw err;
-        res.render('tnmcheck', {data: results,status_login: req.session.loggedin,user: user});
+        res.render('tnmsearch', {data: results,status_login: req.session.loggedin,user: user});
     });
 }
 });
