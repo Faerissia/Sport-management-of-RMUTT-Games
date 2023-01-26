@@ -246,7 +246,7 @@ router.get('/bracket/(:tnmID)', (req, res, next)=> {
                 dbConnection.query('SELECT p.*,t.tnmTypegame FROM tournament t LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmID = '+tnmID, (err, rows) => {
                 if(!rows[0].tnmTypegame){
                     
-                    res.render('tournament/bracket/createbracket', {totalPlayers: totalPlayers,byePlayer: byePlayer,data: rows, tnmID:tnmID,status_login: req.session.loggedin,user: user});
+                    res.render('tournament/bracket/createbracket', {data: rows, tnmID:tnmID,status_login: req.session.loggedin,user: user});
                 }else{
                     res.render('tournament/bracket/bracket', {data: rows, tnmID:tnmID,status_login: req.session.loggedin,user: user});
                 }
@@ -302,10 +302,16 @@ router.get('/participant/(:tnmID)', (req, res, next)=> {
 //หน้าแมทช์การแข่งขัน
 router.get('/match/(:tnmID)', (req, res, next)=> {
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT * FROM tournament WHERE tnmID ='+tnmID, (err, rows) => {
+    dbConnection.query('SELECT * FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmID ='+tnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
-            res.render('tournament/match', { data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user});
+            if(rows[0].sportPlaynum === 1){
+                dbConnection.query('SELECT m.matchID,p1.playerFName AS player1_name,p2.playerFName AS player2_name,m.score1,m.score2,m.placeID,m.dateMatch FROM matchplay m LEFT JOIN tournament t ON m.tnmID = t.tnmID JOIN player p1 ON m.participant1 = p1.playerID JOIN player p2 ON m.participant2 = p2.playerID WHERE t.tnmID ='+tnmID, (err, rows) => {
+                    res.render('tournament/match', { data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user});
+                })
+            }else{
+
+            }
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
@@ -315,6 +321,8 @@ router.get('/match/(:tnmID)', (req, res, next)=> {
     }
     })
 })
+
+
 
 //หน้าไฮไลท์
 router.get('/highlight/(:tnmID)', (req, res, next)=> {
@@ -448,6 +456,42 @@ router.get('/participant/player/(:playerID)', (req, res, next) => {
         res.redirect('error404');
     }
     })
+})
+
+
+router.post('/createbracket',(req, res, next) => {
+    let tnmTypegame = req.body.tnmTypegame;
+    
+    let updatetype = {tnmTypegame: tnmTypegame}
+
+    let tnmID =req.body.tnmID;
+    let participant1 = req.body.participant1;
+    let participant2 = req.body.participant2;
+    let round = 1;
+
+    dbConnection.query('UPDATE tournament SET ? WHERE tnmID = '+tnmID,updatetype,(err, rows) =>{
+        if (err) throw err;
+        console.log('อัพเดท วิธีการแข่งขันแล้ว')
+    })
+
+    let values = [];
+
+    
+    for (let i = 0; i < participant1.length; i++) {
+        if(!participant2[i]){
+            values.push([participant1[i], participant2[i], tnmID, round+1])
+        }else{
+            values.push([participant1[i], participant2[i], tnmID, round])
+        }
+        }
+        
+        dbConnection.query('INSERT INTO matchplay (participant1, participant2, tnmID, round) VALUES ?',[values], function (err, rows){
+            if (err) throw err;
+            console.log("Number of persons inserted: " + rows.affectedRows);
+            res.redirect('/tournament/bracket/'+tnmID);
+        })
+    
+
 })
 
 module.exports = router;
