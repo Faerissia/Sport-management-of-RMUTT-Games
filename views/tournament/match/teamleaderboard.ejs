@@ -123,7 +123,7 @@
                     </div>
 
                     <div class="card-body">
-                        <% if(data[0].teamName) { %>
+                        <% if(data.length) { %>
                             <table class="table w-50 mx-auto mt-4 border text-center">
                                 <thead style="background-color: rgb(96, 166, 253); ">
                                     <tr>
@@ -132,7 +132,7 @@
                                         <th width="200px">คะแนน</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style="background-color: white;">
                                     <% for(let i=0; i < data.length; i++) { %>
                                         <tr>
                                             <th scope="row">
@@ -151,7 +151,7 @@
                             <% } %>
 
                                 <!-- if result is empty-->
-                                <% if(!data[0].teamName) { %>
+                                <% if(!data.length) { %>
                                     <p class="text-center">ไม่พบรายการ</p>
                                     <% } %>
                     </div>
