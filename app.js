@@ -44,7 +44,7 @@ app.use(session({
   secret: 'secret',
   resave: 'true',
   saveUninitialized: true,
-  cookie: { maxAge: 60 * 60 * 1000 }
+  cookie: { maxAge: 60 * 60 * 2000 }
 }))
 
 
@@ -127,8 +127,7 @@ app.use('/tnmsave',tnmsave);
 app.use('/placetable',placetable);
 
 
-
-
-
 //Middleware
-app.listen(3000)
+app.listen(3000, () => {
+  console.log('Server running on port 3000')
+})

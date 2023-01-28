@@ -1,0 +1,57 @@
+<!-- for user  -->
+<%- include("../../../partials/header") %>
+<div class="container-xxl mt-5 px-3">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Document</title>
+</head>
+<body>
+
+
+หน้าสายการแข่งขัน
+<!-- กรอบ box  -->
+<div class=" d-flex flex-column text-center h-auto mb-5 border   border-dark rounded-3 "
+style="background:#D9D9D9 ;">
+
+<!-- menubar -->
+<%- include("../../../partials/menuuser.ejs") %>
+
+    <!-- เนื้อหาด้านใน ใส่แค่ให้รู้พื้นที่ ลบด้วย -->
+    <div class="d-block">
+        <div class="card-body">
+            <% if(data.length) { %>
+                <table class="table w-50 mx-auto mt-5 border text-center">
+                    <thead style="background-color: rgb(96, 166, 253); ">
+                        <tr>
+                            <th width="100px">ลำดับที่</th>
+                            <th scope="col">ชื่อผู้เล่น</th>
+                            <th width="200px">คะแนน</th>
+                        </tr>
+                    </thead>
+                    <tbody style="background-color: white;">
+                        <% for(let i = 0; i < data.length; i++) { %>
+                            <tr>
+                                <th scope="row"><%= i+1 %></th>
+                                <td><%= data[i].playerFName %></td>
+                                <td><%= data[i].score %></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            <% } %>
+
+            <!-- if result is empty-->
+            <% if(!data.length) { %>
+                <p class="text-center">ไม่พบรายการของการแข่งขัน</p>
+            <% } %>
+        </div>
+    </div>
+
+
+
+    <!-- outbox -->
+</div>
+</body>
+</html>
+</div>

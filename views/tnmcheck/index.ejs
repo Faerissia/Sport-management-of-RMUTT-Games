@@ -58,12 +58,13 @@
                     </thead>
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
+                            <% if(data[i].sportPlaynum > 1){ %>
+                                <% data[i].wait_count = data[i].wait_count / data[i].sportPlaynum %>
+                                <% data[i].deny_count = data[i].deny_count / data[i].sportPlaynum %>
+                                <% data[i].accept_count = data[i].accept_count / data[i].sportPlaynum %>
+                                <% } %>
+                            <% if(data[i].wait_count){ %>
                             <tr>
-                                <% if(data[i].sportPlaynum > 1){ %>
-                                    <% data[i].wait_count = data[i].wait_count / data[i].sportPlaynum %>
-                                    <% data[i].deny_count = data[i].deny_count / data[i].sportPlaynum %>
-                                    <% data[i].accept_count = data[i].accept_count / data[i].sportPlaynum %>
-                                    <% } %>
                                 <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
                                 <td><%= data[i].Renddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
@@ -80,6 +81,7 @@
 
                                 </td>
                             </tr>
+                            <% } %>
                         <% } %>
                     </tbody>
                 </table>

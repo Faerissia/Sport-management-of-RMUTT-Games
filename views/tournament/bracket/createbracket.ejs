@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>หน้าสายการแข่งขัน</title>
+    <title>Document</title>
 
 </head>
 <body>
@@ -13,9 +13,90 @@
 
         <%- include("../../partials/menu_staff.ejs") %>
 
-       
-    <h4>เลือกรูปแบบการแข่งขัน</h4>
-          
+
+    <form action="/tournament/createbracket/" method="post">
+
+        <div class="row my-2   row-cols-2">
+            <div class="col-2 ">
+                <label for="validationSport" class="col-form-label">type of tournament</label>
+            </div>
+        <div class="col-auto">
+        <select class="form-select border-dark" name="tnmTypegame">
+            <option value="single">Single Elimination</option>
+            <option value="roundrobin">Round Robin</option>
+            <option value="leaderboard">LeaderBoard</option>
+            <option value="roundsingle">Round Robin and Single Elimination</option>
+        </select>
+        </div>
+    </div>
+    <input type="hidden" name="tnmID" value="<%= tnmID %>">
+
+    <% if(data.length % 2 === 0){ %>
+    <% for(let i=0; i< data.length / 2; i++){ %>
+        <div class="row my-2   row-cols-2" >
+    <div class="col-auto">
+    <select name="participant1" class="form-select border-dark">
+        <% for(let i=0; i < data.length; i++) { %>
+            <option value="<%= data[i].playerID %>">
+                <%= data[i].playerFName %>
+            </option>
+            <% } %>
+    </select>
+    
+    <select name="participant2" class="form-select border-dark">
+        <% for(let i=0; i < data.length; i++) { %>
+            <option value="<%= data[i].playerID %>">
+                <%= data[i].playerFName %>
+                </option>
+                <% } %>
+        </select>
+        </div>
+    </div>
+        <% } %>
+        <% }else{ %>
+
+            <div class="row my-2   row-cols-2" >
+                <div class="col-auto">
+                    <label>Bye</label>
+                <select name="participant1" class="form-select border-dark">
+                    <% for(let i=0; i < data.length; i++) { %>
+                        <option value="<%= data[i].playerID %>">
+                            <%= data[i].playerFName %>
+                        </option>
+                        <% } %>
+                </select>
+
+                    <% } %>
+                        <% for(let i=0; i< ( data.length - 1 ) / 2; i++){ %>
+                            <div class="row my-2   row-cols-2" >
+                                <div class="col-auto">
+                                <select name="participant1" class="form-select border-dark">
+                                    <% for(let i=0; i < data.length; i++) { %>
+                                        <option value="<%= data[i].playerID %>">
+                                            <%= data[i].playerFName %>
+                                        </option>
+                                        <% } %>
+                                </select>
+                                
+                                <select name="participant2" class="form-select border-dark">
+                                    <% for(let i=0; i < data.length; i++) { %>
+                                        <option value="<%= data[i].playerID %>">
+                                            <%= data[i].playerFName %>
+                                            </option>
+                                            <% } %>
+                                    </select>
+                                    </div>
+                                </div>
+            <%  } %>
+
+
+    <div class="col-auto">
+        <button class="btn btn-success" type="submit">ยืนยัน</button>
+    </div>
+    </form>
+
+
+
 </body>
 </html>
 </div>
