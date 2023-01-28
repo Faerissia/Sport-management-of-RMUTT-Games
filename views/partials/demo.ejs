@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+
+
+
+
+
+</head>
+
+
+<body>
+    <div>
+        <h2>test demo</h2>
+        <div class="demo">
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <title>Tournament Bracket</title>
+            </head>
+            <body>
+              <table>
+                <tr>
+                  <td>Team A</td>
+                  <td>
+                    <input type="text" id="team-a-score" placeholder="Enter score">
+                  </td>
+                </tr>
+                <tr>
+                  <td>Team B</td>
+                  <td>
+                    <input type="text" id="team-b-score" placeholder="Enter score">
+                  </td>
+                </tr>
+                <tr>
+                  <td>Team C</td>
+                  <td>
+                    <input type="text" id="team-c-score" placeholder="Enter score">
+                  </td>
+                </tr>
+                <tr>
+                  <td>Team D</td>
+                  <td>
+                    <input type="text" id="team-d-score" placeholder="Enter score">
+                  </td>
+                </tr>
+              </table>
+              <button onclick="submitScores()">Submit Scores</button>
+              <script>
+                function submitScores() {
+                  const teamAScore = document.getElementById("team-a-score").value;
+                  const teamBScore = document.getElementById("team-b-score").value;
+                  const teamCScore = document.getElementById("team-c-score").value;
+                  const teamDScore = document.getElementById("team-d-score").value;
+                  console.log("Team A: " + teamAScore);
+                  console.log("Team B: " + teamBScore);
+                  console.log("Team C: " + teamCScore);
+                  console.log("Team D: " + teamDScore);
+                }
+              </script>
+            </body>
+            </html>
+                
+        
+        </div>
+            
+    </div>
+</body>
+
+</html>

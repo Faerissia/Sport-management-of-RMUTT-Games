@@ -1,31 +1,267 @@
+
+
 <%- include("partials/header") %>
-<%- include("partials/sidebar") %>
-        <div class="col py-3 mx-auto">
 
-<html lang="en">
-	<head>
-		<title>Dashboard</title>
-	</head>
-<body>
 
-	<% if (messages.error) { %>
-        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
-    <% } %>
-    
-    <% if (messages.success) { %>
-        <div class="alert alert-success" role="alert"><%= messages.success %></div>
-    <% } %>
 
-<div class="jumbotron">
-	<h1>Welcome</h1>
-	<p>Hello Dashboard</p>
-    <form action="/change-title" method="post">
-        <label for="title">ชื่อระบบ:</label>
-        <h4><%= process.title %> </h4>
-        <a  href="/dashboard/edit" class="btn-warning btn">แก้ไข</a>
-      </form>
-</div>	
 
-</body>
-</html>
-</div>
+    <%- include("partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto container-xxl">
+
+            <html lang="en">
+
+            <head>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+                <title>Dashboard</title>
+            </head>
+
+            <body>
+
+                <% if (messages.error) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= messages.error %>
+                    </div>
+                    <% } %>
+
+                        <% if (messages.success) { %>
+                            <div class="alert alert-success" role="alert">
+                                <%= messages.success %>
+                            </div>
+                            <% } %>
+
+
+                                <h1>รายการของการแข่งขันที่ต้องกำหนดรูปแบบ</h1>
+                                <div class="card w-100">
+                                    <div class="card-header">
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="jumbotron">
+                                            <form action="/change-title" method="post">
+                                                <label for="title">ชื่อระบบ:</label>
+                                                <h4>
+                                                    <%= process.title %>
+                                                </h4>
+                                                <a href="/dashboard/edit" class="btn-warning btn">แก้ไข</a>
+                                            </form>
+                                        </div>
+
+                                        <!-- new zone  -->
+
+                                        <div class="row row-cols-2 mx-auto">
+                                            <div class="col-4 float-end">
+                                                <div class="row my-2 row-cols-2">
+                                                    <div class="col-2 ">
+                                                        <label for="validationSport" class="col-form-label">ประเภทกีฬา
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <select class="form-select border-dark" id="validationSport"
+                                                            name="sportID" required>
+                                                            <option selected disabled value="">เลือกกีฬา...</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+
+                                            <div class="col">
+                                                <div class="row my-2   row-cols-2">
+                                                    <div class="col-3 ">
+                                                        <label for="validationDate_start"
+                                                            class="col-form-label">วันที่เปิดรับสมัคร</label>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <input type="date" class="form-control border-dark"
+                                                            id="validationDate_start" value="" name="Rstartdate"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <label for="validationDate" class="col-form-label">ถึง</label>
+                                                    </div>
+
+                                                    <div class="col-auto">
+                                                        <input type="date" class="form-control border-dark"
+                                                            id="validationDate_start" value="" name="Renddate"
+                                                            autocomplete="off" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- card zone -->
+                                        <div class="d-flex flex-row justify-content-around">
+                                            <div class="card border-dark text-bg-warning mb-3"
+                                                style="max-width: 18rem;">
+                                                <div class="card-header bg-transparent  border-dark">
+                                                    ยังไม่เริ่มการแข่งขัน
+                                                </div>
+                                                <div class="card-body text-dark text-center bg-white bg-opacity-50">
+                                                    <h5 class="card-title "style="font-size:3vw"> 1000</h5>
+                                                    <p class="card-text text-center"></p>
+                                                </div>
+                                                <div class="card-footer bg-white border-dark ">
+                                                    <a href="http://"
+                                                        class="text-decoration-none  text-dark text-center ">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <p style="font-size:1vw;" class="mb-0"> ดูรายละเอียด
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <iconify-icon class="float-end my-auto" width="36"
+                                                                    height="36" icon="akar-icons:arrow-left"
+                                                                    flip="horizontal"></iconify-icon>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <!--  -->
+
+                                            <div class="card border-dark text-bg-success mb-3"
+                                                style="max-width: 18rem;">
+                                                <div class="card-header bg-transparent  border-dark">
+                                                    ยังไม่เริ่มการแข่งขัน
+                                                </div>
+                                                <div class="card-body text-dark text-center bg-white bg-opacity-50">
+                                                    <h5 class="card-title "style="font-size:3vw"> 1000</h5>
+                                                    <p class="card-text text-center"></p>
+                                                </div>
+                                                <div class="card-footer bg-white border-dark ">
+                                                    <a href="http://"
+                                                        class="text-decoration-none  text-dark text-center ">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <p style="font-size:1vw;" class="mb-0"> ดูรายละเอียด
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <iconify-icon class="float-end my-auto" width="36"
+                                                                    height="36" icon="akar-icons:arrow-left"
+                                                                    flip="horizontal"></iconify-icon>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <!--  -->
+
+                                            <div class="card border-dark text-bg-info mb-3" style="max-width: 18rem;">
+                                                <div class="card-header bg-transparent  border-dark">
+                                                    ยังไม่เริ่มการแข่งขัน
+                                                </div>
+                                                <div class="card-body text-dark text-center bg-white bg-opacity-50">
+                                                    <h5 class="card-title "style="font-size:3vw"> 1000</h5>
+                                                    <p class="card-text text-center"></p>
+                                                </div>
+                                                <div class="card-footer bg-white border-dark ">
+                                                    <a href="http://"
+                                                        class="text-decoration-none  text-dark text-center ">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <p style="font-size:1vw;" class="mb-0"> ดูรายละเอียด
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-auto">
+                                                                <iconify-icon class="float-end my-auto" width="36"
+                                                                    height="36" icon="akar-icons:arrow-left"
+                                                                    flip="horizontal"></iconify-icon>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--  -->
+
+
+
+
+
+                                        <!-- card zone -->
+
+
+
+
+
+
+                                        <!-- Chart zone -->
+                                        <!-- <div class="container">
+                                            <canvas id="myChart"></canvas>
+                                        </div>
+                                        <script>
+                                            var ctx = document.getElementById('myChart').getContext('2d');
+                                            var chart = new Chart(ctx, {
+                                                type: 'bar',
+                                                data: {
+                                                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                                                    datasets: [{
+                                                        label: 'Counts',
+                                                        data: [15, 3, 8, 4, 6, 3, 5, 8, 7, 6, 4, 3],
+                                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                                        borderColor: 'rgba(75, 192, 192, 1)',
+                                                        borderWidth: 1
+                                                    }]
+                                                },
+                                                options: {
+                                                    scales: {
+                                                        y: {
+                                                            beginAtZero: true
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        </script> -->
+                                        <!-- Chart zone -->
+                                        <br>
+                                        <canvas id="myChart"></canvas>
+                                        <script>
+                                            var ctx = document.getElementById('myChart').getContext('2d');
+                                            var chart = new Chart(ctx, {
+                                                type: 'bar',
+                                                data: {
+                                                    labels: ['Product 1', 'Product 2', 'Product 3'],
+                                                    datasets: [{
+                                                        label: 'Sales',
+                                                        data: [12, 19, 3],
+                                                        backgroundColor: [
+                                                            'rgba(255, 99, 132, 0.2)',
+                                                            'rgba(54, 162, 235, 0.2)',
+                                                            'rgba(255, 206, 86, 0.2)'
+                                                        ],
+                                                        borderColor: [
+                                                            'rgba(255, 99, 132, 1)',
+                                                            'rgba(54, 162, 235, 1)',
+                                                            'rgba(255, 206, 86, 1)'
+                                                        ],
+                                                        borderWidth: 1
+                                                    }]
+                                                },
+                                                options: {
+                                                    scales: {
+                                                        y: {
+                                                            beginAtZero: true
+                                                        }
+                                                    }
+                                                }
+                                            });
+                                        </script>
+
+
+                                    </div>
+                                </div>
+
+
+
+
+
+            </body>
+
+            </html>
+        </div>
