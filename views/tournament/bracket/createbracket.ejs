@@ -14,7 +14,7 @@
         <%- include("../../partials/menu_staff.ejs") %>
 
 
-    <form action="/tournament/createbracket/" method="post">
+    <form action="/tournament/createbracket/<%= tnmID %>" method="post">
 
         <div class="row my-2   row-cols-2">
             <div class="col-2 ">
@@ -29,7 +29,6 @@
         </select>
         </div>
     </div>
-    <input type="hidden" name="tnmID" value="<%= tnmID %>">
 
     <% if(data.length % 2 === 0){ %>
     <% for(let i=0; i< data.length / 2; i++){ %>

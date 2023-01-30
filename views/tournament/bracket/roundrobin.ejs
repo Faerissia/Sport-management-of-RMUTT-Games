@@ -1,0 +1,117 @@
+<%- include("../../partials/header") %>
+<%- include("../../partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+<style>
+    th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: lightgray;
+}
+
+td:first-child {
+  background-color: lightgray;
+}
+</style>
+</head>
+<body>
+    <h1><%= tournamentname %></h1>
+
+        <%- include("../../partials/menu_staff.ejs") %>
+
+        <br>
+        <table >
+          <thead>
+            <tr>
+              <th></th>
+              <% let teamNames = []; %>
+              <% data.forEach(function(match) { %>
+                <% if (!teamNames.includes(match.team1)) { teamNames.push(match.team1); } %>
+                <% if (!teamNames.includes(match.team2)) { teamNames.push(match.team2); } %>
+              <% }); %>
+              <% teamNames.forEach(function(teamName) { %>
+                <th><%= teamName %></th>
+              <% }); %>
+            </tr>
+          </thead>
+          <tbody>
+            <% teamNames.forEach(function(teamName) { %>
+              <tr>
+                <td><%= teamName %></td>
+                <% teamNames.forEach(function(opponent) { %>
+                  <td>
+                    <% let score1 = ""; %>
+                    <% let score2 = ""; %>
+                    <% let winner = ""; %>
+                    <% data.forEach(function(match) { %>
+                      <% if (match.team1 === teamName && match.team2 === opponent) { %>
+                        <% score1 = match.score1; %>
+                        <% score2 = match.score2; %>
+                        <% if (match.score1 > match.score2) { winner = match.team1; } %>
+                        <% if (match.score2 > match.score1) { winner = match.team2; } %>
+                      <% } else if (match.team2 === teamName && match.team1 === opponent) { %>
+                        <% score1 = match.score2; %>
+                        <% score2 = match.score1; %>
+                        <% if (match.score2 > match.score1) { winner = match.team1; } %>
+                        <% if (match.score1 > match.score2) { winner = match.team2; } %>
+                      <% } %>
+                    <% }); %>
+                    <%= score1 %> - <%= score2 %>
+                  </td>
+                <% }); %>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+        <br><br>
+    
+        <h3>ตารางคะแนน</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>ชื่อ</th>
+              <th>ชนะ(ครั้ง)</th>
+              <th>แพ้(ครั้ง)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% 
+              let scoreboard = {};
+              data.forEach(function(match) {
+                if (!scoreboard[match.team1]) {
+                  scoreboard[match.team1] = { wins: 0, losses: 0 };
+                }
+                if (!scoreboard[match.team2]) {
+                  scoreboard[match.team2] = { wins: 0, losses: 0 };
+                }
+                if (match.score1 > match.score2) {
+                  scoreboard[match.team1].wins++;
+                  scoreboard[match.team2].losses++;
+                }
+                if (match.score2 > match.score1) {
+                  scoreboard[match.team2].wins++;
+                  scoreboard[match.team1].losses++;
+                }
+              });
+               let sortedScoreboard = Object.entries(scoreboard).sort((a, b) => b[1].wins - a[1].wins);%>
+        <% sortedScoreboard.forEach(function(team) { %>
+          <tr>
+            <td><%= team[0] %></td>
+            <td><%= team[1].wins %></td>
+            <td><%= team[1].losses %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+          
+</body>
+</html>
+</div>

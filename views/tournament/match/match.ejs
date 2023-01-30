@@ -6,13 +6,34 @@
 <html lang="en">
 <head>
     <title>match</title>
+<style>
+.popup-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid black;
+}
+
+.close-button {
+  font-size: 20px;
+  padding: 10px;
+  background-color: black;
+  color: white;
+  border: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+</style>
 </head>
 <body>
             
     <h1>หน้าผู้เข้าร่วม <%= tournamentname %></h1>
         <%- include("../../partials/menu_staff.ejs") %>
     <% if(data && data[0]) { %>
-        
     
      <% if(!data[0].teamID) { %>
             <!-- //แบบเดี่ยว -->
@@ -42,9 +63,13 @@
                                     <td><%= data[i].score1%> - <%= data[i].score2%></td>
                                     <% } %>
                                     <td>
-                                        <a href="../tournament/edit/<%= data[i].tnmID %>" class="btn btn-warning edit">แก้ไข</a>
-                                        <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                        <a href="/tournament/participant/player/<%= data[i].playerID %>" class="btn btn-primary page">ดู</a>
+                                        <button id="popup-<%= i %>">Show Popup <%= i %></button>
+                                            <div id="popup-content-<%= i %>" style="display: none;">
+                                                <h2>Popup Content <%= i %></h2>
+                                                <p>This is the content that will be displayed in popup <%= i %>.</p>
+                                                <button id="close-button-<%= i %>">Close</button>
+                                            </div>
+
                                     </td>
                                 </tr>
                             <% } %>
@@ -53,6 +78,7 @@
                 <% } %>
     <% } %>
     
+
     
     <!-- //แบบทีม -->
             <div class="card-body">
@@ -90,12 +116,33 @@
 
 
              <!-- if result is empty-->
-             <% if(!data.length) { %>
+             <% if(!data || !data[0]) { %>
                 <h4 class="text-center" style="margin-top: 50px;">ไม่พบรายการ</h4>
             <% } %>
             
         </div>
-
 </body>
+<script>
+    for(var i = 0; i < data.length; i++) {
+      var popupButton = document.getElementById("popup-" + i);
+      var popup = document.getElementById("popup-content-" + i);
+      var closeButton = document.getElementById("close-button-" + i);
+  
+      popupButton.addEventListener("click", function() {
+        if (popup.style.display === "none") {
+          popup.style.display = "block";
+        } else {
+          popup.style.display = "none";
+        }
+      });
+  
+      closeButton.addEventListener("click", function() {
+        if (popup.style.display === "block") {
+          popup.style.display = "none";
+        }
+      });
+    }
+  </script>
+
 </html>
 </div>

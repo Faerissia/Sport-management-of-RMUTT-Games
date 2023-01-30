@@ -20,7 +20,7 @@ style="background:#D9D9D9 ;">
     <!-- เนื้อหาด้านใน ใส่แค่ให้รู้พื้นที่ ลบด้วย -->
     <div class="d-block" >
         <div class="card-body">
-            <% if(data.length) { %>
+            <% if(data && data[0]) { %>
                 <table class="table w-50 mx-auto mt-5 border text-center">
                     <thead style="background-color: rgb(96, 166, 253); ">
                         <tr>
@@ -42,7 +42,7 @@ style="background:#D9D9D9 ;">
             <% } %>
 
             <!-- if result is empty-->
-            <% if(!data.length) { %>
+            <% if(!data || !data[0]) { %>
                 <p class="text-center">ไม่พบรายการของการแข่งขัน</p>
             <% } %>
         </div>

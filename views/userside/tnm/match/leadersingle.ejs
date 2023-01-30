@@ -15,8 +15,12 @@
                 <%- include("../../../partials/menuuser.ejs") %>
                     <!-- <div class="d-block" style="height: 1000px;"></div> -->
                     <div class="card-body">
-                      <% if(data.length) { %>
+                      <% if(data && data[0]) { %>
+                        <% if(data[0].pDate && data[0].time && data[0].placeName){ %>
                         <h4>แข่งวันที่ <%=data[0].pDate.toLocaleDateString('th-TH',{day: '2-digit' ,month: 'long' , year:'numeric'}) %> เวลา <%= data[0].time%> สถานที่ <%= data[0].placeName %></h4>
+                        <% }else{ %>
+                            <h4>แข่งวันที่  เวลา  สถานที่ </h4>
+                            <% } %>
                           <table class="table w-50 mx-auto mt-5 border text-center">
                               <thead style="background-color: rgb(96, 166, 253); ">
                                   <tr>
@@ -38,7 +42,7 @@
                       <% } %>
           
                       <!-- if result is empty-->
-                      <% if(!data.length) { %>
+                      <% if(!data || !data[0]) { %>
                           <p class="text-center">ไม่พบรายการของการแข่งขัน</p>
                       <% } %>
                   </div>

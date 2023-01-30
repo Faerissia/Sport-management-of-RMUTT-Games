@@ -215,19 +215,19 @@ router.get('/tnmbracket/(:tnmID)', (req, res, next) => {
         if (err) throw err;
         if(rows[0].sportPlaynum === 1){
             if(rows[0].tnmTypegame ==='leaderboard'){
-                dbConnection.query('SELECT p.*,t.tnmID,m.score FROM matchleader m LEFT JOIN player p ON p.playerID = m.playerID LEFT JOIN tournament t ON t.tnmID = m.tnmID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows) => {
+                dbConnection.query('SELECT p.*,t.tnmID,m.score FROM matchplay m LEFT JOIN player p ON p.playerID = m.playerID LEFT JOIN tournament t ON t.tnmID = m.tnmID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows) => {
             res.render('userside/tnm/bracket/leadersingle', { data: rows,tnmID: tnmID,status_login: req.session.loggedin });
                 })
             }else{
-
+                res.render('userside/tnm/blankpage',{tnmID: tnmID,status_login: req.session.loggedin });
             }
         }else{
             if(rows[0].tnmTypegame ==='leaderboard'){
-                dbConnection.query('SELECT team.*,t.tnmID,m.score,m.pDate,m.time FROM matchleader m LEFT JOIN team team ON team.teamID = m.teamID LEFT JOIN tournament t ON t.tnmID = m.tnmID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows) => {
+                dbConnection.query('SELECT team.*,t.tnmID,m.score,m.pDate,m.time FROM matchplay m LEFT JOIN team team ON team.teamID = m.teamID LEFT JOIN tournament t ON t.tnmID = m.tnmID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows) => {
                     res.render('userside/tnm/bracket/leaderteam', { data: rows,tnmID: tnmID,status_login: req.session.loggedin });
                         })
             }else{
-
+                res.render('userside/tnm/blankpage',{tnmID: tnmID,status_login: req.session.loggedin });
             }
 
         }
@@ -255,19 +255,19 @@ router.get('/tnmmatch/(:tnmID)', (req, res, next) => {
         if (err) throw err;
         if(rows[0].sportPlaynum === 1){
             if(rows[0].tnmTypegame === 'leaderboard'){
-                dbConnection.query('SELECT p.*,t.tnmID,m.score,m.pDate,m.time,pl.placeName FROM matchleader m LEFT JOIN player p ON p.playerID = m.playerID LEFT JOIN tournament t ON t.tnmID = m.tnmID LEFT JOIN place pl ON pl.placeID = m.placeID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows) => {
+                dbConnection.query('SELECT p.*,t.tnmID,m.score,m.pDate,m.time,pl.placeName FROM matchplay m LEFT JOIN player p ON p.playerID = m.playerID LEFT JOIN tournament t ON t.tnmID = m.tnmID LEFT JOIN place pl ON pl.placeID = m.placeID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows) => {
             res.render('userside/tnm/match/leadersingle', { data: rows,tnmID: tnmID,status_login: req.session.loggedin });
                 })
             }else{
-
+                res.render('userside/tnm/blankpage',{tnmID: tnmID,status_login: req.session.loggedin });
             }
         }else{
             if(rows[0].tnmTypegame === 'leaderboard'){
-                dbConnection.query('SELECT team.*,t.tnmID,m.score,m.pDate,m.time,pl.placeName FROM matchleader m LEFT JOIN team team ON team.teamID = m.teamID LEFT JOIN tournament t ON t.tnmID = m.tnmID LEFT JOIN place pl ON pl.placeID = m.placeID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows) => {
+                dbConnection.query('SELECT team.*,t.tnmID,m.score,m.pDate,m.time,pl.placeName FROM matchplay m LEFT JOIN team team ON team.teamID = m.teamID LEFT JOIN tournament t ON t.tnmID = m.tnmID LEFT JOIN place pl ON pl.placeID = m.placeID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows) => {
                     res.render('userside/tnm/match/leaderteam', {data: rows, tnmID:tnmID,status_login: req.session.loggedin});
                     })
             }else{
-                
+                res.render('userside/tnm/blankpage',{tnmID: tnmID,status_login: req.session.loggedin });
             }
 
         }
