@@ -1,13 +1,12 @@
-<%- include("../../partials/header") %>
-<%- include("../../partials/sidebar") %>
-        <div class="col-10 py-3 mx-auto">
-
+<!-- for user  -->
+<%- include("../../../partials/header") %>
+<div class="container-xxl mt-5 px-3">
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Document</title>
+<title>Document</title>
 <style>
-    th, td {
+        th, td {
   border: 1px solid black;
   padding: 8px;
   text-align: center;
@@ -24,12 +23,21 @@ td:first-child {
 </style>
 </head>
 <body>
-    <h1><%= tournamentname %></h1>
 
-        <%- include("../../partials/menu_staff.ejs") %>
 
-        <br>
-        <h1>Round Robin</h1>
+หน้าสายการแข่งขัน
+<!-- กรอบ box  -->
+<div class=" d-flex flex-column text-center h-auto mb-5 border   border-dark rounded-3 "
+style="background:#D9D9D9 ;">
+
+<!-- menubar -->
+<%- include("../../../partials/menuuser.ejs") %>
+
+    <!-- เนื้อหาด้านใน ใส่แค่ให้รู้พื้นที่ ลบด้วย -->
+    <div class="d-block">
+        <div class="card-body">
+            <% if(data && data[0]) { %>
+                <h1>Round Robin</h1>
     <table>
       <thead>
         <tr>
@@ -120,9 +128,19 @@ td:first-child {
         <% }); %>
       </tbody>
     </table>
-          
-  <a href="/tournament/roundrobinsave/<%= tnmID %>" class="btn btn-success">บันทึกผลการแข่งขัน</a>
+            <% } %>
 
+            <!-- if result is empty-->
+            <% if(!data || !data[0]) { %>
+                <p class="text-center">ไม่พบรายการของการแข่งขัน</p>
+            <% } %>
+        </div>
+    </div>
+
+
+
+    <!-- outbox -->
+</div>
 </body>
 </html>
 </div>
