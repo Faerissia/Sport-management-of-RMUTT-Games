@@ -1,0 +1,48 @@
+<%- include("../../partials/header") %>
+<%- include("../../partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+
+</head>
+<body>
+    <h1><%= tournamentname %></h1>
+
+        <%- include("../../partials/menu_staff.ejs") %>
+
+        <div class="card-body">
+            <% if(data.length) { %>
+                <table class="table w-50 mx-auto mt-5 border text-center">
+                    <thead style="background-color: rgb(96, 166, 253); ">
+                        <tr>
+                            <th width="100px">ลำดับที่</th>
+                            <th scope="col">ชื่อทีม</th>
+                            <th width="200px">คะแนน</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let i = 0; i < data.length; i++) { %>
+                            <tr>
+                                <th scope="row"><%= i+1 %></th>
+                                <td><%= data[i].teamName %></td>
+                                <td><%= data[i].score %></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            <% } %>
+
+            <!-- if result is empty-->
+            <% if(!data.length) { %>
+                <p class="text-center">ไม่พบรายการของการแข่งขัน</p>
+            <% } %>
+        </div>
+
+
+          
+</body>
+</html>
+</div>

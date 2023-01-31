@@ -19,16 +19,9 @@
 </head>
 <body>
 
-    <h1>หน้าไฮไลต์ <%= data[0].tnmName %></h1>
-            <ul class="nav nav-pills w-100">
-                <td>
-                    <a href="/tournament/edit/<%= data[0].tnmID %>" class="nav-link active">แก้ไขการแข่งขัน</a>
-                    <a href="/tournament/bracket/<%= data[0].tnmID %>" class="nav-link active">จัดสายการแข่งขัน</a>
-                    <a href="/tournament/participant/<%= data[0].tnmID %>" class="nav-link active">ผู้เข้าร่วม</a>
-                    <a href="/tournament/match/<%= data[0].tnmID %>" class="nav-link active">แมทช์การแข่งขัน</a>
-                    <a href="/tournament/highlight/<%= data[0].tnmID %>" class="nav-link active">ไฮไลต์</a>
-                </td>
-            </ul>
+    <h1>เพิ่มไฮไลท์ของ <%= data[0].tnmName %></h1>
+
+    <%- include("../partials/menu_staff.ejs") %>
 
             <% if (messages.error) { %>
                 <div class="alert alert-danger" role="alert"><%= messages.error %></div>
@@ -39,27 +32,46 @@
             <% } %>
 
             <div class="card-body">
-                <form action="/tournament/highlight/add/<%= data[0].tnmID %>" method="post" encType="multipart/form-data">
-                    <div class="form-group">
-                        <label>วันที่:</label>
+                <form action="/tournament/highlight/add/<%= tnmID %>" method="post" encType="multipart/form-data">
+                    <div class="row my-2   row-cols-2">
+                        <div class="col-2 ">
+                            <label for="validationDate_start"
+                                class="col-form-label">วันที่เปิดรับสมัคร</label>
+                        </div>
+                        <div class="col-auto">
                         <input type="date" class="form-control" name="date" autocomplete="off" required>
                     </div>
-                        <select id="select-element">
+                    </div>
+                    <div class="row my-2   row-cols-2">
+                    <div class="col-auto">
+                        <select class="form-select border-dark" id="select-element">
                             <option selected>เลือก</option>
                             <option value="file">รูปภาพ</option>
                             <option value="text">วิดีโอ</option>
                         </select>
-                    <div class="form-group" style="margin-top: 10px;">
-                        <input type="file" id="file-input" name="filePic">
                     </div>
+                </div>
+                <div class="col ">
+                <img id="imgpreview" class="w-30 rounded mx-auto mb-0 " alt=""
+                                                        style="height: 10rem; display: none; ">
+                    <div class="form-group" style="margin-top: 10px;">
+                        <input type="file" id="file-input" name="filePic" onchange="preview()">
+                    </div>
+                </div>
                     <div class="form-group" style="margin-top: 10px;">
                         <input type="text" id="text-input" name="linkvid">
                     </div>
-                    <div class="form-group" style="margin-top: 10px;">
-                        <label>รายละเอียด:</label>
-                        <textarea input type="text" class="form-control" name="description" autocomplete="off"></textarea>
+                    <div class="row my-2   row-cols-2">
+                        <div class="col-2 ">
+                            <label for="validationdetail" class="col-form-label">รายละเอียด</label>
+                        </div>
+                        <div class="col-4">
+                            <textarea class="form-control border-dark" id="validationdetail"
+                                name="description" autocomplete="off" required></textarea>
+                        </div>
                     </div>
                     <div class="form-group" style="margin-top: 10px;">
+                        <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
                         <input type="submit" class="btn btn-info" value="เพิ่ม">
                     </div>
                 </form>
@@ -86,7 +98,13 @@
   });
 });
 </script>
-            
+<script>
+    function preview() {
+        imgpreview.src = URL.createObjectURL(event.target.files[0]);
+        imgpreview.style.display = "block";
+
+    }
+</script>
             
 </body>
 </html>

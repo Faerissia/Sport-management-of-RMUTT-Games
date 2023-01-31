@@ -1,78 +1,180 @@
-
 <%- include("../partials/header") %>
-<%- include("../partials/sidebar") %>
+    <%- include("../partials/sidebar") %>
         <div class="col-10 py-3 mx-auto">
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>tournament</title>
-</head>
-<body>
+            <!DOCTYPE html>
+            <html lang="en">
 
-    <% if (messages.error) { %>
-        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
-    <% } %>
-    
-    <a href="/tournament" class="btn btn-info">ย้อนกลับ</a>
-    <br><br>
-    <div class="card">
-        <div class="card-header">
-            เพิ่มการแข่งขัน
-        </div>
-        <div class="card-body">
-            <form action="/tournament/add" method="post" encType="multipart/form-data">
-                <div class="form-group">
-                    <label>ชื่อการแข่งขัน:</label>
-                    <input type="text" class="form-control" name="tnmName" autocomplete="off" required>
-                </div>
-                <div class="form-group">
-                    <label style="margin-top: 15px;">กีฬา:</label>
-                    <select name="sportID">
-                        <% for(let i = 0; i < data.length; i++) { %>
-                        <option value="<%= data[i].sportID %>"><%= data[i].sportName %></option>
-                        <% } %>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>วันที่เปิดรับสมัคร:</label>
-                    <input type="date" class="form-control" name="Rstartdate" autocomplete="off" required>
-                </div>
-                <div class="form-group">
-                    <label>วันที่ปิดรับสมัคร:</label>
-                    <input type="date" class="form-control" name="Renddate" autocomplete="off" required>
-                </div>
-                <div class="form-group">
-                    <label>วันที่เริ่มแข่ง:</label>
-                    <input type="date" class="form-control" name="tnmStartdate" autocomplete="off" required>
-                </div>
-                <div class="form-group">
-                    <label>วันที่สิ้นสุด:</label>
-                    <input type="date" class="form-control" name="tnmEnddate" autocomplete="off" required>
-                </div>
-                <div class="form-group">
-                    <label>เอกสารที่ใช้ในการสมัคร:</label>
-                    <input type="text" class="form-control" name="tnmUrl" placeholder="บัตรประชาชน และ บัตรประจำตัวนักศึกษา">
-                </div>
-                <div class="form-group">
-                    <label>รายละเอียด:</label>
-                    <textarea input type="text" class="form-control" name="tnmDetail" autocomplete="off"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>รูปภาพ:</label>
-                    <input type="file" class="form-control" name="tnmPicture" required>
-                </div>
-                <div class="form-group">
-                    <label>ไฟล์:</label>
-                    <input type="file" class="form-control" name="tnmFile1">
-                </div>
-                <div class="form-group" style="margin-top: 10px;">
-                    <input type="submit" class="btn btn-info" value="เพิ่ม">
-                </div>
-            </form>
-        </div>
-    </div>
+            <head>
+                <title>tournament</title>
+            </head>
 
-</body>
-</html>
-</div>
+            <body>
+
+                <% if (messages.error) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= messages.error %>
+                    </div>
+                    <% } %>
+
+
+                        <div class="card">
+                            <div class="card-header">
+                                <p class="display-6 mb-0">
+                                    เพิ่มการแข่งขัน
+                                </p>
+                            </div>
+                            <div class="card-body">
+
+                                <!--_________________ Form _________________-->
+                                <form action="/tournament/add" method="post" encType="multipart/form-data"
+                                    class="form needs-validation">
+                                    <!--  -->
+                                    <div class="row my-2  p row-cols-2">
+                                        <div class="col-2 ">
+                                            <label for="validationNametour"
+                                                class="col-form-label">ชื่อการแข่งขัน</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <input type="text" class="form-control border-dark" id="validationNametour"
+                                                value="" name="tnmName" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row my-2   row-cols-2">
+                                        <div class="col-2 ">
+                                            <label for="validationSport" class="col-form-label">กีฬา</label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <select class="form-select border-dark" id="validationSport" name="sportID"
+                                                required>
+                                                <option selected disabled value="">เลือกกีฬา...</option>
+                                                <% for(let i=0; i < data.length; i++) { %>
+                                                    <option value="<%= data[i].sportID %>">
+                                                        <%= data[i].sportName %>
+                                                    </option>
+                                                    <% } %>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row my-2   row-cols-2">
+                                        <div class="col-2 ">
+                                            <label for="validationDate_start"
+                                                class="col-form-label">วันที่เปิดรับสมัคร</label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input type="date" class="form-control border-dark"
+                                                id="validationDate_start" value="" name="Rstartdate" autocomplete="off"
+                                                required>
+                                        </div>
+                                        <div class="col-auto">
+                                            <label for="validationDate" class="col-form-label">ถึง</label>
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <input type="date" class="form-control border-dark"
+                                                id="validationDate_start" value="" name="Renddate" autocomplete="off"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row my-2   row-cols-2">
+                                        <div class="col-2 ">
+                                            <label for="validationDate_end"
+                                                class="col-form-label">วันที่เริ่มแข่ง</label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input type="date" class="form-control border-dark" id="validationDate_end"
+                                                value="" name="tnmStartdate" autocomplete="off" required>
+                                        </div>
+                                        <div class="col-auto">
+                                            <label for="validationDate" class="col-form-label">ถึง</label>
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <input type="date" class="form-control border-dark" id="validationDate_end"
+                                                value="" name="tnmEnddate" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row my-2   row-cols-2">
+                                        <div class="col-2 ">
+                                            <label for="validationFile_doc"
+                                                class="col-form-label">เอกสารที่ใช้ในการสมัคร</label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <select class="form-select border-dark" id="validationFile_doc"
+                                                name="tnmUrl" required>
+                                                <option selected disabled value="">เอกสารที่ใช้ในการสมัคร</option>
+                                                <option value="บัตรประชาชน และ บัตรประจำตัวนักศึกษา">บัตรประชาชน และ
+                                                    บัตรประจำตัวนักศึกษา</option>
+                                                <option value="บัตรประชาชน">บัตรประชาชน</option>
+                                                <option value="บัตรประจำตัวนักศึกษา">บัตรประจำตัวนักศึกษา</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row my-2   row-cols-2">
+                                        <div class="col-2 ">
+                                            <label for="validationdetail" class="col-form-label">รายละเอียด</label>
+                                        </div>
+                                        <div class="col-4">
+                                            <textarea class="form-control border-dark" id="validationdetail"
+                                                name="tnmDetail" autocomplete="off" required></textarea>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row my-2   row-cols-2">
+                                        <div class="col-2 ">
+                                            <label for="validationFile" class="col-form-label">ไฟล์แนบ</label>
+                                        </div>
+                                        <div class="col-3">
+                                            <input type="file" class="form-control border-dark" id="validationFile"
+                                                value="" name="tnmFile1" required>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row row-cols-2">
+                                        <div class="col-2 my-auto  ">
+                                            <label for="validationImage" class=" col-form-label">รูปภาพปก<br> (ขนาด
+                                                400 x
+                                                550 px)</label>
+                                        </div>
+                                        <script>
+                                            function preview() {
+                                                imgpreview.src = URL.createObjectURL(event.target.files[0]);
+                                                imgpreview.style.display = "block";
+
+                                            }
+                                        </script>
+                                        <div class="col-3 my-auto ">
+                                            <div class="row  ">
+                                                <div class="col ">
+                                                    <img id="imgpreview" class="w-50 rounded mx-auto mb-2 " alt=""
+                                                        style="height: 10rem; display: none; ">
+                                                    <input type="file" class="form-control border-dark"
+                                                        id="validationImage" value="" name="tnmPicture" required
+                                                        onchange="preview()">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  -->
+                                    <div class="row row-cols-2 mt-5 text-center d-flex justify-content-center">
+                                        <div class="col-2">
+                                            <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
+                                        </div>
+                                        <div class="col-2">
+                                            <button class="btn btn-success" type="submit">ยืนยัน</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+            </body>
+
+            </html>
+        </div>

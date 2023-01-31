@@ -5,7 +5,7 @@ let bodyParser=require("body-parser");
 let flash = require('express-flash');
 const dbConnection = require('./util/db');
 const session = require('express-session');
-
+const fs = require('fs');
 
 //routes variable
 const dashboard = require('./routes/dashboard');
@@ -15,17 +15,23 @@ const faculty = require('./routes/faculty');
 const sport = require('./routes/sport');
 const place = require('./routes/place');
 const tournament = require('./routes/tournament');
+const tnmsearch = require('./routes/tnmsearch');
 const tnmcheck = require('./routes/tnmcheck');
 const tnmsetdp = require('./routes/tnmsetdp');
 const tnmsave = require('./routes/tnmsave');
 const uindex = require('./routes/userside/uindex');
 const fileUpload = require('express-fileupload');
+const placetable = require('./routes/placetable');
 
 global.status_login;
 global.role;
 global.user;
 
+global.tournamentName;
+
 // all environments
+  const title = fs.readFileSync(path.join(__dirname,'title.txt'), 'utf-8');
+  process.title = title;
 
 app.use(fileUpload());
 app.set('views', __dirname + '/views');
@@ -38,9 +44,15 @@ app.use(session({
   secret: 'secret',
   resave: 'true',
   saveUninitialized: true,
-  cookie: { maxAge: 60 * 60 * 1000 }
+  cookie: { maxAge: 60 * 60 * 2000 }
 }))
 
+
+app.post('/change-title', function(req, res) {
+  process.title = req.body.title;
+  fs.writeFileSync(path.join(__dirname, 'title.txt'), process.title);
+  res.redirect('/dashboard');
+});
 
 app.get('/login',(req, res) => {
   if (req.session.loggedin) {
@@ -54,7 +66,6 @@ app.get('/login',(req, res) => {
 app.post('/login', (req, res) => {
   var email = req.body.email;
   var password = req.body.password;
-
 
   if (email && password) {
     dbConnection.query(
@@ -108,14 +119,15 @@ app.use('/uni', uni);
 app.use('/faculty',faculty);
 app.use('/sport',sport);
 app.use('/place',place);
+app.use('/tnmsearch',tnmsearch);
 app.use('/tournament', tournament);
 app.use('/tnmcheck',tnmcheck);
 app.use('/tnmsetdp',tnmsetdp);
 app.use('/tnmsave',tnmsave);
-
-
-
+app.use('/placetable',placetable);
 
 
 //Middleware
-app.listen(3000)
+app.listen(3000, () => {
+  console.log('Server running on port 3000')
+})

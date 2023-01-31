@@ -4,7 +4,7 @@
 
 <html lang="en">
 	<head>
-		<title>Deahboard</title>
+		<title>Dashboard</title>
 	</head>
 <body>
 
@@ -19,7 +19,13 @@
 <div class="jumbotron">
 	<h1>Welcome</h1>
 	<p>Hello Dashboard</p>
+    <form action="/change-title" method="post">
+        <label for="title">ชื่อระบบ:</label>
+        <h4><%= process.title %> </h4>
+        <a  href="/dashboard/edit" class="btn-warning btn">แก้ไข</a>
+      </form>
 </div>	
+
 </body>
 </html>
 </div>

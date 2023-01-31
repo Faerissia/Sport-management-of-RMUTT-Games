@@ -1,0 +1,59 @@
+<%- include("../../partials/header") %>
+    <div class="container-xxl mt-5 px-3">
+        <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+            <title>Document</title>
+        </head>
+
+        <body>
+
+            หน้าอันดับ
+            <div class=" d-flex flex-column text-center h-auto mb-5 border   border-dark rounded-3 "
+                style="background:#D9D9D9 ;">
+                <%- include("../../partials/menuuser.ejs") %>
+                    <!-- <div class="d-block" style="height: 1000px;"></div> -->
+                    <div class="row pt-3">
+                    <div class="row row-cols-1">
+                        <div class="col">
+                            <p class="display-2 align-seft-start my-2">
+                                อันดับ
+                            </p>
+
+                        </div>
+                    </div>
+                    <% if(data.length){ %>
+                      <h1>ไม่พบรายการ</h1>
+                      <% } %>
+                      <% if(!data.length){ %>
+                    <div class="row">
+                    <table class="table table table-bordered border-dark w-75 mx-auto text-center  mb-5">
+                        <thead>
+                          <tr style="background-color: #6DAFFE;">
+                            <th scope="col">ลำดับ</th>
+                            <th scope="col">ชื่อทีม</th>
+                            <th scope="col">คะแนน</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% for (let i = 0; i <= 5; i++){ %>
+                          <tr class="bg-light">
+                            <th scope="row"><%= i+1 %></th>
+                            <td>ทีมที่<%= i %></td>
+                            <td><%= i %></td>
+                            <!--  SELECT * FROM scores ORDER BY score DESC; -->
+                          </tr>
+                          <% } %>
+                        </tbody>
+                      </table>
+                    </div>
+                    <% } %>
+                </div>
+
+                    </div>
+            
+        </body>
+
+        </html>
+    </div>

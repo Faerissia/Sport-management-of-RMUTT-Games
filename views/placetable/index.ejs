@@ -1,0 +1,84 @@
+<%- include("../partials/header") %>
+<%- include("../partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>sport</title>
+</head>
+<body>
+
+    <% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+    <% } %>
+    
+    <% if (messages.success) { %>
+        <div class="alert alert-success" role="alert"><%= messages.success %></div>
+    <% } %>
+
+    <script type="text/javascript">
+        function confirm_delete() {
+          return confirm('are you sure?');
+        }
+        </script>
+
+<h1>ตารางการใช้งานสถานที่</h1>
+<div class="float-end">
+    <form action="/place/search-place" method="post">
+        <div class="input-group ">
+        <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา...">
+        <button type="submit" class="btn btn-primary" >ค้นหา</button>
+    </div>
+    </form>
+    </div>
+    <div class="card w-100">
+        <div class="card-header">
+            <ul class="nav nav-pills w-100">
+                <li class="nav-link ml-auto">
+
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <% if(data.length) { %>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ช่วงเวลา/สนาม</th>
+                            <th scope="col">08:00 - 09:00</th>
+                            <th scope="col">09:00 - 10:00</th>
+                            <th scope="col">10:00 - 11:00</th>
+                            <th scope="col">11:00 - 12:00</th>
+                            <th scope="col">12:00 - 13:00</th>
+                            <th scope="col">13:00 - 14:00</th>
+                            <th scope="col">14:00 - 15:00</th>
+                            <th scope="col">15:00 - 16:00</th>
+                            <th scope="col">16:00 - 17:00</th>
+                            <th scope="col">17:00 - 18:00</th>
+                            <th scope="col">18:00 - 19:00</th>
+                            <th scope="col">19:00 - 20:00</th>
+                            <th scope="col">20:00 - 21:00</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let i = 0; i < data.length; i++) { %>
+                            <tr>
+                                <th scope="row"><%= i+1 %></th>
+                                <td></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            <% } %>
+
+            <!-- if result is empty-->
+            <% if(!data.length) { %>
+                <p class="text-center">ไม่พบรายการสถานที่</p>
+            <% } %>
+        </div>
+    </div>
+
+</body>
+</html>
+</div>

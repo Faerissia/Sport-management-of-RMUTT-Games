@@ -1,0 +1,185 @@
+<%- include("../../partials/header") %>
+<%- include("../../partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>match</title>
+<style>
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+}
+.modal-header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: rgb(242, 2, 2);
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+            
+    <h1>หน้าผู้เข้าร่วม <%= tournamentname %></h1>
+        <%- include("../../partials/menu_staff.ejs") %>
+    <% if(data && data[0]) { %>
+    
+     <% if(!data[0].teamID) { %>
+            <!-- //แบบเดี่ยว -->
+            <div class="card-body">
+                <% if(data.length) { %>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Match</th>
+                                <th scope="col">Date & Time</th>
+                                <th scope="col">สถานที่การแข่งขัน</th>
+                                <th scope="col">คู่ระหว่าง</th>
+                                <th scope="col">คะแนน</th>
+                                <th width="200px">ตัวเลือก</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(let i = 0; i < data.length; i++) { %>
+                                <tr>
+                                    <td><%= i+1 %></td>
+                                <% if(data[i].pDate === null){ %>
+                                    <td><%= data[i].pDate %></td>
+                                    <% }else{ %>
+                                        <td><%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit' ,
+                                            month: 'long' , year:'numeric'}) %></td>
+                                        <% } %>
+                                    <td><%= data[i].placeName %></td>
+                                    <td><%= data[i].player1_name %> vs <%= data[i].player2_name %></td>
+                                    <% if(data[i].score1=== null && data[i].score2 === null){ %>
+                                        <td>0 - 0</td>
+                                        <%}else{ %>
+                                    <td><%= data[i].score1%> - <%= data[i].score2%></td>
+                                    <% } %>
+                                    <td>
+                                    <button class="modal-trigger btn btn-warning" onclick="document.getElementById('modal<%= i %>').style.display='block'">แก้ไข</button>
+                                            <div id="modal<%= i %>" class="modal">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <span class="close" onclick="document.getElementById('modal<%= i %>').style.display='none'">&times;</span>
+                                                    </div>
+                                                    <form action="/tournament/matchedit/<%= tnmID %>" method="post">
+                                                        <% if(data[i].pDate === null){ %>
+                                                            วันที่
+                                                            <input type="date" name="pDate" value="<%= data[i].pDate %>" required>
+                                                            <% }else{ %>
+                                                        วันที่
+                                                        <input type="date" name="pDate" value="<%= data[i].pDate.toISOString().substring(0, 10); %>" required>
+                                                        <% } %>
+                                                        <select name="placeID">
+                                                            <% for(let j=0; j < place.length; j++) { %>
+                                                                <option value="<%= place[j].placeID %>">
+                                                                    <%= place[j].placeName %>
+                                                                </option>
+                                                                <% } %>
+                                                        </select>
+                                                        ช่วงเวลา
+                                                        <input type="time" name="time" value="<%= data[i].time %>" required> ถึง <input type="time" name="Endtime" value="<%= data[i].timeend %>" required>
+                                                        สถานที่
+                                                        <div>ผลการแข่งขัน</div>
+                                                        <input type="hidden" name="participant1" value="<%= data[i].p1ID %>">
+                                                        <div>
+                                                        <%= data[i].player1_name %>
+                                                        <input type="text" class="form-control" name="score1" value="<%= data[i].score1 %>" required>
+                                                        </div>
+                                                        <input type="hidden" name="participant2" value="<%= data[i].p2ID %>">
+                                                        <div>
+                                                        <%= data[i].player2_name %>
+                                                        <input type="text" class="form-control" name="score2" value="<%= data[i].score2 %>" required>
+                                                        </div>
+                                                        <button value="sunbmit" class="btn btn-success">บันทึก</button>
+                                                    </form>
+                                                </div>  
+                                            </div>
+
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                <% } %>
+    <% } %>
+    
+
+    
+    <!-- //แบบทีม -->
+            <div class="card-body">
+                <% if(data[0].teamID) { %>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">ชื่อทีมที่เข้าร่วม</th>
+                                <th scope="col">จำนวนสมาชิก</th>
+                                <th scope="col">ชื่อตัวแทน</th>
+                                <th scope="col">เบอร์ติดต่อ</th>
+                                <th width="200px">ตัวเลือก</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(let i = 0; i < data.length; i++) { %>
+                                <% if(data[i].teamStatus === 'accept') { %>
+                                <tr>
+                                    <td><%= data[i].teamName %></td>
+                                    <td></td>
+                                    <td><%= data[i].NameAgent %></td>
+                                    <td><%= data[i].teamPhoneA %></td>
+                                    <td>
+                                        <a href="../tournament/edit/<%= data[i].teamID %>" class="btn btn-warning edit">แก้ไข</a>
+                                        <a href="../tournament/delete/<%= data[i].teamID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
+                                        <a href="/tournament/participant/team/<%= data[i].teamID %>" class="btn btn-primary page">ดู</a>
+                                    </td>
+                                </tr>
+                            <% }} %>
+                        </tbody>
+                    </table>
+                <% } %>
+    <% } %>
+    
+
+
+             <!-- if result is empty-->
+             <% if(!data || !data[0]) { %>
+                <h4 class="text-center" style="margin-top: 50px;">ไม่พบรายการ</h4>
+            <% } %>
+            
+        </div>
+</body>
+
+
+</html>
+</div>

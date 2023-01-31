@@ -1,0 +1,118 @@
+<%- include("../../partials/header") %>
+<%- include("../../partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>tournament</title>
+</head>
+<body>
+
+    <% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+    <% } %>
+    
+    <% if (messages.success) { %>
+        <div class="alert alert-success" role="alert"><%= messages.success %></div>
+    <% } %>
+
+    <script type="text/javascript">
+        function confirm_delete() {
+          return confirm('are you sure?');
+        }
+        </script>
+<% if(data && data[0]) { %>
+        <h1>การแข่งขัน <%=data[0].tnmName %></h1>
+        
+        <% if(data.length) { %>
+        <!-- ผู้เล่น -->
+    <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-pills w-100">
+                
+                    <h1>ยังไม่อนุมัติ</h1>
+                
+            </ul>
+        </div>
+        <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ชื่อ - นามสกุล</th>
+                            <th scope="col">เพศ</th>
+                            <th scope="col">อายุ</th>
+                            <th scope="col">เบอร์โทรศัพท์</th>
+                            <th scope="col">วันที่สมัคร</th>
+                            <th scope="col">หมายเหตุ</th>
+                            <th width="200px">ตัวเลือก</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let i = 0; i < data.length; i++) { %>
+                            <% const date = new Date(data[i].playerRegDate); %>
+                            <% if(data[i].playerStatus === 'wait') { %>
+                            <tr>
+                                <td><%= data[i].playerFName %> <%= data[i].playerLName %></td>
+                                <td><%= data[i].playerGender %></td>
+                                <td><%= data[i].age %></td>
+                                <td><%= data[i].playerPhone %></td>
+                                <td><%= date.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
+                                <td><p style="color:red"><%= data[i].detailDoc%></p></td>
+                                <td>
+                                <a href="../player/<%=data[i].playerID%>" class="btn btn-primary page">ดู</a>
+                                </td>
+                            </tr>
+                            <% } }%>
+                    </tbody>
+                </table>
+            <% } %>
+
+
+    <h1>อนุมัติแล้ว</h1>
+    <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ชื่อ - นามสกุล</th>
+                            <th scope="col">เพศ</th>
+                            <th scope="col">อายุ</th>
+                            <th scope="col">เบอร์โทรศัพท์</th>
+                            <th scope="col">วันที่สมัคร</th>
+                            <th width="200px">ตัวเลือก</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(let i = 0; i < data.length; i++) { %>
+                        <% if(data[i].playerStatus === 'accept') { %>
+                        <tr>
+                            <td><%= data[i].playerFName %> <%= data[i].playerLName %></td>
+                                <td><%= data[i].playerGender %></td>
+                                <td><%= data[i].age %></td>
+                                <td><%= data[i].playerPhone %></td>
+                                <td><%= data[i].playerRegDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
+                                <td>
+                                <a href="../candidate/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
+                                <a href="../candidate/edit/<%= data[i].tnmID %>" class="btn btn-warning edit">แก้ไข</a>
+                                <a href="../player/<%=data[i].playerID%>" class="btn btn-primary page">ดู</a>
+                            </td>
+                        </tr>
+                    <% }} %>
+                </tbody>
+            </table>
+    </div>
+
+<% } %>
+
+            <!-- if result is empty-->
+            <% if(!data.length) { %>
+                <div class="text-center">
+                    <h1>ไม่พบผู้เข้าร่วม</h1>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+</body>
+</html>
+</div>

@@ -26,7 +26,15 @@
 
         <h1>รายการแข่งขันที่ต้องตรวจสอบผู้สมัคร</h1>
         <a href="/tournament/add" class="btn btn-primary">เพิ่มการแข่งขัน</a>
-    <div class="card">
+        <div class="float-end">
+            <form action="/tnmcheck/search-tnmcheck" method="post">
+                <div class="input-group ">
+                    <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา...">
+                    <button type="submit" class="btn btn-primary">ค้นหา</button>
+                </div>
+            </form>
+        </div>
+    <div class="card w-100">
         <div class="card-header">
             <ul class="nav nav-pills w-100">
                 <li class="nav-link ml-auto">
@@ -50,18 +58,30 @@
                     </thead>
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
+                            <% if(data[i].sportPlaynum > 1){ %>
+                                <% data[i].wait_count = data[i].wait_count / data[i].sportPlaynum %>
+                                <% data[i].deny_count = data[i].deny_count / data[i].sportPlaynum %>
+                                <% data[i].accept_count = data[i].accept_count / data[i].sportPlaynum %>
+                                <% } %>
+                            <% if(data[i].wait_count){ %>
                             <tr>
                                 <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
                                 <td><%= data[i].Renddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
-                                <td><%= data[i].null_count %></td>
+                                <td><%= data[i].wait_count %></td>
                                 <td><%= data[i].deny_count %></td>
                                 <td><%= data[i].accept_count %></td>
                                 <td>
                                     <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                    <a href="../tnmcheck/candidate/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
+                                    <% if(data[i].sportPlaynum > 1){ %>
+                                    <a href="../tnmcheck/candidateteam/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
+                                    <% }else{ %>
+                                        <a href="../tnmcheck/candidatesolo/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
+                                        <% } %>
+
                                 </td>
                             </tr>
+                            <% } %>
                         <% } %>
                     </tbody>
                 </table>

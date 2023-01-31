@@ -6,14 +6,15 @@
 <html lang="en">
 <head>
     <title>participant</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     
     <% if(data && data[0]) { %>
-    <h1>หน้าผู้เข้าร่วม <%= data[0].tnmName %></h1>
+    <h1>หน้าผู้เข้าร่วม <%= tournamentname %></h1>
     <%- include("../partials/menu_staff.ejs") %>
 
- <% if(!data.teamID) { %>
+ <% if(!data[0].teamID) { %>
         <!-- //แบบเดี่ยว -->
         <div class="card-body">
             <% if(data.length) { %>
@@ -38,7 +39,7 @@
                                 <td>
                                     <a href="../tournament/edit/<%= data[i].tnmID %>" class="btn btn-warning edit">แก้ไข</a>
                                     <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                    <a href="../tournament/bracket/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
+                                    <a href="/tournament/participant/player/<%= data[i].playerID %>" class="btn btn-primary page">ดู</a>
                                 </td>
                             </tr>
                         <% }} %>
@@ -46,10 +47,11 @@
                 </table>
             <% } %>
 <% } %>
- <% if(data.teamID) { %>
+
+
 <!-- //แบบทีม -->
         <div class="card-body">
-            <% if(data.length) { %>
+            <% if(data[0].teamID) { %>
                 <table class="table">
                     <thead>
                         <tr>
@@ -62,32 +64,36 @@
                     </thead>
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
+                            <% if(data[i].teamStatus === 'accept') { %>
                             <tr>
-                                <td><%= data[i].tnmName %></td>
-                                <td><%= data[i].sportName %></td>
-                                <td><%= data[i].tnmStartdate %></td>
-                                <td><%= data[i].tournamentPlaynum %></td>
+                                <td><%= data[i].teamName %></td>
+                                <td></td>
+                                <td><%= data[i].NameAgent %></td>
+                                <td><%= data[i].teamPhoneA %></td>
                                 <td>
-                                    <a href="../tournament/edit/<%= data[i].tnmID %>" class="btn btn-warning edit">แก้ไข</a>
-                                    <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                    <a href="../tournament/bracket/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
+                                    <a href="../tournament/edit/<%= data[i].teamID %>" class="btn btn-warning edit">แก้ไข</a>
+                                    <a href="../tournament/delete/<%= data[i].teamID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
+                                    <a href="/tournament/participant/team/<%= data[i].teamID %>" class="btn btn-primary page">ดู</a>
                                 </td>
                             </tr>
-                        <% } %>
+                        <% }} %>
                     </tbody>
                 </table>
             <% } %>
-<% }} %>
+<% } %>
 
 
 
             <!-- if result is empty-->
             <% if(!data.length) { %>
+                <h1><%= tournamentname %></h1>
                 <%- include("../partials/menu_staff.ejs") %>
                 <p class="text-center">ไม่พบรายการของการแข่งขัน</p>
             <% } %>
         </div>
 
-</body>
+        
+    </body>
+
 </html>
 </div>

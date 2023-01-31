@@ -1,13 +1,29 @@
-const { query } = require('express');
 let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
+
+
+
+router.post('/search-uni', (req, res) => {
+    let query = req.body.search;
+    if(!query) {
+        res.redirect('/uni');
+    } else {
+        let sql = 'SELECT university.uniID, university.name, COUNT(faculty.uniID) AS count ,university.status FROM university LEFT JOIN faculty ON university.uniID = faculty.uniID WHERE university.name LIKE ? GROUP BY university.uniID';
+        let data = ['%' + query + '%'];
+        dbConnection.query(sql, data, (err, results) => {
+            if(err) throw err;
+            res.render('uni', {data: results,status_login: req.session.loggedin,user: user});
+        });
+    }
+});
+
 
 // display uni page
 router.get('/', (req, res, next) => {
     dbConnection.query('SELECT university.uniID, university.name, COUNT(faculty.uniID) AS count ,university.status FROM university LEFT JOIN faculty ON university.uniID = faculty.uniID GROUP BY university.uniID ORDER BY uniID asc', (err, rows) => {
         if(role === 'เจ้าหน้าที่'){
-            res.render('uni', { data: rows,status_login: req.session.loggedin,user: user  });
+            res.render('uni', { data: rows,status_login: req.session.loggedin,user: user});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
@@ -20,7 +36,7 @@ router.get('/add',(req, res, next) => {
     if(role === 'เจ้าหน้าที่'){
         res.render('uni/add',{
         name:'',
-        status:''
+        status:'',status_login: req.session.loggedin,user: user
     })
     }else{
         req.flash('error','ไม่สามารถเข้าถึงได้');
@@ -81,7 +97,7 @@ router.get('/edit/(:uniID)', (req, res, next) => {
                 title: 'แก้ไข มหาวิทยาลัย',
                 uniID: rows[0].uniID,
                 name: rows[0].name,
-                status: rows[0].status
+                status: rows[0].status,status_login: req.session.loggedin,user: user
             })
         }
     });

@@ -1,0 +1,31 @@
+<%- include("partials/header") %>
+<%- include("partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto">
+
+<html lang="en">
+	<head>
+		<title>Dashboard</title>
+	</head>
+<body>
+
+	<% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+    <% } %>
+    
+    <% if (messages.success) { %>
+        <div class="alert alert-success" role="alert"><%= messages.success %></div>
+    <% } %>
+
+<div class="jumbotron">
+	<h1>Welcome</h1>
+	<p>Hello Dashboard</p>
+    <form action="/change-title" method="post">
+        <label for="title">ชื่อระบบ:</label>
+        <input type="text" id="title" name="title" value="<%= process.title %>">
+        <input type="submit" value="ตกลง">
+      </form>
+</div>	
+
+</body>
+</html>
+</div>

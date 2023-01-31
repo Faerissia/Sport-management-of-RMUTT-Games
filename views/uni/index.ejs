@@ -24,10 +24,18 @@
           return confirm('are you sure?');
         }
         </script>
-
 <h1>รายการมหาวิทยาลัย</h1>
 <a href="/uni/add" class="btn btn-primary">เพิ่มมหาวิทยาลัย</a>
-    <div class="card">
+<div class="float-end">
+    <form action="/uni/search-uni" method="post">
+        <div class="input-group ">
+            <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา...">
+            <button type="submit" class="btn btn-primary">ค้นหา</button>
+        </div>
+    </form>
+</div>
+    
+    <div class="card w-100">
         <div class="card-header">
             <ul class="nav nav-pills w-100">
                 <li class="nav-link ml-auto">

@@ -17,24 +17,30 @@
 </head>
 <header class="">
   <nav class="navbar navbar-expand-lg " style="background-color: #437fc7 ">
-    <div class="container-fluid text-wrap  px-0 m-0">
+    <div class="container-fluid  text-center  px-0 m-0 position-relative">
+      
       <% if(status_login){ %>
-        <div class="me-auto">
+        
+
+        
+        <div class="float-start">
           <a class="navbar-brand" href="/dashboard"><img
-              src="https://www.rmutt.ac.th/wp-content/uploads/2020/03/20200310-LOGO-RMUTT.png" class="nav-logo ms-2"
-              alt="logo" style="width: 15rem;" /></a>
-        </div>
-        <div class="justify-content-end ms-3 text-white" id="navbarNavAltMarkup">
+            src="https://www.rmutt.ac.th/wp-content/uploads/2020/03/20200310-LOGO-RMUTT.png" class="nav-logo ms-2"
+            alt="logo" style="width: 15rem;" /></a>
+          </div>
+          <h3 class="text-white  mb-0 position-absolute top-50 start-50 translate-middle"><%= process.title %></h3>
+        <div class="justify-content-end  text-white fs-6" id="navbarNavAltMarkup">
           <%= user %> |
-            <a class="text-white text-decoration-none" style="margin-right: 30px;" href="/logout">ออกจากระบบ</a>
+            <a class="text-white text-decoration-none " style="margin-right: 30px;" href="/logout">ออกจากระบบ</a>
         </div>
         <% }else{ %>
-          <div class="me-auto">
+          <div class="float-start">
             <a class="navbar-brand" href="/"><img
                 src="https://www.rmutt.ac.th/wp-content/uploads/2020/03/20200310-LOGO-RMUTT.png" class="nav-logo ms-2"
                 alt="logo" style="width: 15rem;" /></a>
           </div>
-          <div class="justify-content-end ms-3" id="navbarNavAltMarkup">
+          <h3 class="text-white mb-0 position-absolute top-50 start-50 translate-middle"><%= process.title %></h3>
+          <div class="justify-content-end  fs-6" id="navbarNavAltMarkup">
             <a class="text-white text-decoration-none" style="margin-right: 30px;" href="/login">เข้าสู่ระบบ</a>
           </div>
           <% } %>

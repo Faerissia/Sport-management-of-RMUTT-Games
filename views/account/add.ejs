@@ -1,66 +1,102 @@
 <%- include("../partials/header") %>
-<%- include("../partials/sidebar") %>
+    <%- include("../partials/sidebar") %>
         <div class="col-10 py-3 mx-auto">
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>account</title>
-</head>
-<body>
+            <!DOCTYPE html>
+            <html lang="en">
 
-    <% if (messages.error) { %>
-        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
-    <% } %>
-    
+            <head>
+                <title>account</title>
+            </head>
 
-    <br><br>
+            <body>
 
-    <div class="card" >
-        <div class="card-header">
-            เพิ่มบัญชี
+                <% if (messages.error) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= messages.error %>
+                    </div>
+                    <% } %>
+
+
+                        <br><br>
+
+                        <div class="card">
+                            <div class="card-header display-6">
+                                เพิ่มบัญชี
+                            </div>
+                            <div class="card-body">
+                                <form action="/account/add" method="post" class="needs-validation">
+                                    <div class="form-group ">
+                                        <div class="row-cols-1 ">
+                                            <div class="row  ">
+                                                <div class="col-2">
+                                                    <label  class="form-label" >ชื่อ</label>
+                                                    <input type="text" class="form-control border border-dark" name="name" required>
+                                                </div>
+                                                <div class="col-2">
+                                                    <label  class="form-label" >นามสกุล</label>
+                                                    <input type="text" class="form-control border border-dark" name="lname" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <label  class="form-label" >เบอร์โทร</label>
+                                                    <input type="text" class="form-control border border-dark" name="phone" required>
+                                                </div>
+                                                <div class="col-4">
+                                                    <label  class="form-label" >อีเมล</label>
+                                                    <input type="email" class="form-control border border-dark" name="email" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <label  class="form-label" >รหัสผ่าน</label>
+                                                    <input type="password" class="form-control border border-dark" name="password" required
+                                                        minlength="8">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <label  class="form-label" >ยืนยันรหัสผ่าน </label>
+                                                    <input type="password" class="form-control border border-dark" name="cpassword"
+                                                        required minlength="8">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-auto">
+                                                    <label style="margin-top: 10px;">ระดับผู้ใช้งาน</label>
+                                                    <select name="level" class="form-select border border-dark" required>
+                                                        <option selected disabled >ระดับผู้ใช้งาน</option>
+                                                        <option value="<%= level='ผู้ดูแลระบบ' %>">ผู้ดูแลระบบ</option>
+                                                        <option value="<%= level='เจ้าหน้าที่' %>">เจ้าหน้าที่</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row row-cols-2 mt-5 text-center d-flex justify-content-center">
+                                        <div class="col-2">
+                                            <a href="javascript:history.back()" class="btn btn-danger">ยกเลิก</a>
+                                        </div>
+                                        <div class="col-2">
+                                            <button class="btn btn-success" type="submit">ยืนยัน</button>
+                                        </div>
+                                    </div>
+
+
+
+                                    
+                                </form>
+                            </div>
+                        </div>
+
+            </body>
+
+            </html>
         </div>
-        <div class="card-body">
-            <form action="/account/add" method="post">
-                <div class="form-group">
-                    <label>ชื่อ:</label>
-                    <input type="text" class="form-control" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label>นามสกุล :</label>
-                    <input type="text" class="form-control" name="lname" required>
-                </div>
-                <div class="form-group">
-                    <label>เบอร์โทร :</label>
-                    <input type="text" class="form-control" name="phone" required>
-                </div>
-                <div class="form-group">
-                    <label>อีเมล :</label>
-                    <input type="email" class="form-control" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label>รหัสผ่าน :</label>
-                    <input type="password" class="form-control" name="password" required minlength="8">
-                </div>
-                <div class="form-group">
-                    <label>ยืนยันรหัสผ่าน :</label>
-                    <input type="password" class="form-control" name="cpassword" required minlength="8">
-                </div>
-                <div class="form-group">
-                    <label style="margin-top: 10px;">ระดับผู้ใช้งาน:</label>
-                    <select name="level">
-                        <option value="<%= level='ผู้ดูแลระบบ' %>">ผู้ดูแลระบบ</option>
-                        <option value="<%= level='เจ้าหน้าที่' %>">เจ้าหน้าที่</option>
-                    </select>
-                </div>
-                <div class="form-group" style="margin-top: 10px;">
-                    <a href="/account" class="btn btn-info">ย้อนกลับ</a>
-                    <input type="submit" class="btn btn-info" value="เพิ่ม">
-                </div>
-            </form>
-        </div>
-    </div>
-
-</body>
-</html>
-</div>
