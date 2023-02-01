@@ -1,0 +1,60 @@
+<%- include("../../../partials/header") %>
+    <div class="container-xxl mt-5 px-3">
+        <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+            <title>Document</title>
+        </head>
+
+        <body>
+
+            หน้าแมทช์การแข่งขัน
+            <div class=" d-flex flex-column text-center h-auto mb-5 border   border-dark rounded-3 "
+                style="background:#D9D9D9 ;">
+                <%- include("../../../partials/menuuser.ejs") %>
+                    <!-- <div class="d-block" style="height: 1000px;"></div> -->
+                    <div class="card-body">
+                      <% if(data && data[0]) { %>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Match</th>
+                                    <th scope="col">Date & Time</th>
+                                    <th scope="col">สถานที่การแข่งขัน</th>
+                                    <th scope="col">คู่ระหว่าง</th>
+                                    <th scope="col">คะแนน</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for(let i = 0; i < data.length; i++) { %>
+                                    <tr>
+                                        <td><%= i+1 %></td>
+                                    <% if(data[i].pDate === null){ %>
+                                        <td><%= data[i].pDate %></td>
+                                        <% }else{ %>
+                                            <td><%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit' ,
+                                                month: 'long' , year:'numeric'}) %></td>
+                                            <% } %>
+                                        <td><%= data[i].placeName %></td>
+                                        <td><%= data[i].player1_name %> vs <%= data[i].player2_name %></td>
+                                        <% if(data[i].score1=== null && data[i].score2 === null){ %>
+                                            <td>0 - 0</td>
+                                            <%}else{ %>
+                                        <td><%= data[i].score1%> - <%= data[i].score2%></td>
+                                        <% } %>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                      <% } %>
+          
+                      <!-- if result is empty-->
+                      <% if(!data || !data[0]) { %>
+                          <p class="text-center">ไม่พบรายการของการแข่งขัน</p>
+                      <% } %>
+                  </div>
+        </body>
+
+        </html>
+    </div>

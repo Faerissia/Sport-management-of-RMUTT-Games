@@ -1,3 +1,4 @@
+const e = require('express');
 let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
@@ -66,10 +67,6 @@ router.post('/add', (req, res, next) =>{
     let timeOpen = req.body.timeOpen;
     let timeClose = req.body.timeClose;
 
-    for (var i = 0; i < day.length; i++) {
-    values.push([day[i], timeOpen[i], timeClose[i]])
-    }
-
     var sql_place = "INSERT INTO place (placeName,typeID,placeUrl,placeFile,placeDetail) VALUES ?";
     var sql_day = "INSERT INTO place_opening (day,timeOpen,timeClose,placeID) VALUES ?";
 
@@ -77,14 +74,34 @@ router.post('/add', (req, res, next) =>{
         dbConnection.query(sql_place,[[[placeName, typeID, placeUrl, name_placefile, placeDetail]]], (err, result) => {
             if (err) throw err;
             var placeID = result.insertId;
-            for (var i = 0; i < values.length; i++) {
-                values[i].push(placeID)
-            }
-            dbConnection.query(sql_day,[values], function (err, result){
-                if(err) throw err;
-                console.log("number of day inserted: "+ result.affectedRows);
+            
+
+        if(Array.isArray(day)){
+            console.log('array')
+                for (var i = 0; i < day.length; i++) {
+                values.push([day[i], timeOpen[i], timeClose[i], placeID])
+                }
+                dbConnection.query(sql_day,[values], function (err, result){
+                    if(err) throw err;
+                    console.log("number of day inserted: "+ result.affectedRows);
+                    
+                })
+                }else if(day){
+                    console.log('not')
+                    open = timeOpen.filter(Boolean);
+                    close = timeClose.filter(Boolean);
+                    let set_form={
+                        placeID: placeID,
+                        day: day,
+                        timeOpen:open,
+                        timeClose:close
+                    }
+                    dbConnection.query("INSERT INTO place_opening SET ?",set_form, (err, result)=>{
+                        if(err) throw err;
+                        console.log('success')
+                    })
+                }
                 res.redirect('/place');
-            })
         })
     }
 )

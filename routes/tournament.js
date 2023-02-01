@@ -248,11 +248,17 @@ router.get('/bracket/(:tnmID)', (req, res, next)=> {
                 if(!rows[0].tnmTypegame){
                     res.render('tournament/bracket/createbracket', {data: rows, tnmID:tnmID,status_login: req.session.loggedin,user: user});
                 }else if(rows[0].tnmTypegame === 'leaderboard'){
-                    dbConnection.query('SELECT p.*,t.tnmID,m.score FROM matchleader m LEFT JOIN player p ON p.playerID = m.playerID LEFT JOIN tournament t ON t.tnmID = m.tnmID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows) => {
+                    dbConnection.query('SELECT p.*,t.tnmID,m.score FROM matchplay m LEFT JOIN player p ON p.playerID = m.playerID LEFT JOIN tournament t ON t.tnmID = m.tnmID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows) => {
                     res.render('tournament/bracket/leaderboard', {data: rows, tnmID:tnmID,status_login: req.session.loggedin,user: user});
                     })
+                }else if(rows[0].tnmTypegame === 'roundrobin'){
+                    dbConnection.query(`SELECT p1.playerFName AS team1, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
+                        res.render('tournament/bracket/roundrobin', {data: rows, tnmID:tnmID,status_login: req.session.loggedin,user: user});
+                    })
+                    
                 }else{
                     res.render('tournament/bracket/bracket', {data: rows, tnmID:tnmID,status_login: req.session.loggedin,user: user});
+
                 }
             })
             }else{
@@ -260,11 +266,16 @@ router.get('/bracket/(:tnmID)', (req, res, next)=> {
                     if(!rows[0].tnmTypegame){
                         res.render('tournament/bracket/createbracket', {data: rows, tnmID:tnmID,status_login: req.session.loggedin,user: user});
                     }else if(rows[0].tnmTypegame === 'leaderboard'){
-                        dbConnection.query('SELECT team.*,t.tnmID,m.score FROM matchleader m LEFT JOIN team team ON team.teamID = m.teamID LEFT JOIN tournament t ON t.tnmID = m.tnmID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows) => {
+                        dbConnection.query('SELECT team.*,t.tnmID,m.score FROM matchplay m LEFT JOIN team team ON team.teamID = m.teamID LEFT JOIN tournament t ON t.tnmID = m.tnmID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows) => {
                         res.render('tournament/bracket/teamleaderboard', {data: rows, tnmID:tnmID,status_login: req.session.loggedin,user: user});
                         })
+                    }else if(rows[0].tnmTypegame === 'roundrobin'){
+                        dbConnection.query(`SELECT t1.teamName AS team1, t2.teamName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
+                            res.render('tournament/bracket/roundrobin', {data: rows, tnmID:tnmID,status_login: req.session.loggedin,user: user});
+                        })
+
                     }else{
-                        res.render('tournament/bracket/bracket', {data: rows, tnmID:tnmID,status_login: req.session.loggedin,user: user});
+
                     }
                 })
             }
@@ -312,7 +323,7 @@ router.get('/match/(:tnmID)', (req, res, next)=> {
         if(role === 'เจ้าหน้าที่'){
             if(rows[0].sportPlaynum === 1){
                 if(rows[0].tnmTypegame === 'leaderboard'){
-                    dbConnection.query("SELECT p.*,t.tnmID,m.score,m.mlID,m.pDate,DATE_FORMAT(m.time, '%H:%i') AS time,pl.placeName FROM matchleader m LEFT JOIN player p ON p.playerID = m.playerID LEFT JOIN tournament t ON t.tnmID = m.tnmID LEFT JOIN place pl ON pl.placeID = m.placeID WHERE t.tnmID = ? ORDER BY score desc",tnmID, (err, rows) => {
+                    dbConnection.query("SELECT p.*,t.tnmID,m.score,m.matchID,m.pDate,DATE_FORMAT(m.time, '%H:%i') AS time,pl.placeName FROM matchplay m LEFT JOIN player p ON p.playerID = m.playerID LEFT JOIN tournament t ON t.tnmID = m.tnmID LEFT JOIN place pl ON pl.placeID = m.placeID WHERE t.tnmID = ? ORDER BY score desc",tnmID, (err, rows) => {
                         if(err) throw err;
                         dbConnection.query('SELECT * FROM place ORDER BY placeID asc',(error,result)=>{
                             if(error) throw error;
@@ -320,20 +331,36 @@ router.get('/match/(:tnmID)', (req, res, next)=> {
                         })
                         
                     })
-                }else{
+                }else if(rows[0].tnmTypegame === 'roundrobin'){
+                    dbConnection.query("SELECT p1.playerID AS p1ID,p1.playerFName AS player1_name,p2.playerID AS p2ID, p2.playerFName AS player2_name, m.score1, m.score2,m.pDate,m.time,m.timeend,place.placeName FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 LEFT JOIN place ON place.placeID = m.placeID WHERE m.tnmID = "+tnmID, (error, rows) => {
+                        if(error) throw error;
+                        dbConnection.query('SELECT p.placeID,p.placeName FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN sport_type st ON st.typeID = s.typeID LEFT JOIN place p ON p.typeID = st.typeID WHERE tnmID = '+tnmID ,(err,results)=>{
+                            if(err) throw err;
+                            res.render('tournament/match/match',{place: results,data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user})
+                        })
+                    })
+            }else{
                     let rows = [];
                         res.render('tournament/match/match',{data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user})
             }
             }else{
                 if(rows[0].tnmTypegame === 'leaderboard'){
-                dbConnection.query("SELECT team.*,t.tnmID,m.score,m.mlID,m.pDate,DATE_FORMAT(m.time, '%H:%i') AS time FROM matchleader m LEFT JOIN team team ON team.teamID = m.teamID LEFT JOIN tournament t ON t.tnmID = m.tnmID WHERE t.tnmID = ? ORDER BY score desc",tnmID, (err, rows) => {
+                dbConnection.query("SELECT team.*,t.tnmID,m.score,m.matchID,m.pDate,DATE_FORMAT(m.time, '%H:%i') AS time FROM matchplay m LEFT JOIN team team ON team.teamID = m.teamID LEFT JOIN tournament t ON t.tnmID = m.tnmID WHERE t.tnmID = ? ORDER BY score desc",tnmID, (err, rows) => {
                     if(err) throw err;
                     dbConnection.query('SELECT * FROM place ORDER BY placeID asc',(error,result)=>{
                         if(error) throw error;
                         res.render('tournament/match/teamleaderboard',{ place: result,data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user})
                     })
                 })
-            }else{
+            }else if(rows[0].tnmTypegame === 'roundrobin'){
+                dbConnection.query("SELECT t1.teamID AS p1ID,t1.teamName AS player1_name,t2.teamID AS p2ID, t2.teamName AS player2_name, m.score1, m.score2,m.pDate,m.time,m.timeend,place.placeName FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 LEFT JOIN place ON place.placeID = m.placeID WHERE m.tnmID = "+tnmID, (error, rows) => {
+                    if(error) throw error;
+                    dbConnection.query('SELECT p.placeID,p.placeName FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN sport_type st ON st.typeID = s.typeID LEFT JOIN place p ON p.typeID = st.typeID WHERE tnmID = '+tnmID ,(err,results)=>{
+                        if(err) throw err;
+                        res.render('tournament/match/match',{place: results,data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user})
+                    })
+                })
+        }else{
                 let rows = [];
                     res.render('tournament/match/match',{data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user})
             }
@@ -483,12 +510,11 @@ router.get('/participant/player/(:playerID)', (req, res, next) => {
 })
 
 
-router.post('/createbracket',(req, res, next) => {
+router.post('/createbracket/:tnmID',(req, res, next) => {
     let tnmTypegame = req.body.tnmTypegame;
-    console.log(tnmTypegame);
     let updatetype = {tnmTypegame: tnmTypegame}
 
-    let tnmID =req.body.tnmID;
+    let tnmID =req.params.tnmID;
     let participant1 = req.body.participant1;
     let participant2 = req.body.participant2;
     let round = 1;
@@ -501,21 +527,7 @@ router.post('/createbracket',(req, res, next) => {
     dbConnection.query('SELECT t.*,s.* FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE tnmID ='+tnmID,(err,rows) =>{
     if(rows[0].sportPlaynum === 1){
         if(tnmTypegame === 'single'){
-            let values = [];
-            for (let i = 0; i < participant1.length; i++) {
-                if(!participant2[i]){
-                    values.push([participant1[i], participant2[i], tnmID, round+1])
-                }else{
-                    values.push([participant1[i], participant2[i], tnmID, round])
-                }
-                }
-                
-                dbConnection.query('INSERT INTO matchplay (participant1, participant2, tnmID, round) VALUES ?',[values], function (err, rows){
-                    if (err) throw err;
-                    console.log("Number of persons inserted: " + rows.affectedRows);
-                    res.redirect('/tournament/bracket/'+tnmID);
-                    
-                })
+            
             }else if(tnmTypegame === 'leaderboard'){
                 dbConnection.query("SELECT * FROM player WHERE playerStatus = 'accept' AND tnmID ="+tnmID ,(err, rows) => {
                     let values = [];
@@ -524,12 +536,52 @@ router.post('/createbracket',(req, res, next) => {
                         values.push([playerID,tnmID])
                     }
         
-                    dbConnection.query('INSERT INTO matchleader (playerID, tnmID) VALUES ?',[values], function (err, rows){
+                    dbConnection.query('INSERT INTO matchplay (playerID, tnmID) VALUES ?',[values], function (err, rows){
                         if (err) throw err;
                         console.log("Number of persons inserted: " + rows.affectedRows);
                         res.redirect('/tournament/bracket/'+tnmID);
                     })
                 })   
+            }
+            else if(tnmTypegame === 'roundrobin'){
+                let teams = [];
+                dbConnection.query("SELECT playerID, playerFName FROM player WHERE playerStatus = 'accept' AND tnmID = "+tnmID,(error,results)=>{
+                    if(error) throw error;
+                    results.forEach(player => {
+                        teams.push(player.playerID);
+                      });
+                  
+                      function generateRoundRobin(teams) {
+                        let schedule = [];
+                        for (let i = 0; i < teams.length - 1; i++) {
+                          for (let j = i + 1; j < teams.length; j++) {
+                            schedule.push([teams[i], teams[j]]);
+                          }
+                        }
+                        return schedule;
+                      }
+                  
+                      const schedule = generateRoundRobin(teams);
+                  
+                      schedule.forEach(match => {
+                        const sql = `INSERT INTO matchplay (participant1, participant2,tnmID) VALUES (?, ?, ?)`;
+                        const values = [match[0], match[1], tnmID];
+                  
+                        dbConnection.query(sql, values, function(err, result) {
+                          if (err) throw err;
+                          console.log(
+                            `Match between ${match[0]} and ${match[1]} inserted into the database with ID: `,
+                            result.insertId
+                          );
+                        });
+                      });
+                  
+                    res.redirect('/tournament/bracket/'+tnmID);
+
+                })
+
+            }else{
+
             }
     }else{
         
@@ -541,12 +593,49 @@ router.post('/createbracket',(req, res, next) => {
                         values.push([teamID,tnmID])
                     }
         
-                    dbConnection.query('INSERT INTO matchleader (teamID, tnmID) VALUES ?',[values], function (err, rows){
+                    dbConnection.query('INSERT INTO matchplay (teamID, tnmID) VALUES ?',[values], function (err, rows){
                         if (err) throw err;
                         console.log("Number of persons inserted: " + rows.affectedRows);
                         res.redirect('/tournament/bracket/'+tnmID);
                     })
             })
+        }else if(tnmTypegame === 'roundrobin'){
+            let teams = [];
+            dbConnection.query("SELECT teamID AS playerID,teamName AS playerFName FROM team WHERE teamStatus = 'accept' AND tnmID = "+tnmID,(error,results)=>{
+                if(error) throw error;
+                results.forEach(player => {
+                    teams.push(player.playerID);
+                  });
+              
+                  function generateRoundRobin(teams) {
+                    let schedule = [];
+                    for (let i = 0; i < teams.length - 1; i++) {
+                      for (let j = i + 1; j < teams.length; j++) {
+                        schedule.push([teams[i], teams[j]]);
+                      }
+                    }
+                    return schedule;
+                  }
+              
+                  const schedule = generateRoundRobin(teams);
+              
+                  schedule.forEach(match => {
+                    const sql = `INSERT INTO matchplay (participant1, participant2,tnmID) VALUES (?, ?, ?)`;
+                    const values = [match[0], match[1], tnmID];
+              
+                    dbConnection.query(sql, values, function(err, result) {
+                      if (err) throw err;
+                      console.log(
+                        `Match between ${match[0]} and ${match[1]} inserted into the database with ID: `,
+                        result.insertId
+                      );
+                    });
+                  });
+              
+                res.redirect('/tournament/bracket/'+tnmID);
+
+            })
+
         }else{
 
         }
@@ -554,22 +643,111 @@ router.post('/createbracket',(req, res, next) => {
 
     })
 
-    
+})
 
+router.post('/matchedit/(:tnmID)',(req,res,next) =>{
+    let tnmID = req.params.tnmID;
+    let pDate = req.body.pDate;
+    let placeID = req.body.placeID;
+    let time = req.body.time;
+    let Endtime = req.body.Endtime;
+    let participant1 = req.body.participant1;
+    let participant2 = req.body.participant2;
+    let score1 = req.body.score1;
+    let score2 = req.body.score2;
+
+    let form_data ={
+        pDate: pDate,
+        placeID: placeID,
+        time: time,
+        timeend: Endtime,
+        score1: score1,
+        score2: score2
+    }
+    console.log(form_data)
+    dbConnection.query("UPDATE matchplay SET ? WHERE tnmID = ? AND participant1 = ? AND participant2 = ?",[form_data,tnmID,participant1,participant2],(error,rows)=> {
+        res.redirect('/tournament/match/'+tnmID);
+    })
 
 })
 
 
+
+router.get("/roundrobinsave/(:tnmID)", (req, res) => {
+    let tnmID = req.params.tnmID;
+    const selectQuery = "SELECT participant1, participant2, score1, score2 FROM matchplay WHERE tnmID = "+tnmID;
+    dbConnection.query(selectQuery, (err, result) => {
+        if (err) throw err;
+    let wins = {};
+    let losses = {};
+    result.forEach(match => {
+      if (match.score1 > match.score2) {
+        if (wins[match.participant1]) {
+          wins[match.participant1]++;
+        } else {
+          wins[match.participant1] = 1;
+        }
+        if (losses[match.participant2]) {
+          losses[match.participant2]++;
+        } else {
+          losses[match.participant2] = 1;
+        }
+      } else {
+        if (wins[match.participant2]) {
+          wins[match.participant2]++;
+        } else {
+          wins[match.participant2] = 1;
+        }
+        if (losses[match.participant1]) {
+          losses[match.participant1]++;
+        } else {
+          losses[match.participant1] = 1;
+        }
+      }
+    });
+    let participants = Object.keys(wins);
+    let output = [];
+    let count = 1;
+    participants.sort((a, b) => {
+      if (wins[b] !== wins[a]) {
+        return wins[b] - wins[a];
+      } else {
+        return losses[a] - losses[b];
+      }
+    });
+    for (let i = 0; i < participants.length; i++) {
+      output.push(participants[i]);
+      count++;
+      if (count > 3) {
+        break;
+      }
+    }
+    let st = output[0];
+    let nd = output[1];
+    let rd = output[2];
+    form_set={
+        st1:st,
+        nd2:nd,
+        rd3:rd
+    }
+    dbConnection.query('UPDATE tournament SET ? WHERE tnmID = '+tnmID,form_set,(error,rows)=>{
+        res.redirect('/tournament/bracket/'+tnmID);
+    })
+    
+    });
+  });
+
+
 router.get('/editsingleleader/(:tnmID)',(req,res,next)=>{
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT p.*,t.tnmID,m.score,m.mlID FROM matchleader m LEFT JOIN player p ON p.playerID = m.playerID LEFT JOIN tournament t ON t.tnmID = m.tnmID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows)=>{
+    dbConnection.query('SELECT p.*,t.tnmID,m.score,m.matchID FROM matchplay m LEFT JOIN player p ON p.playerID = m.playerID LEFT JOIN tournament t ON t.tnmID = m.tnmID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows)=>{
     res.render('tournament/match/editsingleleader',{ data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user });
     })
 })
 
 router.get('/editteamleader/(:tnmID)',(req,res,next)=>{
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT team.*,t.tnmID,m.score,m.mlID FROM matchleader m LEFT JOIN team team ON team.teamID = m.teamID LEFT JOIN tournament t ON t.tnmID = m.tnmID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows)=>{
+    dbConnection.query('SELECT team.*,t.tnmID,m.score,m.matchID FROM matchplay m LEFT JOIN team team ON team.teamID = m.teamID LEFT JOIN tournament t ON t.tnmID = m.tnmID WHERE t.tnmID = ? ORDER BY score desc',tnmID, (err, rows)=>{
     res.render('tournament/match/editteamleader',{ data: rows,tnmID:tnmID,status_login: req.session.loggedin,user: user });
     })
 })
@@ -580,10 +758,10 @@ router.post('/editsingleleader/(:tnmID)',(req,res,next)=>{
     let score = req.body.score;
 
     for(let i = 0; i < mlID.length; i++) {
-    dbConnection.query('UPDATE matchleader SET score = '+score[i]+' WHERE mlID = '+mlID[i], function (error, rows) {
+    dbConnection.query('UPDATE matchplay SET score = '+score[i]+' WHERE mlID = '+mlID[i], function (error, rows) {
         if (error) throw error;
 
-        dbConnection.query('SELECT * FROM matchleader WHERE tnmID = ? ORDER BY score desc LIMIT 3',tnmID,(error,rows)=>{
+        dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY score desc LIMIT 3',tnmID,(error,rows)=>{
             let st = rows[0].playerID;
             let nd = rows[1].playerID;
             let rd = rows[2].playerID;
@@ -602,9 +780,9 @@ router.post('/editteamleader/(:tnmID)',(req,res,next)=>{
     let score = req.body.score;
 
     for(let i = 0; i < mlID.length; i++) {
-    dbConnection.query('UPDATE matchleader SET score = '+score[i]+' WHERE mlID = '+mlID[i], function (error, rows) {
+    dbConnection.query('UPDATE match SET score = '+score[i]+' WHERE mlID = '+mlID[i], function (error, rows) {
         if (error) throw error;
-        dbConnection.query('SELECT * FROM matchleader WHERE tnmID = ? ORDER BY score desc LIMIT 3',tnmID,(error,rows)=>{
+        dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY score desc LIMIT 3',tnmID,(error,rows)=>{
             let st = rows[0].teamID;
             let nd = rows[1].teamID;
             let rd = rows[2].teamID;
@@ -625,7 +803,7 @@ router.post('/datetime',(req,res,next)=>{
     dbConnection.query('SELECT t.*,s.sportPlaynum,s.sportName FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE tnmID ='+tnmID,(error,rows)=>{
         if(rows[0].sportPlaynum === 1){
             if(rows[0].tnmTypegame === 'leaderboard'){
-                dbConnection.query("UPDATE matchleader SET pDate = '"+date+"', time = '"+time+"', placeID = '"+placeID+"' WHERE tnmID = '"+tnmID+"'",(error,rows)=>{
+                dbConnection.query("UPDATE matchplay SET pDate = '"+date+"', time = '"+time+"', placeID = '"+placeID+"' WHERE tnmID = '"+tnmID+"'",(error,rows)=>{
                     if(error) throw error;
                         res.redirect('/tournament/match/'+tnmID);
                 })
@@ -634,7 +812,7 @@ router.post('/datetime',(req,res,next)=>{
             }
         }else{
             if(rows[0].tnmTypegame === 'leaderboard'){
-                dbConnection.query("UPDATE matchleader SET pDate = '"+date+"', time = '"+time+"', placeID = '"+placeID+"' WHERE tnmID = '"+tnmID+"'",(error,rows)=>{
+                dbConnection.query("UPDATE matchplay SET pDate = '"+date+"', time = '"+time+"', placeID = '"+placeID+"' WHERE tnmID = '"+tnmID+"'",(error,rows)=>{
                     if(error) throw error;
                         res.redirect('/tournament/match/'+tnmID);
                 })
