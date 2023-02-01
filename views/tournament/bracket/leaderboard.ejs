@@ -1,11 +1,11 @@
 <%- include("../../partials/header") %>
 <%- include("../../partials/sidebar") %>
-        <div class="col-10 py-3 mx-auto">
+        <div class="col py-3 mx-auto">
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Document</title>
+    <title>สายการแข่งขัน</title>
 
 </head>
 <body>
@@ -13,14 +13,14 @@
 
         <%- include("../../partials/menu_staff.ejs") %>
 
-        <div class="card-body">
+        <div class="card ">
             <% if(data.length) { %>
-                <table class="table w-50 mx-auto mt-5 border text-center">
-                    <thead style="background-color: rgb(96, 166, 253); ">
+                <table class="table  w-75 mx-auto my-5 border  border-dark table-striped table-hover text-center">
+                    <thead style="background: rgb(96, 166, 253); ">
                         <tr>
-                            <th width="100px">ลำดับที่</th>
+                            <th scope="col">ลำดับที่</th>
                             <th scope="col">ชื่อผู้เล่น</th>
-                            <th width="200px">คะแนน</th>
+                            <th scope="col">คะแนน</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -1,101 +1,136 @@
 <%- include("../partials/header") %>
-<%- include("../partials/sidebar") %>
-        <div class="col-10 py-3 mx-auto">
+    <%- include("../partials/sidebar") %>
+        <div class="col py-3 mx-auto">
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>tournament</title>
-    <meta charset="UTF-8">
-</head>
-<body>
+            <!DOCTYPE html>
+            <html lang="en">
 
-    <% if (messages.error) { %>
-        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
-    <% } %>
-    
-    <% if (messages.success) { %>
-        <div class="alert alert-success" role="alert"><%= messages.success %></div>
-    <% } %>
+            <head>
+                <title>tournament</title>
+                <meta charset="UTF-8">
+            </head>
 
-    <script type="text/javascript">
-        function confirm_delete() {
-          return confirm('are you sure?');
-        }
-        </script>
-<h1>ค้าหารายการแข่งขัน</h1>
+            <body>
 
-<div class="float-start">
-    <a href="/tournament/add" class="btn btn-primary">เพิ่มการแข่งขัน</a>
-    <form action="/tnmsearch/search-tnmsearch" method="post">
-        <div class="input-group ">
-            <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา...">
-            <button type="submit" class="btn btn-primary">ค้นหา</button>
+                <% if (messages.error) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= messages.error %>
+                    </div>
+                    <% } %>
+
+                        <% if (messages.success) { %>
+                            <div class="alert alert-success" role="alert">
+                                <%= messages.success %>
+                            </div>
+                            <% } %>
+
+                                <script type="text/javascript">
+                                    function confirm_delete() {
+                                        return confirm('are you sure?');
+                                    }
+                                </script>
+                                <h1>ค้าหารายการแข่งขัน</h1>
+
+
+                                <div class="row ">
+                                    <div class="col my-3">
+                                        <button class="btn btn-success float-end" id="download-button">Download
+                                            CSV</button>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col ">
+                                        <div class="float-start">
+                                            <a href="/tournament/add" class="btn btn-primary">เพิ่มการแข่งขัน</a>
+
+                                        </div>
+                                        <div class="float-end">
+                                            <form action="/tnmsearch/search-tnmsearch" method="post">
+                                                <div class="input-group ">
+                                                    <input type="text" name="search"
+                                                        class="form-control border border-dark" placeholder="ค้นหา...">
+                                                    <button type="submit" class="btn btn-primary">ค้นหา</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card w-100">
+                                    <div class="card-header">
+                                        <ul class="nav nav-pills w-100">
+                                            <li class="nav-link ml-auto">
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="card-body">
+                                        <% if(data.length) { %>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">ชื่อการแข่งขัน</th>
+                                                        <th scope="col">ประเภทกีฬา</th>
+                                                        <th scope="col">วันที่เริ่มแข่งขัน</th>
+                                                        <th scope="col">วันที่สิ้นสุดการแข่งขัน</th>
+                                                        <th width="200px">ตัวเลือก</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% for(let i=0; i < data.length; i++) { %>
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <%= i+1 %>
+                                                            </th>
+                                                            <td>
+                                                                <%= data[i].tnmName %>
+                                                            </td>
+                                                            <td>
+                                                                <%= data[i].sportName%>
+                                                            </td>
+                                                            <td>
+                                                                <%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit'
+                                                                    , month: 'long' , year:'numeric'})%>
+                                                            </td>
+                                                            <td>
+                                                                <%= data[i].tnmEnddate.toLocaleDateString('th-TH',{day: '2-digit'
+                                                                    , month: 'long' , year:'numeric'})%>
+                                                            </td>
+                                                            <td>
+                                                                <a href="../tournament/delete/<%= data[i].tnmID %>"
+                                                                    onclick="return confirm_delete()"
+                                                                    class="btn btn-danger delete">ลบ</a>
+                                                                <a href="../tournament/bracket/<%= data[i].tnmID %>"
+                                                                    class="btn btn-primary page">ดู</a>
+                                                            </td>
+                                                        </tr>
+                                                        <% } %>
+                                                </tbody>
+                                            </table>
+                                            <% } %>
+
+                                                <!-- if result is empty-->
+                                                <% if(!data.length) { %>
+                                                    <p class="text-center">ไม่พบรายการของการแข่งขัน</p>
+                                                    <% } %>
+                                    </div>
+                                </div>
+
+                                <script>
+                                    document.getElementById("download-button").addEventListener("click", function () {
+                                        var fileUrl = "data.csv";
+                                        var a = document.createElement("a");
+                                        a.href = fileUrl;
+                                        a.download = fileUrl.substr(fileUrl.lastIndexOf("/") + 1);
+                                        a.setAttribute("charset", "UTF-8");
+                                        document.body.appendChild(a);
+                                        a.click();
+                                        document.body.removeChild(a);
+                                    });
+                                </script>
+
+            </body>
+
+            </html>
         </div>
-    </form>
-</div>
-
-<button class="btn btn-success float-end" id="download-button">Download CSV</button>
-
-    <div class="card w-100">
-        <div class="card-header">
-            <ul class="nav nav-pills w-100">
-                <li class="nav-link ml-auto">
-                    
-                </li>
-            </ul>
-        </div>
-        <div class="card-body">
-            <% if(data.length) { %>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">ชื่อการแข่งขัน</th>
-                            <th scope="col">ประเภทกีฬา</th>
-                            <th scope="col">วันที่เริ่มแข่งขัน</th>
-                            <th scope="col">วันที่สิ้นสุดการแข่งขัน</th>
-                            <th width="200px">ตัวเลือก</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for(let i = 0; i < data.length; i++) { %>
-                            <tr>
-                                <th scope="row"><%= i+1 %></th>
-                                <td><%= data[i].tnmName %></td>
-                                <td><%= data[i].sportName%></td>
-                                <td><%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%></td>
-                                <td><%= data[i].tnmEnddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%></td>
-                                <td>
-                                    <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                    <a href="../tournament/bracket/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
-                                </td>
-                            </tr>
-                        <% } %>
-                    </tbody>
-                </table>
-            <% } %>
-
-            <!-- if result is empty-->
-            <% if(!data.length) { %>
-                <p class="text-center">ไม่พบรายการของการแข่งขัน</p>
-            <% } %>
-        </div>
-    </div>
-
-<script>
-document.getElementById("download-button").addEventListener("click", function(){
-    var fileUrl = "data.csv";
-    var a = document.createElement("a");
-    a.href = fileUrl;
-    a.download = fileUrl.substr(fileUrl.lastIndexOf("/") + 1);
-    a.setAttribute("charset", "UTF-8");
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-});
-</script>
-
-</body>
-</html>
-</div>

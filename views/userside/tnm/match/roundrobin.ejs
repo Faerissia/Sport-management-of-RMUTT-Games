@@ -2,22 +2,19 @@
     <div class="container-xxl mt-5 px-3">
         <!DOCTYPE html>
         <html lang="en">
-
         <head>
-            <title>Document</title>
+            <title>แมทช์การแข่งขัน</title>
         </head>
 
         <body>
-
-            หน้าแมทช์การแข่งขัน
             <div class=" d-flex flex-column text-center h-auto mb-5 border   border-dark rounded-3 "
                 style="background:#D9D9D9 ;">
                 <%- include("../../../partials/menuuser.ejs") %>
                     <!-- <div class="d-block" style="height: 1000px;"></div> -->
                     <div class="card-body">
                       <% if(data && data[0]) { %>
-                        <table class="table">
-                            <thead>
+                        <table class="table mt-5 w-75 mx-auto table-bordered  border-dark text-center">
+                            <thead class="" style="background-color: #6DAFFE;">
                                 <tr>
                                     <th scope="col">Match</th>
                                     <th scope="col">Date & Time</th>
@@ -26,7 +23,7 @@
                                     <th scope="col">คะแนน</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="bg-Light  ">
                                 <% for(let i = 0; i < data.length; i++) { %>
                                     <tr>
                                         <td><%= i+1 %></td>
