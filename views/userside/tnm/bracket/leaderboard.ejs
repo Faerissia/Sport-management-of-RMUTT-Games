@@ -4,12 +4,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Document</title>
+<title>หน้าสายการแข่งขัน</title>
 </head>
 <body>
 
 
-หน้าสายการแข่งขัน
+
 <!-- กรอบ box  -->
 <div class=" d-flex flex-column text-center h-auto mb-5 border   border-dark rounded-3 "
 style="background:#D9D9D9 ;">
@@ -21,15 +21,16 @@ style="background:#D9D9D9 ;">
     <div class="d-block">
         <div class="card-body">
             <% if(data && data[0]) { %>
-                <table class="table w-50 mx-auto mt-5 border text-center">
-                    <thead style="background-color: rgb(96, 166, 253); ">
-                        <tr>
-                            <th width="100px">ลำดับที่</th>
+                
+                <table class="table w-75 mx-auto mt-5  text-center  table-hover table-striped      ">
+                    <thead style="background-color: rgb(96, 166, 253);">
+                        <tr >
+                            <th  width="100px">ลำดับที่</th>
                             <th scope="col">ชื่อผู้เล่น</th>
                             <th width="200px">คะแนน</th>
                         </tr>
                     </thead>
-                    <tbody style="background-color: white;">
+                    <tbody  class="table-group-divider bg-white " >
                         <% for(let i = 0; i < data.length; i++) { %>
                             <tr>
                                 <th scope="row"><%= i+1 %></th>
@@ -39,6 +40,7 @@ style="background:#D9D9D9 ;">
                         <% } %>
                     </tbody>
                 </table>
+            
             <% } %>
 
             <!-- if result is empty-->

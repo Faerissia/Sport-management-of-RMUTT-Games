@@ -8,8 +8,8 @@ router.post('/search-tnmcheck', (req, res) => {
     if(!query){
         res.redirect('/tnmcheck');
     }else{ 
-        sql = "SELECT t.tnmID,t.tnmName,t.Renddate,s.sportID,s.sportName,s.sportPlaynum, SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count, SUM(CASE p.playerStatus WHEN 'deny' THEN 1 ELSE 0 END) AS deny_count, SUM(CASE p.playerStatus WHEN 'wait' THEN 1 ELSE 0 END) AS wait_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p on t.tnmID = p.tnmID WHERE tnmName LIKE ? GROUP BY t.tnmID";
-        let like =['%' + query + '%'];
+        sql = "SELECT t.tnmID,t.tnmName,t.Renddate,s.sportID,s.sportName,s.sportPlaynum, SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count, SUM(CASE p.playerStatus WHEN 'deny' THEN 1 ELSE 0 END) AS deny_count, SUM(CASE p.playerStatus WHEN 'wait' THEN 1 ELSE 0 END) AS wait_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p on t.tnmID = p.tnmID WHERE t.tnmName LIKE ? OR p.playerFName = ? GROUP BY t.tnmID";
+        let like =['%' + query + '%','%' + query + '%'];
     
     dbConnection.query(sql, like, (err, results) => {
         if(err) throw err;
@@ -26,32 +26,6 @@ router.get('/', (req, res, next) => {
     if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tnmcheck', { data: rows,status_login: req.session.loggedin,user: user });
-        }else{
-            req.flash('error','ไม่สามารถเข้าถึงได้');
-            res.redirect('login');
-        }
-    }else{
-        res.redirect('error404');
-    }
-    })
-})
-
-//display add tnmcheck page
-router.get('/add', (req, res, next) => {
-    dbConnection.query('SELECT sportID,sportName FROM sport ORDER BY sportID asc', (err, rows) => {
-        if(req.session.loggedin){
-        if(role === 'เจ้าหน้าที่'){
-            res.render('tournament/add', { data: rows,
-                    tnmName:'',
-                    sportID:'',
-                    Rstartdate:'',
-                    Renddate:'',
-                    tnmStartdate:'',
-                    tnmEnddate:'',
-                    tnmUrl:'',
-                    tnmDetail:'',
-                    tnmPicture:''
-                });
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
@@ -82,7 +56,14 @@ router.get('/candidatesolo/(:tnmID)', (req, res, next) => {
 // display tnmcheck page
 router.get('/candidateteam/(:tnmID)', (req, res, next) => {
     let thistnmID = req.params.tnmID;
-    dbConnection.query('SELECT t.tnmID,team.teamID,t.tnmName,team.teamName,team.NameAgent,team.LnameAgent,team.teamPhoneA,team.teamEmailA,team.teamStatus,team.teamRegDate FROM tournament t LEFT JOIN team ON team.tnmID = t.tnmID LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID = '+thistnmID, (err, rows) => {
+    dbConnection.query(`SELECT teamID, tnmID, tnmName, teamName, NameAgent, LnameAgent, teamPhoneA, teamEmailA, teamStatus, teamRegDate, GROUP_CONCAT(detailDoc SEPARATOR ',') as detailDoc FROM (SELECT t.tnmID,team.teamID,t.tnmName,team.teamName,team.NameAgent,team.LnameAgent,team.teamPhoneA,team.teamEmailA,team.teamStatus,team.teamRegDate, p.detailDoc
+    FROM tournament t
+    LEFT JOIN team ON team.tnmID = t.tnmID
+    LEFT JOIN sport s ON t.sportID = s.sportID
+    LEFT JOIN player p ON team.teamID = p.teamID
+    WHERE t.tnmID = ?
+    ) team_player_data
+    GROUP BY teamID, tnmID, tnmName, teamName, NameAgent, LnameAgent, teamPhoneA, teamEmailA, teamStatus, teamRegDate`,thistnmID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('./tnmcheck/candidate/teamcan', { data: rows,thistnmID: thistnmID,status_login: req.session.loggedin,user: user });

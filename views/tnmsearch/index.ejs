@@ -25,17 +25,46 @@
         </script>
 <h1>ค้าหารายการแข่งขัน</h1>
 
-<div class="float-start">
-    <a href="/tournament/add" class="btn btn-primary">เพิ่มการแข่งขัน</a>
+
+<button class="btn btn-success float-end" id="download-button">Download CSV</button>
+
+
+
+<div class="row">
+    <div class="col ">
+
+    <div class="float-start">
     <form action="/tnmsearch/search-tnmsearch" method="post">
-        <div class="input-group ">
-            <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา...">
-            <button type="submit" class="btn btn-primary">ค้นหา</button>
+        <div class="input-group">
+            <div class="col">
+            <p>ช่วงวันที่แข่งขัน</p>
+            <input type="date" name="startDate" class="form-control border border-dark">
+        </div>
+        <div>
+            <p>ถึง</p>
+            <input type="date" name="endDate" class="form-control border border-dark">
+        </div>
+        <div class="col">
+            <select name="sport" class="form-control border border-dark">
+                <option value="">เลือกประเภทกีฬา</option>
+                    <% for(a=0;a<data.length;a++){ %>
+                        <option value="<%= data[a].sportID %>"><%= data[a].sportName %></option>
+                        <% } %>
+                </select>
+            </div>
+                <div class="col">
+            <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา ชื่อการแข่งขัน">
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary ">ค้นหา</button>
+        </div>
         </div>
     </form>
 </div>
+</div>
+</div>
 
-<button class="btn btn-success float-end" id="download-button">Download CSV</button>
+
 
     <div class="card w-100">
         <div class="card-header">
@@ -64,11 +93,10 @@
                                 <th scope="row"><%= i+1 %></th>
                                 <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName%></td>
-                                <td><%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%></td>
+                                <td><%= data[i].tnmStartdate%></td>
                                 <td><%= data[i].tnmEnddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%></td>
                                 <td>
-                                    <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                    <a href="../tournament/bracket/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
+                                    <a href="../tnmsearch/detail/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
                                 </td>
                             </tr>
                         <% } %>
