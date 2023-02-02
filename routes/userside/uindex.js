@@ -479,9 +479,6 @@ router.post('/teamreg', async (req, res, next) =>{
             }
           });
 
-
-
-    
 })
 
 
@@ -494,5 +491,93 @@ router.post("/fetch_faculty", function(req, res) {
     });
 });
 
+router.get('/result',(req,res,next)=>{
+ dbConnection.query('SELECT * FROM university',(error,results)=>{
+    res.render('userside/result',{data:results,status_login: req.session.loggedin})
+ })
+})
+
+router.get('/result/(:uniID)',(req,res,next)=>{
+    let uniID = req.params.uniID;
+    dbConnection.query('SELECT * FROM university WHERE uniID = '+uniID,(error,results)=>{
+       res.render('userside/uniresult',{data:results,status_login: req.session.loggedin})
+    })
+   })
+
+   router.get('/opening',(req,res,next)=>{
+    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.Rstartdate >= CURRENT_DATE() OR t.Renddate <= CURRENT_DATE() GROUP BY t.tnmID;',(error,results)=>{
+       res.render('userside/status/opening',{data:results,status_login: req.session.loggedin})
+    })
+   })
+
+   router.get('/ongoing',(req,res,next)=>{
+    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmStartdate >= CURRENT_DATE() OR t.tnmEnddate <= CURRENT_DATE() GROUP BY t.tnmID;',(error,results)=>{
+       res.render('userside/status/ongoing',{data:results,status_login: req.session.loggedin})
+    })
+   })
+
+   router.get('/ending',(req,res,next)=>{
+    dbConnection.query('SELECT * FROM tournament WHERE st1 IS NOT NULL',(error,results)=>{
+       res.render('userside/status/ending',{data:results,status_login: req.session.loggedin})
+    })
+   })
+
+   router.get('/search',(req,res,next)=>{
+    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID GROUP BY t.tnmID;',(error,results)=>{
+       res.render('userside/status/search',{data:results,status_login: req.session.loggedin})
+    })
+   })
+
+   router.post('/search-result',(req,res,next)=>{
+    let query = req.body.search;
+    let sport = req.body.sport;
+    let status = req.body.status;
+
+    if(!query && !sport && !status){
+        res.redirect('/search');
+    }
+    
+    let sql;
+    let like;
+    
+     if(query){
+     sql = "SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmName LIKE ? GROUP BY t.tnmID;";
+     like = ['%' + query + '%'];
+    dbConnection.query(sql, like, (err, results) => {
+        if(err) throw err;
+        res.render('userside/status/search', {data: results,status_login: req.session.loggedin});
+    });
+    }else if(sport){ 
+     sql = "SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE s.sportID LIKE ? GROUP BY t.tnmID;";
+     like = ['%' + sport + '%'];
+        dbConnection.query(sql, like, (err, results) => {
+            if(err) throw err;
+            res.render('userside/status/search', {data: results,status_login: req.session.loggedin});
+        });
+    }else if(status) {
+        if(status === 'opening'){
+    sql = "SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.Rstartdate >= CURRENT_DATE() OR t.Renddate <= CURRENT_DATE() GROUP BY t.tnmID;";
+    like = [status];
+    dbConnection.query(sql, like, (err, results) => {
+        if(err) throw err;
+        res.render('userside/status/search', {data: results,status_login: req.session.loggedin});
+    });
+        }else if(status === 'ongoing'){
+            sql = "SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmStartdate >= CURRENT_DATE() OR t.tnmEnddate <= CURRENT_DATE() GROUP BY t.tnmID;";
+            like = [status];
+            dbConnection.query(sql, like, (err, results) => {
+                if(err) throw err;
+                res.render('userside/status/search', {data: results,status_login: req.session.loggedin});
+            });
+        }else if(status === 'ending'){
+            sql = "SELECT * FROM tournament WHERE st1 IS NOT NULL";
+            dbConnection.query(sql,(err, results) => {
+                if(err) throw err;
+                res.render('userside/status/search', {data: results,status_login: req.session.loggedin});
+            });
+        }
+  }
+
+   })
 
 module.exports = router;

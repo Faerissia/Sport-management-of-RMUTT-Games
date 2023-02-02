@@ -56,13 +56,13 @@
                     </thead>
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
-                            <% if(data[i].tnmTypegame === 'leaderboard' ){ %>
+                            <% if(data[i].tnmTypegame === 'leaderboard' && data[i].notset != 0 ){ %>
                                 <% data[i].totalmatch = data[i].totalmatch / data[i].totalmatch %>
                                 <% data[i].notset = data[i].notset / data[i].notset %>
                                 <% } %>
                             <tr>
-                                <% if(data[i].notset === 0){ %>
-                                    <% } %>
+                                <% if(data[i].tnmTypegame === 'leaderboard' && data[i].notset === 0){ %>
+                                    <% }else{%>
                                 <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
                                 <td><%= data[i].totalmatch%></td>
@@ -71,8 +71,9 @@
                                     <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
                                     <a href="../tournament/detail/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
                                 </td>
+                                <% } %>
                             </tr>
-                        <% } %>
+                            <% } %>
                     </tbody>
                 </table>
             <% } %>

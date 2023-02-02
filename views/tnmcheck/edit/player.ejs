@@ -12,46 +12,46 @@
 <body>
     <h1>ผู้สมัครการแข่งขัน <%=data[0].tnmName %> </h1>
     <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-    <form action="/tnmcheck/player" method="post">
+    <form action="/tnmcheck/edit/player/<%= data[0].playerID %>" method="post">
         <div class="form-group">
             <label>ชื่อ:</label>
-            <input type="text" class="form-control" value="<%= data[0].playerFName %>" disabled>
+            <input type="text" class="form-control" value="<%= data[0].playerFName %>" >
         </div>
             <div class="form-group">
                 <label>นามสกุล:</label>
-                <input type="text" class="form-control" value="<%= data[0].playerLName %>" disabled>
+                <input type="text" class="form-control" value="<%= data[0].playerLName %>" >
             </div>
             <div class="form-group">
                 <label>เพศ:</label>
-                <input type="text" class="form-control" value="<%= data[0].playerGender %>" disabled>
+                <input type="text" class="form-control" value="<%= data[0].playerGender %>" >
             </div>
             <div class="form-group">
                 <label>วัน/เดือน/ปี:</label>
-                <input type="text" class="form-control" value="<%= data[0].playerBirthday.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %>" disabled>
+                <input type="text" class="form-control" value="<%= data[0].playerBirthday.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %>" >
             </div>
             <div class="form-group">
                 <label>เบอร์โทร:</label>
-                <input type="text" class="form-control" value="<%= data[0].playerPhone %>" disabled>
+                <input type="text" class="form-control" value="<%= data[0].playerPhone %>" >
             </div>
             <div class="form-group">
                 <label>อีเมล:</label>
-                <input type="email" class="form-control" value="<%= data[0].playerEmail %>" disabled>
+                <input type="email" class="form-control" value="<%= data[0].playerEmail %>" >
             </div>
             <div class="form-group">
                 <label>มหาวิทยาลัย:</label>
-                <input type="text" class="form-control" value="<%= data[0].uniName %>" disabled>
+                <input type="text" class="form-control" value="<%= data[0].uniName %>" >
             </div>
             <div class="form-group">
                 <label>คณะ:</label>
-                <input type="text" class="form-control" value="<%= data[0].facName %>" disabled>
+                <input type="text" class="form-control" value="<%= data[0].facName %>" >
             </div>
             <div class="form-group">
                 <label>เลขประจำตัวประชาชน:</label>
-                <input type="text" class="form-control" value="<%= data[0].playerIDCard %>" disabled>
+                <input type="text" class="form-control" value="<%= data[0].playerIDCard %>" >
             </div>
             <div class="form-group">
                 <label>รหัสนักศึกษา:</label>
-                <input type="text" class="form-control" value="<%= data[0].playerStudentID %>" disabled>
+                <input type="text" class="form-control" value="<%= data[0].playerStudentID %>" >
             </div><% data[0].tnmID %>
             <div class="form-group">
                 <label>เอกสารยืนยันตัวตน:</label>
@@ -59,10 +59,7 @@
             </div>
             <div class="form-group" style="margin-top: 10px;">
                 <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
-                <a href="/tnmcheck/edit/player/<%= data[0].playerID%>" class="btn btn-warning" value="edit">แก้ไข</a>
-                <a href="/tnmcheck/player/deny/<%= data[0].playerID%>" class="btn btn-danger" value="deny">ปฏิเสธ</a>
-                <a href="/tnmcheck/player/accept/<%= data[0].playerID%>" class="btn btn-success" value="accept">ยอมรับ</a>
-                <a href="/tnmcheck/emailsingle/<%= data[0].playerID %>" class="btn btn-primary" value="otp">ส่งแก้ไข</a>
+                <button value="submit" class="btn btn-success">บันทึก</button>
 
             </div>
         </form>

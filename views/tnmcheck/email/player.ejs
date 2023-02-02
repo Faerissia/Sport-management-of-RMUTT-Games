@@ -57,12 +57,14 @@
                 <label>เอกสารยืนยันตัวตน:</label>
                 <a href="../../player/<%= data[0].playerFile1%>" download="<%= data[0].playerFile1 %>"><%= data[0].playerFile1 %></a>
             </div>
+            <div class="form-group">
+                <label>ส่งไปที่อีเมล <%= data[0].playerEmail%></label>
+                <label>รายละเอียด</label>
+                <input type="text" class="form-control" value="<%= data[0].detailDoc%>">
+            </div>
             <div class="form-group" style="margin-top: 10px;">
                 <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
-                <a href="/tnmcheck/edit/player/<%= data[0].playerID%>" class="btn btn-warning" value="edit">แก้ไข</a>
-                <a href="/tnmcheck/player/deny/<%= data[0].playerID%>" class="btn btn-danger" value="deny">ปฏิเสธ</a>
-                <a href="/tnmcheck/player/accept/<%= data[0].playerID%>" class="btn btn-success" value="accept">ยอมรับ</a>
-                <a href="/tnmcheck/emailsingle/<%= data[0].playerID %>" class="btn btn-primary" value="otp">ส่งแก้ไข</a>
+                <button value="submit" class="btn btn-success">ยอมรับ</button>
 
             </div>
         </form>

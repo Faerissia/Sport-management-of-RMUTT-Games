@@ -44,9 +44,6 @@ router.post('/search-tnmsearch', (req, res) => {
     });
   }
 
-
-
-
 });
 
 // display tnmcheck page

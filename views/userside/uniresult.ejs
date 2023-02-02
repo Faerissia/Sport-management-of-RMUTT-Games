@@ -1,0 +1,49 @@
+<%- include("../partials/header") %>
+<%- include("../partials/banner") %>
+        <div class="container-sm py-3 mx-auto">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>สรุปรางวัล</title>
+</head>
+<body>
+
+    <%- include("../partials/menuindex") %>
+
+   <h1>สรุปเหรียญรางวัล <%= data[0].name %></h1>
+   <hr style="height:2px;border-width:0;color:black;background-color:black">
+  <br><br>
+  <h1>รายการแข่งขันที่เข้าร่วม</h1>
+  <hr style="height:2px;border-width:0;color:black;background-color:black">
+
+  <% if(data.length) { %>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ชื่อการแข่งขัน</th>
+                <th width="230px">ลำดับที่</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(let i=0; i < data.length; i++) { %>
+                <tr>
+                    <th scope="row"></th>
+                    <td></td>
+                </tr>
+                <% } %>
+        </tbody>
+    </table>
+    <% } %>
+
+
+    <% if(!data.length) { %>
+        <p class="text-center">ไม่พบรายการสถานที่</p>
+    <% } %>
+
+
+</body>
+</html>
+</div>
+
+

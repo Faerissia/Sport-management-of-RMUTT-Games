@@ -1,7 +1,16 @@
 let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
+const path = require('path');
+const nodemailer = require('nodemailer');
 
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'thesissportmanage@gmail.com',
+      pass: 'vtevtgdhgebnyqog'
+    }
+  });
 
 router.post('/search-tnmcheck', (req, res) => {
     let query = req.body.search;
@@ -79,7 +88,7 @@ router.get('/candidateteam/(:tnmID)', (req, res, next) => {
 
 router.get('/player/(:playerID)', (req, res, next) => {
     let thisplayerID = req.params.playerID;
-    dbConnection.query('SELECT p.playerID,p.playerIDCard,p.playerStudentID,p.playerFName,p.playerLName,p.playerGender,p.playerBirthday,p.playerPhone,p.playerEmail,p.facultyID,p.playerFile1,t.tnmID,t.tnmName,f.uniID,f.facultyID,f.name AS facName,u.uniID,u.name AS uniName FROM player p LEFT JOIN tournament t ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerID ='+thisplayerID, (err, rows) => {
+    dbConnection.query('SELECT p.*,t.tnmID,t.tnmName,f.uniID,f.facultyID,f.name AS facName,u.uniID,u.name AS uniName FROM player p LEFT JOIN tournament t ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerID = '+thisplayerID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('./tnmcheck/candidate/player', { data: rows,status_login: req.session.loggedin,user: user });
@@ -111,24 +120,55 @@ router.get('/team/(:teamID)', (req, res, next) => {
 
 router.get('/player/accept/(:playerID)', (req, res, next) => {
     let thisplayerID = req.params.playerID;
+
     
+
+      
+
     dbConnection.query('SELECT * FROM player WHERE playerID ='+thisplayerID, (err, rows) => {
     let tnmID = rows[0].tnmID;
+    let playerEmail = rows[0].playerEmail;
     let form_data = { playerStatus: 'accept' }
+
+    let mailOptions = {
+        from: 'thesissportmanagement@gmail.com',
+        to: playerEmail,
+        subject: 'ผลการสมัครเข้าร่วมการแข่งขัน',
+        text: 'เจ้าหน้าที่ได้ตรวจสอบข้อมูลและยอมรับผู้สมัครเข้าร่วมการแข่งขันเรียบร้อยแล้ว '
+      };
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) throw error;
+          console.log('Email sent: ' + info.response);
     dbConnection.query('UPDATE player SET ? WHERE playerID ='+thisplayerID,form_data, (err, rows) => {
         req.flash('success','ยอมรับผู้เล่นเรียบร้อย');
         res.redirect('/tnmcheck/candidatesolo/'+tnmID);
     })
     })
-
+})
 })
 
 router.get('/team/accept/(:teamID)', (req, res, next) => {
     let thisteamID = req.params.teamID;
+
+    
+
+      
     
     dbConnection.query('SELECT * FROM team WHERE teamID ='+thisteamID, (err, rows) => {
     let tnmID = rows[0].tnmID;
+    let teamEmailA = rows[0].teamEmailA;
     let form_data = { teamStatus: 'accept' }
+
+    let mailOptions = {
+        from: 'thesissportmanagement@gmail.com',
+        to: teamEmailA,
+        subject: 'ผลการสมัครเข้าร่วมการแข่งขัน',
+        text: 'เจ้าหน้าที่ได้ตรวจสอบข้อมูลและยอมรับทีมและผู้เล่นทั้งหมดในทีมเข้าร่วมการแข่งขันเรียบร้อยแล้ว '
+      };
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) throw error;
+          console.log('Email sent: ' + info.response);
+
     dbConnection.query('UPDATE team SET ? WHERE teamID ='+thisteamID,form_data, (err, rows) => {
         dbConnection.query('SELECT * FROM player WHERE teamID ='+thisteamID, (err, rows) => {
 
@@ -139,7 +179,9 @@ router.get('/team/accept/(:teamID)', (req, res, next) => {
         res.redirect('/tnmcheck/candidateteam/'+tnmID);
     })
     })
+    
 
+})
 })
 })
 
@@ -147,11 +189,24 @@ router.get('/player/deny/(:playerID)', (req, res, next) => {
     let thisplayerID = req.params.playerID;
     dbConnection.query('SELECT * FROM player WHERE playerID ='+thisplayerID, (err, rows) => {
     let tnmID = rows[0].tnmID;
+    let playerEmail = rows[0].playerEmail;
     let form_data = { playerStatus: 'deny'}
+
+    let mailOptions = {
+        from: 'thesissportmanagement@gmail.com',
+        to: playerEmail,
+        subject: 'ผลการสมัครเข้าร่วมการแข่งขัน',
+        text: 'ขออภัยท่านไม่ได้รับเลือกเข้าร่วมการแข่งขัน '
+      };
+
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) throw error;
+          console.log('Email sent: ' + info.response);
     dbConnection.query('UPDATE player SET ? WHERE playerID ='+thisplayerID,form_data, (err, rows) => {
         req.flash('success','ปฏิเสธผู้เล่นเรียบร้อย');
         res.redirect('/tnmcheck/candidate/'+tnmID);
     })
+})
 })
 })
 
@@ -160,13 +215,58 @@ router.get('/team/deny/(:teamID)', (req, res, next) => {
     
     dbConnection.query('SELECT * FROM team WHERE teamID ='+thisteamID, (err, rows) => {
     let tnmID = rows[0].tnmID;
+    let teamEmailA = rows[0].teamEmailA;
     let form_data = { teamStatus: 'deny' }
+
+    let mailOptions = {
+        from: 'thesissportmanagement@gmail.com',
+        to: playerEmail,
+        subject: 'ผลการสมัครเข้าร่วมการแข่งขัน',
+        text: 'ขออภัยทีมของท่านไม่ได้รับเลือกเข้าร่วมการแข่งขัน '
+      };
+
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) throw error;
+          console.log('Email sent: ' + info.response);
     dbConnection.query('UPDATE team SET ? WHERE teamID ='+thisteamID,form_data, (err, rows) => {
         req.flash('success','ยอมรับผู้เล่นเรียบร้อย');
         res.redirect('/tnmcheck/candidateteam/'+tnmID);
     })
+})
     })
 
+})
+
+router.get('/edit/player/(:playerID)',(req,res,next)=>{
+    let thisplayerID = req.params.playerID;
+    dbConnection.query('SELECT p.*,t.tnmID,t.tnmName,f.uniID,f.facultyID,f.name AS facName,u.uniID,u.name AS uniName FROM player p LEFT JOIN tournament t ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerID = '+thisplayerID, (err, rows) => {
+        if(req.session.loggedin){
+        if(role === 'เจ้าหน้าที่'){
+            res.render('./tnmcheck/edit/player', { data: rows,status_login: req.session.loggedin,user: user });
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('../../login');
+        }
+    }else{
+        res.redirect('error404');
+    }
+    })
+})
+
+router.get('/emailsingle/(:playerID)',(req,res,next)=>{
+    let thisplayerID = req.params.playerID;
+    dbConnection.query('SELECT p.*,t.tnmID,t.tnmName,f.uniID,f.facultyID,f.name AS facName,u.uniID,u.name AS uniName FROM player p LEFT JOIN tournament t ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerID = '+thisplayerID, (err, rows) => {
+        if(req.session.loggedin){
+        if(role === 'เจ้าหน้าที่'){
+            res.render('./tnmcheck/email/player', { data: rows,status_login: req.session.loggedin,user: user });
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('../../login');
+        }
+    }else{
+        res.redirect('error404');
+    }
+    })
 })
 
 

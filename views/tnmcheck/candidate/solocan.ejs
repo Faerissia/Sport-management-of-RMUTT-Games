@@ -93,7 +93,7 @@
                                 <td><%= data[i].playerRegDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
                                 <td>
                                 <a href="../candidate/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                <a href="../candidate/edit/<%= data[i].tnmID %>" class="btn btn-warning edit">แก้ไข</a>
+                                <a href="../edit/player/<%= data[i].playerID %>" class="btn btn-warning edit">แก้ไข</a>
                                 <a href="../player/<%=data[i].playerID%>" class="btn btn-primary page">ดู</a>
                             </td>
                         </tr>
