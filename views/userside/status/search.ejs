@@ -24,10 +24,11 @@
 
 
 
-            <div class="row">
-                <div class="col ">
+            <div class="row row-cols-1">
+                <div class="col">
+                <div class="col">
             
-                <div class="float-start">
+                <div class="float-end mt-5">
                 <form action="/search-result" method="post">
                     <div class="input-group">
                     <div class="col">
@@ -62,10 +63,13 @@
 
 
 
-            <div class="align-items-start justify-content-center d-flex flex-wrap ">
+
+            
+                <div class="col-12 w-100 text-center mx-auto">
+                    <div class="row w-100  text-center mx-auto">
                 <% if(data.length) { %>
                     <% for(let i=0; i < data.length; i++) { %>
-
+                            <div class="col-auto ">
                             <div class="card mx-3 my-4 rounded-4 bg-light" style="width: 17rem">
                                 <a href="/tnmdetail/<%= data[i].tnmID %>"
                                     class="text-decoration-none text-dark  fw-bolder">
@@ -86,12 +90,18 @@
                                     </div>
                                 </a>
                             </div>
+                        </div>
                             <% } %>
                             <% } %>
+
+                            
+                    </div>
 
                                         <% if(!data.length) { %>
                                             <h4 class="text-center text-wrap" style="margin-top: 50px; margin-bottom: 50px;">ไม่พบรายการแข่งขัน</h4>
                                             <% } %>
+                                            
+                </div>
             </div>
 
         </div>
