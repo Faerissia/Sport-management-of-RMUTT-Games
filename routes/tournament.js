@@ -516,8 +516,7 @@ router.post('/createbracket/:tnmID',(req, res, next) => {
     let updatetype = {tnmTypegame: tnmTypegame}
 
     let tnmID =req.params.tnmID;
-    let participant1 = req.body.participant1;
-    let participant2 = req.body.participant2;
+
     let round = 1;
 
     dbConnection.query('UPDATE tournament SET ? WHERE tnmID = '+tnmID,updatetype,(err, rows) =>{
@@ -528,7 +527,72 @@ router.post('/createbracket/:tnmID',(req, res, next) => {
     dbConnection.query('SELECT t.*,s.* FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE tnmID ='+tnmID,(err,rows) =>{
     if(rows[0].sportPlaynum === 1){
         if(tnmTypegame === 'single'){
-            
+            dbConnection.query("SELECT * FROM player WHERE playerStatus = 'accept' AND tnmID ="+tnmID ,(err, rows) => {
+
+                player = [];
+
+                rows.forEach(rows =>{
+                    player.push(rows.playerID);
+                })
+
+                atemp = player.length - 1;
+                round = Math.ceil(Math.log2(player.length));
+                bye = Math.pow(2, Math.ceil(Math.log2(player.length))) - player.length;
+
+                if(bye === 0){
+                    let seed = 1;
+                  for(let i=0; i<player.length;i+=2){
+                    
+                    let values = [player[i],player[i+1],1,seed];
+                    seed++;
+                    connection.query('INSERT INTO matchplay (participant1,participant2,round,seed) VALUES (?,?,?,?)',values,(errors,rows)=>{
+                      if(errors) throw errors;
+                      console.log('success insert matches no bye');
+                    })
+                  }
+                }else if(bye > 2){
+                  let seed = 1;
+                  let byeTeams = player.slice(player.length - bye);
+                  for (let i = 0; i < player.length - bye; i += 2) {
+                    let values = [player[i], player[i + 1], 1, seed];
+                    seed++;
+                    connection.query('INSERT INTO matchplay (participant1,participant2,round,seed) VALUES (?,?,?,?)', values, (errors, rows) => {
+                      if (errors) throw errors;
+                      console.log('success insert matches bye > 2');
+                    });
+                  }
+                
+                  for (let i = 0; i < byeTeams.length; i += 2) {
+                    let values = [byeTeams[i], byeTeams[i + 1], 2, seed];
+                    seed++;
+                    connection.query('INSERT INTO matchplay (participant1,participant2,round,seed) VALUES (?,?,?,?)', values, (errors, rows) => {
+                      if (errors) throw errors;
+                      console.log('success insert bye matches');
+                    });
+                  }
+                }else{
+                  let seed = 1;
+                  for (let i = 0; i < player.length - bye; i += 2) {
+                    let values = [player[i], player[i + 1], 1, seed];
+                    seed++;
+                    connection.query('INSERT INTO matchplay (participant1,participant2,round,seed) VALUES (?,?,?,?)', values, (errors, rows) => {
+                      if (errors) throw errors;
+                      console.log('success insert matches else');
+                    });
+                  }
+                  
+                  for (let i = player.length - bye; i < player.length; i++) {
+                    let values = [player[i], null, 2, seed];
+                    seed++;
+                    connection.query('INSERT INTO matchplay (participant1,participant2,round,seed) VALUES (?,?,?,?)', values, (errors, rows) => {
+                      if (errors) throw errors;
+                      console.log('success insert bye matches');
+                    });
+                  }
+                }
+
+
+            })
             }else if(tnmTypegame === 'leaderboard'){
                 dbConnection.query("SELECT * FROM player WHERE playerStatus = 'accept' AND tnmID ="+tnmID ,(err, rows) => {
                     let values = [];
