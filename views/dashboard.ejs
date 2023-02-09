@@ -47,38 +47,48 @@
                                                 <div class="row row-cols-1 ">
                                                     <div class="col-auto  mx-auto">
                                                         <div class="row my-2 ">
-                                                            <div class="col-auto ">
+                                                            <!-- <div class="col-auto ">
                                                                 <label for="" class="col-form-label">ประเภทกีฬา
                                                                 </label>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <select class="form-select border-dark" id=""
-                                                                    name="sportID">
-                                                                    <option selected disabled value="">ทั้งหมด</option>
+                                                            </div> -->
+                                                            <!-- <div class="col-auto">
+                                                                <select class="form-select border-dark text-center"
+                                                                    id="" name="sportID">
+                                                                    <option selected value="">ทั้งหมด</option>
                                                                     <option value="">วอลเลย์บอล</option>
                                                                     <option value="">ทั้งหมด</option>
                                                                     <option value="">ทั้งหมด</option>
                                                                 </select>
-                                                            </div>
+                                                            </div> -->
                                                             <div class="col-auto ">
-                                                                <label for="validationDate_start"
-                                                                    class="col-form-label">วันที่แข่งขัน </label>
+                                                                <label for="" class="col-form-label">ช่วงเวลา
+                                                                </label>
                                                             </div>
                                                             <div class="col-auto">
-                                                                <input type="date" class="form-control border-dark"
-                                                                    id="validationDate_start" value="" name="Rstartdate"
-                                                                    autocomplete="off">
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <label for="validationDate_end"
-                                                                    class="col-form-label">ถึง</label>
+                                                                <form action="/dashboard/dash-value" method="post">
+                                                                    <select class="form-select border-dark text-center"
+                                                                        id="select-value" name="value">
+                                                                        <option value="1">1 เดือน</option>
+                                                                        <option value="3">3 เดือน</option>
+                                                                        <option value="6">6 เดือน</option>
+                                                                        <option selected value="11">1 ปี</option>
+                                                                        <!-- <option value="12">1 ปี</option> -->
+
+                                                                    </select>
+                                                                    <script>
+                                                                        document.getElementById("select-value").onchange = function () {
+                                                                            this.form.submit();
+                                                                        };
+
+
+                                                                        const sele1 = JSON.parse('<%-JSON.stringify(value_m) %>');
+                                                                        document.getElementById('select-value').value = sele1
+                                                                        console.log(sele1);
+                                                                    </script>
+                                                                </form>
+
                                                             </div>
 
-                                                            <div class="col-auto">
-                                                                <input type="date" class="form-control border-dark"
-                                                                    id="validationDate_end" value="" name="Renddate"
-                                                                    autocomplete="off">
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -93,10 +103,13 @@
                                                         ยังไม่เริ่มการแข่งขัน
                                                     </div>
                                                     <div class="card-body text-dark text-center bg-white bg-opacity-50">
-                                                        <h5 class="card-title " style="font-size:3vw"> 0</h5>
+                                                        <h5 class="card-title " style="font-size:3vw">
+                                                            <%=count[0].Out%>
+                                                        </h5>
+
                                                         <p class="card-text text-center"></p>
                                                     </div>
-                                                    <div class="card-footer bg-white border-dark ">
+                                                    <!-- <div class="card-footer bg-white border-dark ">
                                                         <a href="http://"
                                                             class="text-decoration-none  text-dark text-center ">
                                                             <div class="row">
@@ -111,7 +124,7 @@
                                                                 </div>
                                                             </div>
                                                         </a>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
 
                                                 <!-- ------------------------------- card_2 -------------------------------- -->
@@ -122,10 +135,12 @@
                                                         อยู่ระหว่างแข่งขัน
                                                     </div>
                                                     <div class="card-body text-dark text-center bg-white bg-opacity-50">
-                                                        <h5 class="card-title " style="font-size:3vw"> 0</h5>
+                                                        <h5 class="card-title " style="font-size:3vw">
+                                                            <%=count[0].In%>
+                                                        </h5>
                                                         <p class="card-text text-center"></p>
                                                     </div>
-                                                    <div class="card-footer bg-white border-dark ">
+                                                    <!-- <div class="card-footer bg-white border-dark ">
                                                         <a href="http://"
                                                             class="text-decoration-none  text-dark text-center ">
                                                             <div class="row">
@@ -139,8 +154,8 @@
                                                                         flip="horizontal"></iconify-icon>
                                                                 </div>
                                                             </div>
-                                                        </a>
-                                                    </div>
+                                                        </a> 
+                                                    </div> -->
                                                 </div>
 
                                                 <!-- ------------------------------- card_3 -------------------------------- -->
@@ -150,10 +165,12 @@
                                                         การแข่งขันที่เสร็จสิ้น
                                                     </div>
                                                     <div class="card-body text-dark text-center bg-white bg-opacity-50">
-                                                        <h5 class="card-title " style="font-size:3vw"> 0</h5>
+                                                        <h5 class="card-title " style="font-size:3vw">
+                                                            <%=count[0].fin%>
+                                                        </h5>
                                                         <p class="card-text text-center"></p>
                                                     </div>
-                                                    <div class="card-footer bg-white border-dark ">
+                                                    <!-- <div class="card-footer bg-white border-dark ">
                                                         <a href="http://"
                                                             class="text-decoration-none  text-dark text-center ">
                                                             <div class="row">
@@ -168,7 +185,7 @@
                                                                 </div>
                                                             </div>
                                                         </a>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                         </div>
@@ -182,65 +199,89 @@
                                             <div class="col-6 card ">
 
                                                 <div>
-                                                    <canvas id="myChart"></canvas>
+                                                    <canvas id="myChart" width="500px"></canvas>
                                                 </div>
 
-                                                <script>
-                                                    const ctx = document.getElementById('myChart');
+                                                <%= %>
 
-                                                    new Chart(ctx, {
-                                                        type: 'bar',
-                                                        data: {
-                                                            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                                                            datasets: [{
-                                                                label: 'ยัง ไม่ได้ทำ dataset',
-                                                                data: [12, 19, 3, 5, 2, 3],
-                                                                borderWidth: 1
-                                                            }]
-                                                        },
-                                                        options: {
-                                                            scales: {
-                                                                y: {
-                                                                    beginAtZero: true
 
+                                                    <script>
+                                                        const display_month = JSON.parse('<%-JSON.stringify(display_month) %>');
+                                                        console.log(display_month);
+
+
+                                                        const label_x = display_month.map((item) => { return item.month })
+                                                        const label_y = display_month.map((item) => { return item.result_cout })
+                                                        let maxValue = Math.max(...label_y);
+
+
+                                                        const ctx = document.getElementById('myChart');
+
+                                                        new Chart(ctx, {
+                                                            type: 'bar',
+                                                            data: {
+                                                                labels: label_x
+                                                                , datasets: [{
+                                                                    label: 'จำนวนการแข่งขัน',
+                                                                    data: label_y
+                                                                    ,
+                                                                    borderWidth: 3
+                                                                }]
+                                                            },
+                                                            options: {
+                                                                scales: {
+                                                                    y: {
+                                                                        beginAtZero: true,
+                                                                        min: 0,
+                                                                        max: maxValue+1
+                                                                    }
                                                                 }
                                                             }
-                                                        }
-                                                    });
-                                                </script>
+                                                        });
+                                                    </script>
 
 
                                             </div>
+
+                                            <!-- ------------------------------- chart_2 ------------------------------- -->
                                             <div class="col-6  card">
 
                                                 <div>
-                                                    <canvas id="myChart1" class=""
-                                                        style="height: auto; width: 30em;"></canvas>
+                                                    <canvas id="myChart1" style=" width: 100px;"></canvas>
                                                 </div>
 
                                                 <script>
+                                                    const sport_count = JSON.parse('<%-JSON.stringify(sport_count) %>');
+                                                    const sport_y = sport_count.map((item) => { return item.count })
+                                                    let maxValuesport = Math.max(...sport_y);
+
+                                                    //    const label_1 = [sport_y[0].count+sport_y[1].count ]
+                                                    console.log("🚀 ~ file: dashboard.ejs:258 ~ sport_y", sport_y)
+
+
+
                                                     const ctx1 = document.getElementById('myChart1');
+
 
                                                     myChart1 = new Chart(ctx1, {
                                                         type: 'bar',
                                                         data: {
-                                                            labels: ['วอลเลย์บอล', 'แบดมินตัน', 'บาสเกตบอล', 'เปตอง'],
+                                                            labels: ['แบดมินตัน เดี่ยว', 'แบดมินตัน คู่', 'วอลเลย์บอล', 'บาสเกตบอล', 'เปตอง'],
                                                             datasets: [{
 
                                                                 label: 'จำนวนที่แข่งขัน',
-                                                                data: [12, 11, 25, 5],
-                                                                borderWidth: 1
+                                                                data: sport_y
+                                                                , borderWidth: 2
                                                             }]
                                                         },
                                                         options: {
                                                             indexAxis: 'y',
                                                             scales: {
                                                                 y: {
-                                                                    beginAtZero: true
-
+                                                                    beginAtZero: true,
+                                                                    
                                                                 }
                                                                 , x: {
-
                                                                     display: false
 
                                                                 }
@@ -261,13 +302,14 @@
                                                             }
                                                         }
                                                     });
-                                                    
+
                                                 </script>
 
 
 
                                             </div>
                                         </div>
+                                       
 
 
 

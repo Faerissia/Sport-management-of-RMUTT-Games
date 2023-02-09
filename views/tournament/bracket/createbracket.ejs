@@ -45,7 +45,7 @@
                 <label>วิธีจัดสาย</label>
             </div>
             <div class="col-auto">
-            <select name="" class="form-select border-dark" id="automanual">
+            <select name="automan" class="form-select border-dark" id="automanual">
                 <option value="auto">อัติโนมัติ</option>
                 <option value="manual">กำหนดเอง</option>
             </select>
@@ -65,7 +65,24 @@
 
             <div id="manual" class="manto">
                 <br>
-                <h5>เลือกผู้เล่นที่ได้บาย</h5>
+                <label>เลือกผู้เล่นที่ได้บาย</label>
+                <% for(i=0;i < singlebye;i++){ %>
+                <select name="byename" class="form-select border-dark">
+                    <% for(j=0;j< data.length;j++){ %>
+                    <option value="<%= data[j].playerID %>"><%= data[j].playerFName %></option>
+                    <% } %>
+            </select>
+            <% } %>
+
+            <br>
+            <label>ผู้เล่นที่เหลือ</label>
+            <% for(k=0;k < data.length-singlebye;k++){ %>
+                <select name="otherteam" class="form-select border-dark">
+                    <% for(x=0;x< data.length;x++){ %>
+                    <option value="<%= data[x].playerID %>"><%= data[x].playerFName %></option>
+                    <% } %>
+            </select>
+            <% } %>
             </div>
         </div>
         <div id="roundrobin" class="data">

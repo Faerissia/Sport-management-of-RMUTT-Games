@@ -1,82 +1,152 @@
 <%- include("../partials/header") %>
-<%- include("../partials/banner") %>
-        <div class="container-sm py-3 mx-auto">
+  <%- include("../partials/banner") %>
+    <div class="container-sm py-3 mx-auto">
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>สรุปรางวัล</title>
-    <style>
-        th, td {
-      border: 1px solid rgb(227, 227, 227);
-      padding: 8px;
-      text-align: center;
-    }
-    
-     th:nth-child(3) {
-      background-color: rgb(252, 255, 104);
-    
-    }
-    
-    td:nth-child(3) {
-      background-color: rgb(252, 252, 92);
-    } 
-    th:nth-child(4) {
-      background-color: rgb(226, 226, 226);
-    
-    }
-    
-    td:nth-child(4) {
-      background-color: rgb(218, 218, 218);
-    } 
-    th:nth-child(5) {
-      background-color: rgb(255, 173, 49);
-    
-    }
-    
-    td:nth-child(5) {
-      background-color: rgb(255, 188, 88);
-    } 
-    </style>
-</head>
-<body>
+      <!DOCTYPE html>
+      <html lang="en">
 
-    <%- include("../partials/menuindex") %>
+      <head>
+        <title>สรุปรางวัล</title>
+        <style>
+          /* th,
+          td {
+            border: 1px solid rgb(227, 227, 227);
+            padding: 8px;
+            text-align: center;
+          }
 
-    <% if(data.length) { %>
-        <table class="table border border-dark">
-            <thead>
-                <tr>
-                    <th scope="col">อันดับ</th>
-                    <th scope="col">มหาวิทยาลัย</th>
-                    <th scope="col">ที่ 1</th>
-                    <th scope="col">ที่ 2</th>
-                    <th scope="col">ที่ 3</th>
-                    <th scope="col">รวมทั้งหมด</th>
+          /* th:nth-child(3) {
+            background-color: rgb(252, 255, 104);
+
+          } */
+
+          /* td:nth-child(3) {
+            background-color: rgb(252, 252, 92);
+          } */
+
+          /* th:nth-child(4) {
+            background-color: rgb(226, 226, 226);
+
+          } */
+
+          /* td:nth-child(4) {
+            background-color: rgb(218, 218, 218);
+          } */
+
+          /* th:nth-child(5) {
+            background-color: rgb(255, 173, 49);
+
+          } */
+/* 
+          td:nth-child(5) {
+            background-color: rgb(255, 188, 88);
+          } */ */
+
+/* 
+          .container {
+  position: relative;
+} */
+
+
+
+
+        </style>
+      </head>
+
+      <body>
+        <div>
+
+
+          <div class="display-3 mb-2">
+            สรุปเหรียญ รางวัล
+          </div>
+
+       
+        <%- include("../partials/menuindex") %>
+
+          <% if(data.length) { %>
+            <table class="table table-striped table-hover table-bordered border-dark mt-2">
+              <thead style="background-color: #6DAFFE;">
+                <tr class="text-center ">
+                  <!-- <th scope="col">อันดับ</th> -->
+                  <th scope="col " > 
+                  <div class="my-auto h-100">
+
+                    มหาวิทยาลัย
+                  </div>
+                  </th>
+                  <th scope="col"><iconify-icon icon="noto:1st-place-medal" width="40" height="40"></iconify-icon></th>
+                  <th scope="col"><iconify-icon icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon></th>
+                  <th scope="col"><iconify-icon icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon></th>
+                  <th scope="col" class="">
+                    
+
+                
+
+                     <iconify-icon class="item1" icon="noto:1st-place-medal" width="40" height="40"></iconify-icon>
+                     <iconify-icon class="item2" icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon>
+                     <iconify-icon class="item3" icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon>
+                 
+                  </th>
                 </tr>
-            </thead>
-            <tbody>
-                <% for(let i = 0; i < data.length; i++) { %>
-                    <tr>
-                        <th scope="row"><%= i+1 %></th>
-                        <td><a href="/result/<%=data[i].uniID %>"><%= data[i].name %></a></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
+              </thead>
+              <tbody>
+                <% for(let i=0; i < data.length; i++) { %>
+                  <tr class="text-center">
+                    <td>
+                      <div class="box  w-auto text-start ms-5">
+                        <div class=" btn btn btn-warning text-start  " style="width: 60%; ">
+                          <a class="text-decoration-none text-dark " href="/result/<%=data[i].uniID %>">
+                            <div class="row">
+                              <div class="col-auto ">
+                                <%= i+1 %>
+                              </div>
+                              <div class="col">
+                                <%= data[i].name %>
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <% } %>
+
+              </tbody>
+              <tfoot class="text-center">
+
+                <tr>
+                  <!-- <th scope="col">อันดับ</th> -->
+                  <td scope="col">
+                    <div class="box  w-auto text-start ms-5">
+                      <div class=" btn  btn-primary"  style="width: 60%; ">
+                        <div class="text-center text-light">
+                          รวม
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td scope="col"></td>
+                  <td scope="col"></td>
+                  <td scope="col"></td>
+                  <td scope="col"></td>
+                </tr>
+
+              </tfoot>
+            </table>
+            <% } %>
+
+              <% if(!data.length) { %>
+                <p class="text-center">ไม่พบรายการสถานที่</p>
                 <% } %>
-            </tbody>
-        </table>
-    <% } %>
 
-    <% if(!data.length) { %>
-        <p class="text-center">ไม่พบรายการสถานที่</p>
-    <% } %>
+              </div>
+      </body>
 
-
-</body>
-</html>
-</div>
-
-
+      </html>
+    </div>

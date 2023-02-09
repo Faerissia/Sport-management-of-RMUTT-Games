@@ -514,7 +514,7 @@ router.get('/participant/player/(:playerID)', (req, res, next) => {
 router.post('/createbracket/:tnmID',(req, res, next) => {
     let tnmTypegame = req.body.tnmTypegame;
     let updatetype = {tnmTypegame: tnmTypegame}
-
+    let automan = req.body.automan;
     let tnmID =req.params.tnmID;
 
     let round = 1;
@@ -527,6 +527,7 @@ router.post('/createbracket/:tnmID',(req, res, next) => {
     dbConnection.query('SELECT t.*,s.* FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE tnmID ='+tnmID,(err,rows) =>{
     if(rows[0].sportPlaynum === 1){
         if(tnmTypegame === 'single'){
+            if(automan === 'auto'){
             dbConnection.query("SELECT * FROM player WHERE playerStatus = 'accept' AND tnmID ="+tnmID ,(err, rows) => {
 
                 player = [];
@@ -593,6 +594,9 @@ router.post('/createbracket/:tnmID',(req, res, next) => {
 
             })
             res.redirect('/tournament/bracket/'+tnmID);
+        }else{
+            
+        }
             }else if(tnmTypegame === 'leaderboard'){
                 dbConnection.query("SELECT * FROM player WHERE playerStatus = 'accept' AND tnmID ="+tnmID ,(err, rows) => {
                     let values = [];
@@ -648,6 +652,8 @@ router.post('/createbracket/:tnmID',(req, res, next) => {
             }else{
 
             }
+
+            
     }else{
         
         if(tnmTypegame === 'leaderboard'){
