@@ -535,7 +535,6 @@ router.post('/createbracket/:tnmID',(req, res, next) => {
                     player.push(rows.playerID);
                 })
 
-                atemp = player.length - 1;
                 round = Math.ceil(Math.log2(player.length));
                 bye = Math.pow(2, Math.ceil(Math.log2(player.length))) - player.length;
 
