@@ -542,9 +542,9 @@ router.post('/createbracket/:tnmID',(req, res, next) => {
                     let seed = 1;
                   for(let i=0; i<player.length;i+=2){
                     
-                    let values = [player[i],player[i+1],1,seed];
+                    let values = [player[i],player[i+1],1,seed,tnmID];
                     seed++;
-                    connection.query('INSERT INTO matchplay (participant1,participant2,round,seed) VALUES (?,?,?,?)',values,(errors,rows)=>{
+                    dbConnection.query('INSERT INTO matchplay (participant1,participant2,round,seed,tnmID) VALUES (?,?,?,?,?)',values,(errors,rows)=>{
                       if(errors) throw errors;
                       console.log('success insert matches no bye');
                     })
@@ -553,18 +553,18 @@ router.post('/createbracket/:tnmID',(req, res, next) => {
                   let seed = 1;
                   let byeTeams = player.slice(player.length - bye);
                   for (let i = 0; i < player.length - bye; i += 2) {
-                    let values = [player[i], player[i + 1], 1, seed];
+                    let values = [player[i], player[i + 1], 1, seed,tnmID];
                     seed++;
-                    connection.query('INSERT INTO matchplay (participant1,participant2,round,seed) VALUES (?,?,?,?)', values, (errors, rows) => {
+                    dbConnection.query('INSERT INTO matchplay (participant1,participant2,round,seed,tnmID) VALUES (?,?,?,?,?)', values, (errors, rows) => {
                       if (errors) throw errors;
                       console.log('success insert matches bye > 2');
                     });
                   }
                 
                   for (let i = 0; i < byeTeams.length; i += 2) {
-                    let values = [byeTeams[i], byeTeams[i + 1], 2, seed];
+                    let values = [byeTeams[i], byeTeams[i + 1], 2, seed,tnmID];
                     seed++;
-                    connection.query('INSERT INTO matchplay (participant1,participant2,round,seed) VALUES (?,?,?,?)', values, (errors, rows) => {
+                    dbConnection.query('INSERT INTO matchplay (participant1,participant2,round,seed,tnmID) VALUES (?,?,?,?,?)', values, (errors, rows) => {
                       if (errors) throw errors;
                       console.log('success insert bye matches');
                     });
@@ -572,18 +572,18 @@ router.post('/createbracket/:tnmID',(req, res, next) => {
                 }else{
                   let seed = 1;
                   for (let i = 0; i < player.length - bye; i += 2) {
-                    let values = [player[i], player[i + 1], 1, seed];
+                    let values = [player[i], player[i + 1], 1, seed,tnmID];
                     seed++;
-                    connection.query('INSERT INTO matchplay (participant1,participant2,round,seed) VALUES (?,?,?,?)', values, (errors, rows) => {
+                    dbConnection.query('INSERT INTO matchplay (participant1,participant2,round,seed,tnmID) VALUES (?,?,?,?,?)', values, (errors, rows) => {
                       if (errors) throw errors;
                       console.log('success insert matches else');
                     });
                   }
                   
                   for (let i = player.length - bye; i < player.length; i++) {
-                    let values = [player[i], null, 2, seed];
+                    let values = [player[i], null, 2, seed,tnmID];
                     seed++;
-                    connection.query('INSERT INTO matchplay (participant1,participant2,round,seed) VALUES (?,?,?,?)', values, (errors, rows) => {
+                    dbConnection.query('INSERT INTO matchplay (participant1,participant2,round,seed,tnmID) VALUES (?,?,?,?,?)', values, (errors, rows) => {
                       if (errors) throw errors;
                       console.log('success insert bye matches');
                     });
@@ -592,6 +592,7 @@ router.post('/createbracket/:tnmID',(req, res, next) => {
 
 
             })
+            res.redirect('/tournament/bracket/'+tnmID);
             }else if(tnmTypegame === 'leaderboard'){
                 dbConnection.query("SELECT * FROM player WHERE playerStatus = 'accept' AND tnmID ="+tnmID ,(err, rows) => {
                     let values = [];

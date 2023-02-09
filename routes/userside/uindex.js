@@ -247,6 +247,7 @@ router.get('/tnmbracket/(:tnmID)', (req, res, next) => {
 router.get('/tnmparticipant/(:tnmID)', (req, res, next) => {
     let tnmID = req.params.tnmID;
     dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName,f.name AS FacName FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID WHERE t.tnmID = ' + tnmID, (err, rows) => {
+        if(rows.length){
         if (rows[0].teamID === null){
             res.render('userside/tnm/tnmparticipant', { data: rows,tnmID: tnmID,status_login: req.session.loggedin });
         } else {
@@ -254,6 +255,10 @@ router.get('/tnmparticipant/(:tnmID)', (req, res, next) => {
             res.render('userside/tnm/tnmparticipant', { data: rows,tnmID: tnmID,status_login: req.session.loggedin });
         })
     }
+}
+else{
+    res.render('userside/tnm/tnmparticipant',{tnmID: tnmID,status_login: req.session.loggedin});
+}
 })
 })
 
