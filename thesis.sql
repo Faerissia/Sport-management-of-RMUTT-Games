@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 08, 2023 at 09:47 PM
+-- Generation Time: Feb 09, 2023 at 07:22 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -266,6 +266,17 @@ CREATE TABLE `player` (
   `playerStatus` enum('accept','deny','edit','wait') DEFAULT 'wait',
   `playerRegDate` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `player`
+--
+
+INSERT INTO `player` (`playerID`, `playerIDCard`, `playerStudentID`, `playerFName`, `playerLName`, `playerGender`, `playerBirthday`, `playerPhone`, `playerEmail`, `facultyID`, `teamID`, `playerFile1`, `playerFile2`, `playerFile3`, `tnmID`, `detailDoc`, `otp`, `playerStatus`, `playerRegDate`) VALUES
+(127, '1650165106161', '6804864086486', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2023-02-09', '0984984094', 'firstlnw0099@gmail.com', 1, NULL, '1675917540170_kl.jpg', NULL, NULL, 20, NULL, NULL, 'accept', '2023-02-09'),
+(128, '1606516041861', '6840646464064', 'เมธานันท์', 'นิลพันธ์', 'ชาย', '2023-01-31', '0613921298', 'firstlnw0099@gmail.com', 1, NULL, '1675917585503_kl.jpg', NULL, NULL, 20, NULL, NULL, 'accept', '2023-02-09'),
+(129, '1098409189194', '6807437043464', 'กิตติภพ', 'รักสนิท', 'ชาย', '2023-02-21', '2013132103', 'firstlnw0099@gmail.com', 2, NULL, '1675917618880_kl.jpg', NULL, NULL, 20, NULL, NULL, 'accept', '2023-02-09'),
+(130, '1610964816408', '6087370373740', 'ชลธี', 'คำลือ', 'ชาย', '2023-02-01', '0984984094', 'firstlnw0099@gmail.com', 2, NULL, '1675917662596_kl.jpg', NULL, NULL, 20, NULL, NULL, 'accept', '2023-02-09'),
+(131, '1096846464064', '6384348304341', 'วสวิญญ์', 'รัตน์โชติ', 'ชาย', '2023-02-10', '0624283195', 'firstlnw0099@gmail.com', 2, NULL, '1675917704419_66kebb6ah7k8ejiakacgi.jpg', NULL, NULL, 20, NULL, NULL, 'accept', '2023-02-09');
 
 -- --------------------------------------------------------
 
@@ -539,7 +550,7 @@ ALTER TABLE `highlight`
 -- AUTO_INCREMENT for table `matchplay`
 --
 ALTER TABLE `matchplay`
-  MODIFY `matchID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=276;
+  MODIFY `matchID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=294;
 
 --
 -- AUTO_INCREMENT for table `place`
@@ -557,7 +568,7 @@ ALTER TABLE `place_opening`
 -- AUTO_INCREMENT for table `player`
 --
 ALTER TABLE `player`
-  MODIFY `playerID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+  MODIFY `playerID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=132;
 
 --
 -- AUTO_INCREMENT for table `sport`
