@@ -56,7 +56,7 @@
                                 <td><%= data[i].NameAgent %> <%= data[i].LnameAgent %></td>
                                 <td><%= data[i].teamPhoneA %></td>
                                 <td><%= date.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
-                                <td></td>
+                                <td style="color: red;"><%= data[i].detailDoc %></td>
                                 <td>
                                 <a href="../team/<%=data[i].teamID%>" class="btn btn-primary page">ดู</a>
                                 </td>
@@ -86,7 +86,7 @@
                             <td><%= data[i].teamName %></td>
                                 <td><%= data[i].NameAgent %><%= data[i].LnameAgent %></td>
                                 <td><%= data[i].teamPhoneA %></td>
-                                <td></td>
+                                <td><%= data[i].teamRegDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
                             <td>
                                 <a href="../candidate/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
                                 <a href="../candidate/edit/<%= data[i].tnmID %>" class="btn btn-warning edit">แก้ไข</a>
