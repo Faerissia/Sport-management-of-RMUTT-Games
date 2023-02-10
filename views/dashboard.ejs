@@ -199,7 +199,7 @@
                                             <div class="col-6 card ">
 
                                                 <div>
-                                                    <canvas id="myChart" width="500px"></canvas>
+                                                    <canvas id="myChart" width="50"></canvas>
                                                 </div>
 
                                                 <%= %>
@@ -247,13 +247,13 @@
                                             <div class="col-6  card">
 
                                                 <div>
-                                                    <canvas id="myChart1" style=" width: 100px;"></canvas>
+                                                    <canvas id="myChart1" style=" width: 10em;"></canvas>
                                                 </div>
 
                                                 <script>
                                                     const sport_count = JSON.parse('<%-JSON.stringify(sport_count) %>');
                                                     const sport_y = sport_count.map((item) => { return item.count })
-                                                    let maxValuesport = Math.max(...sport_y);
+
 
                                                     //    const label_1 = [sport_y[0].count+sport_y[1].count ]
                                                     console.log("🚀 ~ file: dashboard.ejs:258 ~ sport_y", sport_y)
@@ -278,10 +278,11 @@
                                                             indexAxis: 'y',
                                                             scales: {
                                                                 y: {
-                                                                    beginAtZero: true,
-                                                                    
+                                                                    beginAtZero: true
+
                                                                 }
                                                                 , x: {
+
                                                                     display: false
 
                                                                 }

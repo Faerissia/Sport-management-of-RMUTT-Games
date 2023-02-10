@@ -6,17 +6,10 @@
 <html lang="en">
 <head>
     <title>Document</title>
-    <style>
-        .data{
-            display: none;
-        }
-        .manto{
-            display: none;
-        }
-    </style>
+
 </head>
 <body>
-    <h1><%= tournamentName %></h1>
+    <h1><%= tournamentname %></h1>
 
         <%- include("../../partials/menu_staff.ejs") %>
 
@@ -25,11 +18,10 @@
 
         <div class="row my-2   row-cols-2">
             <div class="col-2 ">
-                <label for="validationSport" class="col-form-label">ประเภทการแข่งขัน</label>
+                <label for="validationSport" class="col-form-label">type of tournament</label>
             </div>
         <div class="col-auto">
-        <select class="form-select border-dark" name="tnmTypegame" id="type">
-            <option value="">เลือก</option>
+        <select class="form-select border-dark" name="tnmTypegame">
             <option value="single">Single Elimination</option>
             <option value="roundrobin">Round Robin</option>
             <option value="leaderboard">LeaderBoard</option>
@@ -38,107 +30,72 @@
         </div>
     </div>
 
-    <div>
-        <div id="single" class="data">
-            <div class="row my-2   row-cols-2">
-                <div class="col-2 ">
-                <label>วิธีจัดสาย</label>
-            </div>
-            <div class="col-auto">
-            <select name="automan" class="form-select border-dark" id="automanual">
-                <option value="auto">อัติโนมัติ</option>
-                <option value="manual">กำหนดเอง</option>
-            </select>
-        </div>
-            </div>
-            <h4>แพ้คัดออก (Single Elimination)</h4>
-            จำนวนผู้เข้าร่วมทั้งหมด <%= data.length %>
-            <br>
-           <% let sigleatemp = data.length - 1; %>
-           จำนวนครั้งที่ต้องแข่งขัน <%= sigleatemp %>
-           <br>
-        <% singleround = Math.ceil(Math.log2(data.length)); %>
-            จำนวนรอบการแข่งขัน <%= singleround %>
-            <br>
-        <% singlebye = Math.pow(2, Math.ceil(Math.log2(data.length))) - data.length; %>
-            จำนวนทีมที่ได้บาย <%= singlebye %>
-
-            <div id="manual" class="manto">
-                <br>
-                <label>เลือกผู้เล่นที่ได้บาย</label>
-                <% for(i=0;i < singlebye;i++){ %>
-                <select name="byename" class="form-select border-dark">
-                    <% for(j=0;j< data.length;j++){ %>
-                    <option value="<%= data[j].playerID %>"><%= data[j].playerFName %></option>
-                    <% } %>
-            </select>
+    <% if(data.length % 2 === 0){ %>
+    <% for(let i=0; i< data.length / 2; i++){ %>
+        <div class="row my-2   row-cols-2" >
+    <div class="col-auto">
+    <select name="participant1" class="form-select border-dark">
+        <% for(let i=0; i < data.length; i++) { %>
+            <option value="<%= data[i].playerID %>">
+                <%= data[i].playerFName %>
+            </option>
             <% } %>
-
-            <br>
-            <label>ผู้เล่นที่เหลือ</label>
-            <% for(k=0;k < data.length-singlebye;k++){ %>
-                <select name="otherteam" class="form-select border-dark">
-                    <% for(x=0;x< data.length;x++){ %>
-                    <option value="<%= data[x].playerID %>"><%= data[x].playerFName %></option>
-                    <% } %>
-            </select>
-            <% } %>
-            </div>
-        </div>
-        <div id="roundrobin" class="data">
-            <h4>พบกันหมด (Round Robin)</h4>
-            จำนวนผู้เข้าร่วมทั้งหมด <%= data.length %>
-            <br>
-            <% let roundatemp = data.length*(data.length-1)/2 ; %>
-           จำนวนครั้งที่ต้องแข่งขัน <%= roundatemp %>
-        </div>
-        <div id="leaderboard" class="data"><h4>กระดานผู้นำ (Leaderboard)</h4></div>
-        <div id="roundsingle" class="data">
-            <h4>พบกันหมดและแพ้คัดออก</h4>
-            <h5>รอบพบกันหมด (Round Robin)</h5>
-            จำนวนผู้เข้าร่วมทั้งหมด <%= data.length %>
-            <br>
-            <% let roundsingleatemp = data.length*(data.length-1)/2 ; %>
-           จำนวนครั้งที่ต้องแข่งขัน <%= roundsingleatemp %>
-            <br><br>
-            <h5>รอบแพ้คัดออก (Single Elimination)</h5>
-            จำนวนผู้เข้าร่วมหลังรอบ Round Robin <%= rsnum = Math.pow(2,Math.floor(Math.log2(data.length))) %>
-            <br>
-           <% let rsatemp = rsnum - 1; %>
-           จำนวนครั้งที่ต้องแข่งขัน <%= rsatemp %>
-           <br>
-        <% rsround = Math.ceil(Math.log2(rsnum)); %>
-            จำนวนรอบการแข่งขัน <%= rsround %>
+    </select>
+    
+    <select name="participant2" class="form-select border-dark">
+        <% for(let i=0; i < data.length; i++) { %>
+            <option value="<%= data[i].playerID %>">
+                <%= data[i].playerFName %>
+                </option>
+                <% } %>
+        </select>
         </div>
     </div>
-    
+        <% } %>
+        <% }else{ %>
+
+            <div class="row my-2   row-cols-2" >
+                <div class="col-auto">
+                    <label>Bye</label>
+                <select name="participant1" class="form-select border-dark">
+                    <% for(let i=0; i < data.length; i++) { %>
+                        <option value="<%= data[i].playerID %>">
+                            <%= data[i].playerFName %>
+                        </option>
+                        <% } %>
+                </select>
+
+                    <% } %>
+                        <% for(let i=0; i< ( data.length - 1 ) / 2; i++){ %>
+                            <div class="row my-2   row-cols-2" >
+                                <div class="col-auto">
+                                <select name="participant1" class="form-select border-dark">
+                                    <% for(let i=0; i < data.length; i++) { %>
+                                        <option value="<%= data[i].playerID %>">
+                                            <%= data[i].playerFName %>
+                                        </option>
+                                        <% } %>
+                                </select>
+                                
+                                <select name="participant2" class="form-select border-dark">
+                                    <% for(let i=0; i < data.length; i++) { %>
+                                        <option value="<%= data[i].playerID %>">
+                                            <%= data[i].playerFName %>
+                                            </option>
+                                            <% } %>
+                                    </select>
+                                    </div>
+                                </div>
+            <%  } %>
+
 
     <div class="col-auto">
         <button class="btn btn-success" type="submit">ยืนยัน</button>
     </div>
     </form>
 
-  
+
 
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function(){
-        $("#type").on('change', function(){
-            $(".data").hide();
-            $("#" + $(this).val()).fadeIn(100);
-        }).change();
-    });
-
-</script>
-<script>
-    $(document).ready(function(){
-        $("#automanual").on('change', function(){
-            $(".manto").hide();
-            $("#" + $(this).val()).fadeIn(100);
-        }).change();
-    });
-
-</script>
 </html>
 </div>

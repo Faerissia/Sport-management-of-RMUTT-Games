@@ -23,9 +23,6 @@
                                     <%= messages.success %>
                                 </div>
                                 <% } %>
-
-                                <%- include("../partials/menuindex") %>
-
                                    <!---------------------------------------------------------------------------------------------->
                                    <div class="card rounded-2 mt-5  mx-5">
                                     <div class="card-header p-2 d-flex  justify-content-center  text-center position-relative"
@@ -55,7 +52,7 @@
                                                                 <img src="images/<%= data[i].tnmPicture %>"
                                                                     class="card-img-top img-fluid rounded-0" style="height: 15rem">
                                                                 <div class="card-body">
-                                                                     วันที่แข่ง <%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit'
+                                                                     <%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit'
                                                                                         , month: 'long' , year:'numeric'}) %> -
                                                                                         <%= data[i].tnmEnddate.toLocaleDateString('th-TH',{day: '2-digit'
                                                                                         , month: 'long' , year:'numeric'}) %>
@@ -110,14 +107,13 @@
                                                 </div>
                                             </a>
                                         </div>
-                                        <% }else{ %>
-                                            <h4 class="text-center text-wrap" style="margin-top: 50px; margin-bottom: 50px;">ไม่พบรายการแข่งขัน</h4>
-                                            <% } %>
+                                        <% } %>
                                         <% } %>
                                             
                                             <% } %>
-                                                <% } %>
-                                                
+                                                <% }else{ %>
+                                                    <h4 class="text-center text-wrap" style="margin-top: 50px; margin-bottom: 50px;">ไม่พบรายการแข่งขัน</h4>
+                                            <% } %>
                         </div>
 
                     </div>
@@ -161,13 +157,13 @@
                                                 </div>
                                             </a>
                                         </div>
-                                        <% }else{ %>
-                                            <h4 class="text-center text-wrap" style="margin-top: 50px; margin-bottom: 50px;">ไม่พบรายการแข่งขัน</h4>
-                                            <% }%>
+                                        <% } %>
                                         <% } %>
                                             <% } %>
 
-                                                    
+                                                    <% if(!data.length) { %>
+                                                        <h4 class="text-center text-wrap" style="margin-top: 50px; margin-bottom: 50px;">ไม่พบรายการแข่งขัน</h4>
+                                                        <% } %>
                                                         
                         </div>
 

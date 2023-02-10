@@ -25,16 +25,7 @@
 
         <h1>รายการแข่งขันที่ต้องบันทึกผล</h1>
         <a href="/tournament/add" class="btn btn-primary">เพิ่มการแข่งขัน</a>
-        <form action="/tnmsave/search-tnmsave" method="post">
-            <div class="input-group">
-                วันที่แข่งขัน
-                <input type="date" name="startDate" class="form-control border border-dark">
-                <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา ชื่อการแข่งขัน">
-                
-                <button type="submit" class="btn btn-primary">ค้นหา</button>
-            </div>
-        </form>
-    <div class="card w-100">
+    <div class="card">
         <div class="card-header">
             <ul class="nav nav-pills w-100">
                 <li class="nav-link ml-auto">
@@ -58,18 +49,15 @@
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
                             <tr>
-                                <% if(data[i].pDate === null || data[i].paceName === null || data[i].time === null || data[i].tnmTypegame === 'leaderboard') { %>
-                                <% }else{ %>
                                 <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
-                                <td><%= data[i].round %></td>
-                                <td><%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
-                                <td><%= data[i].placeName %></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td>
-                                    <a href="../doc/scoresheet.png" download="scoresheet.png" class="btn btn-info delete">ใบคะแนน</a>
-                                    <a href="../tournament/match/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
+                                    <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
+                                    <a href="../tournament/bracket/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
                                 </td>
-                                <% }%> 
                             </tr>
                         <% } %>
                     </tbody>

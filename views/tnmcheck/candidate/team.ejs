@@ -91,9 +91,8 @@
             <hr style="height:2px;border-width:0;color:black;background-color:black">
             <br>
             <% for(let i=0; i < data.length; i++) { %>
-                <div>
-                <p>ผู้เล่นคนที่ <%= i+1 %> </p> <p style="color: red;"><%= data[i].detailDoc %></p>
-            </div>
+                <p>ผู้เล่นคนที่ <%= i+1 %>
+                </p>
                 <div class="row">
                     <!-- row -->
                     <div class="row mt-2 row-cols-4">
@@ -233,7 +232,7 @@
                     <a href="/" class="btn btn-warning" value="edit">แก้ไข</a>
                     <a href="/tnmcheck/team/deny/<%= data[0].teamID%>" class="btn btn-danger" value="deny">ปฏิเสธ</a>
                     <a href="/tnmcheck/team/accept/<%= data[0].teamID%>" class="btn btn-success" value="accept">ยอมรับ</a>
-                    <a href="/" class="btn btn-primary" value="otp">ส่งแก้ไข</a>
+                    <a href="/" class="btn btn-primary" value="otp">ส่งอีเมล</a>
                 </div>
 
     </form>

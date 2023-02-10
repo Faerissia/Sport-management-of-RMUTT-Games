@@ -5,24 +5,9 @@ const fileUpload = require('express-fileupload');
 
 router.use(fileUpload());
 
-router.post('/search-tnmsetdp', (req, res) => {
-    let query = req.body.search;
-    if(!query){
-        res.redirect('/tnmsetdp');
-    }else{ 
-        sql = "SELECT t.tnmID, t.tnmName,s.sportName,t.Renddate,SUM(CASE WHEN m.matchID IS NULL THEN 0 ELSE 1 END) AS totalmatch,SUM(CASE WHEN m.pDate IS NULL THEN 1 ELSE 0 END) AS notset,t.tnmTypegame FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN matchplay m ON t.tnmID = m.tnmID WHERE t.tnmName LIKE ? GROUP BY t.tnmID";
-        let like =['%' + query + '%'];
-    
-    dbConnection.query(sql, like, (err, results) => {
-        if(err) throw err;
-        res.render('tnmsetdp', {data: results,status_login: req.session.loggedin,user: user});
-    });
-}
-});
-
 // display tnmsetdp page
 router.get('/', (req, res, next) => {
-    dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.Renddate,SUM(CASE WHEN m.matchID IS NULL THEN 0 ELSE 1 END) AS totalmatch,SUM(CASE WHEN m.pDate IS NULL THEN 1 ELSE 0 END) AS notset,t.tnmTypegame FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN matchplay m ON t.tnmID = m.tnmID GROUP BY t.tnmID', (err, rows) => {
+    dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.Renddate,t.tnmTypegame FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID', (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('tnmsetdp', { data: rows,status_login: req.session.loggedin,user: user });
