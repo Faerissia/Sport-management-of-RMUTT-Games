@@ -71,7 +71,7 @@
                                                                         <option value="1">1 เดือน</option>
                                                                         <option value="3">3 เดือน</option>
                                                                         <option value="6">6 เดือน</option>
-                                                                        <option selected value="11">ทั้งหมด</option>
+                                                                        <option selected value="11">1 ปี</option>
                                                                         <!-- <option value="12">1 ปี</option> -->
 
                                                                     </select>
@@ -204,7 +204,6 @@
 
                                                 <%= %>
 
-                                                    <!-- display_month[0].month -->
 
                                                     <script>
                                                         const display_month = JSON.parse('<%-JSON.stringify(display_month) %>');
@@ -213,9 +212,8 @@
 
                                                         const label_x = display_month.map((item) => { return item.month })
                                                         const label_y = display_month.map((item) => { return item.result_cout })
+                                                        let maxValue = Math.max(...label_y);
 
-
-                                                        // const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
                                                         const ctx = document.getElementById('myChart');
 
@@ -233,8 +231,9 @@
                                                             options: {
                                                                 scales: {
                                                                     y: {
-                                                                        beginAtZero: true
-                                                                        // ,max: +1
+                                                                        beginAtZero: true,
+                                                                        min: 0,
+                                                                        max: maxValue+1
                                                                     }
                                                                 }
                                                             }
@@ -252,27 +251,27 @@
                                                 </div>
 
                                                 <script>
-                                                    const sport_count= JSON.parse('<%-JSON.stringify(sport_count) %>');
-                                                    const sport_y=  sport_count.map((item) => { return item.count })
+                                                    const sport_count = JSON.parse('<%-JSON.stringify(sport_count) %>');
+                                                    const sport_y = sport_count.map((item) => { return item.count })
 
 
-                                                //    const label_1 = [sport_y[0].count+sport_y[1].count ]
-                                                   console.log("🚀 ~ file: dashboard.ejs:258 ~ sport_y", sport_y)
+                                                    //    const label_1 = [sport_y[0].count+sport_y[1].count ]
+                                                    console.log("🚀 ~ file: dashboard.ejs:258 ~ sport_y", sport_y)
 
 
 
                                                     const ctx1 = document.getElementById('myChart1');
-                                                    
+
 
                                                     myChart1 = new Chart(ctx1, {
                                                         type: 'bar',
                                                         data: {
-                                                            labels: ['แบดมินตัน เดี่ยว','แบดมินตัน คู่', 'วอลเลย์บอล', 'บาสเกตบอล', 'เปตอง'],
+                                                            labels: ['แบดมินตัน เดี่ยว', 'แบดมินตัน คู่', 'วอลเลย์บอล', 'บาสเกตบอล', 'เปตอง'],
                                                             datasets: [{
 
                                                                 label: 'จำนวนที่แข่งขัน',
                                                                 data: sport_y
-                                                                ,borderWidth: 2
+                                                                , borderWidth: 2
                                                             }]
                                                         },
                                                         options: {
@@ -311,44 +310,7 @@
 
                                             </div>
                                         </div>
-                                        <div class="row">
-
-                                            <div class="col">
-                                                <% %>
-                                                    <!-- ---------------------------- 3 6 12 Month ----------------------------- -->
-                                                    <% var date=new Date(); date.setMonth(date.getMonth() - 12); %>
-
-                                                        <p>Date 12 months ago: <%= date.toDateString() %>
-                                                        </p>
-
-
-
-
-                                                        <ul>
-                                                            <% let count_In=0; let count_Out=0; let count_fin=0;
-                                                                result.map(function(result) { %>
-                                                                <li>
-                                                                    <%= result.chackdate %>
-                                                                </li>
-                                                                <% if (result.chackdate==='In' ) { count_In ++ } else {
-                                                                    count_Out ++ } %>
-                                                                    <% if (result.rank!==null ) { %>
-                                                                        <% count_fin ++%>
-                                                                            <% }%>
-                                                                                <%= count_In %>
-                                                                                    <%= count_Out %>
-                                                                                        <%= count_fin %>
-                                                                                            <% }); %>
-
-                                                        </ul>
-
-
-
-
-                                            </div>
-
-
-                                        </div>
+                                       
 
 
 

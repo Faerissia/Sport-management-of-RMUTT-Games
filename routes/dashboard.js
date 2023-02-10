@@ -287,25 +287,13 @@ router.get("/", (req, res, err) => {
             const element = rows[index];
             let RStrdate = rows[index].Rstartdate;
             let REnddate = rows[index].Renddate;
-
-            if (date >= RStrdate && date <= REnddate) {
-              count_In++;
-              result.push({
-                Datamath: index,
-                chackdate: "In",
-                tnmID: rows[index].tnmID,
-                sportID: rows[index].sportID,
-                Rstartdate: rows[index].Rstartdate,
-                Renddate: rows[index].Renddate,
-                tnmStartdate: rows[index].tnmStartdate,
-                tnmEnddate: rows[index].tnmEnddate,
-                rank: rows[index].st1,
-              });
-            } else {
+            let tnmStartdate = rows[index].tnmStartdate;
+            let tnmEnddate = rows[index].tnmEnddate;
+            if (date >= RStrdate && date <= REnddate    )   {
               count_Out++;
               result.push({
                 Datamath: index,
-                chackdate: "Out",
+                chackdate: "InRis",
                 tnmID: rows[index].tnmID,
                 sportID: rows[index].sportID,
                 Rstartdate: rows[index].Rstartdate,
@@ -314,16 +302,47 @@ router.get("/", (req, res, err) => {
                 tnmEnddate: rows[index].tnmEnddate,
                 rank: rows[index].st1,
               });
+            }else {
+              if (rows[index].st1 === null) {
+                
+                count_In++;
+                result.push({
+                  Datamath: index,
+                  chackdate: "PlayOut",
+                  tnmID: rows[index].tnmID,
+                  sportID: rows[index].sportID,
+                  Rstartdate: rows[index].Rstartdate,
+                  Renddate: rows[index].Renddate,
+                  tnmStartdate: rows[index].tnmStartdate,
+                  tnmEnddate: rows[index].tnmEnddate,
+                  rank: rows[index].st1,
+                });
+              }else{
+                if (rows[index].st1 !== null) {
+                    count_fin++;
+                    result.push({
+                      Datamath: index,
+                      chackdate: "fins",
+                      tnmID: rows[index].tnmID,
+                      sportID: rows[index].sportID,
+                      Rstartdate: rows[index].Rstartdate,
+                      Renddate: rows[index].Renddate,
+                      tnmStartdate: rows[index].tnmStartdate,
+                      tnmEnddate: rows[index].tnmEnddate,
+                      rank: rows[index].st1,
+                    });
+                  }
+              }
             }
-            if (rows[index].st1 !== null) {
-              count_fin++;
-            }
+            // if (rows[index].st1 !== null) {
+            //   count_fin++;
+            // }
           }
           // console.log(display_month);
           count.push({ In: count_In, Out: count_Out, fin: count_fin });
 
           // console.log(result);
-          // console.table(result);
+          console.table(result);
           // console.log(count);
           // console.table(count);
 
