@@ -496,7 +496,7 @@ router.get('/participant/team/(:teamID)', (req, res, next) => {
 
 router.get('/participant/player/(:playerID)', (req, res, next) => {
     let thisplayerID = req.params.playerID;
-    dbConnection.query('SELECT p.playerID,p.playerIDCard,p.playerStudentID,p.playerFName,p.playerLName,p.playerGender,p.playerBirthday,p.playerPhone,p.playerEmail,p.facultyID,p.playerFile1,t.tnmID,t.tnmName,f.uniID,f.facultyID,f.name AS facName,u.uniID,u.name AS uniName FROM player p LEFT JOIN tournament t ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerID ='+thisplayerID, (err, rows) => {
+    dbConnection.query('SELECT p.playerID,p.playerIDCard,p.playerFName,p.playerLName,p.playerGender,p.playerBirthday,p.playerPhone,p.playerEmail,p.facultyID,p.playerFile1,t.tnmID,t.tnmName,f.uniID,f.facultyID,f.name AS facName,u.uniID,u.name AS uniName FROM player p LEFT JOIN tournament t ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerID ='+thisplayerID, (err, rows) => {
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
             res.render('./tournament/participant/player', { data: rows,status_login: req.session.loggedin,user: user });
@@ -509,7 +509,6 @@ router.get('/participant/player/(:playerID)', (req, res, next) => {
     }
     })
 })
-
 
 router.post('/createbracket/:tnmID',(req, res, next) => {
     let tnmTypegame = req.body.tnmTypegame;
