@@ -1,0 +1,28 @@
+<%- include("../../../partials/header") %>
+<%- include("../../../partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+
+</head>
+<body>
+    <h1><%= tournamentName %></h1>
+
+        <%- include("../../../partials/menu_staff.ejs") %>
+
+        <div>
+            <%= data[0].team1 %><%= data[0].score1%><br>
+            <%= data[0].team2 %><%= data[0].score2%>
+        </div>
+<br>
+    <div><%= data[1].team1 %><%= data[1].score1%> <br>
+         <%= data[1].team2 %><%= data[1].score2%>
+    </div>
+
+          
+</body>
+</html>
+</div>

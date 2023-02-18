@@ -19,10 +19,12 @@ router.post('/search-placetable', (req, res) => {
 
 // display place page
 router.get('/', (req, res, next) => {
-    dbConnection.query('SELECT * FROM place ORDER BY placeID asc', (err, rows) => {
+    dbConnection.query('SELECT * FROM place', (err, place) => {
+        dbConnection.query('SELECT * FROM matchplay WHERE pDate AND time AND timeend AND placeID IS NOT NULL',(err,match)=>{
+            dbConnection.query('SELECT * FROM place_opening',(err,opening)=>{
         if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){
-            res.render('placetable', { data: rows,status_login: req.session.loggedin,user: user });
+            res.render('placetable', { opening,match,place,status_login: req.session.loggedin,user: user });
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
@@ -31,6 +33,7 @@ router.get('/', (req, res, next) => {
         res.redirect('error404');
     }
         })
+    })
 })
-
+})
 module.exports = router;

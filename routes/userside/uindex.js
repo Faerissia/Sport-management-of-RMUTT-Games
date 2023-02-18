@@ -15,8 +15,8 @@ let transporter = nodemailer.createTransport({
 
 
 router.post('/verifysingle', (req, res) => {
-    let RestoredOTP = req.body.RestoredOTP;
-    let otp = req.body.otp;
+    let OTP = req.body.OTP;
+    let submitOTP = req.body.submitOTP;
     let playerFName = req.body.playerFName;
     let playerLName = req.body.playerLName;
     let playerGender = req.body.playerGender;
@@ -28,8 +28,9 @@ router.post('/verifysingle', (req, res) => {
     let playerFile1 = req.body.playerFile1;
     let tnmID =req.body.tnmID;
 
+    console.log(submitOTP,OTP)
 
-    if (otp === RestoredOTP) {
+    if (submitOTP === OTP) {
         dbConnection.query('SELECT * FROM player WHERE playerIDCard = ? AND tnmID = ?',[playerIDCard, tnmID] ,(err,rows) => {
             if(rows.length > 0){
                 let form_data = {
@@ -84,10 +85,11 @@ router.post('/verifysingle', (req, res) => {
         })
 
     } else {
-        res.flash('error','รหัส OTP ไม่ถูกต้อง');
+        req.flash('error','รหัส OTP ไม่ถูกต้อง');
         res.render('userside/regform/otpsingle',{
+            submitOTP:submitOTP,
+            OTP:OTP,
             playerEmail: playerEmail,
-            RestoredOTP: RestoredOTP,
             tnmID: tnmID,
             playerFName: playerFName,
             playerLName: playerLName,
@@ -97,7 +99,7 @@ router.post('/verifysingle', (req, res) => {
             playerEmail: playerEmail,
             facultyID: facultyID,
             playerIDCard: playerIDCard,
-            playerFile1: name_pfile,
+            playerFile1: playerFile1,
             status_login: req.session.loggedin
         })
         

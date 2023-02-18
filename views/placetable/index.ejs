@@ -6,6 +6,17 @@
 <html lang="en">
 <head>
     <title>sport</title>
+    <style>
+        table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+td {
+  border: 1px solid #ddd;
+}
+    </style>
 </head>
 <body>
 
@@ -25,78 +36,65 @@
 
 <h1>ตารางการใช้งานสถานที่</h1>
 <div class="float-end">
-    <form action="/place/search-place" method="post">
-        <div class="input-group ">
-        <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา...">
-        <button type="submit" class="btn btn-primary" >ค้นหา</button>
-    </div>
-    </form>
+    <label for="date">วันที่</label>
+    <input type="date" id="datepicker">
     </div>
 
-    <div>
-        <label>วันที่</label>
-    <input type="date" name>
-    </div>
+
+
     <div class="card w-100">
-        <div class="card-header">
-            <ul class="nav nav-pills w-100">
-                <li class="nav-link ml-auto">
 
-                </li>
-            </ul>
-        </div>
-
-        
-
-        <div class="card-body">
-            <% if(data.length) { %>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">ช่วงเวลา/สนาม</th>
-                            <th scope="col">08:00 - 09:00</th>
-                            <th scope="col">09:00 - 10:00</th>
-                            <th scope="col">10:00 - 11:00</th>
-                            <th scope="col">11:00 - 12:00</th>
-                            <th scope="col">12:00 - 13:00</th>
-                            <th scope="col">13:00 - 14:00</th>
-                            <th scope="col">14:00 - 15:00</th>
-                            <th scope="col">15:00 - 16:00</th>
-                            <th scope="col">16:00 - 17:00</th>
-                            <th scope="col">17:00 - 18:00</th>
-                            <th scope="col">18:00 - 19:00</th>
-                            <th scope="col">19:00 - 20:00</th>
-                            <th scope="col">20:00 - 21:00</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% for(let i = 0; i < data.length; i++) { %>
-                            <tr>
-                                <th scope="row"><%= data[i].placeName %></th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        <% } %>
-                    </tbody>
-                </table>
-            <% } %>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ช่วงเวลา/สนาม</th>
+                <% for(let time = 8; time <= 21; time += 0.5){ %>
+                    <% let hour = Math.floor(time); %>
+                    <% let minute = (time - hour) * 60; %>
+                    <th scope="col"><%= `${hour.toString().padStart(2, '0')}:${minute.toString().padEnd(2, '0')}` %></th>
+                  <% } %>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(let i = 0; i < place.length; i++) { %>
+                <tr>
+                  <th scope="row"><%= place[i].placeName %></th>
+                  <% for(let j = 8; j <= 21; j += 0.5){ %>
+                    <% let isHighlighted = false; %>
+                    <% for(let k = 0; k < match.length; k++) { %>
+                      <% let matchStartTime = parseFloat(match[k].time.replace(':', '.')); %>
+                      <% let matchEndTime = parseFloat(match[k].timeend.replace(':', '.')); %>
+                      <% if (match[k].placeID === place[i].placeID && j >= matchStartTime && j < matchEndTime) { %>
+                        <% isHighlighted = true; %>
+                      <% } %>
+                    <% } %>
+                    <% let isOpen = false; %>
+                    <% for(let k = 0; k < opening.length; k++) { %>
+                      <% let openingStartTime = parseFloat(opening[k].timeOpen.replace(':', '.')); %>
+                      <% let openingEndTime = parseFloat(opening[k].timeClose.replace(':', '.')); %>
+                      <% if (opening[k].placeID === place[i].placeID && j >= openingStartTime && j < openingEndTime) { %>
+                        <% isOpen = true; %>
+                      <% } %>
+                    <% } %>
+                    <% if (isOpen) { %>
+                      <% if (isHighlighted) { %>
+                        <td class="bg-danger"></td>
+                      <% } else { %>
+                        <td></td>
+                      <% } %>
+                    <% } else { %>
+                      <td class="bg-secondary"></td>
+                    <% } %>
+                  <% } %>
+                </tr>     
+              <% } %>
+            </tbody>
+          </table>
 
             <!-- if result is empty-->
-            <% if(!data.length) { %>
+            <% if(!place.length) { %>
                 <p class="text-center">ไม่พบรายการสถานที่</p>
             <% } %>
-        </div>
     </div>
 
 </body>

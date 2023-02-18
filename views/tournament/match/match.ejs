@@ -74,6 +74,7 @@
                                 <tr>
                                     <td><%= i+1 %></td>
                                 <% if(data[i].pDate === null){ %>
+                                    
                                     <td><%= data[i].pDate %></td>
                                     <% }else{ %>
                                         <td><%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit' ,
@@ -101,16 +102,17 @@
                                                         วันที่
                                                         <input type="date" name="pDate" value="<%= data[i].pDate.toISOString().substring(0, 10); %>" required>
                                                         <% } %>
+                                                        สถานที่
                                                         <select name="placeID">
                                                             <% for(let j=0; j < place.length; j++) { %>
                                                                 <option value="<%= place[j].placeID %>">
                                                                     <%= place[j].placeName %>
                                                                 </option>
                                                                 <% } %>
-                                                        </select>
+                                                        </select><br>
                                                         ช่วงเวลา
                                                         <input type="time" name="time" value="<%= data[i].time %>" required> ถึง <input type="time" name="Endtime" value="<%= data[i].timeend %>" required>
-                                                        สถานที่
+                                                        
                                                         <div>ผลการแข่งขัน</div>
                                                         <input type="hidden" name="participant1" value="<%= data[i].p1ID %>">
                                                         <div>
@@ -122,6 +124,8 @@
                                                         <%= data[i].player2_name %>
                                                         <input type="text" class="form-control" name="score2" value="<%= data[i].score2 %>" required>
                                                         </div>
+                                                        <input type="hidden" name="matchID" value="<%= data[i].matchID %>">
+                                                        <input type="hidden" name="round" value="<%= data[i].round %>">
                                                         <button value="sunbmit" class="btn btn-success">บันทึก</button>
                                                     </form>
                                                 </div>  
