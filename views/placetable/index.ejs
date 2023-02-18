@@ -36,22 +36,33 @@ td {
 
 <h1>ตารางการใช้งานสถานที่</h1>
 <div class="float-end">
+  <form action="/placetable/search-placetable" method="post">
     <label for="date">วันที่</label>
-    <input type="date" id="datepicker">
+    <input type="date" name="date">
+    <label>ชนิดกีฬา</label>
+    <select name="sporttype">
+      <option value="">ทั้งหมด</option>
+      <% for(s = 0; s < sporttype.length; s++){ %>
+      <option value="<%= sporttype[s].typeID %>"><%= sporttype[s].nameType %></option>
+      <% } %>
+    </select>
+    <label>ชื่อสถานที่</label>
+    <input type="text" name="place">
+    <input type="submit" class="btn btn-primary" value="ค้นหา">
+  </form>
     </div>
 
 
 
     <div class="card w-100">
-
         <table class="table">
             <thead>
               <tr>
                 <th scope="col">ช่วงเวลา/สนาม</th>
-                <% for(let time = 8; time <= 21; time += 0.5){ %>
+                <% for(let time = 8; time <= 21; time ++){ %>
                     <% let hour = Math.floor(time); %>
                     <% let minute = (time - hour) * 60; %>
-                    <th scope="col"><%= `${hour.toString().padStart(2, '0')}:${minute.toString().padEnd(2, '0')}` %></th>
+                    <th colspan="2" scope="col"><%= time %>:00</th>
                   <% } %>
               </tr>
             </thead>
@@ -64,7 +75,8 @@ td {
                     <% for(let k = 0; k < match.length; k++) { %>
                       <% let matchStartTime = parseFloat(match[k].time.replace(':', '.')); %>
                       <% let matchEndTime = parseFloat(match[k].timeend.replace(':', '.')); %>
-                      <% if (match[k].placeID === place[i].placeID && j >= matchStartTime && j < matchEndTime) { %>
+                      <% let matchpDate = match[k].pDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %>
+                      <% if (match[k].placeID === place[i].placeID && j >= matchStartTime && j < matchEndTime && matchpDate === thisDate) { %>
                         <% isHighlighted = true; %>
                       <% } %>
                     <% } %>
@@ -72,7 +84,7 @@ td {
                     <% for(let k = 0; k < opening.length; k++) { %>
                       <% let openingStartTime = parseFloat(opening[k].timeOpen.replace(':', '.')); %>
                       <% let openingEndTime = parseFloat(opening[k].timeClose.replace(':', '.')); %>
-                      <% if (opening[k].placeID === place[i].placeID && j >= openingStartTime && j < openingEndTime) { %>
+                      <% if (opening[k].placeID === place[i].placeID && j >= openingStartTime && j < openingEndTime && opening[k].day === currentDay) { %>
                         <% isOpen = true; %>
                       <% } %>
                     <% } %>
