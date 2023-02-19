@@ -25,7 +25,6 @@
                             </div>
                             <% } %>
 
-
                                 <div class="card w-100 ">
                                     <div class="card-header">
                                         <br>
@@ -44,10 +43,6 @@
                                         <!-- ----------------------------- box-dash ------------------------------ -->
                                         <!-- filter -->
                                         <div>
-
-
-
-
                                             <div class="text-end  my-2  ">
                                                 <div class="row row-cols-1  ">
                                                     <div class="col-auto  mx-auto text-center">
@@ -72,9 +67,6 @@
                                                                                 <% } %>
                                                                         </select>
                                                                     </div>
-
-
-
                                                                     <div class="col">
                                                                         <label for="value_startdate"
                                                                             class="col-form-label">วันที่</label>
@@ -106,23 +98,17 @@
                                                         <script>
 
                                                             //<!-- ----------------------------------------------------------------------- -->
-
-
                                                             // Get today's date
                                                             const today = new Date();
-
                                                             // Calculate the date 12 months ago
                                                             const twelveMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 12, today.getDate());
-
                                                             // Set the maximum and minimum values for value_startdate
                                                             const valueStartdate = document.getElementById('value_startdate');
                                                             valueStartdate.max = today.toISOString().slice(0, 10);
                                                             valueStartdate.min = twelveMonthsAgo.toISOString().slice(0, 10);
-
                                                             // Set the maximum  values for value_enddate
                                                             const valueEnddate = document.getElementById('value_enddate');
                                                             valueEnddate.max = today.toISOString().slice(0, 10);
-
                                                             // Set the  minimum values for value_enddate
                                                             valueStartdate.addEventListener('input', function () {
                                                                 // console.log('valueStartdate changed: ' + valueStartdate.value);
@@ -130,12 +116,9 @@
                                                                 valueEnddate.value = "";
                                                             });
 
-
-
                                                             // <!-- ----------------------------------------------------------------------- -->
                                                         </script>
                                                         <script>
-
 
                                                             var valueStartDateInput = document.getElementById('value_startdate');
                                                             var valueEndDateInput = document.getElementById('value_enddate');
@@ -154,12 +137,10 @@
                                                             });
 
                                                             valuesportInput.addEventListener('change', function () {
-                                                                // if (valueStartDateInput.value && valueEndDateInput.value) {
                                                                 document.getElementById('myForm').submit();
-                                                                // }
                                                             });
 
-
+                                                            // set value after reset
                                                             const value_select = JSON.parse('<%-JSON.stringify(value_select) %>');
                                                             if (value_select && value_select.length > 0) {
                                                                 console.log(value_select);
@@ -172,14 +153,10 @@
                                                             }
                                                         </script>
 
-
-
                                                         <!-- ----------------------------------------------------------------------- -->
                                                     </div>
                                                 </div>
                                             </div>
-
-
 
                                             <!-- card zone -->
                                             <!-- ------------------------------- card_1 -------------------------------- -->
@@ -198,9 +175,7 @@
                                                     </div>
 
                                                 </div>
-
                                                 <!-- ------------------------------- card_2 -------------------------------- -->
-
                                                 <div class="card border-dark text-bg-success my-3 mx-3"
                                                     style="width: 15vw;">
                                                     <div class="card-header bg-transparent  border-dark text-center">
@@ -214,7 +189,6 @@
                                                     </div>
 
                                                 </div>
-
                                                 <!-- ------------------------------- card_3 -------------------------------- -->
                                                 <div class="card border-dark text-bg-info my-3 mx-3"
                                                     style="width: 15vw;">
@@ -231,29 +205,23 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                         <!-- card zone -->
-
-
-
                                         <!-- ----------------------------- charts zone ----------------------------- -->
 
                                         <div class="d-flex justify-content-center">
                                             <div class="card p-3 border-dark me-5">
 
                                                 <div>
-                                                    <canvas id="myChart" style="height:30em; width:50em"></canvas>
+                                                    <canvas id="myChart" style="height:500; width:800px"></canvas>
                                                 </div>
 
                                                 <script>
                                                     const display_month = JSON.parse('<%-JSON.stringify(display_month) %>');
                                                     console.log(display_month);
 
-
                                                     // const label_x = display_month.map((item) => { return item.month })
                                                     const label_y = display_month.map((item) => { return item.value })
                                                     let maxValue = Math.max(...label_y);
-
 
                                                     const ctx = document.getElementById('myChart');
 
@@ -283,6 +251,8 @@
                                                             }]
                                                         },
                                                         options: {
+                                                            responsive: true,
+                                                            maintainAspectRatio: false,
                                                             scales: {
                                                                 y: {
                                                                     ticks: {
@@ -306,8 +276,6 @@
                                                                     ,
                                                                 }
                                                             }
-
-
                                                             , plugins: {
                                                                 legend: {
                                                                     display: false
@@ -351,7 +319,7 @@
                                             <div class="card p-3 border-dark">
 
                                                 <div>
-                                                    <canvas id="myChart1" style="height:30rem; width:30rem"></canvas>
+                                                    <canvas id="myChart1" style="height:500px; width:600px"></canvas>
                                                 </div>
 
                                                 <script>
@@ -382,6 +350,8 @@
                                                             }]
                                                         },
                                                         options: {
+                                                            responsive: true,
+                                                            maintainAspectRatio: false,
                                                             indexAxis: 'y',
                                                             scales: {
                                                                 y: {

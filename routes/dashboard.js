@@ -113,11 +113,11 @@ router.post("/value_date", (req, res) => {
         sql_4 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE Rstartdate  BETWEEN " +sql_S +" AND " +sql_E + " AND sportID = "+sql_sport_input+" ";
 
       }else {
-      // sql default
-      sql_1 = "SELECT LEFT(MONTHNAME(tnmEnddate), 3) AS Month, COUNT(tnmEnddate) AS Count FROM tournament WHERE tnmEnddate BETWEEN " +sql_S +" AND " +sql_E +" GROUP BY  Month ORDER BY Month ";
-      sql_2 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmEnddate BETWEEN " + sql_S + " AND " +sql_E + "  GROUP BY t.sportID;";
-      sql_3 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE tnmStartdate  BETWEEN " +sql_S +" AND " +sql_E +" ";
-      sql_4 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE Rstartdate  BETWEEN " +sql_S +" AND " +sql_E + " ";
+        // sql default
+        sql_1 = "SELECT LEFT(MONTHNAME(tnmEnddate), 3) AS Month, COUNT(tnmEnddate) AS Count FROM tournament WHERE tnmEnddate BETWEEN " +sql_S +" AND " +sql_E +" GROUP BY  Month ORDER BY Month ";
+        sql_2 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmEnddate BETWEEN " + sql_S + " AND " +sql_E + "  GROUP BY t.sportID;";
+        sql_3 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE tnmStartdate  BETWEEN " +sql_S +" AND " +sql_E +" ";
+        sql_4 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE Rstartdate  BETWEEN " +sql_S +" AND " +sql_E + " ";
 
       }
 
@@ -129,8 +129,8 @@ router.post("/value_date", (req, res) => {
       );
       console.log(err);
     }
-    console.log("\ntable rows1");
-    console.table(rows);
+    // console.log("\ntable sql chart_1");
+    // console.table(rows);
 
     const counts = {};
 
@@ -149,12 +149,6 @@ router.post("/value_date", (req, res) => {
     display_month = count;
   });
 
-  
-
-  
-  
-
-
   /* ------------------------------- zone sport ------------------------------- */
   dbConnection.query(
     sql_2,
@@ -172,8 +166,8 @@ router.post("/value_date", (req, res) => {
   let date = new Date();
 
   dbConnection.query(sql_3, (err, rows) => {
-    console.log("\t rows1");
-    console.table(rows);
+    // console.log("\t tnmStartdate");
+    // console.table(rows);
 
     for (let index = 0; index < rows.length; index++) {
       var tnmStartdate = rows[index].tnmStartdate;
@@ -216,9 +210,8 @@ router.post("/value_date", (req, res) => {
   });
 
   dbConnection.query(sql_4, (err, rows) => {
-    console.log("\t rows2");
-
-    console.table(rows);
+    // console.log("\t Rstartdate");
+    // console.table(rows);
 
     for (let index = 0; index < rows.length; index++) {
       var RStrdate = rows[index].Rstartdate;
@@ -246,11 +239,11 @@ router.post("/value_date", (req, res) => {
     value.push({ In: count_In, Out: count_Out, fin: count_fin });
 
     // display result total
-    console.log("\ntable result");
-    console.table(result);
+    // console.log("\ntable result");
+    // console.table(result);
     
-    console.log("\ntable value");
-    console.table(value);
+    // console.log("\ntable value");
+    // console.table(value);
 
     res.render("dashboard", {
       status_login: req.session.loggedin,
@@ -298,7 +291,6 @@ router.get("/", (req, res, err) => {
           );
           console.log(err);
         }
-        // console.log(rows);
 
         const counts = {};
 
@@ -333,8 +325,8 @@ router.get("/", (req, res, err) => {
 
       dbConnection.query("SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE tnmStartdate  BETWEEN " +sql_S +" AND " +sql_E +" ",
       (err, rows) => {
-        console.log("\t rows1");
-        console.table(rows);
+        // console.log("\t tnmStartdate");
+        // console.table(rows);
 
         for (let index = 0; index < rows.length; index++) {
           var tnmStartdate = rows[index].tnmStartdate;
@@ -378,9 +370,8 @@ router.get("/", (req, res, err) => {
 
       dbConnection.query("SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE Rstartdate  BETWEEN " +sql_S +" AND " +sql_E +" ", 
       (err, rows) => {
-        console.log("\t rows2");
-
-        console.table(rows);
+        // console.log("\t Rstartdate");
+        // console.table(rows);
 
         for (let index = 0; index < rows.length; index++) {
           var RStrdate = rows[index].Rstartdate;
@@ -408,8 +399,10 @@ router.get("/", (req, res, err) => {
         value.push({ In: count_In, Out: count_Out, fin: count_fin });
 
         // display result total
-        console.table(result);
-        console.table(value);
+        // console.log("result");
+        // console.table(result);
+        // console.log("resuvaluelt");
+        // console.table(value);
         res.render("dashboard", {
           status_login: req.session.loggedin,
           user: user,
