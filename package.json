@@ -16,6 +16,8 @@
     "bootstrap-icons": "^1.10.3",
     "brackets-json-db": "^1.0.2",
     "brackets-memory-db": "^1.0.4",
+    "chart.js": "^4.2.1",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "csv-writer": "^1.6.0",
     "ejs": "^2.7.1",
     "express": "^4.17.1",
