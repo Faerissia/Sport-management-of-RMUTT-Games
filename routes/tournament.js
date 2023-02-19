@@ -750,6 +750,12 @@ router.post('/matchedit/(:tnmID)',(req,res,next) =>{
     let score2 = req.body.score2;
     let round = req.body.round;
 
+    dbConnection.query('SELECT * FROM matchplay WHERE pDate = ? AND ? BETWEEN time AND timeend AND ? BETWEEN time and timeend;',[pDate,time,Endtime],(err,checkmatch)=>{
+      if(checkmatch.length){
+        req.flash('error','สถานที่เลือกถูกใช้งานโดยการแข่งขันอื่นแล้ว');
+        res.redirect('/tournament/match/'+tnmID);
+
+      }else if(!checkmatch.length){
     dbConnection.query('SELECT * FROM tournament WHERE tnmID = '+tnmID,(error,typeoftour)=>{
        
         if(typeoftour[0].tnmTypegame === 'single'){
@@ -757,8 +763,7 @@ router.post('/matchedit/(:tnmID)',(req,res,next) =>{
             dbConnection.query('UPDATE matchplay SET ? WHERE matchID ='+matchID,form_data,(error,rows)=>{
                 if(error) throw error;
             })
-            
-
+          
             dbConnection.query('SELECT * FROM player WHERE tnmID ='+tnmID,(error,rows)=>{
                 if(error) throw error;
                 let numbye = Math.pow(2, Math.ceil(Math.log2(rows.length))) - rows.length;
@@ -871,6 +876,7 @@ router.post('/matchedit/(:tnmID)',(req,res,next) =>{
                       
                          })
                       }
+                      // มีบาย > 0
                 }else{
                     let nextround = parseInt(round) + 1;
                     // ทีม 1 ชนะ ทีม 2
@@ -1082,7 +1088,8 @@ router.post('/matchedit/(:tnmID)',(req,res,next) =>{
         }
     })
 
-    
+  }
+})
 
 })
 
