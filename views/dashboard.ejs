@@ -1,11 +1,13 @@
 <%- include("partials/header") %>
     <%- include("partials/sidebar") %>
-        <div class="col-10 py-3 mx-auto container-xxl">
+        <div class="col-10 py-3 mx-auto container-xxl ">
 
             <html lang="en">
 
             <head>
                 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
                 <title>Dashboard</title>
             </head>
 
@@ -23,10 +25,9 @@
                             </div>
                             <% } %>
 
-
-                                <h1>รายการของการแข่งขันที่ต้องกำหนดรูปแบบ</h1>
-                                <div class="card w-100">
+                                <div class="card w-100 ">
                                     <div class="card-header">
+                                        <br>
                                     </div>
                                     <div class="card-body">
 
@@ -42,54 +43,117 @@
                                         <!-- ----------------------------- box-dash ------------------------------ -->
                                         <!-- filter -->
                                         <div>
-
-                                            <div class="text-end  ">
-                                                <div class="row row-cols-1 ">
-                                                    <div class="col-auto  mx-auto">
-                                                        <div class="row my-2 ">
-                                                            <!-- <div class="col-auto ">
-                                                                <label for="" class="col-form-label">ประเภทกีฬา
-                                                                </label>
-                                                            </div> -->
-                                                            <!-- <div class="col-auto">
-                                                                <select class="form-select border-dark text-center"
-                                                                    id="" name="sportID">
-                                                                    <option selected value="">ทั้งหมด</option>
-                                                                    <option value="">วอลเลย์บอล</option>
-                                                                    <option value="">ทั้งหมด</option>
-                                                                    <option value="">ทั้งหมด</option>
-                                                                </select>
-                                                            </div> -->
-                                                            <div class="col-auto ">
-                                                                <label for="" class="col-form-label">ช่วงเวลา
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-auto">
-                                                                <form action="/dashboard/dash-value" method="post">
-                                                                    <select class="form-select border-dark text-center"
-                                                                        id="select-value" name="value">
-                                                                        <option value="1">1 เดือน</option>
-                                                                        <option value="3">3 เดือน</option>
-                                                                        <option value="6">6 เดือน</option>
-                                                                        <option selected value="11">1 ปี</option>
-                                                                        <!-- <option value="12">1 ปี</option> -->
-
-                                                                    </select>
-                                                                    <script>
-                                                                        document.getElementById("select-value").onchange = function () {
-                                                                            this.form.submit();
-                                                                        };
-
-
-                                                                        const sele1 = JSON.parse('<%-JSON.stringify(value_m) %>');
-                                                                        document.getElementById('select-value').value = sele1
-                                                                        console.log(sele1);
-                                                                    </script>
-                                                                </form>
-
+                                            <div class="text-end  my-2  ">
+                                                <div class="row row-cols-1  ">
+                                                    <div class="col-auto  mx-auto text-center">
+                                                        <div class="row  shadow p-3 bg-body rounded pt-2 ">
+                                                            <form action="/dashboard/value_date" id="myForm"
+                                                                method="post">
+                                                                <div class="row ">
+                                                                    <div class="col ">
+                                                                        <label for="validationSport"
+                                                                            class="col-form-label">กีฬา</label>
+                                                                    </div>
+                                                                    <div class="col-auto">
+                                                                        <select for="value_sport"
+                                                                            class="form-select border-dark text-center"
+                                                                            id="value_sport" name="value_sport">
+                                                                            <option selected value="">ทั้งหมด</option>
+                                                                            <%for(let i=0; i <selcetsport.length;i++){%>
+                                                                                <option class="text-start"
+                                                                                    value="<%= selcetsport[i].sportID %>">
+                                                                                    <%= selcetsport[i].sportName %>
+                                                                                </option>
+                                                                                <% } %>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col">
+                                                                        <label for="value_startdate"
+                                                                            class="col-form-label">วันที่</label>
+                                                                    </div>
+                                                                    <div class="col-auto">
+                                                                        <input type="date"
+                                                                            class="form-control border-dark"
+                                                                            name="value_startdate" id="value_startdate">
+                                                                    </div>
+                                                                    <div class="col">
+                                                                        <label for="value_enddate"
+                                                                            class="col-form-label">ถึง</label>
+                                                                    </div>
+                                                                    <div class="col-auto">
+                                                                        <input type="date"
+                                                                            class="form-control border-dark"
+                                                                            name="value_enddate" id="value_enddate">
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                            <div class="col-12 mx-auto text-center">
+                                                                <label for="value_startdate "
+                                                                    class="col-form-label ">หมายเหตุ ( เลือกได้ ไม่เกิน
+                                                                    1 ปี
+                                                                    ย้อนหลัง )</label>
                                                             </div>
 
                                                         </div>
+                                                        <script>
+
+                                                            //<!-- ----------------------------------------------------------------------- -->
+                                                            // Get today's date
+                                                            const today = new Date();
+                                                            // Calculate the date 12 months ago
+                                                            const twelveMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 12, today.getDate());
+                                                            // Set the maximum and minimum values for value_startdate
+                                                            const valueStartdate = document.getElementById('value_startdate');
+                                                            valueStartdate.max = today.toISOString().slice(0, 10);
+                                                            valueStartdate.min = twelveMonthsAgo.toISOString().slice(0, 10);
+                                                            // Set the maximum  values for value_enddate
+                                                            const valueEnddate = document.getElementById('value_enddate');
+                                                            valueEnddate.max = today.toISOString().slice(0, 10);
+                                                            // Set the  minimum values for value_enddate
+                                                            valueStartdate.addEventListener('input', function () {
+                                                                // console.log('valueStartdate changed: ' + valueStartdate.value);
+                                                                valueEnddate.min = valueStartdate.value;
+                                                                valueEnddate.value = "";
+                                                            });
+
+                                                            // <!-- ----------------------------------------------------------------------- -->
+                                                        </script>
+                                                        <script>
+
+                                                            var valueStartDateInput = document.getElementById('value_startdate');
+                                                            var valueEndDateInput = document.getElementById('value_enddate');
+                                                            var valuesportInput = document.getElementById('value_sport');
+
+                                                            valueStartDateInput.addEventListener('change', function () {
+                                                                if (valueStartDateInput.value && valueEndDateInput.value) {
+                                                                    document.getElementById('myForm').submit();
+                                                                }
+                                                            });
+
+                                                            valueEndDateInput.addEventListener('change', function () {
+                                                                if (valueStartDateInput.value && valueEndDateInput.value) {
+                                                                    document.getElementById('myForm').submit();
+                                                                }
+                                                            });
+
+                                                            valuesportInput.addEventListener('change', function () {
+                                                                document.getElementById('myForm').submit();
+                                                            });
+
+                                                            // set value after reset
+                                                            const value_select = JSON.parse('<%-JSON.stringify(value_select) %>');
+                                                            if (value_select && value_select.length > 0) {
+                                                                console.log(value_select);
+                                                                document.getElementById('value_startdate').value = value_select[0].date_S
+                                                                // console.log(value_select[0].date_S);
+                                                                document.getElementById('value_enddate').value = value_select[0].date_E
+                                                                // console.log(value_select[0].date_E);
+                                                                document.getElementById('value_sport').value = value_select[0].sport
+                                                                console.log(value_select[0].sport);
+                                                            }
+                                                        </script>
+
+                                                        <!-- ----------------------------------------------------------------------- -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -109,26 +173,9 @@
 
                                                         <p class="card-text text-center"></p>
                                                     </div>
-                                                    <!-- <div class="card-footer bg-white border-dark ">
-                                                        <a href="http://"
-                                                            class="text-decoration-none  text-dark text-center ">
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    <p style="font-size:1vw;" class="mb-0"> ดูรายละเอียด
-                                                                    </p>
-                                                                </div>
-                                                                <div class="col-auto">
-                                                                    <iconify-icon class="float-end my-auto" width="36"
-                                                                        height="36" icon="akar-icons:arrow-left"
-                                                                        flip="horizontal"></iconify-icon>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div> -->
+
                                                 </div>
-
                                                 <!-- ------------------------------- card_2 -------------------------------- -->
-
                                                 <div class="card border-dark text-bg-success my-3 mx-3"
                                                     style="width: 15vw;">
                                                     <div class="card-header bg-transparent  border-dark text-center">
@@ -140,24 +187,8 @@
                                                         </h5>
                                                         <p class="card-text text-center"></p>
                                                     </div>
-                                                    <!-- <div class="card-footer bg-white border-dark ">
-                                                        <a href="http://"
-                                                            class="text-decoration-none  text-dark text-center ">
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    <p style="font-size:1vw;" class="mb-0"> ดูรายละเอียด
-                                                                    </p>
-                                                                </div>
-                                                                <div class="col-auto">
-                                                                    <iconify-icon class="float-end my-auto" width="36"
-                                                                        height="36" icon="akar-icons:arrow-left"
-                                                                        flip="horizontal"></iconify-icon>
-                                                                </div>
-                                                            </div>
-                                                        </a> 
-                                                    </div> -->
-                                                </div>
 
+                                                </div>
                                                 <!-- ------------------------------- card_3 -------------------------------- -->
                                                 <div class="card border-dark text-bg-info my-3 mx-3"
                                                     style="width: 15vw;">
@@ -170,153 +201,215 @@
                                                         </h5>
                                                         <p class="card-text text-center"></p>
                                                     </div>
-                                                    <!-- <div class="card-footer bg-white border-dark ">
-                                                        <a href="http://"
-                                                            class="text-decoration-none  text-dark text-center ">
-                                                            <div class="row">
-                                                                <div class="col">
-                                                                    <p style="font-size:1vw;" class="mb-0"> ดูรายละเอียด
-                                                                    </p>
-                                                                </div>
-                                                                <div class="col-auto">
-                                                                    <iconify-icon class="float-end my-auto" width="36"
-                                                                        height="36" icon="akar-icons:arrow-left"
-                                                                        flip="horizontal"></iconify-icon>
-                                                                </div>
-                                                            </div>
-                                                        </a>
-                                                    </div> -->
+
                                                 </div>
                                             </div>
                                         </div>
-
                                         <!-- card zone -->
-
-
                                         <!-- ----------------------------- charts zone ----------------------------- -->
 
-                                        <div class="row row-cols-1 ">
-                                            <div class="col-6 card ">
+                                        <div class="d-flex justify-content-center">
+                                            <div class="card p-3 border-dark me-5">
 
                                                 <div>
-                                                    <canvas id="myChart" width="500px"></canvas>
+                                                    <canvas id="myChart" style="height:500; width:800px"></canvas>
                                                 </div>
 
-                                                <%= %>
+                                                <script>
+                                                    const display_month = JSON.parse('<%-JSON.stringify(display_month) %>');
+                                                    console.log(display_month);
 
+                                                    // const label_x = display_month.map((item) => { return item.month })
+                                                    const label_y = display_month.map((item) => { return item.value })
+                                                    let maxValue = Math.max(...label_y);
 
-                                                    <script>
-                                                        const display_month = JSON.parse('<%-JSON.stringify(display_month) %>');
-                                                        console.log(display_month);
+                                                    const ctx = document.getElementById('myChart');
 
+                                                    new Chart(ctx, {
+                                                        type: 'bar',
+                                                        data: {
+                                                            labels: [
+                                                                "Jan",
+                                                                "Feb",
+                                                                "Mar",
+                                                                "Apr",
+                                                                "May",
+                                                                "Jun",
+                                                                "Jul",
+                                                                "Aug",
+                                                                "Sep",
+                                                                "Oct",
+                                                                "Nov",
+                                                                "Dec",
+                                                            ]
+                                                            , datasets: [{
+                                                                label: 'จำนวนการแข่งขัน',
+                                                                data: label_y
+                                                                ,
+                                                                borderWidth: 3,
+                                                                borderRadius: 30
+                                                            }]
+                                                        },
+                                                        options: {
+                                                            responsive: true,
+                                                            maintainAspectRatio: false,
+                                                            scales: {
+                                                                y: {
+                                                                    ticks: {
+                                                                        color: 'dark'
+                                                                    },
 
-                                                        const label_x = display_month.map((item) => { return item.month })
-                                                        const label_y = display_month.map((item) => { return item.result_cout })
-                                                        let maxValue = Math.max(...label_y);
-
-
-                                                        const ctx = document.getElementById('myChart');
-
-                                                        new Chart(ctx, {
-                                                            type: 'bar',
-                                                            data: {
-                                                                labels: label_x
-                                                                , datasets: [{
-                                                                    label: 'จำนวนการแข่งขัน',
-                                                                    data: label_y
-                                                                    ,
-                                                                    borderWidth: 3
-                                                                }]
-                                                            },
-                                                            options: {
-                                                                scales: {
-                                                                    y: {
-                                                                        beginAtZero: true,
-                                                                        min: 0,
-                                                                        max: maxValue+1
+                                                                    beginAtZero: true,
+                                                                    min: 0,
+                                                                    max: maxValue + 3,
+                                                                    ticks: {
+                                                                        precision: 0,
                                                                     }
+                                                                },
+                                                                x: {
+                                                                    ticks: {
+                                                                        color: 'dark'
+                                                                    },
+                                                                    grid: {
+                                                                        display: false
+                                                                    }
+                                                                    ,
                                                                 }
                                                             }
-                                                        });
-                                                    </script>
+                                                            , plugins: {
+                                                                legend: {
+                                                                    display: false
+                                                                },
+                                                                datalabels: {
+                                                                    display: true,
+                                                                    color: 'black',
+                                                                    font: {
+                                                                        size: 12,
+                                                                        weight: 'bold'
+                                                                    },
+                                                                    align: 'end',
+                                                                    anchor: 'end',
+                                                                    color: 'dark',
+                                                                    formatter: function (value, context) {
+                                                                        return value;
+                                                                    }
+                                                                }
+                                                            },
+                                                            barThickness: 30,
+                                                            barSpacing: 2
+                                                        }, barThickness: 30,
+                                                        barSpacing: 2
+                                                        ,
+                                                        plugins: [
+                                                            ChartDataLabels
+                                                        ]
+                                                    });
+
+                                                    //         barThickness: 30,
+                                                    //         barSpacing: 2
+                                                    //     }
+
+                                                    // });
+                                                </script>
 
 
                                             </div>
 
                                             <!-- ------------------------------- chart_2 ------------------------------- -->
-                                            <div class="col-6  card">
+                                            <div class="card p-3 border-dark">
 
                                                 <div>
-                                                    <canvas id="myChart1" style=" width: 100px;"></canvas>
+                                                    <canvas id="myChart1" style="height:500px; width:600px"></canvas>
                                                 </div>
 
                                                 <script>
                                                     const sport_count = JSON.parse('<%-JSON.stringify(sport_count) %>');
-                                                    const sport_y = sport_count.map((item) => { return item.count })
+                                                    // console.log("🚀 ~ file: dashboard.ejs:265 ~ sport_count", sport_count)
+
+
+                                                    const sport_x = sport_count.map((item) => { return item.sportName })
+                                                    const sport_y = sport_count.map((item) => { return item.count_sportID })
                                                     let maxValuesport = Math.max(...sport_y);
 
-                                                    //    const label_1 = [sport_y[0].count+sport_y[1].count ]
-                                                    console.log("🚀 ~ file: dashboard.ejs:258 ~ sport_y", sport_y)
-
-
+                                                    // console.log("🚀 ~ file: dashboard.ejs:258 ~ sport_y", sport_y)
 
                                                     const ctx1 = document.getElementById('myChart1');
-
 
                                                     myChart1 = new Chart(ctx1, {
                                                         type: 'bar',
                                                         data: {
-                                                            labels: ['แบดมินตัน เดี่ยว', 'แบดมินตัน คู่', 'วอลเลย์บอล', 'บาสเกตบอล', 'เปตอง'],
+                                                            labels: sport_x,
                                                             datasets: [{
-
-                                                                label: 'จำนวนที่แข่งขัน',
+                                                                label: 'จำนวนที่ชนิดกีฬา',
                                                                 data: sport_y
-                                                                , borderWidth: 2
+                                                                , borderWidth: 1,
+                                                                backgroundColor: 'rgba(179, 158, 232, 0.93)',
+                                                                borderColor: 'rgba(115, 99, 132, 1)',
+                                                                borderWidth: 3,
+                                                                borderRadius: 30
                                                             }]
                                                         },
                                                         options: {
+                                                            responsive: true,
+                                                            maintainAspectRatio: false,
                                                             indexAxis: 'y',
                                                             scales: {
                                                                 y: {
-                                                                    beginAtZero: true,
-                                                                    
-                                                                }
-                                                                , x: {
-                                                                    display: false
-
-                                                                }
-                                                            }, tooltips: {
-                                                                enabled: false
-                                                            },
-                                                            plugins: {
-                                                                datalabels: {
-                                                                    align: 'end',
-                                                                    anchor: 'end',
-                                                                    backgroundColor: function (context) {
-                                                                        return context.dataset.backgroundColor;
+                                                                    ticks: {
+                                                                        color: 'dark'
+                                                                    }, grid: {
+                                                                        display: false
                                                                     },
-                                                                    borderRadius: 4,
-                                                                    color: 'white',
-                                                                    formatter: Math.round
+                                                                    beginAtZero: true,
+
+                                                                }, x: {
+                                                                    ticks: {
+                                                                        color: 'dark'
+                                                                    }, grid: {
+                                                                        display: false
+                                                                    },
+                                                                    display: false,
+                                                                    beginAtZero: true,
+                                                                    min: 0,
+                                                                    max: maxValuesport + 1,
                                                                 }
+                                                            }, plugins: {
+                                                                legend: {
+                                                                    display: false
+                                                                },
+                                                                datalabels: {
+                                                                    display: true,
+                                                                    color: 'dark',
+                                                                    font: {
+                                                                        size: 14,
+                                                                        weight: 'bold'
+                                                                    },
+                                                                    align: 'center',
+                                                                    anchor: 'center',
+                                                                    color: 'dark',
+                                                                    formatter: function (value, context) {
+                                                                        return value;
+                                                                    }
+                                                                }
+                                                            },
+                                                            barThickness: 30,
+                                                            barSpacing: 2
+                                                        }, barThickness: 30,
+                                                        barSpacing: 2
+                                                        , layout: {
+                                                            padding: {
+                                                                left: 50
                                                             }
-                                                        }
+                                                        },
+                                                        plugins: [
+                                                            ChartDataLabels
+                                                        ]
                                                     });
 
                                                 </script>
 
-
-
                                             </div>
                                         </div>
-                                       
-
-
-
-
-
-
-
 
                                     </div>
                                 </div>

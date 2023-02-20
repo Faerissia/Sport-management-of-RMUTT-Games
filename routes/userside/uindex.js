@@ -522,12 +522,33 @@ router.get('/result', async (req,res,next)=>{
     });
   });
 
-router.get('/result/(:uniID)',(req,res,next)=>{
-    let uniID = req.params.uniID;
-    dbConnection.query('SELECT * FROM university WHERE uniID = '+uniID,(error,results)=>{
-
-       res.render('userside/uniresult',{data:results,status_login: req.session.loggedin})
-    })
+router.get('/result/(:uniID)',async (req,res,next)=>{
+    dbConnection.query('SELECT * FROM university', async (error,results)=>{
+        let uniID = req.params.uniID;
+        let team = [];
+        let solo = [];
+        for(let i = 0; i < results.length; i++){
+          let rows = await new Promise((resolve, reject) => {
+            dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM \`team\` team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
+              if (error) reject(error);
+              resolve(rows);
+            });
+          });
+  
+          let single = await new Promise((resolve, reject) => {
+              dbConnection.query(`SELECT COUNT(t1.st1)AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM player p left join tournament t1 on t1.st1 = p.playerID left join tournament t2 on t2.nd2 = p.playerID left join tournament t3 on t3.rd3 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID where f.uniID = ${uniID}`, (error, single) => {
+                if (error) reject(error);
+                resolve(single);
+              });
+            });
+  
+          team.push(rows);
+          solo.push(single);
+          uniID++;
+        }
+        console.log('team',team,'solo',solo)
+        res.render('userside/uniresult',{solo,team,data:results,status_login: req.session.loggedin})
+      });
    })
 
    router.get('/opening',(req,res,next)=>{

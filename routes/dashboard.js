@@ -2,22 +2,25 @@ let express = require("express");
 let router = express.Router();
 let dbConnection = require("../util/db");
 
-// display tnmcheck page
+/* --------------------------- function formatDate -------------------------- */
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
 
-/* --------------------------------- old ver -------------------------------- */
-// router.get('/', (req, res, err) => {
-//     if(req.session.loggedin){
-//             res.render('dashboard', {
-//                 status_login: req.session.loggedin,process,user: user,role: role  });
-//             }else{
-//                 res.redirect('error404');
-//             }
-//             })
-// January, February, March, April, May, June, July, August, September, October, November, December
-let value_m = 11;
-let sport_count =[];
+let defaultdate_S = new Date();
+defaultdate_S.setFullYear(defaultdate_S.getFullYear() - 1);
+let defaultdate_E = new Date();
+
+let value_select = [];
+let sport_count = [];
 let display_month = [];
-let monthNames = [
+let single_quote = "'";
+
+const monthNames = [
   "Jan",
   "Feb",
   "Mar",
@@ -47,253 +50,311 @@ let monthNames = [
 //   "December",
 // ];
 
-router.post("/dash-value", (req, res) => {
+/* -------------------------------- add value_form ------------------------------- */
+router.post("/value_date", (req, res) => {
+  let date_S ;
+  let date_E ;
   display_month = [];
-  value_m = req.body.value;
-  console.log("Received value:", value_m);
+  value_select = [];
+  // input
+  date_S = new Date(req.body.value_startdate);
+  date_E = new Date(req.body.value_enddate);
+  let sport_input = req.body.value_sport;
+  console.log("Received startdate: ", date_S);
+  console.log("Received enddate: ", date_E);
+  console.log("Received sport: ", sport_input);
 
-  // let date = new Date();
-  // date.setMonth(date.getMonth() - value_m);
-  // //  console.log("🚀 ~ file: dashboard.js:27 ~ router.post ~ date", date)
-  // // console.log(date);
+  if (!req.body.value_startdate && !req.body.value_enddate) {
+    date_S = defaultdate_S
+    date_E = defaultdate_E
+  }
 
-  // for (let index = 0; index < value_m; index++) {
-  //   let curret_date = new Date();
-  //   let day = curret_date.getDate();
-  //   curret_date.setMonth(curret_date.getMonth() - index);
-  //   let month = curret_date.getMonth() + 1;
-  //   let year = curret_date.getFullYear();
-  //   // console.log("🚀 ~ file: dashboard.js:41 ~ router.post ~ year", year)
-  //   // console.log("🚀 ~ file: dashboard.js:40 ~ router.post ~ month", month)
-  //   // console.log("🚀 ~ file: dashboard.js:38 ~ router.post ~ day", day)
 
-  //   // math date
-  //   let result_date = `${year}-${month <= 9 ? "0" + month : month}-${
-  //     day <= 9 ? "0" + day : day
-  //   }`;
-  //   //for sql
-  //   let single_quote = "'";
-  //   let result_date1 = single_quote + result_date + single_quote;
 
-  //   console.log(
-  //     "🚀 ~ file: dashboard.js:81 ~ router.post ~ result_date",
-  //     result_date
-  //   );
-  //   console.log(
-  //     "🚀 ~ file: dashboard.js:82 ~ router.post ~ result_date1",
-  //     result_date1
-  //   );
+  value_select.push({
+    date_S: formatDate(date_S),
+    date_E: formatDate(date_E),
+    sport:sport_input
+  });
+  // console.table(value_select);
 
-  //   dbConnection.query(
-  //     "SELECT tnmName,  tnmEnddate ,sportID FROM tournament WHERE MONTH(tnmEnddate) = MONTH(" +
-  //       result_date1 +
-  //       ") AND tnmEnddate BETWEEN DATE_SUB(NOW(), INTERVAL " +
-  //       value_m +
-  //       " MONTH) AND NOW();",
-  //     (err, rows) => {
-  //       console.log(
-  //         "\n\n🚀 ~ file: dashboard.js:40 ~ router.post ~ month",
-  //         month
-  //       );
-  //       const result_f = monthNames[month - 1];
-  //       console.log(
-  //         "🚀 ~ file: dashboard.js:59 ~ router.post ~ result_f",
-  //         result_f
-  //       );
-  //       console.log(
-  //         "🚀 ~ file: dashboard.js:87 ~ router.post ~ result_date1",
-  //         result_date1
-  //       );
-  //       // console.table(rows);
+  /* ------------------------------- for filter ------------------------------- */
+  // res.redirect("/dashboard");
+  let value = [];
+ 
+  //  formatDate and for SQL
+  const sql_S = single_quote + formatDate(date_S)+ single_quote;
+  const sql_E = single_quote + formatDate(date_E) + single_quote;
+  const sql_sport_input = single_quote + sport_input + single_quote;
 
-  //       // dbConnection.destroy
-  //       display_month.push({
-  //         month: monthNames[month - 1],
-  //         result_cout: rows.length,
-  //         sport: rows.sportID,
-  //       });
+  let selcetsport = [];
 
-  //       // console.table( display_month)
-  //     }
-  //   );
-  // }
-  res.redirect("/dashboard");
+  //sql for selcet sport
+  dbConnection.query(
+    "SELECT sportID,sportName FROM sport ORDER BY sportID asc",
+    (err, selcetsport1) => {
+      selcetsport = selcetsport1;
+    }
+  );
+
+  
+
+  //sql
+  let sql_1 // for chart_1
+  let sql_2 // for sport
+  let sql_3 // for card In competition and competition over
+  let sql_4 // for card Waiting to register
+
+      if (sport_input) {
+        //sql fillter 
+        sql_1 = "SELECT LEFT(MONTHNAME(tnmEnddate), 3) AS Month, COUNT(tnmEnddate) AS Count FROM tournament WHERE tnmEnddate BETWEEN " +sql_S +" AND " +sql_E + "AND sportID = "+sql_sport_input+"  GROUP BY  Month ORDER BY Month ";
+        sql_2 ="SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmEnddate BETWEEN " + sql_S + " AND " +sql_E + " AND t.sportID = "+sql_sport_input+" GROUP BY t.sportID;";
+        sql_3 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE tnmStartdate  BETWEEN " +sql_S +" AND " +sql_E +" AND sportID = "+sql_sport_input+" ";
+        sql_4 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE Rstartdate  BETWEEN " +sql_S +" AND " +sql_E + " AND sportID = "+sql_sport_input+" ";
+
+      }else {
+        // sql default
+        sql_1 = "SELECT LEFT(MONTHNAME(tnmEnddate), 3) AS Month, COUNT(tnmEnddate) AS Count FROM tournament WHERE tnmEnddate BETWEEN " +sql_S +" AND " +sql_E +" GROUP BY  Month ORDER BY Month ";
+        sql_2 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmEnddate BETWEEN " + sql_S + " AND " +sql_E + "  GROUP BY t.sportID;";
+        sql_3 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE tnmStartdate  BETWEEN " +sql_S +" AND " +sql_E +" ";
+        sql_4 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE Rstartdate  BETWEEN " +sql_S +" AND " +sql_E + " ";
+
+      }
+
+      /* ------------------------------ zone chart_1 ------------------------------ */
+  dbConnection.query(sql_1, (err, rows) => {
+    if (err) {
+      console.log(
+        "=========================================================================="
+      );
+      console.log(err);
+    }
+    // console.log("\ntable sql chart_1");
+    // console.table(rows);
+
+    const counts = {};
+
+    monthNames.forEach((month) => {
+      counts[month] = 0;
+    });
+
+    rows.forEach((rows) => {
+      counts[rows.Month] = rows.Count;
+    });
+
+    const count = Object.entries(counts).map(([month, value]) => {
+      return { month, value };
+    });
+
+    display_month = count;
+  });
+
+  /* ------------------------------- zone sport ------------------------------- */
+  dbConnection.query(
+    sql_2,
+    (err2, rowsport) => {
+      sport_count = [];
+      sport_count = rowsport;
+    }
+  );
+
+  /* -------------------------------- zone card ------------------------------- */
+  let result = [];
+  let count_In = 0;
+  let count_Out = 0;
+  let count_fin = 0;
+  let date = new Date();
+
+  dbConnection.query(sql_3, (err, rows) => {
+    // console.log("\t tnmStartdate");
+    // console.table(rows);
+
+    for (let index = 0; index < rows.length; index++) {
+      var tnmStartdate = rows[index].tnmStartdate;
+      var tnmEnddate = rows[index].tnmEnddate;
+
+      if (
+        date >= tnmStartdate &&
+        date <= tnmEnddate &&
+        rows[index].st1 === null
+      ) {
+        count_In += 1;
+        result.push({
+          Datamath: index,
+          chack: "In competition",
+          tnmID: rows[index].tnmID,
+          sportID: rows[index].sportID,
+          Rstartdate: rows[index].Rstartdate,
+          Renddate: rows[index].Renddate,
+          tnmStartdate: rows[index].tnmStartdate,
+          tnmEnddate: rows[index].tnmEnddate,
+          rank: rows[index].st1,
+        });
+      } else {
+        if (rows[index].st1 !== null) {
+          count_fin += 1;
+          result.push({
+            Datamath: index,
+            chack: "competition is over",
+            tnmID: rows[index].tnmID,
+            sportID: rows[index].sportID,
+            Rstartdate: rows[index].Rstartdate,
+            Renddate: rows[index].Renddate,
+            tnmStartdate: rows[index].tnmStartdate,
+            tnmEnddate: rows[index].tnmEnddate,
+            rank: rows[index].st1,
+          });
+        }
+      }
+    }
+  });
+
+  dbConnection.query(sql_4, (err, rows) => {
+    // console.log("\t Rstartdate");
+    // console.table(rows);
+
+    for (let index = 0; index < rows.length; index++) {
+      var RStrdate = rows[index].Rstartdate;
+      var REnddate = rows[index].Renddate;
+      if (
+        date >= RStrdate &&
+        date <= REnddate &&
+        rows[index].st1 === null
+      ) {
+        count_Out += 1;
+        result.push({
+          Datamath: index,
+          chack: "Waiting to register",
+          tnmID: rows[index].tnmID,
+          sportID: rows[index].sportID,
+          Rstartdate: rows[index].Rstartdate,
+          Renddate: rows[index].Renddate,
+          tnmStartdate: rows[index].tnmStartdate,
+          tnmEnddate: rows[index].tnmEnddate,
+          rank: rows[index].st1,
+        });
+      }
+    }
+    value = [];
+    value.push({ In: count_In, Out: count_Out, fin: count_fin });
+
+    // display result total
+    // console.log("\ntable result");
+    // console.table(result);
+    
+    // console.log("\ntable value");
+    // console.table(value);
+
+    res.render("dashboard", {
+      status_login: req.session.loggedin,
+      user: user,
+      role: role,
+      result: result,
+      count: value,
+      display_month,
+      selcetsport,
+      sport_count,
+      value_select,
+    });
+  });
 });
 
+
+// default 
 router.get("/", (req, res, err) => {
   if (req.session.loggedin) {
     if (role === "เจ้าหน้าที่") {
-      display_month = [];
-      let single_quote = "'";
+      value_select= []
+      let value = [];
+      //default date
+     
 
-      let date = new Date();
-      date.setMonth(date.getMonth() - value_m);
+      // formatDate and for SQL
+      const sql_S = single_quote + formatDate(defaultdate_S)+ single_quote;
+      const sql_E = single_quote + formatDate(defaultdate_E) + single_quote;
 
-      // console.log(date);
-   
-
-      for (let index = 0; index < value_m; index++) {
-        let curret_date = new Date();
-        let day = curret_date.getDate();
-        curret_date.setMonth(curret_date.getMonth() - index);
-        let month = curret_date.getMonth() + 1;
-        let year = curret_date.getFullYear();
-
-        // math date
-        let result_date = `${year}-${month <= 9 ? "0" + month : month}-${
-          day <= 9 ? "0" + day : day
-        }`;
-        //for sql
-        let result_date1 = single_quote + result_date + single_quote;
-
-        
-        
-        
-        dbConnection.query(
-          "SELECT tnmName,  tnmEnddate ,sportID FROM tournament WHERE MONTH(tnmEnddate) = MONTH(" +
-            result_date1 +
-            ") AND tnmEnddate BETWEEN DATE_SUB(NOW(), INTERVAL " +
-            value_m +
-            " MONTH) AND NOW();",
-          (err, rows) => {
-            const result_f = monthNames[month - 1];
-           
-
-            display_month.push({
-              month: monthNames[month - 1] + ` ` + `${year}`,
-              result_cout: rows.length,
-              sport: rows.sportID,
-            });
-          }
-        );
-      }
-
-
-      if (value_m === 11) {
-        let curret_date = new Date();
-        let day = curret_date.getDate();
-        curret_date.setMonth(curret_date.getMonth() - 12);
-        let month = curret_date.getMonth() + 1;
-        let year = curret_date.getFullYear();
-
-        // math date
-        let result_date = `${year}-${month <= 9 ? "0" + month : month}-${
-          day <= 9 ? "0" + day : day
-        }`;
-        //for sql
-        let result_date1 = single_quote + result_date + single_quote;
-        
-        dbConnection.query(
-          "SELECT tnmName, DATE_FORMAT(tnmEnddate, '%Y-%m-%d') as EndDate, sportID FROM tournament WHERE MONTH(tnmEnddate) = MONTH("+result_date1+")AND tnmEnddate BETWEEN DATE_SUB(NOW(), INTERVAL 12 MONTH) AND NOW()AND YEAR(tnmEnddate) != YEAR(NOW())",
-          (err, rows) => {
-            display_month.push({
-              month: monthNames[month - 1]+ ` ` + `${year}`,
-              result_cout: rows.length,
-              sport: rows.sportID,
-
-            });
-          }
-        );
-      }
-    
-
-      // let default_month = [];
-      // if (display_month.length === 0) {
-      //   console.log("\nว่างงงงงงงงงงงงงงงงงงง- -------------------------------------------------------------------------\n"  );
-      //   var currentDate = new Date();
-      //   var currentMonth = currentDate.getMonth();
-
-      //   for (var i = 0; i < 12; i++) {
-      //       let monthIndex = (currentMonth + 12 - i) % 12;
-      //       let monthName = monthNames[monthIndex];
-      //       console.log(monthName);
-      //       display_month.push({
-      //         month: monthName,
-      //         result_cout: rows.length,
-      //         sport: rows.sportID,
-      //       });
-      //   }
-      // }
-
+      let selcetsport = [];
+      //sql for selcet sport
       dbConnection.query(
-        "SELECT sportID, COUNT(sportID) as count_sportID FROM tournament WHERE tnmStartdate and tnmEnddate and Rstartdate and Renddate >= DATE_SUB(NOW(), INTERVAL " +
-          value_m +
-          " MONTH) GROUP BY sportID; ",
-
-        (err2, rowsport) => {
-           sport_count = [];
-          let test_c = [0];
-          
-
-          console.log(
-            "!111-- -------------------------------------------------------------------------\n"
-          );
-            const testl =[];
-          
-          for (let index = 0; index < rowsport.length; index++) {
-            
-            if (rowsport[index].sportID === 1) {
-              sport_count.push({
-                count:rowsport[index].count_sportID
-              })
-            }
-            if (rowsport[index].sportID === 2) {
-              sport_count.push({
-                count:rowsport[index].count_sportID
-              })
-            }
-            if (rowsport[index].sportID === 3) {
-              sport_count.push({
-                count:rowsport[index].count_sportID
-              })
-            }
-            if (rowsport[index].sportID === 4) {
-              sport_count.push({
-                count:rowsport[index].count_sportID
-              })
-            }
-            if (rowsport[index].sportID === 5) {
-              sport_count.push({
-                count:rowsport[index].count_sportID
-              })
-            }
-           
-          }
-          
-
-
-          console.table(sport_count);
-          console.log(rowsport);
-          console.log("3333----------------------------------------------\n");
+        "SELECT sportID,sportName FROM sport ORDER BY sportID asc",
+        (err, selcetsport1) => {
+          selcetsport = selcetsport1;
         }
       );
-      dbConnection.query(
-        "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE tnmStartdate and tnmEnddate and Rstartdate and Renddate >= DATE_SUB(NOW(), INTERVAL " +
-          value_m +
-          " MONTH);",
-        (err, rows) => {
-          console.log(
-            "!222-- -------------------------------------------------------------------------\n"
-          );
-          console.table(rows);
-          let result = [];
-          let count = [];
 
-          let count_In = 0;
-          let count_Out = 0;
-          let count_fin = 0;
-          for (let index = 0; index < rows.length; index++) {
-            let date = new Date();
-            const element = rows[index];
-            let RStrdate = rows[index].Rstartdate;
-            let REnddate = rows[index].Renddate;
-            let tnmStartdate = rows[index].tnmStartdate;
-            let tnmEnddate = rows[index].tnmEnddate;
-            if (date >= RStrdate && date <= REnddate    )   {
-              count_Out++;
+      /* ------------------------------ zone chart_1 ------------------------------ */
+
+      dbConnection.query("SELECT LEFT(MONTHNAME(tnmEnddate), 3) AS Month, COUNT(tnmEnddate) AS Count FROM tournament WHERE tnmEnddate BETWEEN " +sql_S + " AND " +sql_E + "  GROUP BY  Month ORDER BY Month ", (err, rows) => {
+        if (err) {
+          console.log(
+            "=========================================================================="
+          );
+          console.log(err);
+        }
+
+        const counts = {};
+
+        monthNames.forEach((month) => {
+          counts[month] = 0;
+        });
+
+        rows.forEach((rows) => {
+          counts[rows.Month] = rows.Count;
+        });
+
+        const count = Object.entries(counts).map(([month, value]) => {
+          return { month, value };
+        });
+
+        display_month = count;
+      });
+      /* ------------------------------- zone sport ------------------------------- */
+      dbConnection.query("SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmEnddate BETWEEN " +sql_S +" AND " + sql_E +" GROUP BY t.sportID;",
+        (err2, rowsport) => {
+          sport_count = [];
+          sport_count = rowsport;
+        }
+      );
+
+      /* -------------------------------- zone card ------------------------------- */
+      let result = [];
+      let count_In = 0;
+      let count_Out = 0;
+      let count_fin = 0;
+      let date = new Date();
+
+      dbConnection.query("SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE tnmStartdate  BETWEEN " +sql_S +" AND " +sql_E +" ",
+      (err, rows) => {
+        // console.log("\t tnmStartdate");
+        // console.table(rows);
+
+        for (let index = 0; index < rows.length; index++) {
+          var tnmStartdate = rows[index].tnmStartdate;
+          var tnmEnddate = rows[index].tnmEnddate;
+
+          if (
+            date >= tnmStartdate &&
+            date <= tnmEnddate &&
+            rows[index].st1 === null
+          ) {
+            count_In += 1;
+            result.push({
+              Datamath: index,
+              chack: "In competition",
+              tnmID: rows[index].tnmID,
+              sportID: rows[index].sportID,
+              Rstartdate: rows[index].Rstartdate,
+              Renddate: rows[index].Renddate,
+              tnmStartdate: rows[index].tnmStartdate,
+              tnmEnddate: rows[index].tnmEnddate,
+              rank: rows[index].st1,
+            });
+          } else {
+            if (rows[index].st1 !== null) {
+              count_fin += 1;
               result.push({
                 Datamath: index,
-                chackdate: "InRis",
+                chack: "competition is over",
                 tnmID: rows[index].tnmID,
                 sportID: rows[index].sportID,
                 Rstartdate: rows[index].Rstartdate,
@@ -302,62 +363,58 @@ router.get("/", (req, res, err) => {
                 tnmEnddate: rows[index].tnmEnddate,
                 rank: rows[index].st1,
               });
-            }else {
-              if (rows[index].st1 === null) {
-                
-                count_In++;
-                result.push({
-                  Datamath: index,
-                  chackdate: "PlayOut",
-                  tnmID: rows[index].tnmID,
-                  sportID: rows[index].sportID,
-                  Rstartdate: rows[index].Rstartdate,
-                  Renddate: rows[index].Renddate,
-                  tnmStartdate: rows[index].tnmStartdate,
-                  tnmEnddate: rows[index].tnmEnddate,
-                  rank: rows[index].st1,
-                });
-              }else{
-                if (rows[index].st1 !== null) {
-                    count_fin++;
-                    result.push({
-                      Datamath: index,
-                      chackdate: "fins",
-                      tnmID: rows[index].tnmID,
-                      sportID: rows[index].sportID,
-                      Rstartdate: rows[index].Rstartdate,
-                      Renddate: rows[index].Renddate,
-                      tnmStartdate: rows[index].tnmStartdate,
-                      tnmEnddate: rows[index].tnmEnddate,
-                      rank: rows[index].st1,
-                    });
-                  }
-              }
             }
-            // if (rows[index].st1 !== null) {
-            //   count_fin++;
-            // }
           }
-          // console.log(display_month);
-          count.push({ In: count_In, Out: count_Out, fin: count_fin });
-
-          // console.log(result);
-          console.table(result);
-          // console.log(count);
-          // console.table(count);
-
-          res.render("dashboard", {
-            data: rows,
-            status_login: req.session.loggedin,
-            user: user,
-            result: result,
-            count: count,
-            display_month,
-            value_m,
-            sport_count
-          });
         }
-      );
+      });
+
+      dbConnection.query("SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE Rstartdate  BETWEEN " +sql_S +" AND " +sql_E +" ", 
+      (err, rows) => {
+        // console.log("\t Rstartdate");
+        // console.table(rows);
+
+        for (let index = 0; index < rows.length; index++) {
+          var RStrdate = rows[index].Rstartdate;
+          var REnddate = rows[index].Renddate;
+          if (
+            date >= RStrdate &&
+            date <= REnddate &&
+            rows[index].st1 === null
+          ) {
+            count_Out += 1;
+            result.push({
+              Datamath: index,
+              chack: "Waiting to register",
+              tnmID: rows[index].tnmID,
+              sportID: rows[index].sportID,
+              Rstartdate: rows[index].Rstartdate,
+              Renddate: rows[index].Renddate,
+              tnmStartdate: rows[index].tnmStartdate,
+              tnmEnddate: rows[index].tnmEnddate,
+              rank: rows[index].st1,
+            });
+          }
+        }
+        value = [];
+        value.push({ In: count_In, Out: count_Out, fin: count_fin });
+
+        // display result total
+        // console.log("result");
+        // console.table(result);
+        // console.log("resuvaluelt");
+        // console.table(value);
+        res.render("dashboard", {
+          status_login: req.session.loggedin,
+          user: user,
+          role: role,
+          result: result,
+          count: value,
+          display_month,
+          selcetsport,
+          sport_count,
+          value_select,
+        });
+      });
     } else {
       req.flash("error", "ไม่สามารถเข้าถึงได้");
       res.redirect("login");
