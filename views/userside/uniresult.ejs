@@ -10,8 +10,16 @@
 <body>
 
     <%- include("../partials/menuindex") %>
-
+    <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
    <h1>สรุปเหรียญรางวัล <%= data[0].name %></h1>
+   <% let totalst1 =  solo[0][0].st1 + team[0][0].st1 %>
+   <% let totalnd2 =  solo[0][0].nd2 + team[0][0].nd2 %>
+   <% let totalrd3 =  solo[0][0].rd3 + team[0][0].rd3 %>
+   <% let totalall = totalst1 + totalnd2 + totalrd3 %>
+   <%= totalall %>
+   <%= totalst1 %>
+   <%= totalnd2 %>
+   <%= totalrd3 %>
    <hr style="height:2px;border-width:0;color:black;background-color:black">
   <br><br>
   <h1>รายการแข่งขันที่เข้าร่วม</h1>

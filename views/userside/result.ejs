@@ -91,6 +91,7 @@
                 </tr>
               </thead>
               <tbody>
+                <% let allst1 = 0; let allnd2 = 0; let allrd3 = 0; let totalall = 0; %>
                 <% for(let i=0; i < data.length; i++) { %>
                   <tr class="text-center">
                     <td>
@@ -110,10 +111,10 @@
                       </div>
 
                     </td>
-                    <td>11</td>
-                    <td>2</td>
-                    <td>3</td>
-                    <td>16</td>
+                    <td><% unist1 = team[i][0].st1 + solo[i][0].st1; allst1 += unist1 %> <%= unist1 %></td>
+                    <td><% unind2 = team[i][0].nd2 + solo[i][0].nd2; allnd2 += unind2 %> <%= unind2 %></td>
+                    <td><% unird3 = team[i][0].rd3 + solo[i][0].rd3; allrd3 += unird3 %> <%= unird3 %></td>
+                    <td><% uniall = unist1 + unind2 + unird3; totalall += uniall %> <%= uniall %></td>
                   </tr>
                   <% } %>
 
@@ -131,10 +132,11 @@
                       </div>
                     </div>
                   </td>
-                  <td scope="col">รวม 1</td>
-                  <td scope="col">รวม 2</td>
-                  <td scope="col">รวม 3</td>
-                  <td scope="col">รวมทั้งหมด</td>
+                  
+                  <td scope="col"><%= allst1 %></td>
+                  <td scope="col"><%= allnd2 %></td>
+                  <td scope="col"><%= allrd3 %></td>
+                  <td scope="col"><%= totalall %></td>
                 </tr>
 
               </tfoot>

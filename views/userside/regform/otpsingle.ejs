@@ -8,11 +8,16 @@
             </head>
 
             <body>
+                <% if (messages.error) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= messages.error %>
+                    </div>
+                    <% } %>
                 
                 <form action="/verifysingle" method="post">
                     <label for="otp">Enter the OTP from your email:</label>
-                    <input type="text" name="otp" id="otp" required>
-                    <input type="hidden" name="RestoredOTP" value="<%= OTP %>">
+                    <input type="text" name="submitOTP" id="otp" required>
+                    <input type="hidden" name="OTP" value="<%= OTP %>">
                     <input type="hidden" name="playerFName" value="<%= playerFName %>">
                     <input type="hidden" name="playerLName" value="<%= playerLName %>">
                     <input type="hidden" name="playerGender" value="<%= playerGender %>">
@@ -21,7 +26,6 @@
                     <input type="hidden" name="playerEmail" value="<%= playerEmail %>">
                     <input type="hidden" name="facultyID" value="<%= facultyID %>">
                     <input type="hidden" name="playerIDCard" value="<%= playerIDCard %>">
-                    <input type="hidden" name="playerStudentID" value="<%= playerStudentID %>">
                     <input type="hidden" name="playerFile1" value="<%= playerFile1 %>">
                     <input type="hidden" name="tnmID" value="<%= tnmID %>">
                     <input type="submit" value="Verify">

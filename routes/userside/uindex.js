@@ -15,8 +15,8 @@ let transporter = nodemailer.createTransport({
 
 
 router.post('/verifysingle', (req, res) => {
-    let RestoredOTP = req.body.RestoredOTP;
-    let otp = req.body.otp;
+    let OTP = req.body.OTP;
+    let submitOTP = req.body.submitOTP;
     let playerFName = req.body.playerFName;
     let playerLName = req.body.playerLName;
     let playerGender = req.body.playerGender;
@@ -25,12 +25,12 @@ router.post('/verifysingle', (req, res) => {
     let playerEmail = req.body.playerEmail;
     let facultyID = req.body.facultyID;
     let playerIDCard = req.body.playerIDCard;
-    let playerStudentID = req.body.playerStudentID;
     let playerFile1 = req.body.playerFile1;
     let tnmID =req.body.tnmID;
 
+    console.log(submitOTP,OTP)
 
-    if (otp === RestoredOTP) {
+    if (submitOTP === OTP) {
         dbConnection.query('SELECT * FROM player WHERE playerIDCard = ? AND tnmID = ?',[playerIDCard, tnmID] ,(err,rows) => {
             if(rows.length > 0){
                 let form_data = {
@@ -43,7 +43,6 @@ router.post('/verifysingle', (req, res) => {
                     playerEmail: playerEmail,
                     facultyID: facultyID,
                     playerIDCard: playerIDCard,
-                    playerStudentID: playerStudentID,
                     playerFile1: playerFile1,
                     detailDoc: 'สมัครซ้ำ'
                 }
@@ -69,7 +68,6 @@ router.post('/verifysingle', (req, res) => {
                     playerEmail: playerEmail,
                     facultyID: facultyID,
                     playerIDCard: playerIDCard,
-                    playerStudentID: playerStudentID,
                     playerFile1: playerFile1
                 }
                 console.log('ไม่ซ้ำ')
@@ -87,10 +85,11 @@ router.post('/verifysingle', (req, res) => {
         })
 
     } else {
-        res.flash('error','รหัส OTP ไม่ถูกต้อง');
+        req.flash('error','รหัส OTP ไม่ถูกต้อง');
         res.render('userside/regform/otpsingle',{
+            submitOTP:submitOTP,
+            OTP:OTP,
             playerEmail: playerEmail,
-            RestoredOTP: RestoredOTP,
             tnmID: tnmID,
             playerFName: playerFName,
             playerLName: playerLName,
@@ -100,8 +99,7 @@ router.post('/verifysingle', (req, res) => {
             playerEmail: playerEmail,
             facultyID: facultyID,
             playerIDCard: playerIDCard,
-            playerStudentID: playerStudentID,
-            playerFile1: name_pfile,
+            playerFile1: playerFile1,
             status_login: req.session.loggedin
         })
         
@@ -116,6 +114,7 @@ router.post('/verifyteam', (req, res) => {
     let LnameAgent = req.body.LnameAgent;
     let teamPhoneA = req.body.teamPhoneA;
     let teamEmailA = req.body.teamEmailA;
+    let uniID = req.body.uniID;
     let teamfile = req.body.teamfile;
     let tnmID = req.body.tnmID;
 
@@ -127,24 +126,23 @@ router.post('/verifyteam', (req, res) => {
     let playerEmail = req.body.playerEmail;
     let facultyID = req.body.facultyID;
     let playerIDCard = req.body.playerIDCard;
-    let playerStudentID = req.body.playerStudentID;
     let player_photo = req.body.player_photo;
     let detailDoc = req.body.detailDoc;
 
     let values = [];
 
     for (let i = 0; i < playerFName.length; i++) {
-    values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], playerStudentID[i], player_photo[i], detailDoc[i], tnmID])
+    values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], player_photo[i], detailDoc[i], tnmID])
     }
 
 
     if(otp === teamOTP){
 
-    let sql_team = "INSERT INTO team (teamName, NameAgent, LnameAgent, teamPhoneA, teamEmailA, teamPic, tnmID) VALUES ?";
-    let sql_player = "INSERT INTO player (playerFName, playerLName, playerGender, playerBirthday, playerPhone, playerEmail, facultyID, playerIDCard, playerStudentID, playerFile1, detailDoc, tnmID,teamID) VALUES ?";
+    let sql_team = "INSERT INTO team (teamName, NameAgent, LnameAgent, uniID, teamPhoneA, teamEmailA, teamPic, tnmID) VALUES ?";
+    let sql_player = "INSERT INTO player (playerFName, playerLName, playerGender, playerBirthday, playerPhone, playerEmail, facultyID, playerIDCard, playerFile1, detailDoc, tnmID,teamID) VALUES ?";
         
         // insert query db
-        dbConnection.query(sql_team,[[[teamName, NameAgent, LnameAgent, teamPhoneA,teamEmailA, teamfile, tnmID]]], (err, result) => {
+        dbConnection.query(sql_team,[[[teamName, NameAgent, LnameAgent, uniID, teamPhoneA,teamEmailA, teamfile, tnmID]]], (err, result) => {
             if (err) throw err;
             console.log("Number of teams inserted: " + result.affectedRows);
             let teamID = result.insertId;
@@ -169,6 +167,7 @@ router.post('/verifyteam', (req, res) => {
         NameAgent: NameAgent,
         LnameAgent: LnameAgent,
         teamPhoneA: teamPhoneA,
+        uniID: uniID,
         teamEmailA: teamEmailA,
         teamfile: teamfile,
         values: values,
@@ -346,7 +345,6 @@ router.post('/singlereg', (req, res, next) =>{
     let playerEmail = req.body.playerEmail;
     let facultyID = req.body.facultyID;
     let playerIDCard = req.body.playerIDCard;
-    let playerStudentID = req.body.playerStudentID;
     let playerFile1 = req.files.playerFile1;
     let tnmID =req.body.tnmID;
 
@@ -382,7 +380,6 @@ router.post('/singlereg', (req, res, next) =>{
             playerEmail: playerEmail,
             facultyID: facultyID,
             playerIDCard: playerIDCard,
-            playerStudentID: playerStudentID,
             playerFile1: name_pfile})
         }
       });
@@ -404,6 +401,7 @@ router.post('/teamreg', async (req, res, next) =>{
     let teamPhoneA = req.body.teamPhoneA;
     let teamEmailA = req.body.teamEmailA;
     let teamPic = req.files.teamPic;
+    let uniID = req.body.university[0];
     let tnmID = req.body.tnmID[0];
     var teamfile = new Date().getTime() +'_'+teamPic.name;
     teamPic.mv('./assets/team/' + teamfile);
@@ -417,7 +415,6 @@ router.post('/teamreg', async (req, res, next) =>{
     let playerEmail = req.body.playerEmail;
     let facultyID = req.body.facultyID;
     let playerIDCard = req.body.playerIDCard;
-    let playerStudentID = req.body.playerStudentID;
     
     let values = [];
 
@@ -440,11 +437,11 @@ router.post('/teamreg', async (req, res, next) =>{
         console.log(rows);
         if(rows.length > 0){
             let  detailDoc = 'สมัครซ้ำ';
-            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], playerStudentID[i], player_photo, detailDoc, tnmID])
+            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], player_photo, detailDoc, tnmID])
             console.log('ซ้ำ',values);
         }else{
             let detailDoc = null;
-            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], playerStudentID[i], player_photo, detailDoc, tnmID])
+            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], player_photo, detailDoc, tnmID])
        console.log('ไม่ซ้ำ',values);
         }
     });
@@ -474,6 +471,7 @@ router.post('/teamreg', async (req, res, next) =>{
                 teamOTP: teamOTP,
                 tnmID: tnmID,
                 values: values,
+                uniID: uniID,
                 teamName: teamName,
                 NameAgent: NameAgent,
                 LnameAgent: LnameAgent,
@@ -496,17 +494,61 @@ router.post("/fetch_faculty", function(req, res) {
     });
 });
 
-router.get('/result',(req,res,next)=>{
- dbConnection.query('SELECT * FROM university',(error,results)=>{
-    res.render('userside/result',{data:results,status_login: req.session.loggedin})
- })
-})
+router.get('/result', async (req,res,next)=>{
+    dbConnection.query('SELECT * FROM university', async (error,results)=>{
+      let uniID = 1;
+      let team = [];
+      let solo = [];
+      for(let i = 0; i < results.length; i++){
+        let rows = await new Promise((resolve, reject) => {
+          dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM \`team\` team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
+            if (error) reject(error);
+            resolve(rows);
+          });
+        });
 
-router.get('/result/(:uniID)',(req,res,next)=>{
-    let uniID = req.params.uniID;
-    dbConnection.query('SELECT * FROM university WHERE uniID = '+uniID,(error,results)=>{
-       res.render('userside/uniresult',{data:results,status_login: req.session.loggedin})
-    })
+        let single = await new Promise((resolve, reject) => {
+            dbConnection.query(`SELECT COUNT(t1.st1)AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM player p left join tournament t1 on t1.st1 = p.playerID left join tournament t2 on t2.nd2 = p.playerID left join tournament t3 on t3.rd3 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID where f.uniID = ${uniID}`, (error, single) => {
+              if (error) reject(error);
+              resolve(single);
+            });
+          });
+
+        team.push(rows);
+        solo.push(single);
+        uniID++;
+      }
+      res.render('userside/result',{solo,team,data:results,status_login: req.session.loggedin})
+    });
+  });
+
+router.get('/result/(:uniID)',async (req,res,next)=>{
+    dbConnection.query('SELECT * FROM university', async (error,results)=>{
+        let uniID = req.params.uniID;
+        let team = [];
+        let solo = [];
+        for(let i = 0; i < results.length; i++){
+          let rows = await new Promise((resolve, reject) => {
+            dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM \`team\` team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
+              if (error) reject(error);
+              resolve(rows);
+            });
+          });
+  
+          let single = await new Promise((resolve, reject) => {
+              dbConnection.query(`SELECT COUNT(t1.st1)AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM player p left join tournament t1 on t1.st1 = p.playerID left join tournament t2 on t2.nd2 = p.playerID left join tournament t3 on t3.rd3 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID where f.uniID = ${uniID}`, (error, single) => {
+                if (error) reject(error);
+                resolve(single);
+              });
+            });
+  
+          team.push(rows);
+          solo.push(single);
+          uniID++;
+        }
+        console.log('team',team,'solo',solo)
+        res.render('userside/uniresult',{solo,team,data:results,status_login: req.session.loggedin})
+      });
    })
 
    router.get('/opening',(req,res,next)=>{
