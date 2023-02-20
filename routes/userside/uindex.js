@@ -3,6 +3,7 @@ let router = express.Router();
 let dbConnection = require('../../util/db');
 const path = require('path');
 const nodemailer = require('nodemailer');
+const { resolve } = require('path');
 
 let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -429,28 +430,24 @@ router.post('/teamreg', async (req, res, next) =>{
             playerFile1[i].mv('./assets/player/' + name_pfile);
             player_photo = name_pfile;
         }
-    
-        try{
         
-    let rows = await dbConnection.query('SELECT * FROM player WHERE playerIDCard = ? AND tnmID = ?', [playerIDCard[i], tnmID], (err, rows) => {
-            if(err) reject(err)
-        console.log(rows);
+    let rows = await new Promise((resolve, reject) => {
+        dbConnection.query('SELECT * FROM player WHERE playerIDCard = ? AND tnmID = ?', [playerIDCard[i], tnmID], (err, rows) => {
         if(rows.length > 0){
             let  detailDoc = 'สมัครซ้ำ';
-            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], player_photo, detailDoc, tnmID])
-            console.log('ซ้ำ',values);
+            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], player_photo, detailDoc, tnmID]);
+            resolve(rows);
         }else{
             let detailDoc = null;
-            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], player_photo, detailDoc, tnmID])
-       console.log('ไม่ซ้ำ',values);
+            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], player_photo, detailDoc, tnmID]);
+            resolve(rows);
         }
     });
-  } catch (err) {
-    console.log(err);
-    return;
-  }
+})
+
 }
 
+console.log(values)
 
         let teamOTP = Math.floor(1000 + Math.random() * 9000);
 
@@ -467,7 +464,6 @@ router.post('/teamreg', async (req, res, next) =>{
             } else {
               console.log('Email sent: ' + info.response);
               res.render('userside/regform/otpteam',{
-                status_login: req.session.loggedin,
                 teamOTP: teamOTP,
                 tnmID: tnmID,
                 values: values,
@@ -477,7 +473,8 @@ router.post('/teamreg', async (req, res, next) =>{
                 LnameAgent: LnameAgent,
                 teamPhoneA: teamPhoneA,
                 teamEmailA: teamEmailA,
-                teamfile: teamfile
+                teamfile: teamfile,
+                status_login: req.session.loggedin
                 })
             }
           });

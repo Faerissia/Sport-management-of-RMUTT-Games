@@ -65,7 +65,7 @@ router.get('/candidatesolo/(:tnmID)', (req, res, next) => {
 // display tnmcheck page
 router.get('/candidateteam/(:tnmID)', (req, res, next) => {
     let thistnmID = req.params.tnmID;
-    dbConnection.query(`SELECT teamID, tnmID, tnmName, teamName, NameAgent, LnameAgent, teamPhoneA, teamEmailA, teamStatus, teamRegDate, GROUP_CONCAT(detailDoc SEPARATOR ',') as detailDoc FROM (SELECT t.tnmID,team.teamID,t.tnmName,team.teamName,team.NameAgent,team.LnameAgent,team.teamPhoneA,team.teamEmailA,team.teamStatus,team.teamRegDate, p.detailDoc
+    dbConnection.query(`SELECT teamID, tnmID, tnmName, teamName, NameAgent, LnameAgent, teamPhoneA, teamEmailA, teamStatus, teamRegDate, GROUP_CONCAT(detailDoc SEPARATOR '') as detailDoc FROM (SELECT t.tnmID,team.teamID,t.tnmName,team.teamName,team.NameAgent,team.LnameAgent,team.teamPhoneA,team.teamEmailA,team.teamStatus,team.teamRegDate, p.detailDoc
     FROM tournament t
     LEFT JOIN team ON team.tnmID = t.tnmID
     LEFT JOIN sport s ON t.sportID = s.sportID
@@ -121,21 +121,21 @@ router.get('/team/(:teamID)', (req, res, next) => {
 router.get('/player/accept/(:playerID)', (req, res, next) => {
     let thisplayerID = req.params.playerID;
 
-    
-
-      
-
     dbConnection.query('SELECT * FROM player WHERE playerID ='+thisplayerID, (err, rows) => {
     let tnmID = rows[0].tnmID;
     let playerEmail = rows[0].playerEmail;
     let form_data = { playerStatus: 'accept' }
 
+dbConnection.query('SELECT * FROM tournament WHERE tnmID = '+tnmID,(err,tnm)=>{
+
     let mailOptions = {
         from: 'thesissportmanagement@gmail.com',
         to: playerEmail,
         subject: 'ผลการสมัครเข้าร่วมการแข่งขัน',
-        text: 'เจ้าหน้าที่ได้ตรวจสอบข้อมูลและยอมรับผู้สมัครเข้าร่วมการแข่งขันเรียบร้อยแล้ว '
+        text: 'เจ้าหน้าที่ได้ตรวจสอบข้อมูลและอนุมัติผู้สมัครเข้าร่วมการแข่งขัน '+tnm[0].tnmName+' เรียบร้อยแล้ว '
       };
+
+
       transporter.sendMail(mailOptions, function(error, info){
         if (error) throw error;
           console.log('Email sent: ' + info.response);
@@ -143,7 +143,9 @@ router.get('/player/accept/(:playerID)', (req, res, next) => {
         req.flash('success','ยอมรับผู้เล่นเรียบร้อย');
         res.redirect('/tnmcheck/candidatesolo/'+tnmID);
     })
+
     })
+})
 })
 })
 
@@ -151,20 +153,18 @@ router.get('/team/accept/(:teamID)', (req, res, next) => {
     let thisteamID = req.params.teamID;
 
     
-
-      
-    
     dbConnection.query('SELECT * FROM team WHERE teamID ='+thisteamID, (err, rows) => {
     let tnmID = rows[0].tnmID;
     let teamEmailA = rows[0].teamEmailA;
     let form_data = { teamStatus: 'accept' }
-
+    dbConnection.query('SELECT * FROM tournament WHERE tnmID = '+tnmID,(err,tnm)=>{ 
     let mailOptions = {
         from: 'thesissportmanagement@gmail.com',
         to: teamEmailA,
         subject: 'ผลการสมัครเข้าร่วมการแข่งขัน',
-        text: 'เจ้าหน้าที่ได้ตรวจสอบข้อมูลและยอมรับทีมและผู้เล่นทั้งหมดในทีมเข้าร่วมการแข่งขันเรียบร้อยแล้ว '
+        text: 'เจ้าหน้าที่ได้ตรวจสอบข้อมูลและอนุมัติทีมเข้าร่วมการแข่งขัน '+ tnm[0].tnmName +' เรียบร้อยแล้ว '
       };
+    
       transporter.sendMail(mailOptions, function(error, info){
         if (error) throw error;
           console.log('Email sent: ' + info.response);
@@ -179,7 +179,7 @@ router.get('/team/accept/(:teamID)', (req, res, next) => {
         res.redirect('/tnmcheck/candidateteam/'+tnmID);
     })
     })
-    
+})
 
 })
 })
@@ -192,11 +192,12 @@ router.get('/player/deny/(:playerID)', (req, res, next) => {
     let playerEmail = rows[0].playerEmail;
     let form_data = { playerStatus: 'deny'}
 
+    dbConnection.query('SELECT * FROM tournament WHERE tnmID = '+tnmID,(err,tnm)=>{
     let mailOptions = {
         from: 'thesissportmanagement@gmail.com',
         to: playerEmail,
         subject: 'ผลการสมัครเข้าร่วมการแข่งขัน',
-        text: 'ขออภัยท่านไม่ได้รับเลือกเข้าร่วมการแข่งขัน '
+        text: 'ขออภัยท่านไม่ได้รับเลือกเข้าร่วมการแข่งขัน '+tnm[0].tnmName
       };
 
       transporter.sendMail(mailOptions, function(error, info){
@@ -209,6 +210,7 @@ router.get('/player/deny/(:playerID)', (req, res, next) => {
 })
 })
 })
+})
 
 router.get('/team/deny/(:teamID)', (req, res, next) => {
     let thisteamID = req.params.teamID;
@@ -218,11 +220,13 @@ router.get('/team/deny/(:teamID)', (req, res, next) => {
     let teamEmailA = rows[0].teamEmailA;
     let form_data = { teamStatus: 'deny' }
 
+    dbConnection.query('SELECT * FROM tournament WHERE tnmID = '+tnmID,(err,tnm)=>{
+
     let mailOptions = {
         from: 'thesissportmanagement@gmail.com',
         to: playerEmail,
         subject: 'ผลการสมัครเข้าร่วมการแข่งขัน',
-        text: 'ขออภัยทีมของท่านไม่ได้รับเลือกเข้าร่วมการแข่งขัน '
+        text: 'ขออภัยทีมของท่านไม่ได้รับเลือกเข้าร่วมการแข่งขัน '+tnm[0].tnmName
       };
 
       transporter.sendMail(mailOptions, function(error, info){
@@ -234,7 +238,7 @@ router.get('/team/deny/(:teamID)', (req, res, next) => {
     })
 })
     })
-
+})
 })
 
 router.get('/edit/player/(:playerID)',(req,res,next)=>{
@@ -269,6 +273,12 @@ router.get('/emailsingle/(:playerID)',(req,res,next)=>{
     })
 })
 
+router.post('/emailsingle/(:playerID)',(req,res)=>{
+    let thisplayerID = req.params.playerID;
+    let playerFName = req.body.playerFName;
+    let  
+
+})
 
 
 module.exports = router;
