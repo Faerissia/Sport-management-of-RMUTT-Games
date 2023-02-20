@@ -275,9 +275,30 @@ router.get('/emailsingle/(:playerID)',(req,res,next)=>{
 
 router.post('/emailsingle/(:playerID)',(req,res)=>{
     let thisplayerID = req.params.playerID;
-    let playerFName = req.body.playerFName;
-    let  
+    let tnmID = req.body.tnmID;
+    let emailto = req.body.emailto;
+    let editemailer = req.body.editemailer;
+    console.log('thisplayer',thisplayerID,'tnmID',tnmID,'email',emailto,'editemail',editemailer)
 
+    dbConnection.query('SELECT * FROM tournament WHERE tnmID ='+tnmID,(err,tnm)=>{
+    let mailOptions = {
+        from: 'thesissportmanagement@gmail.com',
+        to: emailto,
+        subject: 'แก้ไขข้อมูลผู้สมัครเข้าร่วมการแข่งขัน '+tnm[0].tnmName,
+        text: '',
+        html:'<p>รายละเอียดการแก้ไข: '+ editemailer+'</p>' +
+            '<a href="http://localhost:3000/mosingle/'+thisplayerID+'">คลิ๊กที่นี้</a>'
+
+      };
+
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) throw error;
+          console.log('Email sent: ' + info.response);
+          req.flash('success','ส่งรายละเอียดข้อมูลการแก้ไขเรียบร้อยแล้ว');
+          res.redirect('/tnmcheck/candidatesolo/'+tnmID);
+    })
+
+})
 })
 
 

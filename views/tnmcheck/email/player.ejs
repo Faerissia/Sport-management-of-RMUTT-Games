@@ -35,7 +35,8 @@
             </div>
             <div class="form-group">
                 <label>อีเมล:</label>
-                <input type="email" class="form-control" value="<%= data[0].playerEmail %>" disabled>
+                <input type="text" class="form-control"  value="<%= data[0].playerEmail %>" disabled>
+                <input type="hidden" class="form-control" name="emailto" value="<%= data[0].playerEmail %>">
             </div>
             <div class="form-group">
                 <label>มหาวิทยาลัย:</label>
@@ -49,7 +50,7 @@
                 <label>เลขประจำตัวประชาชน:</label>
                 <input type="text" class="form-control" value="<%= data[0].playerIDCard %>" disabled>
             </div>
-            <% data[0].tnmID %>
+            <input type="hidden" name="tnmID" value="<%= data[0].tnmID %>">
             <div class="form-group">
                 <label>เอกสารยืนยันตัวตน:</label>
                 <a href="../../player/<%= data[0].playerFile1%>" download="<%= data[0].playerFile1 %>"><%= data[0].playerFile1 %></a>
@@ -61,7 +62,7 @@
             </div>
             <div class="form-group" style="margin-top: 10px;">
                 <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
-                <button value="submit" class="btn btn-success">ยอมรับ</button>
+                <button value="submit" class="btn btn-success">ตกลง</button>
 
             </div>
         </form>
