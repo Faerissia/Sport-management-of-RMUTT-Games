@@ -128,8 +128,34 @@
                                 <label for="validationFile" class="col-form-label">เอกสารยืนยันตัวตน</label>
                             </div>
                             <div class="col-3">
-                                <input type="file" class="form-control border-dark" id="validationFile" value=""
-                                    name="playerFile1" required>
+                                <input type="file" class="form-control border-dark" maxlength="4000000"
+                                 accept="image/jpg,image/png,application/pdf" id="validationFile" 
+                                 value="" name="playerFile1" required>
+                            </div>
+                        </div>
+
+                        <!-- -------------------------------------------------------------- -->
+                
+                        <div class="row my-2   row-cols-2">
+                            <div class="col-2 text-start">
+                                <label for="validationFile" class="col-form-label">(<%= data[0].tnmUrl %>)</label>
+                            </div>
+                            <div class="col-3">
+                                <input type="file" class="form-control border-dark" maxlength="4000000"
+                                 accept="image/jpg,image/png,application/pdf" id="validationFile" 
+                                 value="" name="playerFile2">
+                            </div>
+                        </div>
+
+                        <!-- -------------------------------------------------------------- -->
+                
+                        <div class="row my-2   row-cols-2">
+                            <div class="col-2 text-start">
+                            </div>
+                            <div class="col-3">
+                                <input type="file" class="form-control border-dark" maxlength="4000000"
+                                 accept="image/jpg,image/png,application/pdf" id="validationFile" 
+                                 value="" name="playerFile3">
                             </div>
                         </div>
 

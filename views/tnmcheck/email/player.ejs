@@ -12,7 +12,7 @@
 <body>
     <h1>ผู้สมัครการแข่งขัน <%=data[0].tnmName %> </h1>
     <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-    <form action="/tnmcheck/player" method="post">
+    <form action="/tnmcheck/emailsingle/<%= data[0].playerID %>" method="post">
         <div class="form-group">
             <label>ชื่อ:</label>
             <input type="text" class="form-control" value="<%= data[0].playerFName %>" disabled>
@@ -35,7 +35,8 @@
             </div>
             <div class="form-group">
                 <label>อีเมล:</label>
-                <input type="email" class="form-control" value="<%= data[0].playerEmail %>" disabled>
+                <input type="text" class="form-control"  value="<%= data[0].playerEmail %>" disabled>
+                <input type="hidden" class="form-control" name="emailto" value="<%= data[0].playerEmail %>">
             </div>
             <div class="form-group">
                 <label>มหาวิทยาลัย:</label>
@@ -49,10 +50,7 @@
                 <label>เลขประจำตัวประชาชน:</label>
                 <input type="text" class="form-control" value="<%= data[0].playerIDCard %>" disabled>
             </div>
-            <div class="form-group">
-                <label>รหัสนักศึกษา:</label>
-                <input type="text" class="form-control" value="<%= data[0].playerStudentID %>" disabled>
-            </div><% data[0].tnmID %>
+            <input type="hidden" name="tnmID" value="<%= data[0].tnmID %>">
             <div class="form-group">
                 <label>เอกสารยืนยันตัวตน:</label>
                 <a href="../../player/<%= data[0].playerFile1%>" download="<%= data[0].playerFile1 %>"><%= data[0].playerFile1 %></a>
@@ -60,11 +58,11 @@
             <div class="form-group">
                 <label>ส่งไปที่อีเมล <%= data[0].playerEmail%></label>
                 <label>รายละเอียด</label>
-                <input type="text" class="form-control" value="<%= data[0].detailDoc%>">
+                <input type="text" class="form-control" name="editemailer" >
             </div>
             <div class="form-group" style="margin-top: 10px;">
                 <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
-                <button value="submit" class="btn btn-success">ยอมรับ</button>
+                <button value="submit" class="btn btn-success">ตกลง</button>
 
             </div>
         </form>

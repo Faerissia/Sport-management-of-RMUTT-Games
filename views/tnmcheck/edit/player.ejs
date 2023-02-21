@@ -49,10 +49,7 @@
                 <label>เลขประจำตัวประชาชน:</label>
                 <input type="text" class="form-control" value="<%= data[0].playerIDCard %>" >
             </div>
-            <div class="form-group">
-                <label>รหัสนักศึกษา:</label>
-                <input type="text" class="form-control" value="<%= data[0].playerStudentID %>" >
-            </div><% data[0].tnmID %>
+            <% data[0].tnmID %>
             <div class="form-group">
                 <label>เอกสารยืนยันตัวตน:</label>
                 <a href="../../player/<%= data[0].playerFile1%>" download="<%= data[0].playerFile1 %>"><%= data[0].playerFile1 %></a>
