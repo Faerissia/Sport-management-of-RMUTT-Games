@@ -280,6 +280,11 @@ router.post('/emailsingle/(:playerID)',(req,res)=>{
     let editemailer = req.body.editemailer;
     console.log('thisplayer',thisplayerID,'tnmID',tnmID,'email',emailto,'editemail',editemailer)
 
+    edit_form={playerStatus:'edit'};
+    dbConnection.query('UPDATE player SET ? WHERE playerID ='+thisplayerID,edit_form,(err,emailedit)=>{
+
+    })
+
     dbConnection.query('SELECT * FROM tournament WHERE tnmID ='+tnmID,(err,tnm)=>{
     let mailOptions = {
         from: 'thesissportmanagement@gmail.com',

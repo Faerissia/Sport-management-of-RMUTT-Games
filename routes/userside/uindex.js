@@ -330,7 +330,7 @@ router.get('/tnmhighlight/(:tnmID)', (req, res, next) => {
 
 router.get('/singlereg/(:tnmID)', (req, res, next) => {
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT u.name, u.uniID,t.tnmID, t.tnmName FROM university u INNER JOIN tournament t WHERE tnmID =' +tnmID, (err, rows) => {
+    dbConnection.query('SELECT u.name, u.uniID,t.tnmID, t.tnmName,t.tnmUrl FROM university u INNER JOIN tournament t WHERE tnmID =' +tnmID, (err, rows) => {
                 res.render('userside/regform/singlereg', { data: rows,tnmID: tnmID,status_login: req.session.loggedin
                  });
     })
@@ -346,13 +346,17 @@ router.post('/singlereg', (req, res, next) =>{
     let playerEmail = req.body.playerEmail;
     let facultyID = req.body.facultyID;
     let playerIDCard = req.body.playerIDCard;
-    let playerFile1 = req.files.playerFile1;
     let tnmID =req.body.tnmID;
 
-    
-    var name_pfile = new Date().getTime() +'_'+playerFile1.name;
-    playerFile1.mv('./assets/player/' + name_pfile);
-
+    let playerFiles = [];
+    for(let i =1;i <= 3; i++){
+        if(req.files[`playerFile${i}`]){
+        let playerFile = req.files[`playerFile${i}`];
+        let  name_pfile = new Date().getTime() +'_'+playerFile.name;
+        playerFile.mv('./assets/player/' + name_pfile);
+        playerFiles.push(name_pfile);
+    }
+    }
 
     let OTP = Math.floor(1000 + Math.random() * 9000);
 
@@ -381,7 +385,7 @@ router.post('/singlereg', (req, res, next) =>{
             playerEmail: playerEmail,
             facultyID: facultyID,
             playerIDCard: playerIDCard,
-            playerFile1: name_pfile})
+            playerFile1: playerFiles.join(',')})
         }
       });
 })
