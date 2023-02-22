@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 21, 2023 at 03:34 PM
+-- Generation Time: Feb 22, 2023 at 06:07 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -181,6 +181,24 @@ CREATE TABLE `matchplay` (
   `placeID` int(3) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `matchplay`
+--
+
+INSERT INTO `matchplay` (`matchID`, `participant1`, `participant2`, `playerID`, `teamID`, `score1`, `score2`, `score`, `tnmID`, `round`, `seed`, `pDate`, `time`, `timeend`, `placeID`) VALUES
+(299, 159, 160, NULL, NULL, 3, 1, NULL, 28, '1', 1, '2023-02-21', '09:30:00', '10:30:00', 33),
+(300, 161, 162, NULL, NULL, 3, 1, NULL, 28, '1', 2, '2023-02-22', '10:30:00', '00:30:00', 33),
+(301, 159, 161, NULL, NULL, 3, 1, NULL, 28, '2', 3, '2023-02-22', '13:00:00', '14:00:00', 33),
+(302, 159, NULL, NULL, NULL, NULL, NULL, NULL, 28, '3', 4, NULL, NULL, NULL, NULL),
+(303, 167, 168, NULL, NULL, 12, 3, NULL, 33, '1', 1, '2023-02-23', '11:59:00', '23:59:00', 33),
+(304, 169, 170, NULL, NULL, 1, 4, NULL, 33, '1', 2, '2023-02-15', '23:59:00', '13:59:00', 33),
+(305, 171, 172, NULL, NULL, 2, 1, NULL, 33, '1', 3, '2023-02-01', '13:59:00', '23:01:00', 33),
+(306, 173, 174, NULL, NULL, 3, 1, NULL, 33, '1', 4, '2023-02-05', '00:00:00', '02:00:00', 33),
+(307, 168, 170, NULL, NULL, 1, 4, NULL, 33, '2', 5, '2023-02-07', '03:00:00', '00:00:00', 33),
+(308, 171, 173, NULL, NULL, 1, 3, NULL, 33, '2', 6, '2023-02-28', '02:00:00', '12:00:00', 33),
+(309, 170, 173, NULL, NULL, 3, 1, NULL, 33, '3', 7, '2023-02-23', '05:00:00', '05:00:00', 33),
+(310, 170, NULL, NULL, NULL, NULL, NULL, NULL, 33, '4', 8, NULL, NULL, NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -343,13 +361,18 @@ CREATE TABLE `player` (
 --
 
 INSERT INTO `player` (`playerID`, `playerIDCard`, `playerFName`, `playerLName`, `playerGender`, `playerBirthday`, `playerPhone`, `playerEmail`, `facultyID`, `teamID`, `playerFile1`, `tnmID`, `detailDoc`, `otp`, `playerStatus`, `playerRegDate`) VALUES
-(155, '0984526163464', 'Nontaphat', 'Ruaklittichai', 'ชาย', '2023-02-20', '0984926565', 'firstlnw0099@gmail.com', 1, 67, '1676898426781_basketball.jpg', 27, '', NULL, 'accept', '2023-02-20'),
-(156, '1321305468489', 'ชลธี', 'คำลือ', 'ชาย', '2023-02-20', '0984984162', 'firstlnw0099@gmail.com', 1, 67, '1676898426782_basketball.jpg', 27, '', NULL, 'accept', '2023-02-20'),
-(157, '0984526163464', 'Nontaphat', 'Ruaklittichai', 'ชาย', '2023-02-20', '0984926565', 'firstlnw0099@gmail.com', 1, 68, '1676898699531_kl.jpg', 27, 'สมัครซ้ำ', NULL, 'wait', '2023-02-20'),
-(158, '3510984949797', 'Nontaphat', 'Ruaklittichai', 'ชาย', '2023-02-20', '0984926565', 'firstlnw0099@gmail.com', 1, 68, '1676898699532_kl.jpg', 27, '', NULL, 'wait', '2023-02-20'),
-(159, '1980494894940', 'Nontaphat', 'Ruaklittichai', 'ชาย', '2023-02-20', '0984926565', 'firstlnw0099@gmail.com', 1, NULL, '1676900567538_66kebb6ah7k8ejiakacgi.jpg', 28, NULL, NULL, 'wait', '2023-02-20'),
-(160, '0498498065406', 'Nontaphat', 'Ruaklittichai', 'ชาย', '2023-02-22', '0984926565', 'firstlnw0099@gmail.com', 1, NULL, '1676968871938_à¸ªà¸à¸²à¸¡.png,1676968871939_b3me2cq1z1b71.png,1676968871939_4584093.png', 28, NULL, NULL, 'wait', '2023-02-21'),
-(161, '6504648674949', 'ชลธี', 'คำลือ', 'ชาย', '2023-02-21', '0984984162', 'firstlnw0099@gmail.com', 1, NULL, '1676969165180_b3me2cq1z1b71.png,1676969165180_4584093.png', 28, NULL, NULL, 'wait', '2023-02-21');
+(159, '1980494894940', 'Nontaphat', 'Ruaklittichai', 'ชาย', '2023-02-20', '0984926565', 'firstlnw0099@gmail.com', 1, NULL, '1676900567538_66kebb6ah7k8ejiakacgi.jpg', 28, NULL, NULL, 'accept', '2023-02-20'),
+(160, '0498498065406', 'กิตติภพ', 'Ruaklittichai', 'ชาย', '2023-02-22', '0984926565', 'firstlnw0099@gmail.com', 13, NULL, '1676968871938_à¸ªà¸à¸²à¸¡.png,1676968871939_b3me2cq1z1b71.png,1676968871939_4584093.png', 28, NULL, NULL, 'accept', '2023-02-21'),
+(161, '6504648674949', 'ชลธี', 'คำลือ', 'ชาย', '2023-02-21', '0984984162', 'firstlnw0099@gmail.com', 18, NULL, '1676969165180_b3me2cq1z1b71.png,1676969165180_4584093.png', 28, NULL, NULL, 'accept', '2023-02-21'),
+(162, '6504648674949', 'วสวิญญ์', 'คำลือ', 'ชาย', '2023-02-21', '0984984162', 'firstlnw0099@gmail.com', 28, NULL, '1676969165180_b3me2cq1z1b71.png,1676969165180_4584093.png', 28, NULL, NULL, 'accept', '2023-02-21'),
+(167, '1980494894940', 'Nontaphat', 'Ruaklittichai', 'ชาย', '2023-02-20', '0984926565', 'firstlnw0099@gmail.com', 1, NULL, '1676900567538_66kebb6ah7k8ejiakacgi.jpg', 33, NULL, NULL, 'accept', '2023-02-20'),
+(168, '0498498065406', 'กิตติภพ', 'Ruaklittichai', 'ชาย', '2023-02-22', '0984926565', 'firstlnw0099@gmail.com', 13, NULL, '1676968871938_à¸ªà¸à¸²à¸¡.png,1676968871939_b3me2cq1z1b71.png,1676968871939_4584093.png', 33, NULL, NULL, 'accept', '2023-02-21'),
+(169, '6504648674949', 'ชลธี', 'คำลือ', 'ชาย', '2023-02-21', '0984984162', 'firstlnw0099@gmail.com', 18, NULL, '1676969165180_b3me2cq1z1b71.png,1676969165180_4584093.png', 33, NULL, NULL, 'accept', '2023-02-21'),
+(170, '6504648674949', 'วสวิญญ์', 'คำลือ', 'ชาย', '2023-02-21', '0984984162', 'firstlnw0099@gmail.com', 28, NULL, '1676969165180_b3me2cq1z1b71.png,1676969165180_4584093.png', 33, NULL, NULL, 'accept', '2023-02-21'),
+(171, '1980494894940', 'จักริน', 'Ruaklittichai', 'ชาย', '2023-02-20', '0984926565', 'firstlnw0099@gmail.com', 1, NULL, '1676900567538_66kebb6ah7k8ejiakacgi.jpg', 33, NULL, NULL, 'accept', '2023-02-20'),
+(172, '0498498065406', 'เมธานันท์', 'Ruaklittichai', 'ชาย', '2023-02-22', '0984926565', 'firstlnw0099@gmail.com', 13, NULL, '1676968871938_à¸ªà¸à¸²à¸¡.png,1676968871939_b3me2cq1z1b71.png,1676968871939_4584093.png', 33, NULL, NULL, 'accept', '2023-02-21'),
+(173, '6504648674949', 'นพดล', 'คำลือ', 'ชาย', '2023-02-21', '0984984162', 'firstlnw0099@gmail.com', 18, NULL, '1676969165180_b3me2cq1z1b71.png,1676969165180_4584093.png', 33, NULL, NULL, 'accept', '2023-02-21'),
+(174, '6504648674949', 'ปฏิพล', 'คำลือ', 'ชาย', '2023-02-21', '0984984162', 'firstlnw0099@gmail.com', 28, NULL, '1676969165180_b3me2cq1z1b71.png,1676969165180_4584093.png', 33, NULL, NULL, 'accept', '2023-02-21');
 
 -- --------------------------------------------------------
 
@@ -415,17 +438,8 @@ CREATE TABLE `team` (
   `tnmID` int(3) NOT NULL,
   `detailDoc` varchar(255) DEFAULT NULL,
   `otp` int(10) DEFAULT NULL,
-  `teamRegDate` date NOT NULL DEFAULT current_timestamp(),
-  `emailedit` enum('YES','NO') NOT NULL DEFAULT 'NO'
+  `teamRegDate` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `team`
---
-
-INSERT INTO `team` (`teamID`, `teamName`, `NameAgent`, `LnameAgent`, `teamPhoneA`, `teamEmailA`, `uniID`, `teamStatus`, `teamPic`, `tnmID`, `detailDoc`, `otp`, `teamRegDate`, `emailedit`) VALUES
-(67, 'team1', 'Nontaphat', 'Ruaklittichai', '0984926565', 'firstlnw0099@gmail.com', 1, 'accept', '1676898426781_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', 27, NULL, NULL, '2023-02-20', 'NO'),
-(68, 'tean2', 'team2', 'team2', '0631684974', 'firstlnw0099@gmail.com', 1, 'wait', '1676898699530_tennis.jfif', 27, NULL, NULL, '2023-02-20', 'NO');
 
 -- --------------------------------------------------------
 
@@ -459,8 +473,8 @@ CREATE TABLE `tournament` (
 --
 
 INSERT INTO `tournament` (`tnmID`, `tnmName`, `sportID`, `tnmUrl`, `Rstartdate`, `Renddate`, `tnmStartdate`, `tnmEnddate`, `tnmTypegame`, `tnmDetail`, `tnmPicture`, `tnmFile1`, `tnmFile2`, `tnmFile3`, `accountID`, `st1`, `nd2`, `rd3`) VALUES
-(27, 'team single eli', 2, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-20', '2023-02-20', '2023-02-20', '2023-02-20', NULL, 'team single eli', '1676896231892_kl.jpg', '1676896231892_kl.jpg', NULL, NULL, NULL, NULL, NULL, NULL),
-(28, 'solo single', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-20', '2023-02-20', '2023-02-20', '2023-02-20', NULL, 'solosingle', '1676900517256_000_33346NG-728x485.jpg', '1676900517256_kl.jpg', NULL, NULL, NULL, NULL, NULL, NULL);
+(28, 'single 4 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-20', '2023-02-20', '2023-02-20', '2023-02-20', 'single', 'solosingle', '1676900517256_000_33346NG-728x485.jpg', '1676900517256_kl.jpg', NULL, NULL, NULL, '159', '161', '160'),
+(33, 'single 8 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-22', '2023-02-22', '2023-02-22', '2023-02-22', 'single', 'single 8 คน', '1677084861649_4.jpg', '1677084861649_2.jpg', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -634,7 +648,7 @@ ALTER TABLE `highlight`
 -- AUTO_INCREMENT for table `matchplay`
 --
 ALTER TABLE `matchplay`
-  MODIFY `matchID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=299;
+  MODIFY `matchID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=311;
 
 --
 -- AUTO_INCREMENT for table `place`
@@ -652,7 +666,7 @@ ALTER TABLE `place_opening`
 -- AUTO_INCREMENT for table `player`
 --
 ALTER TABLE `player`
-  MODIFY `playerID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
+  MODIFY `playerID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=175;
 
 --
 -- AUTO_INCREMENT for table `sport`
@@ -670,13 +684,13 @@ ALTER TABLE `sport_type`
 -- AUTO_INCREMENT for table `team`
 --
 ALTER TABLE `team`
-  MODIFY `teamID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `teamID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `tournament`
 --
 ALTER TABLE `tournament`
-  MODIFY `tnmID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `tnmID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `university`

@@ -6,132 +6,148 @@
       <html lang="en">
 
       <head>
-        <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.7/dist/iconify-icon.min.js"></script>
         <title>สรุปรางวัล</title>
+        <style>
+          /* th,
+          td {
+            border: 1px solid rgb(227, 227, 227);
+            padding: 8px;
+            text-align: center;
+          }
 
+          /* th:nth-child(3) {
+            background-color: rgb(252, 255, 104);
+
+          } */
+
+          /* td:nth-child(3) {
+            background-color: rgb(252, 252, 92);
+          } */
+
+          /* th:nth-child(4) {
+            background-color: rgb(226, 226, 226);
+
+          } */
+
+          /* td:nth-child(4) {
+            background-color: rgb(218, 218, 218);
+          } */
+
+          /* th:nth-child(5) {
+            background-color: rgb(255, 173, 49);
+
+          } */
+/* 
+          td:nth-child(5) {
+            background-color: rgb(255, 188, 88);
+          } */ */
+
+/* 
+          .container {
+  position: relative;
+} */
+
+
+
+
+        </style>
       </head>
 
       <body>
-
-        <div class="container-sm">
-          <div class="display-3 mb-2">
-            สรุปเหรียญ รางวัล
-          </div>
+        <div>
 
 
-          <%- include("../partials/menuindex") %>
-            <div class="container-sm"></div>
-            <% if(data.length) { %>
-              <table class="table table-striped table-hover table-bordered border-dark mt-2">
-                <thead style="background-color: #6DAFFE;">
-                  <tr class="text-center ">
-                    <!-- <th scope="col">อันดับ</th> -->
-                    <th scope="col ">
-                      <div class="my-auto h-100">
+          
 
-                        มหาวิทยาลัย
-                      </div>
-                    </th>
-                    <th scope="col"><iconify-icon icon="noto:1st-place-medal" width="40" height="40"></iconify-icon>
-                    </th>
-                    <th scope="col"><iconify-icon icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon>
-                    </th>
-                    <th scope="col"><iconify-icon icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon>
-                    </th>
-                    <th scope="col" class="">
+       
+        <%- include("../partials/menuindex") %>
 
+        <div class="display-4 mb-2">
+          สรุปเหรียญรางวัล
+        </div>
 
+          <% if(merge.length) { %>
+            <table class="table table-striped table-hover table-bordered border-dark mt-2">
+              <thead style="background-color: #6DAFFE;">
+                <tr class="text-center ">
+                  <!-- <th scope="col">อันดับ</th> -->
+                  <th>ลำดับที่</th>
+                  <th scope="col " > 
+                  <div class="my-auto h-100">
 
+                    มหาวิทยาลัย
+                  </div>
+                  </th>
+                  <th scope="col"><iconify-icon icon="noto:1st-place-medal" width="40" height="40"></iconify-icon></th>
+                  <th scope="col"><iconify-icon icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon></th>
+                  <th scope="col"><iconify-icon icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon></th>
+                  <th scope="col" class="">
+                    
 
-                      <iconify-icon class="item1" icon="noto:1st-place-medal" width="40" height="40"></iconify-icon>
-                      <iconify-icon class="item2" icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon>
-                      <iconify-icon class="item3" icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon>
-
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% let allst1=0; let allnd2=0; let allrd3=0; let totalall=0; %>
-                    <% for(let i=0; i < data.length; i++) { %>
-                      <tr class="text-center">
-                        <td>
-                          <div class="w-auto text-start ms-5">
-                            <div class=" btn btn btn-warning text-start  " style="width: 90%; ">
-                              <a class="text-decoration-none text-dark text-nowrap" href="/result/<%=data[i].uniID %>">
-                                <div class="d-flex">
-                                  <div class="col-auto me-2">
-                                    <%= i+1 %>
-                                  </div>
-                                  <div class="col-auto">
-                                    <%= data[i].name %>
-                                  </div>
-                                </div>
-                              </a>
-                            </div>
-                          </div>
-
-                        </td>
-                        <td>
-                          <% unist1=team[i][0].st1 + solo[i][0].st1; allst1 +=unist1 %>
-                            <%= unist1 %>
-                        </td>
-                        <td>
-                          <% unind2=team[i][0].nd2 + solo[i][0].nd2; allnd2 +=unind2 %>
-                            <%= unind2 %>
-                        </td>
-                        <td>
-                          <% unird3=team[i][0].rd3 + solo[i][0].rd3; allrd3 +=unird3 %>
-                            <%= unird3 %>
-                        </td>
-                        <td>
-                          <% uniall=unist1 + unind2 + unird3; totalall +=uniall %>
-                            <%= uniall %>
-                        </td>
-                      </tr>
-                      <% } %>
-
-                </tbody>
-                <tfoot class="text-center">
-
-                  <tr>
-                    <!-- <th scope="col">อันดับ</th> -->
-                    <td scope="col">
+                     <iconify-icon class="item1" icon="noto:1st-place-medal" width="40" height="40"></iconify-icon>
+                     <iconify-icon class="item2" icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon>
+                     <iconify-icon class="item3" icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon>
+                 
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <% let sumall = 0; let sumst1 = 0; let sumnd2 =0; let sumrd3 = 0; %>
+                <% for(let i=0; i < merge.length; i++) { %>
+                  <tr class="text-center">
+                    <td><%=i+1%></td>
+                    <td>
                       <div class="box  w-auto text-start ms-5">
-                        <div class=" btn  btn-primary" style="width: 60%; ">
-                          <div class="text-center text-light">
-                            รวม
-                          </div>
+                        <div class=" btn btn btn-warning text-start  " style="width: 60%; ">
+                          <a class="text-decoration-none text-dark " href="/gold/<%=merge[i].uniID %>">
+                              <div class="col">
+                                <%= merge[i].name %>
+                              </div>
+
+                          </a>
                         </div>
                       </div>
-                    </td>
 
-                    <td scope="col">
-                      <%= allst1 %> รวมที่1
                     </td>
-                    <td scope="col">
-                      <%= allnd2 %>รวมที่2
-                    </td>
-                    <td scope="col">
-                      <%= allrd3 %>รวมที่3
-                    </td>
-                    <td scope="col">
-                      <%= totalall %>รวมทั้งหมด
-                    </td>
+                    <td><%=merge[i].st1 %></td>
+                    <td><%=merge[i].nd2 %></td>
+                    <td><%=merge[i].rd3 %></td>
+                    <td><%=merge[i].total %></td>
                   </tr>
-
-                </tfoot>
-              </table>
-              <% } %>
-
-                <% if(!data.length) { %>
-                  <p class="text-center">ไม่พบรายการสถานที่</p>
+                  <% sumall += merge[i].total; sumst1 += merge[i].st1; sumnd2 += merge[i].nd2; sumrd3 += merge[i].rd3; %>
                   <% } %>
 
-        </div>
+              </tbody>
+              <tfoot class="text-center">
+
+                <tr>
+                  <!-- <th scope="col">อันดับ</th> -->
+                  <td colspan="2" scope="col">
+                    <div class="box  w-auto text-start ms-5">
+                      <div class=" btn  btn-primary"  style="width: 80%; ">
+                        <div class="text-center text-light">
+                          รวม
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  
+                  <td scope="col"><%= sumst1 %></td>
+                  <td scope="col"><%= sumnd2 %></td>
+                  <td scope="col"><%= sumrd3 %></td>
+                  <td scope="col"><%= sumall %></td>
+                </tr>
+
+              </tfoot>
+            </table>
+            <% } %>
+
+              <% if(!merge.length) { %>
+                <p class="text-center">ไม่พบรายการสถานที่</p>
+                <% } %>
+
+              </div>
       </body>
-
-
 
       </html>
     </div>
