@@ -261,7 +261,11 @@ router.get('/bracket/(:tnmID)', (req, res, next)=> {
                     dbConnection.query(`SELECT p1.playerFName AS team1, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
                         res.render('tournament/bracket/single/single4', {tournamentName,data: rows, tnmID:tnmID,status_login: req.session.loggedin,user: user});
                     })
-                }
+                }else if(numplayer === 8){
+                  dbConnection.query(`SELECT p1.playerFName AS team1, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
+                      res.render('tournament/bracket/single/single8', {tournamentName,data: rows, tnmID:tnmID,status_login: req.session.loggedin,user: user});
+                  })
+              }
 
 
 
@@ -749,6 +753,7 @@ router.post('/matchedit/(:tnmID)',(req,res,next) =>{
     let score1 = req.body.score1;
     let score2 = req.body.score2;
     let round = req.body.round;
+    console.log(score1,score2)
 
     dbConnection.query('SELECT * FROM matchplay WHERE pDate = ? AND ? BETWEEN time AND timeend AND ? BETWEEN time and timeend;',[pDate,time,Endtime],(err,checkmatch)=>{
       if(checkmatch.length){
@@ -759,6 +764,8 @@ router.post('/matchedit/(:tnmID)',(req,res,next) =>{
     dbConnection.query('SELECT * FROM tournament WHERE tnmID = '+tnmID,(error,typeoftour)=>{
        
         if(typeoftour[0].tnmTypegame === 'single'){
+            
+          if(score1 && score2){
             let form_data={score1:score1,score2:score2,placeID:placeID,time:time,timeend:Endtime,pDate:pDate}
             dbConnection.query('UPDATE matchplay SET ? WHERE matchID ='+matchID,form_data,(error,rows)=>{
                 if(error) throw error;
@@ -1068,9 +1075,17 @@ router.post('/matchedit/(:tnmID)',(req,res,next) =>{
                   res.redirect('/tournament/match/'+tnmID);
             })
 
-
-
-
+          }else{
+            let form_data ={
+              pDate: pDate,
+              placeID: placeID,
+              time: time,
+              timeend: Endtime
+          }
+          dbConnection.query("UPDATE matchplay SET ? WHERE tnmID = ? AND participant1 = ? AND participant2 = ?",[form_data,tnmID,participant1,participant2],(error,rows)=> {
+            res.redirect('/tournament/match/'+tnmID);
+        })
+          }
 
         }else{
             let form_data ={

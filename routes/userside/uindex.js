@@ -500,9 +500,47 @@ router.get('/result', async (req,res,next)=>{
       let uniID = 1;
       let team = [];
       let solo = [];
+      let uniName = [];
       for(let i = 0; i < results.length; i++){
         let rows = await new Promise((resolve, reject) => {
-          dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM \`team\` team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
+          dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM team team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
+            if (error) reject(error);
+            resolve(rows);
+          });
+        });
+
+        let single = await new Promise((resolve, reject) => {
+            dbConnection.query(`SELECT COUNT(t1.st1)AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM player p left join tournament t1 on t1.st1 = p.playerID left join tournament t2 on t2.nd2 = p.playerID left join tournament t3 on t3.rd3 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID where f.uniID = ${uniID}`, (error, single) => {
+              if (error) reject(error);
+              resolve(single);
+            });
+          });
+        uniName.push(results[i].name);
+        team.push(rows);
+        solo.push(single);
+        uniID++;
+      }
+      let merge = [];
+      for( let j = 0;j<team.length;j++){
+        let st1 = team[j][0].st1 + solo[j][0].st1;
+        let nd2 = team[j][0].nd2 + solo[j][0].nd2;
+        let rd3 = team[j][0].rd3 + solo[j][0].rd3;
+        let total = st1 + nd2 +rd3;
+        let uniID = 1+j;
+        let name = uniName[j];
+        merge.push({ uniID,name, st1,nd2,rd3,total});
+      }
+      merge.sort((a,b) => b.st1 - a.st1);
+      res.render('userside/result',{merge,status_login: req.session.loggedin})
+    
+    });
+  });
+
+router.get('/gold/(:uniID)',async (req,res,next)=>{
+    let uniID = req.params.uniID;
+    let merge = [];
+        let team = await new Promise((resolve, reject) => {
+          dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM team team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
             if (error) reject(error);
             resolve(rows);
           });
@@ -515,41 +553,113 @@ router.get('/result', async (req,res,next)=>{
             });
           });
 
-        team.push(rows);
-        solo.push(single);
-        uniID++;
-      }
-      res.render('userside/result',{solo,team,data:results,status_login: req.session.loggedin})
-    });
-  });
+          let st1 = team[0].st1 + single[0].st1;
+          let nd2 = team[0].nd2 + single[0].nd2;
+          let rd3 = team[0].rd3 + single[0].rd3;
+          let total = st1 + nd2 +rd3;
+          merge.push({st1,nd2,rd3,total});
 
-router.get('/result/(:uniID)',async (req,res,next)=>{
-    dbConnection.query('SELECT * FROM university', async (error,results)=>{
-        let uniID = req.params.uniID;
-        let team = [];
-        let solo = [];
-        for(let i = 0; i < results.length; i++){
-          let rows = await new Promise((resolve, reject) => {
-            dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM \`team\` team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
+    dbConnection.query(`SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN player p ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.teamID IS NULL AND u.uniID = `+uniID+`
+          UNION ALL
+          SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN team ON team.tnmID = t.tnmID LEFT JOIN university u ON u.uniID = team.uniID WHERE team.uniID =`+uniID,(err,tnmsum)=>{
+
+        let totaltnm = tnmsum[0].tnmcount + tnmsum[1].tnmcount;            
+
+    dbConnection.query('SELECT * FROM university WHERE uniID = '+uniID, (error,results)=>{
+        dbConnection.query(`SELECT t.tnmID,s.sportName,t.tnmName,t.tnmstartDate,t.st1 FROM team team left join tournament t on t.st1 = team.teamID LEFT JOIN sport s ON s.sportID = t.sportID WHERE team.uniID = `+uniID+` AND t.st1 IS NOT NULL
+        UNION
+        SELECT t.tnmID,s.sportName,t.tnmName,t.tnmstartDate,t.st1 FROM player p left join tournament t on t.st1 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID LEFT JOIN sport s ON s.sportID = t.sportID where f.uniID = `+uniID+` AND t.st1 IS NOT NULL ORDER BY sportName;`, async (err,rows)=>{
+        
+console.log(rows)
+            res.render('userside/uniresult',{totaltnm,merge,data:rows,uni:results,status_login: req.session.loggedin})
+
+      });
+    })
+    })
+   })
+
+   router.get('/silver/(:uniID)',async (req,res,next)=>{
+    let uniID = req.params.uniID;
+    let merge = [];
+        let team = await new Promise((resolve, reject) => {
+          dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM team team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
+            if (error) reject(error);
+            resolve(rows);
+          });
+        });
+
+        let single = await new Promise((resolve, reject) => {
+            dbConnection.query(`SELECT COUNT(t1.st1)AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM player p left join tournament t1 on t1.st1 = p.playerID left join tournament t2 on t2.nd2 = p.playerID left join tournament t3 on t3.rd3 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID where f.uniID = ${uniID}`, (error, single) => {
               if (error) reject(error);
-              resolve(rows);
+              resolve(single);
             });
           });
-  
-          let single = await new Promise((resolve, reject) => {
-              dbConnection.query(`SELECT COUNT(t1.st1)AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM player p left join tournament t1 on t1.st1 = p.playerID left join tournament t2 on t2.nd2 = p.playerID left join tournament t3 on t3.rd3 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID where f.uniID = ${uniID}`, (error, single) => {
-                if (error) reject(error);
-                resolve(single);
-              });
-            });
-  
-          team.push(rows);
-          solo.push(single);
-          uniID++;
-        }
-        console.log('team',team,'solo',solo)
-        res.render('userside/uniresult',{solo,team,data:results,status_login: req.session.loggedin})
+
+          let st1 = team[0].st1 + single[0].st1;
+          let nd2 = team[0].nd2 + single[0].nd2;
+          let rd3 = team[0].rd3 + single[0].rd3;
+          let total = st1 + nd2 +rd3;
+          merge.push({st1,nd2,rd3,total});
+
+    dbConnection.query(`SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN player p ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.teamID IS NULL AND u.uniID = `+uniID+`
+          UNION ALL
+          SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN team ON team.tnmID = t.tnmID LEFT JOIN university u ON u.uniID = team.uniID WHERE team.uniID =`+uniID,(err,tnmsum)=>{
+
+        let totaltnm = tnmsum[0].tnmcount + tnmsum[1].tnmcount;            
+
+    dbConnection.query('SELECT * FROM university WHERE uniID = '+uniID, (error,results)=>{
+        dbConnection.query(`SELECT t.tnmID,s.sportName,t.tnmName,t.tnmstartDate,t.nd2 FROM team team left join tournament t on t.nd2 = team.teamID LEFT JOIN sport s ON s.sportID = t.sportID WHERE team.uniID = `+uniID+` AND t.nd2 IS NOT NULL
+        UNION
+        SELECT t.tnmID,s.sportName,t.tnmName,t.tnmstartDate,t.nd2 FROM player p left join tournament t on t.nd2 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID LEFT JOIN sport s ON s.sportID = t.sportID where f.uniID = `+uniID+` AND t.nd2 IS NOT NULL ORDER BY sportName;`, async (err,rows)=>{
+        
+
+            res.render('userside/uniresult',{totaltnm,merge,data:rows,uni:results,status_login: req.session.loggedin})
+
       });
+    })
+    })
+   })
+
+   router.get('/bronze/(:uniID)',async (req,res,next)=>{
+    let uniID = req.params.uniID;
+    let merge = [];
+        let team = await new Promise((resolve, reject) => {
+          dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM team team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
+            if (error) reject(error);
+            resolve(rows);
+          });
+        });
+
+        let single = await new Promise((resolve, reject) => {
+            dbConnection.query(`SELECT COUNT(t1.st1)AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM player p left join tournament t1 on t1.st1 = p.playerID left join tournament t2 on t2.nd2 = p.playerID left join tournament t3 on t3.rd3 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID where f.uniID = ${uniID}`, (error, single) => {
+              if (error) reject(error);
+              resolve(single);
+            });
+          });
+
+          let st1 = team[0].st1 + single[0].st1;
+          let nd2 = team[0].nd2 + single[0].nd2;
+          let rd3 = team[0].rd3 + single[0].rd3;
+          let total = st1 + nd2 +rd3;
+          merge.push({st1,nd2,rd3,total});
+
+    dbConnection.query(`SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN player p ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.teamID IS NULL AND u.uniID = `+uniID+`
+          UNION ALL
+          SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN team ON team.tnmID = t.tnmID LEFT JOIN university u ON u.uniID = team.uniID WHERE team.uniID =`+uniID,(err,tnmsum)=>{
+
+        let totaltnm = tnmsum[0].tnmcount + tnmsum[1].tnmcount;            
+
+    dbConnection.query('SELECT * FROM university WHERE uniID = '+uniID, (error,results)=>{
+        dbConnection.query(`SELECT t.tnmID,s.sportName,t.tnmName,t.tnmstartDate,t.rd3 FROM team team left join tournament t on t.rd3 = team.teamID LEFT JOIN sport s ON s.sportID = t.sportID WHERE team.uniID = `+uniID+` AND t.rd3 IS NOT NULL
+        UNION
+        SELECT t.tnmID,s.sportName,t.tnmName,t.tnmstartDate,t.rd3 FROM player p left join tournament t on t.rd3 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID LEFT JOIN sport s ON s.sportID = t.sportID where f.uniID = `+uniID+` AND t.rd3 IS NOT NULL ORDER BY sportName;`, async (err,rows)=>{
+        
+
+            res.render('userside/uniresult',{totaltnm,merge,data:rows,uni:results,status_login: req.session.loggedin})
+
+      });
+    })
+    })
    })
 
    router.get('/opening',(req,res,next)=>{

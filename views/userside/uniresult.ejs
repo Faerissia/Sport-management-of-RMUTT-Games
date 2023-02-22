@@ -10,34 +10,111 @@
 <body>
 
     <%- include("../partials/menuindex") %>
-    <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
-   <h1>สรุปเหรียญรางวัล <%= data[0].name %></h1>
-   <% let totalst1 =  solo[0][0].st1 + team[0][0].st1 %>
-   <% let totalnd2 =  solo[0][0].nd2 + team[0][0].nd2 %>
-   <% let totalrd3 =  solo[0][0].rd3 + team[0][0].rd3 %>
-   <% let totalall = totalst1 + totalnd2 + totalrd3 %>
-   <%= totalall %>
-   <%= totalst1 %>
-   <%= totalnd2 %>
-   <%= totalrd3 %>
+    <a href="/result" class="btn btn-primary">ย้อนกลับ</a>
+   <h1>สรุปเหรียญรางวัล <%= uni[0].name %></h1>
    <hr style="height:2px;border-width:0;color:black;background-color:black">
-  <br><br>
-  <h1>รายการแข่งขันที่เข้าร่วม</h1>
+
+   <div class="row">
+    <div class="col-12">
+
+      <div class="row">
+        <div class="col-3 ">
+            <div class="card">
+              <div class="row g-0 " style="min-height: 100px;">
+                <div class="col-md-4 " style="background: #6DAFFE;">
+                  <h5 class="mt-4" >การแข่งขันทั้งหมด</h5>
+                  
+                </div>
+                <div class="col-md-8 my-auto">
+                  <div class="card-body ">
+                    <span class="text-center "><h3><%= totaltnm %></h3></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div class="col-3">
+          <div class="card" >
+            <div class="row g-0" style="min-height: 100px;">
+              <div class="col-md-4 " style="background: gold;">
+                <a href="/gold/<%=uni[0].uniID %>"><div class="py-1"><iconify-icon icon="noto:1st-place-medal" width="90" height="90"></iconify-icon></div></a>
+              </div>
+              <div class="col-md-8 my-auto">
+                <div class="card-body ">
+                  <span class="text-center "><h3><%= merge[0].st1  %></h3></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="card" >
+            <div class="row g-0" style="min-height: 100px;">
+              <div class="col-md-4 " style="background: silver;">
+                <a href="/silver/<%=uni[0].uniID %>"><div class="py-1"><iconify-icon icon="noto:2nd-place-medal" width="90" height="90"></iconify-icon></div></a>
+              </div>
+              <div class="col-md-8 my-auto">
+                <div class="card-body ">
+                  <span class="text-center "><h3><%= merge[0].nd2  %></h3></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="card" >
+            <div class="row g-0" style="min-height: 100px;">
+              <div class="col-md-4 " style="background: #ff8a1c;">
+                <a href="/bronze/<%=uni[0].uniID %>"><div class="py-1"><iconify-icon icon="noto:3rd-place-medal" width="90" height="90"></iconify-icon></div></a>
+              </div>
+              <div class="col-md-8 my-auto">
+                <div class="card-body ">
+                  <span class="text-center "><h3><%= merge[0].rd3  %></h3></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+        
+      </div>
+    </div>
+  </div>
+  <br>
+  <h1>สรุปรายการเหรียญ</h1>
   <hr style="height:2px;border-width:0;color:black;background-color:black">
 
-  <% if(data.length) { %>
+  <% if(typeof data[0] !== 'undefined' && data[0].tnmID !== null) { %>
     <table class="table">
-        <thead>
+        <thead style="background-color: #6DAFFE;">
             <tr>
-                <th scope="col">ชื่อการแข่งขัน</th>
-                <th width="230px">ลำดับที่</th>
+                <th width="50">ลำดับ</th>
+                <th width="350">ประเภทกีฬา</th>
+                <th>ชื่อการแข่งขัน</th>
+                <th width="200">วันที่แข่งขัน</th>
+                <th width="100px">เหรียญ</th>
             </tr>
         </thead>
         <tbody>
             <% for(let i=0; i < data.length; i++) { %>
                 <tr>
-                    <th scope="row"></th>
-                    <td></td>
+                    <th scope="row"><%= i+1 %></th>
+                    <td><%= data[i].sportName %></td>
+                    <td><%= data[i].tnmName %></td>
+                    <% if(data[i].tnmstartDate){ %>
+                    <td><%= data[i].tnmstartDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
+                    <% } %>
+                    <% if(data[i].st1){%>
+                        <td scope="col"><iconify-icon icon="noto:1st-place-medal" width="40" height="40"></iconify-icon></td>
+                    <% }else if(data[i].nd2){ %>
+                        <td scope="col"><iconify-icon icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon></td>
+                        <% }else if (data[i].rd3){ %>
+                            <td scope="col"><iconify-icon icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon></td>
+                            <% } %>
                 </tr>
                 <% } %>
         </tbody>
@@ -45,8 +122,8 @@
     <% } %>
 
 
-    <% if(!data.length) { %>
-        <p class="text-center">ไม่พบรายการสถานที่</p>
+    <% if(!data.length || !data[0].tnmID) { %>
+        <h3 class="text-center">ไม่พบรายการ</h3>
     <% } %>
 
 

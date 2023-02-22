@@ -9,6 +9,7 @@ const fileUpload = require('express-fileupload');
 const fs = require('fs');
 
 //routes variable
+const edittitle = require('./routes/edittitle');
 const dashboard = require('./routes/dashboard');
 const account = require('./routes/account');
 const uni = require('./routes/uni');
@@ -112,6 +113,7 @@ app.get('/error404', (req, res) => {
 app.use('/',uindex);
 
 //routes
+app.use('/title',edittitle);
 app.use('/account', account);
 app.use('/dashboard', dashboard);
 app.use('/uni', uni);
