@@ -4,6 +4,7 @@ let dbConnection = require('../../util/db');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const { resolve } = require('path');
+const { log } = require('console');
 
 let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -502,7 +503,7 @@ router.get('/result', async (req,res,next)=>{
       let solo = [];
       for(let i = 0; i < results.length; i++){
         let rows = await new Promise((resolve, reject) => {
-          dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM \`team\` team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
+          dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM \`team\` team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID} ORDER BY st1 DESC, nd2 DESC, rd3 DESC`, (error, rows) => {
             if (error) reject(error);
             resolve(rows);
           });

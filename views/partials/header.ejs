@@ -20,9 +20,6 @@
     <div class="container-fluid  text-center  px-0 m-0 position-relative">
       
       <% if(status_login){ %>
-        
-
-        
         <div class="float-start">
           <a class="navbar-brand" href="/dashboard"><img
             src="https://www.rmutt.ac.th/wp-content/uploads/2020/03/20200310-LOGO-RMUTT.png" class="nav-logo ms-2"
@@ -34,12 +31,18 @@
             <a class="text-white text-decoration-none " style="margin-right: 30px;" href="/logout">ออกจากระบบ</a>
         </div>
         <% }else{ %>
-          <div class="float-start">
-            <a class="navbar-brand" href="/"><img
-                src="https://www.rmutt.ac.th/wp-content/uploads/2020/03/20200310-LOGO-RMUTT.png" class="nav-logo ms-2"
-                alt="logo" style="width: 15rem;" /></a>
-          </div>
+           <div class="row">
+            <div class="col"><div class="float-start">
+              <a class="navbar-brand" href="/"><img
+                  src="https://www.rmutt.ac.th/wp-content/uploads/2020/03/20200310-LOGO-RMUTT.png" class="nav-logo ms-2"
+                  alt="logo" style="width: 15rem;" /></a>
+            </div></div>
           <h3 class="text-white mb-0 position-absolute top-50 start-50 translate-middle"><%= process.title %></h3>
+          <div class="col"></div>
+            <div class="col"></div>
+           </div>
+          
+
           <div class="justify-content-end  fs-6" id="navbarNavAltMarkup">
             <a class="text-white text-decoration-none" style="margin-right: 30px;" href="/login">เข้าสู่ระบบ</a>
           </div>
