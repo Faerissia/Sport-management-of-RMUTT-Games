@@ -41,15 +41,15 @@
                                                             <form action="/dashboard/value_date" id="myForm"
                                                                 method="post">
                                                                 <div class="row ">
-                                                                    <div class="col ">
+                                                                    <div class="col text-end">
                                                                         <label for="validationSport"
-                                                                            class="col-form-label">กีฬา</label>
+                                                                            class="col-form-label ">กีฬา</label>
                                                                     </div>
                                                                     <div class="col-auto">
                                                                         <select for="value_sport"
-                                                                            class="form-select border-dark text-center"
+                                                                            class="form-select border-dark "
                                                                             id="value_sport" name="value_sport">
-                                                                            <option selected value="">ทั้งหมด</option>
+                                                                            <option selected value="text-start">ทั้งหมด</option>
                                                                             <% for(let i=0; i <selcetsport.length;i++){%>
                                                                                 <option class="text-start"
                                                                                     value="<%= selcetsport[i].sportID %>">
@@ -58,7 +58,7 @@
                                                                                 <% } %>
                                                                         </select>
                                                                     </div>
-                                                                    <div class="col">
+                                                                    <div class="col text-end">
                                                                         <label for="value_startdate"
                                                                             class="col-form-label">วันที่</label>
                                                                     </div>
@@ -67,22 +67,25 @@
                                                                             class="form-control border-dark"
                                                                             name="value_startdate" id="value_startdate">
                                                                     </div>
-                                                                    <div class="col">
+                                                                    <div class="col-auto text-end">
                                                                         <label for="value_enddate"
-                                                                            class="col-form-label">ถึง</label>
+                                                                            class="col-form-label text-end">ถึง</label>
                                                                     </div>
                                                                     <div class="col-auto">
                                                                         <input type="date"
                                                                             class="form-control border-dark"
                                                                             name="value_enddate" id="value_enddate">
                                                                     </div>
+                                                                    <div class="col text-end">
+                                                                        <label for="value_startdate"
+                                                                            class="col-form-label"></label>
+                                                                    </div>
                                                                 </div>
                                                             </form>
                                                             <div class="col-12 mx-auto text-center">
                                                                 <label for="value_startdate "
-                                                                    class="col-form-label ">หมายเหตุ ( เลือกได้ ไม่เกิน
-                                                                    1 ปี
-                                                                    ย้อนหลัง )</label>
+                                                                    class="col-form-label ">หมายเหตุ ( เลือกช่วงได้ ไม่เกิน
+                                                                    1 ปี )</label>
                                                             </div>
 
                                                         </div>
@@ -96,15 +99,29 @@
                                                             // Set the maximum and minimum values for value_startdate
                                                             const valueStartdate = document.getElementById('value_startdate');
                                                             valueStartdate.max = today.toISOString().slice(0, 10);
-                                                            valueStartdate.min = twelveMonthsAgo.toISOString().slice(0, 10);
-                                                            // Set the maximum  values for value_enddate
+                                                            // valueStartdate.min = twelveMonthsAgo.toISOString().slice(0, 10);         
+
+                                                          
                                                             const valueEnddate = document.getElementById('value_enddate');
-                                                            valueEnddate.max = today.toISOString().slice(0, 10);
+                                                            
+
+
                                                             // Set the  minimum values for value_enddate
                                                             valueStartdate.addEventListener('input', function () {
                                                                 // console.log('valueStartdate changed: ' + valueStartdate.value);
                                                                 valueEnddate.min = valueStartdate.value;
                                                                 valueEnddate.value = "";
+
+                                                                // // Set the maximum  values for value_enddate
+                                                                valueEnddate.max = today.toISOString().slice(0, 10);
+                                                            
+
+                                                                // Set maximum date to one year from value_startdate
+                                                                const oneYearLater = new Date(valueStartdate.value);
+                                                                oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+                                                                valueEnddate.max = oneYearLater.toISOString().slice(0, 10);
+
+                                                                
                                                             });
 
                                                             // <!-- ----------------------------------------------------------------------- -->
@@ -238,7 +255,7 @@
                                                                 data: label_y
                                                                 ,
                                                                 borderWidth: 3,
-                                                                borderRadius: 30
+                                                                
                                                             }]
                                                         },
                                                         options: {
@@ -268,9 +285,9 @@
                                                                 }
                                                             }
                                                             , plugins: {
-                                                                legend: {
-                                                                    display: false
-                                                                },
+                                                                // legend: {
+                                                                //     display: false
+                                                                // },
                                                                 datalabels: {
                                                                     display: true,
                                                                     color: 'black',
@@ -337,7 +354,7 @@
                                                                 backgroundColor: 'rgba(179, 158, 232, 0.93)',
                                                                 borderColor: 'rgba(115, 99, 132, 1)',
                                                                 borderWidth: 3,
-                                                                borderRadius: 30
+                                                                
                                                             }]
                                                         },
                                                         options: {
@@ -365,9 +382,9 @@
                                                                     max: maxValuesport + 1,
                                                                 }
                                                             }, plugins: {
-                                                                legend: {
-                                                                    display: false
-                                                                },
+                                                                // legend: {
+                                                                //     display: false
+                                                                // },
                                                                 datalabels: {
                                                                     display: true,
                                                                     color: 'dark',
@@ -375,8 +392,8 @@
                                                                         size: 14,
                                                                         weight: 'bold'
                                                                     },
-                                                                    align: 'center',
-                                                                    anchor: 'center',
+                                                                    align: 'end',
+                                                                    anchor: 'end',
                                                                     color: 'dark',
                                                                     formatter: function (value, context) {
                                                                         return value;
