@@ -1,7 +1,7 @@
 <%- include("../../partials/header") %>
     <div class="container-xxl mt-5 px-3">
         <!DOCTYPE html>
-        <html lang="en">
+
 
         <head>
             <title>ข้อมูบการแข่งขัน</title>
@@ -32,11 +32,13 @@
                             <p class="display-5 mb-0 text-start  text-wrap text-break t">
                                 <%= data[0].tnmName %>
                             </p>
-
+                            <% let date = new Date()%>
+                            <% if(date > data[0].Rstartdate && date < data[0].Renddate) { %>
                             <% if(data[0].sportPlaynum > 1){ %>
                                 <a class="btn btn-warning " href="/teamreg/<%= data[0].tnmID %>">สมัครแข่งขัน</a>
                                 <% }else{ %>
                                 <a class="btn btn-warning " href="/singlereg/<%= data[0].tnmID %>">สมัครแข่งขัน</a>
+                                    <% } %>
                                     <% } %>
                                 
                         </div>
@@ -64,7 +66,18 @@
                                     <div class="row row-cols-6 ">
                                         <div class="col-1"><iconify-icon width="25" height="25"
                                                 icon="mdi:tournament"></iconify-icon></div>
-                                        <div class="col-auto"> <%= data[0].tnmTypegame %>  </div>
+                                        <div class="col-auto">
+                                            <% if(data[0].tnmTypegame === 'single'){ %>
+                                                แพ้คัดออก(Single Elimination)
+                                            <% }else if(data[0].tnmTypegame === 'leaderboard'){ %>
+                                                    กระดานผู้นำ(Leaderboard)
+                                                <% }else if(data[0].tnmTypegame === 'roundrobin'){ %>
+                                                        พบกันหมด(Round Robin)
+                                                        <% }else if(data[0].tnmTypegame === 'roundsingle'){ %>
+                                                            พบกันหมดตามด้วยแพ้คัดออก(Round Robin and Single Elimination)
+                                                    <% } %>
+                                                
+                                            </div>
                                     </div>
 
                                     <div class="row row-cols-6 ">

@@ -36,10 +36,11 @@ td {
 
 <h1>ตารางการใช้งานสถานที่</h1>
 <div class="float-end">
+<% let isoday = today.toISOString().split('T')[0]%>
   <form action="/placetable/search-placetable" method="post">
     <label for="date">วันที่</label>
-    <input type="date" name="date">
-    <label>ชนิดกีฬา</label>
+    <input type="date" name="date" id="date-picker"> 
+    <label> ชนิดกีฬา</label>
     <select name="sporttype">
       <option value="">ทั้งหมด</option>
       <% for(s = 0; s < sporttype.length; s++){ %>
@@ -62,7 +63,7 @@ td {
                 <% for(let time = 8; time <= 21; time ++){ %>
                     <% let hour = Math.floor(time); %>
                     <% let minute = (time - hour) * 60; %>
-                    <th colspan="2" scope="col"><%= time %>:00</th>
+                    <th colspan="2" scope="col" class="text-center border"><%= time %>:00</th>
                   <% } %>
               </tr>
             </thead>
@@ -95,7 +96,7 @@ td {
                         <td></td>
                       <% } %>
                     <% } else { %>
-                      <td class="bg-secondary"></td>
+                      <td style="background-color: rgb(174, 174, 174);"></td>
                     <% } %>
                   <% } %>
                 </tr>     
@@ -109,6 +110,9 @@ td {
             <% } %>
     </div>
 
+    <script>
+    document.getElementById('date-picker').value = '<%= isoday %>';
+    </script>
 </body>
 </html>
 </div>
