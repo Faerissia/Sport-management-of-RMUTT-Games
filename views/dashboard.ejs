@@ -1,31 +1,415 @@
 <%- include("partials/header") %>
-<%- include("partials/sidebar") %>
-        <div class="col-10 py-3 mx-auto">
+    <%- include("partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto container-xxl ">
 
-<html lang="en">
-	<head>
-		<title>Dashboard</title>
-	</head>
-<body>
+            <html lang="en">
 
-	<% if (messages.error) { %>
-        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
-    <% } %>
-    
-    <% if (messages.success) { %>
-        <div class="alert alert-success" role="alert"><%= messages.success %></div>
-    <% } %>
+            <head>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
-<div class="jumbotron">
-	<h1>Welcome</h1>
-	<p>Hello Dashboard</p>
-    <form action="/change-title" method="post">
-        <label for="title">ชื่อระบบ:</label>
-        <h4><%= process.title %> </h4>
-        <a  href="/dashboard/edit" class="btn-warning btn">แก้ไข</a>
-      </form>
-</div>	
+                <title>Dashboard</title>
+            </head>
 
-</body>
-</html>
-</div>
+            <body>
+
+                <% if (messages.error) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= messages.error %>
+                    </div>
+                    <% } %>
+
+                        <% if (messages.success) { %>
+                            <div class="alert alert-success" role="alert">
+                                <%= messages.success %>
+                            </div>
+                            <% } %>
+
+                                <div class="card w-100 ">
+                                    <div class="card-header">
+                                        <br>
+                                    </div>
+                                    <div class="card-body">
+                                        
+                                        <!-- ----------------------------- box-dash ------------------------------ -->
+                                        <!-- filter -->
+                                        <div>
+                                            <div class="text-end  my-2  ">
+                                                <div class="row row-cols-1  ">
+                                                    <div class="col-auto  mx-auto text-center">
+                                                        <div class="row  shadow p-3 bg-body rounded pt-2 ">
+                                                            <form action="/dashboard/value_date" id="myForm"
+                                                                method="post">
+                                                                <div class="row ">
+                                                                    <div class="col ">
+                                                                        <label for="validationSport"
+                                                                            class="col-form-label">กีฬา</label>
+                                                                    </div>
+                                                                    <div class="col-auto">
+                                                                        <select for="value_sport"
+                                                                            class="form-select border-dark text-center"
+                                                                            id="value_sport" name="value_sport">
+                                                                            <option selected value="">ทั้งหมด</option>
+                                                                            <%for(let i=0; i <selcetsport.length;i++){%>
+                                                                                <option class="text-start"
+                                                                                    value="<%= selcetsport[i].sportID %>">
+                                                                                    <%= selcetsport[i].sportName %>
+                                                                                </option>
+                                                                                <% } %>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col">
+                                                                        <label for="value_startdate"
+                                                                            class="col-form-label">วันที่</label>
+                                                                    </div>
+                                                                    <div class="col-auto">
+                                                                        <input type="date"
+                                                                            class="form-control border-dark"
+                                                                            name="value_startdate" id="value_startdate">
+                                                                    </div>
+                                                                    <div class="col">
+                                                                        <label for="value_enddate"
+                                                                            class="col-form-label">ถึง</label>
+                                                                    </div>
+                                                                    <div class="col-auto">
+                                                                        <input type="date"
+                                                                            class="form-control border-dark"
+                                                                            name="value_enddate" id="value_enddate">
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                            <div class="col-12 mx-auto text-center">
+                                                                <label for="value_startdate "
+                                                                    class="col-form-label ">หมายเหตุ ( เลือกได้ ไม่เกิน
+                                                                    1 ปี
+                                                                    ย้อนหลัง )</label>
+                                                            </div>
+
+                                                        </div>
+                                                        <script>
+
+                                                            //<!-- ----------------------------------------------------------------------- -->
+                                                            // Get today's date
+                                                            const today = new Date();
+                                                            // Calculate the date 12 months ago
+                                                            const twelveMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 12, today.getDate());
+                                                            // Set the maximum and minimum values for value_startdate
+                                                            const valueStartdate = document.getElementById('value_startdate');
+                                                            valueStartdate.max = today.toISOString().slice(0, 10);
+                                                            valueStartdate.min = twelveMonthsAgo.toISOString().slice(0, 10);
+                                                            // Set the maximum  values for value_enddate
+                                                            const valueEnddate = document.getElementById('value_enddate');
+                                                            valueEnddate.max = today.toISOString().slice(0, 10);
+                                                            // Set the  minimum values for value_enddate
+                                                            valueStartdate.addEventListener('input', function () {
+                                                                // console.log('valueStartdate changed: ' + valueStartdate.value);
+                                                                valueEnddate.min = valueStartdate.value;
+                                                                valueEnddate.value = "";
+                                                            });
+
+                                                            // <!-- ----------------------------------------------------------------------- -->
+                                                        </script>
+                                                        <script>
+
+                                                            var valueStartDateInput = document.getElementById('value_startdate');
+                                                            var valueEndDateInput = document.getElementById('value_enddate');
+                                                            var valuesportInput = document.getElementById('value_sport');
+
+                                                            valueStartDateInput.addEventListener('change', function () {
+                                                                if (valueStartDateInput.value && valueEndDateInput.value) {
+                                                                    document.getElementById('myForm').submit();
+                                                                }
+                                                            });
+
+                                                            valueEndDateInput.addEventListener('change', function () {
+                                                                if (valueStartDateInput.value && valueEndDateInput.value) {
+                                                                    document.getElementById('myForm').submit();
+                                                                }
+                                                            });
+
+                                                            valuesportInput.addEventListener('change', function () {
+                                                                document.getElementById('myForm').submit();
+                                                            });
+
+                                                            // set value after reset
+                                                            const value_select = JSON.parse('<%-JSON.stringify(value_select) %>');
+                                                            if (value_select && value_select.length > 0) {
+                                                                console.log(value_select);
+                                                                document.getElementById('value_startdate').value = value_select[0].date_S
+                                                                // console.log(value_select[0].date_S);
+                                                                document.getElementById('value_enddate').value = value_select[0].date_E
+                                                                // console.log(value_select[0].date_E);
+                                                                document.getElementById('value_sport').value = value_select[0].sport
+                                                                console.log(value_select[0].sport);
+                                                            }
+                                                        </script>
+
+                                                        <!-- ----------------------------------------------------------------------- -->
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- card zone -->
+                                            <!-- ------------------------------- card_1 -------------------------------- -->
+                                            <div class="d-flex flex-row justify-content-center">
+                                                <div class="card border-dark text-bg-warning my-3 mx-3"
+                                                    style="width: 15vw;">
+                                                    <div class="card-header bg-transparent  border-dark text-center">
+                                                        ยังไม่เริ่มการแข่งขัน
+                                                    </div>
+                                                    <div class="card-body text-dark text-center bg-white bg-opacity-50">
+                                                        <h5 class="card-title " style="font-size:3vw">
+                                                            <%=count[0].Out%>
+                                                        </h5>
+
+                                                        <p class="card-text text-center"></p>
+                                                    </div>
+
+                                                </div>
+                                                <!-- ------------------------------- card_2 -------------------------------- -->
+                                                <div class="card border-dark text-bg-success my-3 mx-3"
+                                                    style="width: 15vw;">
+                                                    <div class="card-header bg-transparent  border-dark text-center">
+                                                        อยู่ระหว่างแข่งขัน
+                                                    </div>
+                                                    <div class="card-body text-dark text-center bg-white bg-opacity-50">
+                                                        <h5 class="card-title " style="font-size:3vw">
+                                                            <%=count[0].In%>
+                                                        </h5>
+                                                        <p class="card-text text-center"></p>
+                                                    </div>
+
+                                                </div>
+                                                <!-- ------------------------------- card_3 -------------------------------- -->
+                                                <div class="card border-dark text-bg-info my-3 mx-3"
+                                                    style="width: 15vw;">
+                                                    <div class="card-header bg-transparent  border-dark text-center">
+                                                        การแข่งขันที่เสร็จสิ้น
+                                                    </div>
+                                                    <div class="card-body text-dark text-center bg-white bg-opacity-50">
+                                                        <h5 class="card-title " style="font-size:3vw">
+                                                            <%=count[0].fin%>
+                                                        </h5>
+                                                        <p class="card-text text-center"></p>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- card zone -->
+                                        <!-- ----------------------------- charts zone ----------------------------- -->
+
+                                        <div class="d-flex justify-content-center">
+                                            <div class="card p-3 border-dark me-5">
+
+                                                <div>
+                                                    <canvas id="myChart" style="height:500; width:800px"></canvas>
+                                                </div>
+
+                                                <script>
+                                                    const display_month = JSON.parse('<%-JSON.stringify(display_month) %>');
+                                                    console.log(display_month);
+
+                                                    // const label_x = display_month.map((item) => { return item.month })
+                                                    const label_y = display_month.map((item) => { return item.value })
+                                                    let maxValue = Math.max(...label_y);
+
+                                                    const ctx = document.getElementById('myChart');
+
+                                                    new Chart(ctx, {
+                                                        type: 'bar',
+                                                        data: {
+                                                            labels: [
+                                                                "Jan",
+                                                                "Feb",
+                                                                "Mar",
+                                                                "Apr",
+                                                                "May",
+                                                                "Jun",
+                                                                "Jul",
+                                                                "Aug",
+                                                                "Sep",
+                                                                "Oct",
+                                                                "Nov",
+                                                                "Dec",
+                                                            ]
+                                                            , datasets: [{
+                                                                label: 'จำนวนการแข่งขัน',
+                                                                data: label_y
+                                                                ,
+                                                                borderWidth: 3,
+                                                                borderRadius: 30
+                                                            }]
+                                                        },
+                                                        options: {
+                                                            responsive: true,
+                                                            maintainAspectRatio: false,
+                                                            scales: {
+                                                                y: {
+                                                                    ticks: {
+                                                                        color: 'dark'
+                                                                    },
+
+                                                                    beginAtZero: true,
+                                                                    min: 0,
+                                                                    max: maxValue + 3,
+                                                                    ticks: {
+                                                                        precision: 0,
+                                                                    }
+                                                                },
+                                                                x: {
+                                                                    ticks: {
+                                                                        color: 'dark'
+                                                                    },
+                                                                    grid: {
+                                                                        display: false
+                                                                    }
+                                                                    ,
+                                                                }
+                                                            }
+                                                            , plugins: {
+                                                                legend: {
+                                                                    display: false
+                                                                },
+                                                                datalabels: {
+                                                                    display: true,
+                                                                    color: 'black',
+                                                                    font: {
+                                                                        size: 12,
+                                                                        weight: 'bold'
+                                                                    },
+                                                                    align: 'end',
+                                                                    anchor: 'end',
+                                                                    color: 'dark',
+                                                                    formatter: function (value, context) {
+                                                                        return value;
+                                                                    }
+                                                                }
+                                                            },
+                                                            barThickness: 30,
+                                                            barSpacing: 2
+                                                        }, barThickness: 30,
+                                                        barSpacing: 2
+                                                        ,
+                                                        plugins: [
+                                                            ChartDataLabels
+                                                        ]
+                                                    });
+
+                                                    //         barThickness: 30,
+                                                    //         barSpacing: 2
+                                                    //     }
+
+                                                    // });
+                                                </script>
+
+
+                                            </div>
+
+                                            <!-- ------------------------------- chart_2 ------------------------------- -->
+                                            <div class="card p-3 border-dark">
+
+                                                <div>
+                                                    <canvas id="myChart1" style="height:500px; width:600px"></canvas>
+                                                </div>
+
+                                                <script>
+                                                    const sport_count = JSON.parse('<%-JSON.stringify(sport_count) %>');
+                                                    // console.log("🚀 ~ file: dashboard.ejs:265 ~ sport_count", sport_count)
+
+
+                                                    const sport_x = sport_count.map((item) => { return item.sportName })
+                                                    const sport_y = sport_count.map((item) => { return item.count_sportID })
+                                                    let maxValuesport = Math.max(...sport_y);
+
+                                                    // console.log("🚀 ~ file: dashboard.ejs:258 ~ sport_y", sport_y)
+
+                                                    const ctx1 = document.getElementById('myChart1');
+
+                                                    myChart1 = new Chart(ctx1, {
+                                                        type: 'bar',
+                                                        data: {
+                                                            labels: sport_x,
+                                                            datasets: [{
+                                                                label: 'จำนวนที่ชนิดกีฬา',
+                                                                data: sport_y
+                                                                , borderWidth: 1,
+                                                                backgroundColor: 'rgba(179, 158, 232, 0.93)',
+                                                                borderColor: 'rgba(115, 99, 132, 1)',
+                                                                borderWidth: 3,
+                                                                borderRadius: 30
+                                                            }]
+                                                        },
+                                                        options: {
+                                                            responsive: true,
+                                                            maintainAspectRatio: false,
+                                                            indexAxis: 'y',
+                                                            scales: {
+                                                                y: {
+                                                                    ticks: {
+                                                                        color: 'dark'
+                                                                    }, grid: {
+                                                                        display: false
+                                                                    },
+                                                                    beginAtZero: true,
+
+                                                                }, x: {
+                                                                    ticks: {
+                                                                        color: 'dark'
+                                                                    }, grid: {
+                                                                        display: false
+                                                                    },
+                                                                    display: false,
+                                                                    beginAtZero: true,
+                                                                    min: 0,
+                                                                    max: maxValuesport + 1,
+                                                                }
+                                                            }, plugins: {
+                                                                legend: {
+                                                                    display: false
+                                                                },
+                                                                datalabels: {
+                                                                    display: true,
+                                                                    color: 'dark',
+                                                                    font: {
+                                                                        size: 14,
+                                                                        weight: 'bold'
+                                                                    },
+                                                                    align: 'center',
+                                                                    anchor: 'center',
+                                                                    color: 'dark',
+                                                                    formatter: function (value, context) {
+                                                                        return value;
+                                                                    }
+                                                                }
+                                                            },
+                                                            barThickness: 30,
+                                                            barSpacing: 2
+                                                        }, barThickness: 30,
+                                                        barSpacing: 2
+                                                        , layout: {
+                                                            padding: {
+                                                                left: 50
+                                                            }
+                                                        },
+                                                        plugins: [
+                                                            ChartDataLabels
+                                                        ]
+                                                    });
+
+                                                </script>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+
+
+            </body>
+
+            </html>
+        </div>

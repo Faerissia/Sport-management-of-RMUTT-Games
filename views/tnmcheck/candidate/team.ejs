@@ -91,8 +91,9 @@
             <hr style="height:2px;border-width:0;color:black;background-color:black">
             <br>
             <% for(let i=0; i < data.length; i++) { %>
-                <p>ผู้เล่นคนที่ <%= i+1 %>
-                </p>
+                <div>
+                <p>ผู้เล่นคนที่ <%= i+1 %> </p> <p style="color: red;"><%= data[i].detailDoc %></p>
+            </div>
                 <div class="row">
                     <!-- row -->
                     <div class="row mt-2 row-cols-4">
@@ -189,13 +190,6 @@
                             <input type="text" class="form-control border-dark  my-auto" id="validation"
                                 value="<%= data[i].playerIDCard %>" name="playerIDCard" disabled>
                         </div>
-                        <div class="col-2 text-end">
-                            <label for="validation" class="col-form-label">รหัสนักศีกษา</label>
-                        </div>
-                        <div class="col-auto">
-                            <input type="text" class="form-control border-dark" id="validation" value="<%= data[i].playerStudentID %>"
-                                name="playerStudentID" autocomplete="off" disabled>
-                        </div>
                     </div>
 
                     <!-- row -->
@@ -232,7 +226,7 @@
                     <a href="/" class="btn btn-warning" value="edit">แก้ไข</a>
                     <a href="/tnmcheck/team/deny/<%= data[0].teamID%>" class="btn btn-danger" value="deny">ปฏิเสธ</a>
                     <a href="/tnmcheck/team/accept/<%= data[0].teamID%>" class="btn btn-success" value="accept">ยอมรับ</a>
-                    <a href="/" class="btn btn-primary" value="otp">ส่งอีเมล</a>
+                    <a href="/" class="btn btn-primary" value="otp">ส่งแก้ไข</a>
                 </div>
 
     </form>

@@ -4,7 +4,7 @@
         <html lang="en">
 
         <head>
-            <title>Document</title>
+            <title>แบบฟอร์มสมัครเข้าร่วมการแข่งขัน</title>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         </head>
 
@@ -122,24 +122,40 @@
                             </div>
                         </div>
                         <!-- -------------------------------------------------------------- -->
-                        <div class="row my-2   row-cols-2">
-                            <div class="col-2 text-start">
-                                <label for="validationSiD" class="col-form-label">รหัสนักศึกษา</label>
-                            </div>
-                            <div class="col-2">
-                                <input type="text" class="form-control border-dark" id="validationSiD" value=""
-                                    name="playerStudentID" autocomplete="off" pattern="[0-9]{13}" minlength="13"
-                                    maxlength="13" required>
-                            </div>
-                        </div>
-                        <!-- -------------------------------------------------------------- -->
+                
                         <div class="row my-2   row-cols-2">
                             <div class="col-2 text-start">
                                 <label for="validationFile" class="col-form-label">เอกสารยืนยันตัวตน</label>
                             </div>
                             <div class="col-3">
-                                <input type="file" class="form-control border-dark" id="validationFile" value=""
-                                    name="playerFile1" required>
+                                <input type="file" class="form-control border-dark" maxlength="4000000"
+                                 accept="image/jpg,image/png,application/pdf" id="validationFile" 
+                                 value="" name="playerFile1" required>
+                            </div>
+                        </div>
+
+                        <!-- -------------------------------------------------------------- -->
+                
+                        <div class="row my-2   row-cols-2">
+                            <div class="col-2 text-start">
+                                <label for="validationFile" class="col-form-label">(<%= data[0].tnmUrl %>)</label>
+                            </div>
+                            <div class="col-3">
+                                <input type="file" class="form-control border-dark" maxlength="4000000"
+                                 accept="image/jpg,image/png,application/pdf" id="validationFile" 
+                                 value="" name="playerFile2">
+                            </div>
+                        </div>
+
+                        <!-- -------------------------------------------------------------- -->
+                
+                        <div class="row my-2   row-cols-2">
+                            <div class="col-2 text-start">
+                            </div>
+                            <div class="col-3">
+                                <input type="file" class="form-control border-dark" maxlength="4000000"
+                                 accept="image/jpg,image/png,application/pdf" id="validationFile" 
+                                 value="" name="playerFile3">
                             </div>
                         </div>
 

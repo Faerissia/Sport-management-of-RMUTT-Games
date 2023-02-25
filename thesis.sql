@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 31, 2023 at 06:44 PM
+-- Generation Time: Feb 22, 2023 at 06:07 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -65,8 +65,82 @@ CREATE TABLE `faculty` (
 --
 
 INSERT INTO `faculty` (`facultyID`, `name`, `uniID`) VALUES
-(1, 'คณะวิศวกรรมศาสตร์', 1),
-(2, 'คณะศิลปศาสตร์', 1);
+(1, 'วิศวกรรมศาสตร์', 1),
+(2, 'ศิลปกรรมศาสตร์', 1),
+(3, 'บริหารธุรกิจ', 1),
+(4, 'เทคโนโลยีคหกรรมศาสตร์', 1),
+(5, 'เทคโนโลยีการเกษตร', 1),
+(6, 'ครุศาสตร์อุตสาหกรรม', 1),
+(7, 'วิทยาศาสตร์และเทคโนโลยี', 1),
+(8, 'เทคโนโลยีสื่อสารมวลชน', 1),
+(9, 'ศิลปศาสตร์', 1),
+(10, 'สถาปัตยกรรมศาสตร์', 1),
+(11, 'การแพทย์บูรณาการ', 1),
+(12, 'พยาบาลศาสตร์', 1),
+(13, 'บริหารธุรกิจและศิลปศาสตร์', 2),
+(14, 'วิทยาศาสตร์และเทคโนโลยีการเกษตร', 2),
+(15, 'วิศวกรรมศาสตร์', 2),
+(16, 'ศิลปกรรมและสถาปัตยกรรมศาสตร์', 2),
+(17, 'บริหารธุรกิจ', 3),
+(18, 'วิทยาศาสตร์และศิลปศาสตร์', 3),
+(19, 'วิศวกรรมศาสตร์และเทคโนโลยี', 3),
+(20, 'สถาปัตยกรรมศาสตร์และศิลปกรรมสร้างสรรค์', 3),
+(21, 'ครุศาสตร์อุตสาหกรรม', 3),
+(22, 'วิศวกรรมศาสตร์', 3),
+(23, 'บริหารธุรกิจและเทคโนโลยีสารสรเทศ', 3),
+(24, 'อุตสาหกรรมและเทคโนโลยี', 3),
+(25, 'ทรัพยากรธรรมชาติ', 3),
+(26, 'เกษตรศาสตร์และเทคโนโลยี', 3),
+(27, 'เทคโนโลยีการจัดการ', 3),
+(28, 'วิศวกรรมศาสตร์', 4),
+(29, 'ครุศาสตร์อุตสาหกรรม', 4),
+(30, 'เทคโนโลยีคหกรรมศาสตร์', 4),
+(31, 'ศิลปศาสตร์', 4),
+(32, 'อุตสาหกรรมสิ่งทอ', 4),
+(33, 'บริหารธุรกิจ', 4),
+(34, 'วิทยาศาสตร์และเทคโนโลยี', 4),
+(35, 'เกษตรศาสตร์และทรัพยากรธรรมชาติ', 5),
+(36, 'วิทยาศาสตร์และเทคโนโลยี', 5),
+(37, 'มนุษยศาสตร์และสังคมศาสตร์', 5),
+(38, 'บริหารธุรกิจและเทคโนโลยีสารสนเทศ', 5),
+(39, 'ศิลปศาสตร์', 5),
+(40, 'เทคโนโลยีอุตสาหกรรมเกษตร', 5),
+(41, 'เทคโนโลยีสังคม', 5),
+(42, 'วิศวกรรมศาสตร์และสถาปัตยกรรมศาสตร์', 5),
+(43, 'สัตวแพทยศาสตร์', 5),
+(44, 'ครุศาสตร์อุตสาหกรรม', 6),
+(45, 'เทคโนโลยีคหกรรมศาสตร์', 6),
+(46, 'เทคโนโลยีสื่อสารมวลชน', 6),
+(47, 'บริหารธุรกิจ', 6),
+(48, 'วิทยาศาสตร์และเทคโนโลยี', 6),
+(49, 'วิศวกรรมศาสตร์', 6),
+(50, 'ศิลปศาสตร์', 6),
+(51, 'อุตสาหกรรมสิ่งทอและออกแบบแฟชั่น', 6),
+(52, 'สถาปัตยกรรมศาสตร์และการออกแบบ', 6),
+(53, 'วิศวกรรมศาสตร์', 7),
+(54, 'สถาปัตยกรรมศาสตร์และการออกแบบ', 7),
+(55, 'บริหารธุรกิจ', 7),
+(56, 'ศิลปศาสตร์', 7),
+(57, 'อุตสาหกรรมการท่องเที่ยวและโรงแรม', 7),
+(58, 'อุตสาหกรรมและเทคโนโลยี', 7),
+(59, 'วิศวกรรมศาสตร์', 8),
+(60, 'ศิลปศาสตร์', 8),
+(61, 'บริหารธุรกิจ', 8),
+(62, 'สถาปัตยกรรมศาสตร์', 8),
+(63, 'ครุศาสตร์อุตสาหกรรมและเทคโนโลยี', 8),
+(64, 'เกษตรศาสตร์', 8),
+(65, 'สัตวแพทยศาสตร์', 8),
+(66, 'วิทยาศาสตร์และเทคโนโลยี', 8),
+(67, 'เทคโนโลยีการจัดการ', 8),
+(68, 'อุตสาหกรรมเกษตร', 8),
+(69, 'วิทยาศาสตร์และเทคโนโลยีการประมง', 8),
+(70, 'วิศวกรรมศาสตร์และเทคโนโลยี', 8),
+(71, 'ครุศาสตร์อุตสาหกรรม', 9),
+(72, 'เทคโนโลยีการเกษตรและอุตสาหกรรมเกษตร', 9),
+(73, 'บริหารธุรกิจและเทคโนโลยีสารสนเทศ', 9),
+(74, 'วิทยาศาสตร์และเทคโนโลยี', 9),
+(75, 'วิศวกรรมศาสตร์และสถาปัตยกรรมศาสตร์', 9),
+(76, 'ศิลปศาสตร์', 9);
 
 -- --------------------------------------------------------
 
@@ -100,6 +174,7 @@ CREATE TABLE `matchplay` (
   `score` int(10) DEFAULT NULL,
   `tnmID` int(3) NOT NULL,
   `round` varchar(3) DEFAULT NULL,
+  `seed` int(10) DEFAULT NULL,
   `pDate` date DEFAULT NULL,
   `time` time DEFAULT NULL,
   `timeend` time DEFAULT NULL,
@@ -110,27 +185,19 @@ CREATE TABLE `matchplay` (
 -- Dumping data for table `matchplay`
 --
 
-INSERT INTO `matchplay` (`matchID`, `participant1`, `participant2`, `playerID`, `teamID`, `score1`, `score2`, `score`, `tnmID`, `round`, `pDate`, `time`, `timeend`, `placeID`) VALUES
-(256, NULL, NULL, 97, NULL, NULL, NULL, NULL, 13, NULL, NULL, NULL, NULL, NULL),
-(257, NULL, NULL, 98, NULL, NULL, NULL, NULL, 13, NULL, NULL, NULL, NULL, NULL),
-(258, NULL, NULL, 99, NULL, NULL, NULL, NULL, 13, NULL, NULL, NULL, NULL, NULL),
-(259, NULL, NULL, 102, NULL, NULL, NULL, NULL, 13, NULL, NULL, NULL, NULL, NULL),
-(260, NULL, NULL, NULL, 44, NULL, NULL, NULL, 14, NULL, NULL, NULL, NULL, NULL),
-(261, NULL, NULL, NULL, 45, NULL, NULL, NULL, 14, NULL, NULL, NULL, NULL, NULL),
-(262, NULL, NULL, NULL, 46, NULL, NULL, NULL, 14, NULL, NULL, NULL, NULL, NULL),
-(263, NULL, NULL, NULL, 47, NULL, NULL, NULL, 14, NULL, NULL, NULL, NULL, NULL),
-(264, 100, 101, NULL, NULL, NULL, NULL, NULL, 15, NULL, NULL, NULL, NULL, NULL),
-(265, 100, 103, NULL, NULL, NULL, NULL, NULL, 15, NULL, NULL, NULL, NULL, NULL),
-(266, 100, 104, NULL, NULL, NULL, NULL, NULL, 15, NULL, NULL, NULL, NULL, NULL),
-(267, 101, 103, NULL, NULL, NULL, NULL, NULL, 15, NULL, NULL, NULL, NULL, NULL),
-(268, 101, 104, NULL, NULL, NULL, NULL, NULL, 15, NULL, NULL, NULL, NULL, NULL),
-(269, 103, 104, NULL, NULL, NULL, NULL, NULL, 15, NULL, NULL, NULL, NULL, NULL),
-(270, 48, 49, NULL, NULL, NULL, NULL, NULL, 16, NULL, NULL, NULL, NULL, NULL),
-(271, 48, 50, NULL, NULL, NULL, NULL, NULL, 16, NULL, NULL, NULL, NULL, NULL),
-(272, 48, 51, NULL, NULL, NULL, NULL, NULL, 16, NULL, NULL, NULL, NULL, NULL),
-(273, 49, 50, NULL, NULL, NULL, NULL, NULL, 16, NULL, NULL, NULL, NULL, NULL),
-(274, 49, 51, NULL, NULL, NULL, NULL, NULL, 16, NULL, NULL, NULL, NULL, NULL),
-(275, 50, 51, NULL, NULL, NULL, NULL, NULL, 16, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `matchplay` (`matchID`, `participant1`, `participant2`, `playerID`, `teamID`, `score1`, `score2`, `score`, `tnmID`, `round`, `seed`, `pDate`, `time`, `timeend`, `placeID`) VALUES
+(299, 159, 160, NULL, NULL, 3, 1, NULL, 28, '1', 1, '2023-02-21', '09:30:00', '10:30:00', 33),
+(300, 161, 162, NULL, NULL, 3, 1, NULL, 28, '1', 2, '2023-02-22', '10:30:00', '00:30:00', 33),
+(301, 159, 161, NULL, NULL, 3, 1, NULL, 28, '2', 3, '2023-02-22', '13:00:00', '14:00:00', 33),
+(302, 159, NULL, NULL, NULL, NULL, NULL, NULL, 28, '3', 4, NULL, NULL, NULL, NULL),
+(303, 167, 168, NULL, NULL, 12, 3, NULL, 33, '1', 1, '2023-02-23', '11:59:00', '23:59:00', 33),
+(304, 169, 170, NULL, NULL, 1, 4, NULL, 33, '1', 2, '2023-02-15', '23:59:00', '13:59:00', 33),
+(305, 171, 172, NULL, NULL, 2, 1, NULL, 33, '1', 3, '2023-02-01', '13:59:00', '23:01:00', 33),
+(306, 173, 174, NULL, NULL, 3, 1, NULL, 33, '1', 4, '2023-02-05', '00:00:00', '02:00:00', 33),
+(307, 168, 170, NULL, NULL, 1, 4, NULL, 33, '2', 5, '2023-02-07', '03:00:00', '00:00:00', 33),
+(308, 171, 173, NULL, NULL, 1, 3, NULL, 33, '2', 6, '2023-02-28', '02:00:00', '12:00:00', 33),
+(309, 170, 173, NULL, NULL, 3, 1, NULL, 33, '3', 7, '2023-02-23', '05:00:00', '05:00:00', 33),
+(310, 170, NULL, NULL, NULL, NULL, NULL, NULL, 33, '4', 8, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -163,9 +230,16 @@ CREATE TABLE `place` (
 --
 
 INSERT INTO `place` (`placeID`, `placeName`, `typeID`, `placeUrl`, `placeFile`, `placeDetail`) VALUES
-(1, 'สนามวอลเลย์บอล คอร์ที่ 1 โดมโรงอาหาร', 2, '<iframe src=\"https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d590.3092687467347!2d100.72467593033114!3d14.034888405443532!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sth!2sth!4v1674098805838!5m2!1sth!2sth\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', '1674098322898_à¸ªà¸à¸²à¸¡.png', 'สนามวอลเลย์บอล คอร์ที่ 1 โดมโรงอาหาร'),
-(5, 'สนามแบด1', 1, 'test', '1675141233438_kl.jpg', 'stetset'),
-(32, '2', 1, '1', '1675145303958_basketball.jpg', '1');
+(1, 'สนามวอลเลย์บอล ยิมเนเซียม', 2, '<iframe src=\"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d590.3101212252485!2d100.7242091!3d14.0345574!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d78bb25916c0d%3A0xda39222acc9700b5!2z4Lit4Liy4LiE4Liy4Lij4Lii4Li04Lih4LmA4LiZ4LmA4LiL4Li14Lii4LihIOC4oeC4q-C4suC4p-C4tOC4l-C4ouC4suC4peC4seC4ouC5gOC4l-C4hOC5guC4meC5guC4peC4ouC4teC4o-C4suC4iuC4oeC4h-C4hOC4peC4mOC4seC4jeC4muC4uOC4o-C4tQ!5e1!3m2!1sth!2sth!4v1675302814889!5m2!1sth!2sth\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', '1675303121339_à¸¢à¸´à¸¡.png', 'สนามวอลเลย์บอล คอร์ที่ 1 โดมโรงอาหาร'),
+(33, 'สนามแบดมินตัน คอร์ทที่ 1', 1, '<iframe src=\"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d590.3101212252485!2d100.7242091!3d14.0345574!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d78bb25916c0d%3A0xda39222acc9700b5!2z4Lit4Liy4LiE4Liy4Lij4Lii4Li04Lih4LmA4LiZ4LmA4LiL4Li14Lii4LihIOC4oeC4q-C4suC4p-C4tOC4l-C4ouC4suC4peC4seC4ouC5gOC4l-C4hOC5guC4meC5guC4peC4ouC4teC4o-C4suC4iuC4oeC4h-C4hOC4peC4mOC4seC4jeC4muC4uOC4o-C4tQ!5e1!3m2!1sth!2sth!4v1675302814889!5m2!1sth!2sth\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', '1675303121339_à¸¢à¸´à¸¡.png', 'สนามแบดมินตัน คอร์ทที่ 1 อยู่ในยิมเนเซียม'),
+(34, 'สนามแบดมินตัน คอร์ทที่ 2', 1, '<iframe src=\"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d590.3101212252485!2d100.7242091!3d14.0345574!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d78bb25916c0d%3A0xda39222acc9700b5!2z4Lit4Liy4LiE4Liy4Lij4Lii4Li04Lih4LmA4LiZ4LmA4LiL4Li14Lii4LihIOC4oeC4q-C4suC4p-C4tOC4l-C4ouC4suC4peC4seC4ouC5gOC4l-C4hOC5guC4meC5guC4peC4ouC4teC4o-C4suC4iuC4oeC4h-C4hOC4peC4mOC4seC4jeC4muC4uOC4o-C4tQ!5e1!3m2!1sth!2sth!4v1675302814889!5m2!1sth!2sth\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', '1675303121339_à¸¢à¸´à¸¡.png', 'สนามแบดมินตัน คอร์ทที่ 2 อยู่ในยิมเนเซียม'),
+(35, 'สนามแบดมินตัน คอร์ทที่ 3', 1, '<iframe src=\"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d590.3101212252485!2d100.7242091!3d14.0345574!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d78bb25916c0d%3A0xda39222acc9700b5!2z4Lit4Liy4LiE4Liy4Lij4Lii4Li04Lih4LmA4LiZ4LmA4LiL4Li14Lii4LihIOC4oeC4q-C4suC4p-C4tOC4l-C4ouC4suC4peC4seC4ouC5gOC4l-C4hOC5guC4meC5guC4peC4ouC4teC4o-C4suC4iuC4oeC4h-C4hOC4peC4mOC4seC4jeC4muC4uOC4o-C4tQ!5e1!3m2!1sth!2sth!4v1675302814889!5m2!1sth!2sth\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', '1675303121339_à¸¢à¸´à¸¡.png', 'สนามแบดมินตัน คอร์ทที่ 3 อยู่ในยิมเนเซียม'),
+(36, 'สนามแบดมินตัน คอร์ทที่ 4', 1, '<iframe src=\"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d590.3101212252485!2d100.7242091!3d14.0345574!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d78bb25916c0d%3A0xda39222acc9700b5!2z4Lit4Liy4LiE4Liy4Lij4Lii4Li04Lih4LmA4LiZ4LmA4LiL4Li14Lii4LihIOC4oeC4q-C4suC4p-C4tOC4l-C4ouC4suC4peC4seC4ouC5gOC4l-C4hOC5guC4meC5guC4peC4ouC4teC4o-C4suC4iuC4oeC4h-C4hOC4peC4mOC4seC4jeC4muC4uOC4o-C4tQ!5e1!3m2!1sth!2sth!4v1675302814889!5m2!1sth!2sth\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', '1675303121339_à¸¢à¸´à¸¡.png', 'สนามแบดมินตัน คอร์ทที่ 4 อยู่ในยิมเนเซียม'),
+(37, 'สนามบาสเกตบอล โดมข้างโรงอาหาร', 3, '<iframe src=\"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1180.6179796766712!2d100.7238002!3d14.0349967!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d78bb2cd26b61%3A0x489d9757191f86d!2z4Lio4Li54LiZ4Lii4LmM4LiB4Li14Lis4Liy4LmD4LiZ4Lij4LmI4LihIOC4oeC4q-C4suC4p-C4tOC4l-C4ouC4suC4peC4seC4ouC5gOC4l-C4hOC5guC4meC5guC4peC4ouC4teC4o-C4suC4iuC4oeC4h-C4hOC4peC4mOC4seC4jeC4muC4uOC4o-C4tQ!5e1!3m2!1sth!2sth!4v1675303478129!5m2!1sth!2sth\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', '1675303507346_à¸à¸²à¸ª.png', 'สนามบาสเกตบอล โดมข้างโรงอาหาร'),
+(38, 'สนามเปตอง สนามที่ 1', 4, '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2737.0377415627495!2d100.72821826839049!3d14.032478741108713!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d78bc7fb1fced%3A0x6f762a8f3ead63bd!2z4Lil4Liy4LiZ4LiI4Lit4LiU4Lij4LiW4Lir4Lil4Lix4LiB!5e0!3m2!1sth!2sth!4v1675303779137!5m2!1sth!2sth\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', '1675303896023_à¹à¸à¸à¸­à¸.png', 'สนามเปตอง ลานหิน ข้างประตู 1'),
+(39, 'สนามเปตอง สนามที่ 2', 4, '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2737.0377415627495!2d100.72821826839049!3d14.032478741108713!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d78bc7fb1fced%3A0x6f762a8f3ead63bd!2z4Lil4Liy4LiZ4LiI4Lit4LiU4Lij4LiW4Lir4Lil4Lix4LiB!5e0!3m2!1sth!2sth!4v1675303779137!5m2!1sth!2sth\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', '1675303896023_à¹à¸à¸à¸­à¸.png', 'สนามเปตอง สนามที่ 2 อยู่ที่ลานหิน ข้างประตู 1'),
+(40, 'สนามเปตอง สนามที่ 3', 4, '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2737.0377415627495!2d100.72821826839049!3d14.032478741108713!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d78bc7fb1fced%3A0x6f762a8f3ead63bd!2z4Lil4Liy4LiZ4LiI4Lit4LiU4Lij4LiW4Lir4Lil4Lix4LiB!5e0!3m2!1sth!2sth!4v1675303779137!5m2!1sth!2sth\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', '1675303896023_à¹à¸à¸à¸­à¸.png', 'สนามเปตอง สนามที่ 3 อยู่ที่ลานหิน ข้างประตู 1'),
+(41, 'สนามเปตอง สนามที่ 4', 4, '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2737.0377415627495!2d100.72821826839049!3d14.032478741108713!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d78bc7fb1fced%3A0x6f762a8f3ead63bd!2z4Lil4Liy4LiZ4LiI4Lit4LiU4Lij4LiW4Lir4Lil4Lix4LiB!5e0!3m2!1sth!2sth!4v1675303779137!5m2!1sth!2sth\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>', '1675303896023_à¹à¸à¸à¸­à¸.png', 'สนามเปตอง สนามที่ 4 อยู่ที่ลานหิน ข้างประตู 1');
 
 -- --------------------------------------------------------
 
@@ -193,7 +267,69 @@ INSERT INTO `place_opening` (`openingID`, `placeID`, `day`, `timeOpen`, `timeClo
 (5, 1, 'ศุกร์', '08:30:00', '21:00:00'),
 (6, 1, 'เสาร์', '13:00:00', '21:00:00'),
 (7, 1, 'อาทิตย์', '13:00:00', '21:00:00'),
-(54, 32, 'จันทร์', '13:08:00', '13:08:00');
+(55, 33, 'จันทร์', '08:30:00', '21:00:00'),
+(56, 33, 'อังคาร', '08:30:00', '21:00:00'),
+(57, 33, 'พุธ', '08:30:00', '21:00:00'),
+(58, 33, 'พฤหัสบดี', '08:30:00', '21:00:00'),
+(59, 33, 'ศุกร์', '08:30:00', '21:00:00'),
+(60, 33, 'เสาร์', '13:00:00', '21:00:00'),
+(61, 33, 'อาทิตย์', '13:00:00', '21:00:00'),
+(62, 34, 'จันทร์', '08:30:00', '21:00:00'),
+(63, 34, 'อังคาร', '08:30:00', '21:00:00'),
+(64, 34, 'พุธ', '08:30:00', '21:00:00'),
+(65, 34, 'พฤหัสบดี', '08:30:00', '21:00:00'),
+(66, 34, 'ศุกร์', '08:30:00', '21:00:00'),
+(67, 34, 'เสาร์', '13:00:00', '21:00:00'),
+(68, 34, 'อาทิตย์', '13:00:00', '21:00:00'),
+(69, 35, 'จันทร์', '08:30:00', '21:00:00'),
+(70, 35, 'อังคาร', '08:30:00', '21:00:00'),
+(71, 35, 'พุธ', '08:30:00', '21:00:00'),
+(72, 35, 'พฤหัสบดี', '08:30:00', '21:00:00'),
+(73, 35, 'ศุกร์', '08:30:00', '21:00:00'),
+(74, 35, 'เสาร์', '13:00:00', '21:00:00'),
+(75, 35, 'อาทิตย์', '13:00:00', '21:00:00'),
+(76, 36, 'จันทร์', '08:30:00', '21:00:00'),
+(77, 36, 'อังคาร', '08:30:00', '21:00:00'),
+(78, 36, 'พุธ', '08:30:00', '21:00:00'),
+(79, 36, 'พฤหัสบดี', '08:30:00', '21:00:00'),
+(80, 36, 'ศุกร์', '08:30:00', '21:00:00'),
+(81, 36, 'เสาร์', '13:00:00', '21:00:00'),
+(82, 36, 'อาทิตย์', '13:00:00', '21:00:00'),
+(83, 37, 'จันทร์', '08:30:00', '21:00:00'),
+(84, 37, 'อังคาร', '08:30:00', '21:00:00'),
+(85, 37, 'พุธ', '08:30:00', '21:00:00'),
+(86, 37, 'พฤหัสบดี', '08:30:00', '21:00:00'),
+(87, 37, 'ศุกร์', '08:30:00', '21:00:00'),
+(88, 37, 'เสาร์', '13:00:00', '21:00:00'),
+(89, 37, 'อาทิตย์', '13:00:00', '21:00:00'),
+(90, 38, 'จันทร์', '08:30:00', '21:00:00'),
+(91, 38, 'อังคาร', '08:30:00', '21:00:00'),
+(92, 38, 'พุธ', '08:30:00', '21:00:00'),
+(93, 38, 'พฤหัสบดี', '08:30:00', '21:00:00'),
+(94, 38, 'ศุกร์', '08:30:00', '21:00:00'),
+(95, 38, 'เสาร์', '13:00:00', '21:00:00'),
+(96, 38, 'อาทิตย์', '13:00:00', '21:00:00'),
+(97, 39, 'จันทร์', '08:30:00', '21:00:00'),
+(98, 39, 'อังคาร', '08:30:00', '21:00:00'),
+(99, 39, 'พุธ', '08:30:00', '21:00:00'),
+(100, 39, 'พฤหัสบดี', '08:30:00', '21:00:00'),
+(101, 39, 'ศุกร์', '08:30:00', '21:00:00'),
+(102, 39, 'เสาร์', '13:00:00', '21:00:00'),
+(103, 39, 'อาทิตย์', '13:00:00', '21:00:00'),
+(104, 40, 'จันทร์', '08:30:00', '21:00:00'),
+(105, 40, 'อังคาร', '08:30:00', '21:00:00'),
+(106, 40, 'พุธ', '08:30:00', '21:00:00'),
+(107, 40, 'พฤหัสบดี', '08:30:00', '21:00:00'),
+(108, 40, 'ศุกร์', '08:30:00', '21:00:00'),
+(109, 40, 'เสาร์', '13:00:00', '21:00:00'),
+(110, 40, 'อาทิตย์', '13:00:00', '21:00:00'),
+(111, 41, 'จันทร์', '08:30:00', '21:00:00'),
+(112, 41, 'อังคาร', '08:30:00', '21:00:00'),
+(113, 41, 'พุธ', '08:30:00', '21:00:00'),
+(114, 41, 'พฤหัสบดี', '08:30:00', '21:00:00'),
+(115, 41, 'ศุกร์', '08:30:00', '21:00:00'),
+(116, 41, 'เสาร์', '13:00:00', '21:00:00'),
+(117, 41, 'อาทิตย์', '13:00:00', '21:00:00');
 
 -- --------------------------------------------------------
 
@@ -204,7 +340,6 @@ INSERT INTO `place_opening` (`openingID`, `placeID`, `day`, `timeOpen`, `timeClo
 CREATE TABLE `player` (
   `playerID` int(3) NOT NULL,
   `playerIDCard` varchar(13) NOT NULL,
-  `playerStudentID` varchar(13) NOT NULL,
   `playerFName` varchar(50) NOT NULL,
   `playerLName` varchar(50) NOT NULL,
   `playerGender` enum('ชาย','หญิง') NOT NULL,
@@ -214,8 +349,6 @@ CREATE TABLE `player` (
   `facultyID` int(3) NOT NULL,
   `teamID` int(3) DEFAULT NULL,
   `playerFile1` varchar(255) DEFAULT NULL,
-  `playerFile2` varchar(255) DEFAULT NULL,
-  `playerFile3` varchar(255) DEFAULT NULL,
   `tnmID` int(3) NOT NULL,
   `detailDoc` varchar(255) DEFAULT NULL,
   `otp` int(10) DEFAULT NULL,
@@ -227,31 +360,19 @@ CREATE TABLE `player` (
 -- Dumping data for table `player`
 --
 
-INSERT INTO `player` (`playerID`, `playerIDCard`, `playerStudentID`, `playerFName`, `playerLName`, `playerGender`, `playerBirthday`, `playerPhone`, `playerEmail`, `facultyID`, `teamID`, `playerFile1`, `playerFile2`, `playerFile3`, `tnmID`, `detailDoc`, `otp`, `playerStatus`, `playerRegDate`) VALUES
-(97, '0981891098198', '6516106161601', 'จักริน', 'นิลพันธ์', 'ชาย', '2023-02-01', '0613921298', 'firstlnw0099@gmail.com', 1, NULL, '1675185197127_kl.jpg', NULL, NULL, 13, NULL, NULL, 'accept', '2023-02-01'),
-(98, '1901918910919', '6841061086168', 'เมธานันท์', 'รัตนปัญญานนท์', 'ชาย', '2023-02-01', '0831140590', 'firstlnw0099@gmail.com', 2, NULL, '1675185221662_kl.jpg', NULL, NULL, 13, NULL, NULL, 'accept', '2023-02-01'),
-(99, '1509198109191', '6874064646416', 'Nontaphat', 'Ruaklittichai', 'ชาย', '2023-02-01', '0984926565', 'firstlnw0099@gmail.com', 1, NULL, '1675185255147_basketball.jpg', NULL, NULL, 13, NULL, NULL, 'accept', '2023-02-01'),
-(100, '8019180919819', '1381831381031', 'จักริน', 'นิลพันธ์', 'ชาย', '2023-02-01', '0613921298', 'firstlnw0099@gmail.com', 2, NULL, '1675185285912_66kebb6ah7k8ejiakacgi.jpg', NULL, NULL, 15, NULL, NULL, 'accept', '2023-02-01'),
-(101, '0491891161616', '0494094949494', 'เมธานันท์', 'รัตนปัญญานนท์', 'หญิง', '2023-02-08', '0831140590', 'firstlnw0099@gmail.com', 2, NULL, '1675185313578_kl.jpg', NULL, NULL, 15, NULL, NULL, 'accept', '2023-02-01'),
-(102, '1709840949484', '6846048640864', 'กิตติภพ', 'รักสนิท', 'ชาย', '2023-02-01', '2013132103', 'firstlnw0099@gmail.com', 2, NULL, '1675185365764_66kebb6ah7k8ejiakacgi.jpg', NULL, NULL, 13, NULL, NULL, 'accept', '2023-02-01'),
-(103, '0980191919191', '3874064640864', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2023-02-08', '0984984094', 'firstlnw0099@gmail.com', 1, NULL, '1675185391846_tennis.jfif', NULL, NULL, 15, NULL, NULL, 'accept', '2023-02-01'),
-(104, '0894919109198', '3513016816106', 'กิตติภพ', 'รักสนิท', 'หญิง', '2023-01-31', '2013132103', 'firstlnw0099@gmail.com', 1, NULL, '1675185429620_kl.jpg', NULL, NULL, 15, NULL, NULL, 'accept', '2023-02-01'),
-(105, '0981910919109', '9046464060460', 'จักริน', 'นิลพันธ์', 'ชาย', '2023-02-21', '0613921298', 'firstlnw0099@gmail.com', 2, 44, '1675185579791_kl.jpg', NULL, NULL, 14, '', NULL, 'accept', '2023-02-01'),
-(106, '9804949898049', '6468408646840', 'เมธานันท์', 'รัตนปัญญานนท์', 'หญิง', '2023-02-01', '0831140590', 'firstlnw0099@gmail.com', 2, 44, '1675185579791_basketball.jpg', NULL, NULL, 14, '', NULL, 'accept', '2023-02-01'),
-(107, '8049499409409', '9406464068046', 'กิตติภพ', 'รักสนิท', 'ชาย', '2023-02-28', '2013132103', 'firstlnw0099@gmail.com', 2, 45, '1675185637228_kl.jpg', NULL, NULL, 14, '', NULL, 'accept', '2023-02-01'),
-(108, '1091901919191', '3840684083464', 'จักริน', 'นิลพันธ์', 'ชาย', '2023-02-12', '0613921298', 'firstlnw0099@gmail.com', 2, 45, '1675185637228_66kebb6ah7k8ejiakacgi.jpg', NULL, NULL, 14, '', NULL, 'accept', '2023-02-01'),
-(109, '0894984094034', '6406846046464', 'เมธานันท์', 'รัตนปัญญานนท์', 'ชาย', '2023-02-21', '0831140590', 'firstlnw0099@gmail.com', 2, 46, '1675185710821_000_33346NG-728x485.jpg', NULL, NULL, 14, '', NULL, 'accept', '2023-02-01'),
-(110, '0984949409409', '3406464064640', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'หญิง', '2023-02-01', '0984926565', 'firstlnw0099@gmail.com', 2, 46, '1675185710821_basketball.jpg', NULL, NULL, 14, '', NULL, 'accept', '2023-02-01'),
-(111, '9490494940949', '3401316406846', 'เมธานันท์', 'รัตนปัญญานนท์', 'ชาย', '2023-02-28', '0831140590', 'firstlnw0099@gmail.com', 2, 47, '1675185760182_basketball.jpg', NULL, NULL, 14, '', NULL, 'accept', '2023-02-01'),
-(112, '0949848434646', '6074864604640', 'จักริน', 'นิลพันธ์', 'ชาย', '2023-02-15', '0613921298', 'firstlnw0099@gmail.com', 2, 47, '1675185760183_000_33346NG-728x485.jpg', NULL, NULL, 14, '', NULL, 'accept', '2023-02-01'),
-(113, '4864684648646', '0949804949840', 'จักริน', 'นิลพันธ์', 'หญิง', '2023-02-15', '0613921298', 'firstlnw0099@gmail.com', 2, 48, '1675185837546_kl.jpg', NULL, NULL, 16, '', NULL, 'accept', '2023-02-01'),
-(114, '9494940943468', '6084604646046', 'เมธานันท์', 'รัตนปัญญานนท์', 'ชาย', '2023-02-01', '0831140590', 'firstlnw0099@gmail.com', 2, 48, '1675185837546_000_33346NG-728x485.jpg', NULL, NULL, 16, '', NULL, 'accept', '2023-02-01'),
-(115, '6841646406406', '6840864064606', 'กิตติภพ', 'รักสนิท', 'ชาย', '2023-02-01', '2013132103', 'firstlnw0099@gmail.com', 2, 49, '1675185967396_66kebb6ah7k8ejiakacgi.jpg', NULL, NULL, 16, '', NULL, 'accept', '2023-02-01'),
-(116, '8406846406486', '6840646131313', 'จักริน', 'นิลพันธ์', 'ชาย', '2023-02-01', '0613921298', 'firstlnw0099@gmail.com', 2, 49, '1675185967396_66kebb6ah7k8ejiakacgi.jpg', NULL, NULL, 16, '', NULL, 'accept', '2023-02-01'),
-(117, '1610681616106', '6046468406848', 'เมธานันท์', 'รัตนปัญญานนท์', 'ชาย', '2023-02-01', '0831140590', 'firstlnw0099@gmail.com', 1, 50, '1675186038674_66kebb6ah7k8ejiakacgi.jpg', NULL, NULL, 16, '', NULL, 'accept', '2023-02-01'),
-(118, '8049108901919', '6510616168168', 'จักริน', 'นิลพันธ์', 'ชาย', '2023-02-01', '0613921298', 'firstlnw0099@gmail.com', 2, 50, '1675186038674_basketball.jpg', NULL, NULL, 16, '', NULL, 'accept', '2023-02-01'),
-(119, '0198108919819', '9046486406646', 'จักริน', 'นิลพันธ์', 'ชาย', '2023-02-28', '0613921298', 'firstlnw0099@gmail.com', 2, 51, '1675186086094_66kebb6ah7k8ejiakacgi.jpg', NULL, NULL, 16, '', NULL, 'accept', '2023-02-01'),
-(120, '5109198019190', '6840864640684', 'ชลธี', 'คำลือ', 'ชาย', '2023-02-14', '0984984094', 'chonlatee1129@gmail.com', 2, 51, '1675186086095_66kebb6ah7k8ejiakacgi.jpg', NULL, NULL, 16, '', NULL, 'accept', '2023-02-01');
+INSERT INTO `player` (`playerID`, `playerIDCard`, `playerFName`, `playerLName`, `playerGender`, `playerBirthday`, `playerPhone`, `playerEmail`, `facultyID`, `teamID`, `playerFile1`, `tnmID`, `detailDoc`, `otp`, `playerStatus`, `playerRegDate`) VALUES
+(159, '1980494894940', 'Nontaphat', 'Ruaklittichai', 'ชาย', '2023-02-20', '0984926565', 'firstlnw0099@gmail.com', 1, NULL, '1676900567538_66kebb6ah7k8ejiakacgi.jpg', 28, NULL, NULL, 'accept', '2023-02-20'),
+(160, '0498498065406', 'กิตติภพ', 'Ruaklittichai', 'ชาย', '2023-02-22', '0984926565', 'firstlnw0099@gmail.com', 13, NULL, '1676968871938_à¸ªà¸à¸²à¸¡.png,1676968871939_b3me2cq1z1b71.png,1676968871939_4584093.png', 28, NULL, NULL, 'accept', '2023-02-21'),
+(161, '6504648674949', 'ชลธี', 'คำลือ', 'ชาย', '2023-02-21', '0984984162', 'firstlnw0099@gmail.com', 18, NULL, '1676969165180_b3me2cq1z1b71.png,1676969165180_4584093.png', 28, NULL, NULL, 'accept', '2023-02-21'),
+(162, '6504648674949', 'วสวิญญ์', 'คำลือ', 'ชาย', '2023-02-21', '0984984162', 'firstlnw0099@gmail.com', 28, NULL, '1676969165180_b3me2cq1z1b71.png,1676969165180_4584093.png', 28, NULL, NULL, 'accept', '2023-02-21'),
+(167, '1980494894940', 'Nontaphat', 'Ruaklittichai', 'ชาย', '2023-02-20', '0984926565', 'firstlnw0099@gmail.com', 1, NULL, '1676900567538_66kebb6ah7k8ejiakacgi.jpg', 33, NULL, NULL, 'accept', '2023-02-20'),
+(168, '0498498065406', 'กิตติภพ', 'Ruaklittichai', 'ชาย', '2023-02-22', '0984926565', 'firstlnw0099@gmail.com', 13, NULL, '1676968871938_à¸ªà¸à¸²à¸¡.png,1676968871939_b3me2cq1z1b71.png,1676968871939_4584093.png', 33, NULL, NULL, 'accept', '2023-02-21'),
+(169, '6504648674949', 'ชลธี', 'คำลือ', 'ชาย', '2023-02-21', '0984984162', 'firstlnw0099@gmail.com', 18, NULL, '1676969165180_b3me2cq1z1b71.png,1676969165180_4584093.png', 33, NULL, NULL, 'accept', '2023-02-21'),
+(170, '6504648674949', 'วสวิญญ์', 'คำลือ', 'ชาย', '2023-02-21', '0984984162', 'firstlnw0099@gmail.com', 28, NULL, '1676969165180_b3me2cq1z1b71.png,1676969165180_4584093.png', 33, NULL, NULL, 'accept', '2023-02-21'),
+(171, '1980494894940', 'จักริน', 'Ruaklittichai', 'ชาย', '2023-02-20', '0984926565', 'firstlnw0099@gmail.com', 1, NULL, '1676900567538_66kebb6ah7k8ejiakacgi.jpg', 33, NULL, NULL, 'accept', '2023-02-20'),
+(172, '0498498065406', 'เมธานันท์', 'Ruaklittichai', 'ชาย', '2023-02-22', '0984926565', 'firstlnw0099@gmail.com', 13, NULL, '1676968871938_à¸ªà¸à¸²à¸¡.png,1676968871939_b3me2cq1z1b71.png,1676968871939_4584093.png', 33, NULL, NULL, 'accept', '2023-02-21'),
+(173, '6504648674949', 'นพดล', 'คำลือ', 'ชาย', '2023-02-21', '0984984162', 'firstlnw0099@gmail.com', 18, NULL, '1676969165180_b3me2cq1z1b71.png,1676969165180_4584093.png', 33, NULL, NULL, 'accept', '2023-02-21'),
+(174, '6504648674949', 'ปฏิพล', 'คำลือ', 'ชาย', '2023-02-21', '0984984162', 'firstlnw0099@gmail.com', 28, NULL, '1676969165180_b3me2cq1z1b71.png,1676969165180_4584093.png', 33, NULL, NULL, 'accept', '2023-02-21');
 
 -- --------------------------------------------------------
 
@@ -311,6 +432,7 @@ CREATE TABLE `team` (
   `LnameAgent` varchar(50) NOT NULL,
   `teamPhoneA` varchar(10) DEFAULT NULL,
   `teamEmailA` varchar(50) DEFAULT NULL,
+  `uniID` int(10) DEFAULT NULL,
   `teamStatus` enum('deny','accept','wait','edit') DEFAULT 'wait',
   `teamPic` varchar(255) DEFAULT NULL,
   `tnmID` int(3) NOT NULL,
@@ -318,20 +440,6 @@ CREATE TABLE `team` (
   `otp` int(10) DEFAULT NULL,
   `teamRegDate` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `team`
---
-
-INSERT INTO `team` (`teamID`, `teamName`, `NameAgent`, `LnameAgent`, `teamPhoneA`, `teamEmailA`, `teamStatus`, `teamPic`, `tnmID`, `detailDoc`, `otp`, `teamRegDate`) VALUES
-(44, 'tean1', 'จักริน', 'นิลพันธ์', '0613921298', 'firstlnw0099@gmail.com', 'accept', '1675185579791_kl.jpg', 14, NULL, NULL, '2023-02-01'),
-(45, 'team2', 'tea2', 'rawr2', '8498498490', 'firstlnw0099@gmail.com', 'accept', '1675185637227_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', 14, NULL, NULL, '2023-02-01'),
-(46, 'team3', 'taem3', 'team3', '0984940984', 'firstlnw0099@gmail.com', 'accept', '1675185710821_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', 14, NULL, NULL, '2023-02-01'),
-(47, 'tean4', 'team4', 'teanm', '7948940949', 'firstlnw0099@gmail.com', 'accept', '1675185760182_basketball.jpg', 14, NULL, NULL, '2023-02-01'),
-(48, 'team1', 'team1', 'team1', '0984343464', 'firstlnw0099@gmail.com', 'accept', '1675185837546_tennis.jfif', 16, NULL, NULL, '2023-02-01'),
-(49, 'tean2', 'team2', 'team2', '0894094646', 'firstlnw0099@gmail.com', 'accept', '1675185967396_kl.jpg', 16, NULL, NULL, '2023-02-01'),
-(50, 'team3', 'team3', 'team3', '0894098409', 'firstlnw0099@gmail.com', 'accept', '1675186038674_kl.jpg', 16, NULL, NULL, '2023-02-01'),
-(51, 'team4', 'team4', 'team4', '8490166106', 'firstlnw0099@gmail.com', 'accept', '1675186086094_66kebb6ah7k8ejiakacgi.jpg', 16, NULL, NULL, '2023-02-01');
 
 -- --------------------------------------------------------
 
@@ -365,10 +473,8 @@ CREATE TABLE `tournament` (
 --
 
 INSERT INTO `tournament` (`tnmID`, `tnmName`, `sportID`, `tnmUrl`, `Rstartdate`, `Renddate`, `tnmStartdate`, `tnmEnddate`, `tnmTypegame`, `tnmDetail`, `tnmPicture`, `tnmFile1`, `tnmFile2`, `tnmFile3`, `accountID`, `st1`, `nd2`, `rd3`) VALUES
-(13, 'leaderboard solo', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-01', '2023-02-01', '2023-02-01', '2023-02-01', 'leaderboard', 'leaderboard solo', '1675185069092_tennis.jfif', '1675185069092_tennis.jfif', NULL, NULL, NULL, NULL, NULL, NULL),
-(14, 'leaderboard team', 2, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-01', '2023-02-01', '2023-02-01', '2023-02-01', 'leaderboard', 'leaderboard team', '1675185093833_tennis.jfif', '1675185093833_tennis.jfif', NULL, NULL, NULL, NULL, NULL, NULL),
-(15, 'round robin solo', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-01', '2023-02-01', '2023-02-01', '2023-02-01', 'roundrobin', 'round robin solo', '1675185115964_kl.jpg', '1675185115964_kl.jpg', NULL, NULL, NULL, NULL, NULL, NULL),
-(16, 'round robin team', 2, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-01', '2023-02-01', '2023-02-01', '2023-02-01', 'roundrobin', 'round robin team', '1675185138190_kl.jpg', '1675185138190_kl.jpg', NULL, NULL, NULL, NULL, NULL, NULL);
+(28, 'single 4 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-20', '2023-02-20', '2023-02-20', '2023-02-20', 'single', 'solosingle', '1676900517256_000_33346NG-728x485.jpg', '1676900517256_kl.jpg', NULL, NULL, NULL, '159', '161', '160'),
+(33, 'single 8 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-22', '2023-02-22', '2023-02-22', '2023-02-22', 'single', 'single 8 คน', '1677084861649_4.jpg', '1677084861649_2.jpg', NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -387,15 +493,15 @@ CREATE TABLE `university` (
 --
 
 INSERT INTO `university` (`uniID`, `name`, `status`) VALUES
-(1, 'มหาวิทยาลัยเทคโนโลยีราชมงคลธัญบุรี', 'ไม่เข้าร่วม'),
-(2, 'มหาวิทยาลัยเทคโนโลยีราชมงคลล้านนา', 'ไม่เข้าร่วม'),
-(3, 'มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน', 'ไม่เข้าร่วม'),
-(4, 'มหาวิทยาลัยเทคโนโลยีราชมงคลกรุงเทพ', 'ไม่เข้าร่วม'),
-(5, 'มหาวิทยาลัยเทคโนโลยีราชมงคลตะวันออก', 'ไม่เข้าร่วม'),
-(6, 'มหาวิทยาลัยเทคโนโลยีราชมงคลพระนคร', 'ไม่เข้าร่วม'),
-(7, 'มหาวิทยาลัยเทคโนโลยีราชมงคลรัตนโกสินทร์', 'ไม่เข้าร่วม'),
-(8, 'มหาวิทยาลัยเทคโนโลยีราชมงคลศรีวิชัย', 'ไม่เข้าร่วม'),
-(9, 'มหาวิทยาลัยเทคโนโลยีราชมงคลสุวรรณภูมิ', 'ไม่เข้าร่วม');
+(1, 'มหาวิทยาลัยเทคโนโลยีราชมงคลธัญบุรี', 'เข้าร่วม'),
+(2, 'มหาวิทยาลัยเทคโนโลยีราชมงคลล้านนา', 'เข้าร่วม'),
+(3, 'มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน', 'เข้าร่วม'),
+(4, 'มหาวิทยาลัยเทคโนโลยีราชมงคลกรุงเทพ', 'เข้าร่วม'),
+(5, 'มหาวิทยาลัยเทคโนโลยีราชมงคลตะวันออก', 'เข้าร่วม'),
+(6, 'มหาวิทยาลัยเทคโนโลยีราชมงคลพระนคร', 'เข้าร่วม'),
+(7, 'มหาวิทยาลัยเทคโนโลยีราชมงคลรัตนโกสินทร์', 'เข้าร่วม'),
+(8, 'มหาวิทยาลัยเทคโนโลยีราชมงคลศรีวิชัย', 'เข้าร่วม'),
+(9, 'มหาวิทยาลัยเทคโนโลยีราชมงคลสุวรรณภูมิ', 'เข้าร่วม');
 
 -- --------------------------------------------------------
 
@@ -530,7 +636,7 @@ ALTER TABLE `account`
 -- AUTO_INCREMENT for table `faculty`
 --
 ALTER TABLE `faculty`
-  MODIFY `facultyID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `facultyID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `highlight`
@@ -542,25 +648,25 @@ ALTER TABLE `highlight`
 -- AUTO_INCREMENT for table `matchplay`
 --
 ALTER TABLE `matchplay`
-  MODIFY `matchID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=276;
+  MODIFY `matchID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=311;
 
 --
 -- AUTO_INCREMENT for table `place`
 --
 ALTER TABLE `place`
-  MODIFY `placeID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `placeID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `place_opening`
 --
 ALTER TABLE `place_opening`
-  MODIFY `openingID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `openingID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
 
 --
 -- AUTO_INCREMENT for table `player`
 --
 ALTER TABLE `player`
-  MODIFY `playerID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `playerID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=175;
 
 --
 -- AUTO_INCREMENT for table `sport`
@@ -578,13 +684,13 @@ ALTER TABLE `sport_type`
 -- AUTO_INCREMENT for table `team`
 --
 ALTER TABLE `team`
-  MODIFY `teamID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `teamID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `tournament`
 --
 ALTER TABLE `tournament`
-  MODIFY `tnmID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `tnmID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `university`

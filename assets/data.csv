@@ -1,5 +1,11 @@
 ชื่อการแข่งขัน,ประเภทกีฬา,วันที่เริ่มแข่งขัน,วันที่สิ้นสุด
+<<<<<<< HEAD
 leaderboard solo,แบดมินตัน ประเภทเดี่ยว,Wed Feb 01 2023 00:00:00 GMT+0700 (Indochina Time),Wed Feb 01 2023 00:00:00 GMT+0700 (Indochina Time)
 leaderboard team,แบดมินตัน ประเภทคู่,Wed Feb 01 2023 00:00:00 GMT+0700 (Indochina Time),Wed Feb 01 2023 00:00:00 GMT+0700 (Indochina Time)
 round robin solo,แบดมินตัน ประเภทเดี่ยว,Wed Feb 01 2023 00:00:00 GMT+0700 (Indochina Time),Wed Feb 01 2023 00:00:00 GMT+0700 (Indochina Time)
 round robin team,แบดมินตัน ประเภทคู่,Wed Feb 01 2023 00:00:00 GMT+0700 (Indochina Time),Wed Feb 01 2023 00:00:00 GMT+0700 (Indochina Time)
+=======
+solo single,แบดมินตัน ประเภทเดี่ยว,Mon Feb 20 2023 00:00:00 GMT+0700 (เวลาอินโดจีน),Mon Feb 20 2023 00:00:00 GMT+0700 (เวลาอินโดจีน)
+solo single2,แบดมินตัน ประเภทเดี่ยว,Mon Feb 20 2023 00:00:00 GMT+0700 (เวลาอินโดจีน),Mon Feb 20 2023 00:00:00 GMT+0700 (เวลาอินโดจีน)
+team test 1,แบดมินตัน ประเภทคู่,Wed Feb 22 2023 00:00:00 GMT+0700 (เวลาอินโดจีน),Wed Feb 22 2023 00:00:00 GMT+0700 (เวลาอินโดจีน)
+>>>>>>> FAERIS

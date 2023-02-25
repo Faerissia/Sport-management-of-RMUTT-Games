@@ -13,27 +13,27 @@
   text-align: center;
 }
 
-th {
+/* th {
   background-color: lightgray;
 
 }
 
 td:first-child {
   background-color: lightgray;
-}
+} */
 </style>
 </head>
 <body>
-    <h1><%= tournamentname %></h1>
+    <h1><%= tournamentName %></h1>
 
         <%- include("../../partials/menu_staff.ejs") %>
 
         <br>
-        <h1>Round Robin</h1>
-    <table>
-      <thead>
+        <h1 class="text-center">Round Robin</h1>
+    <table class="table  w-75 mx-auto my-5  table-hover text-center align-middle">
+      <thead class="table-primary" style="background-color: rgb(96, 166, 253); ">
         <tr>
-          <th></th>
+          <th class="table-light border-dark"></th>
           <% let teamNames = []; %>
           <% data.forEach(function(match) { %>
             <% if (!teamNames.includes(match.team1)) { teamNames.push(match.team1); } %>
@@ -47,9 +47,9 @@ td:first-child {
       <tbody>
         <% teamNames.forEach(function(teamName) { %>
           <tr>
-            <td><%= teamName %></td>
+            <td class="table-primary border-dark fw-bold"><%= teamName %></td>
             <% teamNames.forEach(function(opponent) { %>
-              <td>
+              <!-- <td> -->
                 <% let score1 = ""; %>
                 <% let score2 = ""; %>
                 <% let winner = ""; %>
@@ -70,11 +70,11 @@ td:first-child {
                   <% } %>
                 <% }); %>
                 <% if (matchExists) { %>
-                  <%= score2 %> - <%= score1 %>
+                 <td> <%= score2 %> - <%= score1 %></td>
                 <% } else { %>
-                  X
+                <td class="table-danger border-dark ">X</td>
                 <% } %>
-              </td>
+              <!-- </td> -->
             <% }); %>
           </tr>
         <% }); %>
@@ -82,9 +82,9 @@ td:first-child {
     </table>
         <br><br>
     
-        <h3>ตารางคะแนน</h3>
-        <table>
-          <thead>
+        <h3 class="text-center">ตารางคะแนน</h3>
+        <table class="table  w-75 mx-auto my-5  table-hover text-center align-middle">
+          <thead style="background-color: rgb(96, 166, 253); ">
             <tr>
               <th>ชื่อ</th>
               <th>ชนะ(ครั้ง)</th>
@@ -121,7 +121,9 @@ td:first-child {
       </tbody>
     </table>
           
-  <a href="/tournament/roundrobinsave/<%= tnmID %>" class="btn btn-success">บันทึกผลการแข่งขัน</a>
+    <div class="text-center">
+      <a href="/tournament/roundrobinsave/<%= tnmID %>" class="btn btn-success">บันทึกผลการแข่งขัน</a>
+    </div>
 
 </body>
 </html>

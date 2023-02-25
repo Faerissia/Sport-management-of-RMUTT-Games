@@ -48,10 +48,6 @@
             <div class="form-group">
                 <label>เลขประจำตัวประชาชน:</label>
                 <input type="text" class="form-control" value="<%= data[0].playerIDCard %>" disabled>
-            </div>
-            <div class="form-group">
-                <label>รหัสนักศึกษา:</label>
-                <input type="text" class="form-control" value="<%= data[0].playerStudentID %>" disabled>
             </div><% data[0].tnmID %>
             <div class="form-group">
                 <label>เอกสารยืนยันตัวตน:</label>
@@ -59,10 +55,10 @@
             </div>
             <div class="form-group" style="margin-top: 10px;">
                 <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
-                <a href="/" class="btn btn-warning" value="edit">แก้ไข</a>
+                <a href="/tnmcheck/edit/player/<%= data[0].playerID%>" class="btn btn-warning" value="edit">แก้ไข</a>
                 <a href="/tnmcheck/player/deny/<%= data[0].playerID%>" class="btn btn-danger" value="deny">ปฏิเสธ</a>
                 <a href="/tnmcheck/player/accept/<%= data[0].playerID%>" class="btn btn-success" value="accept">ยอมรับ</a>
-                <a href="/" class="btn btn-primary" value="otp">ส่งอีเมล</a>
+                <a href="/tnmcheck/emailsingle/<%= data[0].playerID %>" class="btn btn-primary" value="otp">ส่งแก้ไข</a>
 
             </div>
         </form>

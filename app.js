@@ -5,9 +5,11 @@ let bodyParser=require("body-parser");
 let flash = require('express-flash');
 const dbConnection = require('./util/db');
 const session = require('express-session');
+const fileUpload = require('express-fileupload');
 const fs = require('fs');
 
 //routes variable
+const edittitle = require('./routes/edittitle');
 const dashboard = require('./routes/dashboard');
 const account = require('./routes/account');
 const uni = require('./routes/uni');
@@ -20,14 +22,12 @@ const tnmcheck = require('./routes/tnmcheck');
 const tnmsetdp = require('./routes/tnmsetdp');
 const tnmsave = require('./routes/tnmsave');
 const uindex = require('./routes/userside/uindex');
-const fileUpload = require('express-fileupload');
 const placetable = require('./routes/placetable');
 
 global.status_login;
 global.role;
 global.user;
 
-global.tournamentName;
 
 // all environments
   const title = fs.readFileSync(path.join(__dirname,'title.txt'), 'utf-8');
@@ -113,6 +113,7 @@ app.get('/error404', (req, res) => {
 app.use('/',uindex);
 
 //routes
+app.use('/title',edittitle);
 app.use('/account', account);
 app.use('/dashboard', dashboard);
 app.use('/uni', uni);

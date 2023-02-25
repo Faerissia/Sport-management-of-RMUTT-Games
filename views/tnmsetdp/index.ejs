@@ -25,7 +25,15 @@
 
         <h1>รายการแข่งขันที่ต้องกำหนดเวลาและสถานที่</h1>
         <a href="/tournament/add" class="btn btn-primary">เพิ่มการแข่งขัน</a>
-    <div class="card">
+        <div class="float-end">
+            <form action="/tnmsetdp/search-tnmsetdp" method="post">
+                <div class="input-group ">
+                    <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา ชื่อการแข่งขัน">
+                    <button type="submit" class="btn btn-primary">ค้นหา</button>
+                </div>
+            </form>
+        </div>
+    <div class="card w-100">
         <div class="card-header">
             <ul class="nav nav-pills w-100">
                 <li class="nav-link ml-auto">
@@ -48,18 +56,24 @@
                     </thead>
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
+                            <% if(data[i].tnmTypegame === 'leaderboard' && data[i].notset != 0 ){ %>
+                                <% data[i].totalmatch = data[i].totalmatch / data[i].totalmatch %>
+                                <% data[i].notset = data[i].notset / data[i].notset %>
+                                <% } %>
                             <tr>
+                                <% if(data[i].tnmTypegame === 'leaderboard' && data[i].notset === 0){ %>
+                                    <% }else{%>
                                 <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td><%= data[i].totalmatch%></td>
+                                <td><%= data[i].notset%></td>
                                 <td>
                                     <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
                                     <a href="../tournament/detail/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
                                 </td>
+                                <% } %>
                             </tr>
-                        <% } %>
+                            <% } %>
                     </tbody>
                 </table>
             <% } %>

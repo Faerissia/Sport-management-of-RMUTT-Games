@@ -3,6 +3,7 @@ let router = express.Router();
 let dbConnection = require('../../util/db');
 const path = require('path');
 const nodemailer = require('nodemailer');
+const { resolve } = require('path');
 
 let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -15,8 +16,8 @@ let transporter = nodemailer.createTransport({
 
 
 router.post('/verifysingle', (req, res) => {
-    let RestoredOTP = req.body.RestoredOTP;
-    let otp = req.body.otp;
+    let OTP = req.body.OTP;
+    let submitOTP = req.body.submitOTP;
     let playerFName = req.body.playerFName;
     let playerLName = req.body.playerLName;
     let playerGender = req.body.playerGender;
@@ -25,12 +26,12 @@ router.post('/verifysingle', (req, res) => {
     let playerEmail = req.body.playerEmail;
     let facultyID = req.body.facultyID;
     let playerIDCard = req.body.playerIDCard;
-    let playerStudentID = req.body.playerStudentID;
     let playerFile1 = req.body.playerFile1;
     let tnmID =req.body.tnmID;
 
+    console.log(submitOTP,OTP)
 
-    if (otp === RestoredOTP) {
+    if (submitOTP === OTP) {
         dbConnection.query('SELECT * FROM player WHERE playerIDCard = ? AND tnmID = ?',[playerIDCard, tnmID] ,(err,rows) => {
             if(rows.length > 0){
                 let form_data = {
@@ -43,7 +44,6 @@ router.post('/verifysingle', (req, res) => {
                     playerEmail: playerEmail,
                     facultyID: facultyID,
                     playerIDCard: playerIDCard,
-                    playerStudentID: playerStudentID,
                     playerFile1: playerFile1,
                     detailDoc: 'สมัครซ้ำ'
                 }
@@ -69,7 +69,6 @@ router.post('/verifysingle', (req, res) => {
                     playerEmail: playerEmail,
                     facultyID: facultyID,
                     playerIDCard: playerIDCard,
-                    playerStudentID: playerStudentID,
                     playerFile1: playerFile1
                 }
                 console.log('ไม่ซ้ำ')
@@ -87,10 +86,11 @@ router.post('/verifysingle', (req, res) => {
         })
 
     } else {
-        res.flash('error','รหัส OTP ไม่ถูกต้อง');
+        req.flash('error','รหัส OTP ไม่ถูกต้อง');
         res.render('userside/regform/otpsingle',{
+            submitOTP:submitOTP,
+            OTP:OTP,
             playerEmail: playerEmail,
-            RestoredOTP: RestoredOTP,
             tnmID: tnmID,
             playerFName: playerFName,
             playerLName: playerLName,
@@ -100,8 +100,7 @@ router.post('/verifysingle', (req, res) => {
             playerEmail: playerEmail,
             facultyID: facultyID,
             playerIDCard: playerIDCard,
-            playerStudentID: playerStudentID,
-            playerFile1: name_pfile,
+            playerFile1: playerFile1,
             status_login: req.session.loggedin
         })
         
@@ -116,6 +115,7 @@ router.post('/verifyteam', (req, res) => {
     let LnameAgent = req.body.LnameAgent;
     let teamPhoneA = req.body.teamPhoneA;
     let teamEmailA = req.body.teamEmailA;
+    let uniID = req.body.uniID;
     let teamfile = req.body.teamfile;
     let tnmID = req.body.tnmID;
 
@@ -127,24 +127,23 @@ router.post('/verifyteam', (req, res) => {
     let playerEmail = req.body.playerEmail;
     let facultyID = req.body.facultyID;
     let playerIDCard = req.body.playerIDCard;
-    let playerStudentID = req.body.playerStudentID;
     let player_photo = req.body.player_photo;
     let detailDoc = req.body.detailDoc;
 
     let values = [];
 
     for (let i = 0; i < playerFName.length; i++) {
-    values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], playerStudentID[i], player_photo[i], detailDoc[i], tnmID])
+    values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], player_photo[i], detailDoc[i], tnmID])
     }
 
 
     if(otp === teamOTP){
 
-    let sql_team = "INSERT INTO team (teamName, NameAgent, LnameAgent, teamPhoneA, teamEmailA, teamPic, tnmID) VALUES ?";
-    let sql_player = "INSERT INTO player (playerFName, playerLName, playerGender, playerBirthday, playerPhone, playerEmail, facultyID, playerIDCard, playerStudentID, playerFile1, detailDoc, tnmID,teamID) VALUES ?";
+    let sql_team = "INSERT INTO team (teamName, NameAgent, LnameAgent, uniID, teamPhoneA, teamEmailA, teamPic, tnmID) VALUES ?";
+    let sql_player = "INSERT INTO player (playerFName, playerLName, playerGender, playerBirthday, playerPhone, playerEmail, facultyID, playerIDCard, playerFile1, detailDoc, tnmID,teamID) VALUES ?";
         
         // insert query db
-        dbConnection.query(sql_team,[[[teamName, NameAgent, LnameAgent, teamPhoneA,teamEmailA, teamfile, tnmID]]], (err, result) => {
+        dbConnection.query(sql_team,[[[teamName, NameAgent, LnameAgent, uniID, teamPhoneA,teamEmailA, teamfile, tnmID]]], (err, result) => {
             if (err) throw err;
             console.log("Number of teams inserted: " + result.affectedRows);
             let teamID = result.insertId;
@@ -169,6 +168,7 @@ router.post('/verifyteam', (req, res) => {
         NameAgent: NameAgent,
         LnameAgent: LnameAgent,
         teamPhoneA: teamPhoneA,
+        uniID: uniID,
         teamEmailA: teamEmailA,
         teamfile: teamfile,
         values: values,
@@ -247,6 +247,7 @@ router.get('/tnmbracket/(:tnmID)', (req, res, next) => {
 router.get('/tnmparticipant/(:tnmID)', (req, res, next) => {
     let tnmID = req.params.tnmID;
     dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName,f.name AS FacName FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID WHERE t.tnmID = ' + tnmID, (err, rows) => {
+        if(rows.length){
         if (rows[0].teamID === null){
             res.render('userside/tnm/tnmparticipant', { data: rows,tnmID: tnmID,status_login: req.session.loggedin });
         } else {
@@ -254,6 +255,10 @@ router.get('/tnmparticipant/(:tnmID)', (req, res, next) => {
             res.render('userside/tnm/tnmparticipant', { data: rows,tnmID: tnmID,status_login: req.session.loggedin });
         })
     }
+}
+else{
+    res.render('userside/tnm/tnmparticipant',{tnmID: tnmID,status_login: req.session.loggedin});
+}
 })
 })
 
@@ -325,7 +330,7 @@ router.get('/tnmhighlight/(:tnmID)', (req, res, next) => {
 
 router.get('/singlereg/(:tnmID)', (req, res, next) => {
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT u.name, u.uniID,t.tnmID, t.tnmName FROM university u INNER JOIN tournament t WHERE tnmID =' +tnmID, (err, rows) => {
+    dbConnection.query('SELECT u.name, u.uniID,t.tnmID, t.tnmName,t.tnmUrl FROM university u INNER JOIN tournament t WHERE tnmID =' +tnmID, (err, rows) => {
                 res.render('userside/regform/singlereg', { data: rows,tnmID: tnmID,status_login: req.session.loggedin
                  });
     })
@@ -341,14 +346,17 @@ router.post('/singlereg', (req, res, next) =>{
     let playerEmail = req.body.playerEmail;
     let facultyID = req.body.facultyID;
     let playerIDCard = req.body.playerIDCard;
-    let playerStudentID = req.body.playerStudentID;
-    let playerFile1 = req.files.playerFile1;
     let tnmID =req.body.tnmID;
 
-    
-    var name_pfile = new Date().getTime() +'_'+playerFile1.name;
-    playerFile1.mv('./assets/player/' + name_pfile);
-
+    let playerFiles = [];
+    for(let i =1;i <= 3; i++){
+        if(req.files[`playerFile${i}`]){
+        let playerFile = req.files[`playerFile${i}`];
+        let  name_pfile = new Date().getTime() +'_'+playerFile.name;
+        playerFile.mv('./assets/player/' + name_pfile);
+        playerFiles.push(name_pfile);
+    }
+    }
 
     let OTP = Math.floor(1000 + Math.random() * 9000);
 
@@ -377,8 +385,7 @@ router.post('/singlereg', (req, res, next) =>{
             playerEmail: playerEmail,
             facultyID: facultyID,
             playerIDCard: playerIDCard,
-            playerStudentID: playerStudentID,
-            playerFile1: name_pfile})
+            playerFile1: playerFiles.join(',')})
         }
       });
 })
@@ -399,6 +406,7 @@ router.post('/teamreg', async (req, res, next) =>{
     let teamPhoneA = req.body.teamPhoneA;
     let teamEmailA = req.body.teamEmailA;
     let teamPic = req.files.teamPic;
+    let uniID = req.body.university[0];
     let tnmID = req.body.tnmID[0];
     var teamfile = new Date().getTime() +'_'+teamPic.name;
     teamPic.mv('./assets/team/' + teamfile);
@@ -412,7 +420,6 @@ router.post('/teamreg', async (req, res, next) =>{
     let playerEmail = req.body.playerEmail;
     let facultyID = req.body.facultyID;
     let playerIDCard = req.body.playerIDCard;
-    let playerStudentID = req.body.playerStudentID;
     
     let values = [];
 
@@ -427,28 +434,24 @@ router.post('/teamreg', async (req, res, next) =>{
             playerFile1[i].mv('./assets/player/' + name_pfile);
             player_photo = name_pfile;
         }
-    
-        try{
         
-    let rows = await dbConnection.query('SELECT * FROM player WHERE playerIDCard = ? AND tnmID = ?', [playerIDCard[i], tnmID], (err, rows) => {
-            if(err) reject(err)
-        console.log(rows);
+    let rows = await new Promise((resolve, reject) => {
+        dbConnection.query('SELECT * FROM player WHERE playerIDCard = ? AND tnmID = ?', [playerIDCard[i], tnmID], (err, rows) => {
         if(rows.length > 0){
             let  detailDoc = 'สมัครซ้ำ';
-            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], playerStudentID[i], player_photo, detailDoc, tnmID])
-            console.log('ซ้ำ',values);
+            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], player_photo, detailDoc, tnmID]);
+            resolve(rows);
         }else{
             let detailDoc = null;
-            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], playerStudentID[i], player_photo, detailDoc, tnmID])
-       console.log('ไม่ซ้ำ',values);
+            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], player_photo, detailDoc, tnmID]);
+            resolve(rows);
         }
     });
-  } catch (err) {
-    console.log(err);
-    return;
-  }
+})
+
 }
 
+console.log(values)
 
         let teamOTP = Math.floor(1000 + Math.random() * 9000);
 
@@ -465,23 +468,21 @@ router.post('/teamreg', async (req, res, next) =>{
             } else {
               console.log('Email sent: ' + info.response);
               res.render('userside/regform/otpteam',{
-                status_login: req.session.loggedin,
                 teamOTP: teamOTP,
                 tnmID: tnmID,
                 values: values,
+                uniID: uniID,
                 teamName: teamName,
                 NameAgent: NameAgent,
                 LnameAgent: LnameAgent,
                 teamPhoneA: teamPhoneA,
                 teamEmailA: teamEmailA,
-                teamfile: teamfile
+                teamfile: teamfile,
+                status_login: req.session.loggedin
                 })
             }
           });
 
-
-
-    
 })
 
 
@@ -494,5 +495,247 @@ router.post("/fetch_faculty", function(req, res) {
     });
 });
 
+router.get('/result', async (req,res,next)=>{
+    dbConnection.query('SELECT * FROM university', async (error,results)=>{
+      let uniID = 1;
+      let team = [];
+      let solo = [];
+      let uniName = [];
+      for(let i = 0; i < results.length; i++){
+        let rows = await new Promise((resolve, reject) => {
+          dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM team team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
+            if (error) reject(error);
+            resolve(rows);
+          });
+        });
+
+        let single = await new Promise((resolve, reject) => {
+            dbConnection.query(`SELECT COUNT(t1.st1)AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM player p left join tournament t1 on t1.st1 = p.playerID left join tournament t2 on t2.nd2 = p.playerID left join tournament t3 on t3.rd3 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID where f.uniID = ${uniID}`, (error, single) => {
+              if (error) reject(error);
+              resolve(single);
+            });
+          });
+        uniName.push(results[i].name);
+        team.push(rows);
+        solo.push(single);
+        uniID++;
+      }
+      let merge = [];
+      for( let j = 0;j<team.length;j++){
+        let st1 = team[j][0].st1 + solo[j][0].st1;
+        let nd2 = team[j][0].nd2 + solo[j][0].nd2;
+        let rd3 = team[j][0].rd3 + solo[j][0].rd3;
+        let total = st1 + nd2 +rd3;
+        let uniID = 1+j;
+        let name = uniName[j];
+        merge.push({ uniID,name, st1,nd2,rd3,total});
+      }
+      merge.sort((a,b) => b.st1 - a.st1);
+      res.render('userside/result',{merge,status_login: req.session.loggedin})
+    
+    });
+  });
+
+router.get('/gold/(:uniID)',async (req,res,next)=>{
+    let uniID = req.params.uniID;
+    let merge = [];
+        let team = await new Promise((resolve, reject) => {
+          dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM team team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
+            if (error) reject(error);
+            resolve(rows);
+          });
+        });
+
+        let single = await new Promise((resolve, reject) => {
+            dbConnection.query(`SELECT COUNT(t1.st1)AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM player p left join tournament t1 on t1.st1 = p.playerID left join tournament t2 on t2.nd2 = p.playerID left join tournament t3 on t3.rd3 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID where f.uniID = ${uniID}`, (error, single) => {
+              if (error) reject(error);
+              resolve(single);
+            });
+          });
+
+          let st1 = team[0].st1 + single[0].st1;
+          let nd2 = team[0].nd2 + single[0].nd2;
+          let rd3 = team[0].rd3 + single[0].rd3;
+          let total = st1 + nd2 +rd3;
+          merge.push({st1,nd2,rd3,total});
+
+    dbConnection.query(`SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN player p ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.teamID IS NULL AND u.uniID = `+uniID+`
+          UNION ALL
+          SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN team ON team.tnmID = t.tnmID LEFT JOIN university u ON u.uniID = team.uniID WHERE team.uniID =`+uniID,(err,tnmsum)=>{
+
+        let totaltnm = tnmsum[0].tnmcount + tnmsum[1].tnmcount;            
+
+    dbConnection.query('SELECT * FROM university WHERE uniID = '+uniID, (error,results)=>{
+        dbConnection.query(`SELECT t.tnmID,s.sportName,t.tnmName,t.tnmstartDate,t.st1 FROM team team left join tournament t on t.st1 = team.teamID LEFT JOIN sport s ON s.sportID = t.sportID WHERE team.uniID = `+uniID+` AND t.st1 IS NOT NULL
+        UNION
+        SELECT t.tnmID,s.sportName,t.tnmName,t.tnmstartDate,t.st1 FROM player p left join tournament t on t.st1 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID LEFT JOIN sport s ON s.sportID = t.sportID where f.uniID = `+uniID+` AND t.st1 IS NOT NULL ORDER BY sportName;`, async (err,rows)=>{
+        
+console.log(rows)
+            res.render('userside/uniresult',{totaltnm,merge,data:rows,uni:results,status_login: req.session.loggedin})
+
+      });
+    })
+    })
+   })
+
+   router.get('/silver/(:uniID)',async (req,res,next)=>{
+    let uniID = req.params.uniID;
+    let merge = [];
+        let team = await new Promise((resolve, reject) => {
+          dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM team team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
+            if (error) reject(error);
+            resolve(rows);
+          });
+        });
+
+        let single = await new Promise((resolve, reject) => {
+            dbConnection.query(`SELECT COUNT(t1.st1)AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM player p left join tournament t1 on t1.st1 = p.playerID left join tournament t2 on t2.nd2 = p.playerID left join tournament t3 on t3.rd3 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID where f.uniID = ${uniID}`, (error, single) => {
+              if (error) reject(error);
+              resolve(single);
+            });
+          });
+
+          let st1 = team[0].st1 + single[0].st1;
+          let nd2 = team[0].nd2 + single[0].nd2;
+          let rd3 = team[0].rd3 + single[0].rd3;
+          let total = st1 + nd2 +rd3;
+          merge.push({st1,nd2,rd3,total});
+
+    dbConnection.query(`SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN player p ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.teamID IS NULL AND u.uniID = `+uniID+`
+          UNION ALL
+          SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN team ON team.tnmID = t.tnmID LEFT JOIN university u ON u.uniID = team.uniID WHERE team.uniID =`+uniID,(err,tnmsum)=>{
+
+        let totaltnm = tnmsum[0].tnmcount + tnmsum[1].tnmcount;            
+
+    dbConnection.query('SELECT * FROM university WHERE uniID = '+uniID, (error,results)=>{
+        dbConnection.query(`SELECT t.tnmID,s.sportName,t.tnmName,t.tnmstartDate,t.nd2 FROM team team left join tournament t on t.nd2 = team.teamID LEFT JOIN sport s ON s.sportID = t.sportID WHERE team.uniID = `+uniID+` AND t.nd2 IS NOT NULL
+        UNION
+        SELECT t.tnmID,s.sportName,t.tnmName,t.tnmstartDate,t.nd2 FROM player p left join tournament t on t.nd2 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID LEFT JOIN sport s ON s.sportID = t.sportID where f.uniID = `+uniID+` AND t.nd2 IS NOT NULL ORDER BY sportName;`, async (err,rows)=>{
+        
+
+            res.render('userside/uniresult',{totaltnm,merge,data:rows,uni:results,status_login: req.session.loggedin})
+
+      });
+    })
+    })
+   })
+
+   router.get('/bronze/(:uniID)',async (req,res,next)=>{
+    let uniID = req.params.uniID;
+    let merge = [];
+        let team = await new Promise((resolve, reject) => {
+          dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM team team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
+            if (error) reject(error);
+            resolve(rows);
+          });
+        });
+
+        let single = await new Promise((resolve, reject) => {
+            dbConnection.query(`SELECT COUNT(t1.st1)AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM player p left join tournament t1 on t1.st1 = p.playerID left join tournament t2 on t2.nd2 = p.playerID left join tournament t3 on t3.rd3 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID where f.uniID = ${uniID}`, (error, single) => {
+              if (error) reject(error);
+              resolve(single);
+            });
+          });
+
+          let st1 = team[0].st1 + single[0].st1;
+          let nd2 = team[0].nd2 + single[0].nd2;
+          let rd3 = team[0].rd3 + single[0].rd3;
+          let total = st1 + nd2 +rd3;
+          merge.push({st1,nd2,rd3,total});
+
+    dbConnection.query(`SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN player p ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.teamID IS NULL AND u.uniID = `+uniID+`
+          UNION ALL
+          SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN team ON team.tnmID = t.tnmID LEFT JOIN university u ON u.uniID = team.uniID WHERE team.uniID =`+uniID,(err,tnmsum)=>{
+
+        let totaltnm = tnmsum[0].tnmcount + tnmsum[1].tnmcount;            
+
+    dbConnection.query('SELECT * FROM university WHERE uniID = '+uniID, (error,results)=>{
+        dbConnection.query(`SELECT t.tnmID,s.sportName,t.tnmName,t.tnmstartDate,t.rd3 FROM team team left join tournament t on t.rd3 = team.teamID LEFT JOIN sport s ON s.sportID = t.sportID WHERE team.uniID = `+uniID+` AND t.rd3 IS NOT NULL
+        UNION
+        SELECT t.tnmID,s.sportName,t.tnmName,t.tnmstartDate,t.rd3 FROM player p left join tournament t on t.rd3 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID LEFT JOIN sport s ON s.sportID = t.sportID where f.uniID = `+uniID+` AND t.rd3 IS NOT NULL ORDER BY sportName;`, async (err,rows)=>{
+        
+
+            res.render('userside/uniresult',{totaltnm,merge,data:rows,uni:results,status_login: req.session.loggedin})
+
+      });
+    })
+    })
+   })
+
+   router.get('/opening',(req,res,next)=>{
+    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.Rstartdate >= CURRENT_DATE() OR t.Renddate <= CURRENT_DATE() GROUP BY t.tnmID;',(error,results)=>{
+       res.render('userside/status/opening',{data:results,status_login: req.session.loggedin})
+    })
+   })
+
+   router.get('/ongoing',(req,res,next)=>{
+    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmStartdate >= CURRENT_DATE() OR t.tnmEnddate <= CURRENT_DATE() GROUP BY t.tnmID;',(error,results)=>{
+       res.render('userside/status/ongoing',{data:results,status_login: req.session.loggedin})
+    })
+   })
+
+   router.get('/ending',(req,res,next)=>{
+    dbConnection.query('SELECT * FROM tournament WHERE st1 IS NOT NULL',(error,results)=>{
+       res.render('userside/status/ending',{data:results,status_login: req.session.loggedin})
+    })
+   })
+
+   router.get('/search',(req,res,next)=>{
+    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID GROUP BY t.tnmID;',(error,results)=>{
+       res.render('userside/status/search',{data:results,status_login: req.session.loggedin})
+    })
+   })
+
+   router.post('/search-result',(req,res,next)=>{
+    let query = req.body.search;
+    let sport = req.body.sport;
+    let status = req.body.status;
+
+    if(!query && !sport && !status){
+        res.redirect('/search');
+    }
+    
+    let sql;
+    let like;
+    
+     if(query){
+     sql = "SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmName LIKE ? GROUP BY t.tnmID;";
+     like = ['%' + query + '%'];
+    dbConnection.query(sql, like, (err, results) => {
+        if(err) throw err;
+        res.render('userside/status/search', {data: results,status_login: req.session.loggedin});
+    });
+    }else if(sport){ 
+     sql = "SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE s.sportID LIKE ? GROUP BY t.tnmID;";
+     like = ['%' + sport + '%'];
+        dbConnection.query(sql, like, (err, results) => {
+            if(err) throw err;
+            res.render('userside/status/search', {data: results,status_login: req.session.loggedin});
+        });
+    }else if(status) {
+        if(status === 'opening'){
+    sql = "SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.Rstartdate >= CURRENT_DATE() OR t.Renddate <= CURRENT_DATE() GROUP BY t.tnmID;";
+    like = [status];
+    dbConnection.query(sql, like, (err, results) => {
+        if(err) throw err;
+        res.render('userside/status/search', {data: results,status_login: req.session.loggedin});
+    });
+        }else if(status === 'ongoing'){
+            sql = "SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmStartdate >= CURRENT_DATE() OR t.tnmEnddate <= CURRENT_DATE() GROUP BY t.tnmID;";
+            like = [status];
+            dbConnection.query(sql, like, (err, results) => {
+                if(err) throw err;
+                res.render('userside/status/search', {data: results,status_login: req.session.loggedin});
+            });
+        }else if(status === 'ending'){
+            sql = "SELECT * FROM tournament WHERE st1 IS NOT NULL";
+            dbConnection.query(sql,(err, results) => {
+                if(err) throw err;
+                res.render('userside/status/search', {data: results,status_login: req.session.loggedin});
+            });
+        }
+  }
+
+   })
 
 module.exports = router;
