@@ -39,7 +39,7 @@ td {
 <% let isoday = today.toISOString().split('T')[0]%>
   <form action="/placetable/search-placetable" method="post">
     <label for="date">วันที่</label>
-    <input type="date" name="date" id="date-picker"> 
+    <input type="date" name="date" value="<%= isoday%>"> 
     <label> ชนิดกีฬา</label>
     <select name="sporttype">
       <option value="">ทั้งหมด</option>
@@ -110,9 +110,6 @@ td {
             <% } %>
     </div>
 
-    <script>
-    document.getElementById('date-picker').value = '<%= isoday %>';
-    </script>
 </body>
 </html>
 </div>

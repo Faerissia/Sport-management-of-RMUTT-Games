@@ -1,0 +1,147 @@
+<%- include("../../../partials/header") %>
+    <%- include("../../../partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto">
+
+            <!DOCTYPE html>
+            <html lang="en">
+
+            <head>
+                <title>แบบ4</title>
+
+                <style>
+                    /* body {
+                        background-color: DarkSalmon;
+                    } */
+
+                    .wrapper {
+                        display: flex;
+                        height: auto;
+                        justify-content: center;
+                    }
+
+                    .item {
+                        display: flex;
+                        flex-direction: row-reverse;
+
+                    }
+
+                    .item p {
+                        padding: 20px;
+                        margin: 0;
+                        min-width: 150px;
+                        text-align: center;
+                        background-color: rgb(228, 245, 243);
+                    }
+
+                    .item .box {
+                        padding: 20px;
+                        margin: 0;
+                        min-width: 200px;
+                        /* text-align: center; */
+                        background-color: rgb(228, 245, 243);
+                    }
+
+                    .item-parent {
+                        position: relative;
+                        margin-left: 50px;
+                        display: flex;
+                        align-items: center;
+                    }
+
+                    .item-parent:after {
+                        position: absolute;
+                        content: '';
+                        width: 25px;
+                        height: 2px;
+                        left: 0;
+                        top: 50%;
+                        background-color: #000000;
+                        transform: translateX(-100%);
+                    }
+
+                    .item-childrens {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                    }
+
+                    .item-child {
+                        display: flex;
+                        align-items: flex-start;
+                        justify-content: flex-end;
+                        margin-top: 10px;
+                        margin-bottom: 10px;
+                        position: relative;
+                    }
+
+                    .item-child:before {
+                        content: '';
+                        position: absolute;
+                        background-color: #000000;
+                        right: 0;
+                        top: 50%;
+                        transform: translateX(100%);
+                        width: 25px;
+                        height: 2px;
+                    }
+
+                    .item-child:after {
+                        content: '';
+                        position: absolute;
+                        background-color: #000000;
+                        right: -25px;
+                        height: calc(50% + 22px);
+                        width: 2px;
+                        top: 50%;
+                    }
+
+                    .item-child:last-child:after {
+                        transform: translateY(-100%);
+                    }
+
+                    .item-child:only-child:after {
+                        display: none;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>
+                    <%= tournamentName %>
+                </h1>
+
+                <%- include("../../../partials/menu_staff.ejs") %>
+
+                
+                รอบที่ 1
+                <br>
+                <%= data[0].team1 %><%= data[0].score1 %> vs 
+                <%= data[0].team2 %><%= data[0].score2 %>
+                <br>
+                <%= data[1].team1 %><%= data[1].score1 %> vs 
+                <%= data[1].team2 %><%= data[1].score2 %>
+                <br>
+                รอบที่ 2
+                <br>
+                <%= data[2].team1 %><%= data[2].score1 %> vs 
+                <%= data[2].team2 %><%= data[2].score2 %>
+                <br>
+                <%= data[3].team1 %><%= data[3].score1 %> vs 
+                <%= data[3].team2 %><%= data[3].score2 %>
+                <br>
+                รอบที่ 3
+                <br>
+                <%= data[4].team1 %><%= data[4].score1 %> vs 
+                <%= data[4].team2 %><%= data[4].score2 %>
+                <br>
+                ผู้ชนะ
+                <br>
+                <% if(data[4].score1 > data[4].score2){ %>
+                    <%= data[4].team1 %>
+                    <% }else{ %>
+                        <%= data[4].team2 %>
+                        <% } %>
+
+            </body>
+
+            </html>
+        </div>
