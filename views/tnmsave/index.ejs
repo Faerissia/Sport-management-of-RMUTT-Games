@@ -47,6 +47,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th scope="col">ชื่อการแข่งขัน</th>
                             <th scope="col">ประเภทกีฬา</th>
                             <th scope="col">รอบ</th>
@@ -60,6 +61,7 @@
                             <tr>
                                 <% if(data[i].pDate === null || data[i].paceName === null || data[i].time === null || data[i].tnmTypegame === 'leaderboard') { %>
                                 <% }else{ %>
+                                <td><%= i+1 %></td>
                                 <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
                                 <td><%= data[i].round %></td>

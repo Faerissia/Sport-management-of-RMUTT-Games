@@ -81,7 +81,11 @@ app.post('/login', (req, res) => {
           req.session.password = password;
           user = results[0].name + " " + results[0].lname;
           console.log(role)
+          if(role === 'ผู้ดูแลระบบ'){
+            res.redirect("/account");
+          }else{
               res.redirect("/dashboard");
+          }
           }else{
             req.flash('error','กรุณาติดต่อผู้ดูแลระบบ!')
           res.redirect('login');

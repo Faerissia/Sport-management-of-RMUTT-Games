@@ -158,9 +158,9 @@
                                     <!-- 7 ผู้ขนะ -->
                                     <div class="box card border border-dark" id="score7">
                                         <div class="d-flex justify-content-center">
-                                            <% if (data[3].team2) { %>
+                                            <% if (data[3].team1) { %>
                                                 <div class="">
-                                                    <%= data[3].team2 %>
+                                                    <%= data[3].team1 %>
                                                 </div>
                                                 <% } else { %>
                                                     <div class="">
@@ -170,7 +170,7 @@
 
 
 
-                                                        <div class="" style="height: 100%;">
+                                                        <div class="point border-start-1 " style="height: 100%;">
 
                                                         </div>
                                         </div>
@@ -190,7 +190,7 @@
                                                             <div class="">
                                                                 <%= data[2].team1 %>
                                                             </div>
-                                                            <div class="" style="height: 100%;">
+                                                            <div class="point border-start-1 " style="height: 100%;">
                                                                 <strong>
                                                                     <%= data[2].score1%>
                                                                 </strong>
@@ -219,7 +219,7 @@
                                                                     <div class="">
                                                                         <%= data[0].team1 %>
                                                                     </div>
-                                                                    <div class=""
+                                                                    <div class="point border-start-1 "
                                                                         style="height: 100%;">
                                                                         <strong>
                                                                             <%= data[0].score1%>
@@ -237,7 +237,7 @@
                                                             <div class="">
                                                                 <%= data[0].team2 %>
                                                             </div>
-                                                            <div class="" style="height: 100%;">
+                                                            <div class="point border-start-1 " style="height: 100%;">
                                                                 <strong>
                                                                     <%= data[0].score2%>
                                                                 </strong>
@@ -259,7 +259,7 @@
                                                         <div class="">
                                                             <%= data[2].team2 %>
                                                         </div>
-                                                        <div class="" style="height: 100%;">
+                                                        <div class="point border-start-1 " style="height: 100%;">
                                                             <strong>
                                                                 <%= data[2].score2%>
                                                             </strong>
@@ -288,7 +288,7 @@
                                                                 <div class="">
                                                                     <%= data[1].team1 %>
                                                                 </div>
-                                                                <div class=""
+                                                                <div class="point border-start-1 "
                                                                     style="height: 100%;">
                                                                     <strong>
                                                                         <%= data[1].score1%>
@@ -306,7 +306,7 @@
                                                             <div class="">
                                                                 <%= data[1].team2 %>
                                                             </div>
-                                                            <div class="" style="height: 100%;">
+                                                            <div class="point border-start-1 " style="height: 100%;">
                                                                 <strong>
                                                                     <%= data[1].score2%>
                                                                 </strong>
@@ -342,7 +342,7 @@
                         } else {
                             document.getElementById("score6").className = "box card border border-dark  text-bg-success";
                         }
-                        if (data[3].score2 != null) {
+                        if (data[3] != null) {
                             document.getElementById("score7").className = "box card border border-dark  text-bg-success";
                         }
 

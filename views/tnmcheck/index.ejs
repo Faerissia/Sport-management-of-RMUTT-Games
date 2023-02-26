@@ -47,6 +47,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th scope="col">ชื่อการแข่งขัน</th>
                             <th scope="col">ประเภทกีฬา</th>
                             <th scope="col">ปิดรับสมัคร</th>
@@ -65,6 +66,7 @@
                                 <% } %>
                             <% if(data[i].wait_count){ %>
                             <tr>
+                                <td><%= i+1 %></td>
                                 <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
                                 <td><%= data[i].Renddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>

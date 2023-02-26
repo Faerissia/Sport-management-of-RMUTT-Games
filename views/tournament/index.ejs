@@ -66,7 +66,7 @@
                                 <td><%= data[i].accept_count %></td>
                                 <td>
                                     <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                    <a href="../tournament/detail/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
+                                    <a href="../tournament/bracket/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
                                 </td>
                             </tr>
                         <% } %>

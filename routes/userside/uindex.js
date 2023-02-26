@@ -13,7 +13,19 @@ let transporter = nodemailer.createTransport({
     }
   });
 
-
+// display tnmcheck page
+router.get('/', (req, res, next) => {
+    dbConnection.query('SELECT * FROM tournament WHERE CURDATE() BETWEEN Rstartdate AND Renddate ORDER BY Rstartdate DESC LIMIT 4', (err, opening) => {
+         if (err) console.log('error',err);
+         dbConnection.query('SELECT * FROM tournament WHERE CURDATE() BETWEEN tnmStartdate AND tnmEnddate ORDER BY Rstartdate DESC LIMIT 4',(err,ongoing)=>{
+            if (err) console.log('error',err);
+            dbConnection.query('SELECT * FROM tournament WHERE st1 IS NOT NULL ORDER BY tnmID DESC LIMIT 4',(err,ending)=>{
+                if (err) console.log('error',err);
+                res.render('userside/index', { opening,ongoing,ending,status_login: req.session.loggedin});
+    })
+})
+})
+})
 
 router.post('/verifysingle', (req, res) => {
     let OTP = req.body.OTP;
@@ -178,19 +190,6 @@ router.post('/verifyteam', (req, res) => {
 })
 
 
-
-// display tnmcheck page
-router.get('/', (req, res, next) => {
-    dbConnection.query('SELECT * FROM tournament ORDER BY tnmID asc', (err, rows) => {
-         if (err) {
-            req.flash('error', err);
-            res.render('userside/index', { data: '' });
-        } else {
-                res.render('userside/index', { data: rows,status_login: req.session.loggedin});
-        }
-    })
-})
-
 router.get('/showall', (req, res, next) => {
     dbConnection.query('SELECT * FROM tournament ORDER BY tnmID asc', (err, rows) => {
         if (err) {
@@ -352,6 +351,7 @@ router.post('/singlereg', (req, res, next) =>{
     for(let i =1;i <= 3; i++){
         if(req.files[`playerFile${i}`]){
         let playerFile = req.files[`playerFile${i}`];
+        console.log(playerFile)
         let  name_pfile = new Date().getTime() +'_'+playerFile.name;
         playerFile.mv('./assets/player/' + name_pfile);
         playerFiles.push(name_pfile);
@@ -360,11 +360,14 @@ router.post('/singlereg', (req, res, next) =>{
 
     let OTP = Math.floor(1000 + Math.random() * 9000);
 
+    dbConnection.query('SELECT * FROM tournament WHERE tnmID ='+tnmID,(error,tnm)=>{
     let mailOptions = {
         from: 'thesissportmanagement@gmail.com',
         to: playerEmail,
         subject: 'รหัส OTP สำหรับการยืนยันอีเมลสมัครเข้าร่วมการแข่งขัน',
-        text: 'รหัส OTP ของคุณคือ : ' + OTP
+        text: '',
+        html:`<h1>ยืนยันการลงทะเบียนการแข่งขัน `+tnm[0].tnmName+`</h1>
+                <h2>รหัส OTP ของคุณคือ : ` + teamOTP + `</h2>`
       };
 
       transporter.sendMail(mailOptions, function(error, info){
@@ -388,11 +391,12 @@ router.post('/singlereg', (req, res, next) =>{
             playerFile1: playerFiles.join(',')})
         }
       });
+    })
 })
 
 router.get('/teamreg/(:tnmID)', (req, res, next) => {
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT u.name, u.uniID,t.tnmID, t.tnmName,s.sportName,s.sportPlaynum FROM tournament t INNER JOIN university u LEFT JOIN sport s ON t.sportID = s.sportID WHERE tnmID = ' +tnmID, (err, rows) => {
+    dbConnection.query('SELECT u.name, u.uniID,t.tnmID,t.tnmUrl, t.tnmName,s.sportName,s.sportPlaynum FROM tournament t INNER JOIN university u LEFT JOIN sport s ON t.sportID = s.sportID WHERE tnmID = ' +tnmID, (err, rows) => {
                 res.render('userside/regform/teamreg', { data: rows,status_login: req.session.loggedin
                  });
     })
@@ -423,27 +427,31 @@ router.post('/teamreg', async (req, res, next) =>{
     
     let values = [];
 
-    let playerFile1 = req.files.playerFile1;
-
-    
+    let playerFileName = '';
 
     for (let i = 0; i < playerFName.length; i++) {
-        let player_photo = null;
-        if(playerFile1[i]){
-            let name_pfile = new Date().getTime() +'_'+playerFile1[i].name;
-            playerFile1[i].mv('./assets/player/' + name_pfile);
-            player_photo = name_pfile;
-        }
+        
+        let playerFiles = [];
+        for (let j = 1; j <= 3; j++) {
+            if(req.files[`playerFile${j}`] && Array.isArray(req.files[`playerFile${j}`])){
+                let playerFile = req.files[`playerFile${j}`][i];
+              let name_pfile = new Date().getTime() + '_' + playerFile.name;
+              playerFile.mv('./assets/player/' + name_pfile);
+              playerFiles.push(name_pfile);
+            }
+          }
+
+        playerFileName = playerFiles.join(',');
         
     let rows = await new Promise((resolve, reject) => {
         dbConnection.query('SELECT * FROM player WHERE playerIDCard = ? AND tnmID = ?', [playerIDCard[i], tnmID], (err, rows) => {
         if(rows.length > 0){
             let  detailDoc = 'สมัครซ้ำ';
-            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], player_photo, detailDoc, tnmID]);
+            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i],playerFileName, detailDoc, tnmID]);
             resolve(rows);
         }else{
             let detailDoc = null;
-            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i], player_photo, detailDoc, tnmID]);
+            values.push([playerFName[i], playerLName[i], playerGender[i], playerBirthday[i], playerPhone[i],playerEmail[i], facultyID[i], playerIDCard[i],playerFileName, detailDoc, tnmID]);
             resolve(rows);
         }
     });
@@ -455,11 +463,15 @@ console.log(values)
 
         let teamOTP = Math.floor(1000 + Math.random() * 9000);
 
+
+        dbConnection.query('SELECT * FROM tournament WHERE tnmID = '+tnmID,(error,tnm)=>{
         let mailOptions = {
             from: 'thesissportmanagement@gmail.com',
             to: teamEmailA,
             subject: 'รหัส OTP สำหรับการยืนยันอีเมลสมัครเข้าร่วมการแข่งขัน',
-            text: 'รหัส OTP ของคุณคือ : ' + teamOTP
+            text: '',
+            html:`<h1>ยืนยันการลงทะเบียนการแข่งขัน `+tnm[0].tnmName+`</h1>
+                <h2>รหัส OTP ของคุณคือ : ` + teamOTP + `</h2>`
         };
 
         transporter.sendMail(mailOptions, function(error, info){
@@ -482,7 +494,7 @@ console.log(values)
                 })
             }
           });
-
+        })
 })
 
 
@@ -501,6 +513,7 @@ router.get('/result', async (req,res,next)=>{
       let team = [];
       let solo = [];
       let uniName = [];
+      let counttnm = [];
       for(let i = 0; i < results.length; i++){
         let rows = await new Promise((resolve, reject) => {
           dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM team team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
@@ -515,9 +528,20 @@ router.get('/result', async (req,res,next)=>{
               resolve(single);
             });
           });
+
+        let tnmcount = await new Promise((resolve,reject)=>{ 
+            dbConnection.query(`SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN player p ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.teamID IS NULL AND u.uniID = ${uniID}
+          UNION ALL
+          SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN team ON team.tnmID = t.tnmID LEFT JOIN university u ON u.uniID = team.uniID WHERE team.uniID =${uniID}`,(err,tnmcount)=>{
+         if(error) reject(error);
+         tnmcount = tnmcount[0].tnmcount+tnmcount[1].tnmcount;
+        resolve(tnmcount);
+            })
+          })
         uniName.push(results[i].name);
         team.push(rows);
         solo.push(single);
+        counttnm.push(tnmcount);
         uniID++;
       }
       let merge = [];
@@ -525,16 +549,64 @@ router.get('/result', async (req,res,next)=>{
         let st1 = team[j][0].st1 + solo[j][0].st1;
         let nd2 = team[j][0].nd2 + solo[j][0].nd2;
         let rd3 = team[j][0].rd3 + solo[j][0].rd3;
-        let total = st1 + nd2 +rd3;
         let uniID = 1+j;
         let name = uniName[j];
-        merge.push({ uniID,name, st1,nd2,rd3,total});
+        let tnm = counttnm[j];
+        merge.push({ uniID,name, st1,nd2,rd3,tnm});
       }
       merge.sort((a,b) => b.st1 - a.st1);
       res.render('userside/result',{merge,status_login: req.session.loggedin})
     
     });
   });
+
+  router.get('/allrank/(:uniID)',async (req,res,next)=>{
+    let uniID = req.params.uniID;
+    let merge = [];
+        let team = await new Promise((resolve, reject) => {
+          dbConnection.query(`SELECT COUNT(t1.st1) AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM team team left join tournament t1 on t1.st1 = team.teamID left join tournament t2 on t2.nd2 = team.teamID left join tournament t3 on t3.rd3 = team.teamID where team.uniID = ${uniID}`, (error, rows) => {
+            if (error) reject(error);
+            resolve(rows);
+          });
+        });
+
+        let single = await new Promise((resolve, reject) => {
+            dbConnection.query(`SELECT COUNT(t1.st1)AS st1,COUNT(t2.nd2) AS nd2,COUNT(t3.rd3) AS rd3 FROM player p left join tournament t1 on t1.st1 = p.playerID left join tournament t2 on t2.nd2 = p.playerID left join tournament t3 on t3.rd3 = p.playerID LEFT JOIN faculty f ON p.facultyID = f.facultyID LEFT JOIN university u ON u.uniID = f.uniID where f.uniID = ${uniID}`, (error, single) => {
+              if (error) reject(error);
+              resolve(single);
+            });
+          });
+
+          let st1 = team[0].st1 + single[0].st1;
+          let nd2 = team[0].nd2 + single[0].nd2;
+          let rd3 = team[0].rd3 + single[0].rd3;
+          let total = st1 + nd2 +rd3;
+          merge.push({st1,nd2,rd3,total});
+
+    dbConnection.query(`SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN player p ON p.tnmID = t.tnmID 
+          LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.teamID IS NULL AND u.uniID = `+uniID+`
+          UNION ALL
+          SELECT COUNT(t.tnmID) AS tnmcount FROM tournament t LEFT JOIN team ON team.tnmID = t.tnmID LEFT JOIN university u ON u.uniID = team.uniID WHERE team.uniID =`+uniID,(err,tnmsum)=>{
+
+        let totaltnm = tnmsum[0].tnmcount + tnmsum[1].tnmcount;            
+
+    dbConnection.query('SELECT * FROM university WHERE uniID = '+uniID, (error,results)=>{
+        dbConnection.query(`SELECT t.tnmID, t.tnmName, p.playerID,t.tnmstartDate,s.sportName, 
+        CASE WHEN t.st1 = p.playerID THEN '1st' WHEN t.nd2 = p.playerID THEN '2nd' WHEN t.rd3 = p.playerID THEN '3rd' END AS place
+        FROM tournament t 
+        LEFT JOIN player p ON p.tnmID = t.tnmID 
+        LEFT JOIN faculty f ON f.facultyID = p.facultyID 
+        LEFT JOIN university u ON u.uniID = f.uniID
+        LEFT JOIN sport s ON t.sportID = s.sportID
+        WHERE f.uniID =`+uniID, async (err,rows)=>{
+
+            res.render('userside/uniresult',{totaltnm,merge,data:rows,uni:results,status_login: req.session.loggedin})
+
+      });
+    })
+    })
+   })
+
 
 router.get('/gold/(:uniID)',async (req,res,next)=>{
     let uniID = req.params.uniID;
@@ -736,6 +808,30 @@ console.log(rows)
         }
   }
 
+   })
+
+   router.get('/mosingle/(:playerID)',(req,res)=>{
+    let playerID = req.params.playerID;
+    dbConnection.query('SELECT * FROM player WHERE playerID ='+playerID,(error,result)=>{
+    if(result.length && result[0].playerStatus === 'edit'){
+        res.render('userside/email/singlereg',{data: result,status_login: req.session.loggedin});
+    }else{
+        res.redirect('/');
+    }
+    })
+   })
+
+
+   router.post('/editemailsingle/(:playerID)',(req,res)=>{
+    let playerID = req.params.playerID;
+    dbConnection.query('SELECT * FROM player WHERE playerID ='+playerID,(error,result)=>{
+        
+    if(result.length && result[0].playerStatus === 'edit'){
+        res.render('userside/email/singlereg',{data: result,status_login: req.session.loggedin});
+    }else{
+        res.redirect('/');
+    }
+    })
    })
 
 module.exports = router;
