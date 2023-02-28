@@ -71,7 +71,9 @@
                                 <td><%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
                                 <td><%= data[i].placeName %></td>
                                 <td>
+                                    
                                     <a href="../doc/scoresheet.png" download="scoresheet.png" class="btn btn-info delete">ใบคะแนน</a>
+                                    <a>บันทึก</a>
                                     <a href="../tournament/match/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
                                 </td>
                                 <% }%> 

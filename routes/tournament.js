@@ -879,11 +879,20 @@ router.post('/matchedit/(:tnmID)', async (req,res,next) =>{
     let score2 = req.body.score2;
     let round = req.body.round;
 
+    const daysOfWeek = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
+    const today = new Date(pDate);
+    const currentDay = daysOfWeek[today.getDay()];
+
+    dbConnection.query('SELECT * FROM place_opening WHERE day = ? AND placeID ='+placeID,currentDay,(error,placeopen)=>{
+      console.log('วันที่',placeopen);
     dbConnection.query('SELECT * FROM matchplay WHERE pDate = ? AND ? BETWEEN time AND timeend AND ? BETWEEN time and timeend AND placeID = ?;',[pDate,time,Endtime,placeID],(err,checkmatch)=>{
       if(checkmatch.length){
         req.flash('error','สถานที่เลือกถูกใช้งานโดยการแข่งขันอื่นแล้ว');
         res.redirect('/tournament/match/'+tnmID);
 
+      }else if(time < placeopen[0].timeOpen || Endtime > placeopen[0].timeClose || time > placeopen[0].timeClose || Endtime < placeopen[0].timeOpen || time > Endtime){
+        req.flash('error','เวลาที่เลือกไม่ถูกต้อง');
+        res.redirect('/tournament/match/'+tnmID);
       }else if(!checkmatch.length){
     dbConnection.query('SELECT * FROM tournament WHERE tnmID = '+tnmID,(error,typeoftour)=>{
        
@@ -1206,6 +1215,57 @@ router.post('/matchedit/(:tnmID)', async (req,res,next) =>{
                   }
                 }else{
                   console.log('ครบจำนวนการแข่งขันแล้ว');
+
+                dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC',tnmID,(error,rank)=>{
+
+                  //หาที่ 1
+                      if(rank[0].score1 > rank[0].score2){
+                        let st1 = {st1: rank[0].participant1}
+                        check1 = rank[0].participant1;
+                        dbConnection.query('UPDATE tournament SET ? WHERE tnmID = '+tnmID,st1,(error,st1)=>{
+                          console.log('เพิ่มที่ 1 เรียบร้อย');
+                        })
+                      }else{
+                        let st1 = {st1:rank[0].participant2}
+                        check1 = rank[0].participant2;
+                        dbConnection.query('UPDATE tournament SET ? WHERE tnmID = '+tnmID,st1,(error,st1)=>{
+                          console.log('เพิ่มที่ 1 เรียบร้อย');
+                        })
+                      }
+
+                      //หาที่ 2
+                      if(check1 != rank[1].participant1){
+                        let nd2 = {nd2:rank[1].participant1}
+                        check2 = rank[1].participant1;
+                        dbConnection.query('UPDATE tournament SET ? WHERE tnmID = '+tnmID,nd2,(error,nd2)=>{
+                          console.log('เพิ่มที่ 2 เรียบร้อย');
+                        })
+                      }else{
+                        let nd2 = {nd2:rank[1].participant2}
+                        check2 = rank[1].participant2;
+                        dbConnection.query('UPDATE tournament SET ? WHERE tnmID = '+tnmID,nd2,(error,nd2)=>{
+                          console.log('เพิ่มที่ 2 เรียบร้อย');
+                        })
+                      }
+
+                      //หาที่ 3
+                      if(check1 != rank[2].participant1 && check2 != rank[2].participant1){
+                        let rd3 = {rd3:rank[2].participant1}
+                        dbConnection.query('UPDATE tournament SET ? WHERE tnmID = '+tnmID,rd3,(error,rd3)=>{
+                          console.log('เพิ่มที่ 3 เรียบร้อย');
+                        })
+                      }else{
+                        let rd3 ={rd3:rank[2].participant2}
+                        dbConnection.query('UPDATE tournament SET ? WHERE tnmID = '+tnmID,rd3,(error,rd3)=>{
+                          console.log('เพิ่มที่ 3 เรียบร้อย');
+                        })
+                      }
+          
+
+
+
+                })
+
                 }
                   res.redirect('/tournament/match/'+tnmID);
             })
@@ -1241,6 +1301,8 @@ router.post('/matchedit/(:tnmID)', async (req,res,next) =>{
 
   }
 })
+})
+
 
 })
 
