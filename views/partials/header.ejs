@@ -13,13 +13,14 @@
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
   <!--  -->
 <style>
-  @font-face {
-  font-family: "Kodchasan-Regular";
-  src: url(font/Kodchasan-Regular.ttf);
-}
-body{
-  font-family: "Kodchasan-Regular", sans-serif;
-}
+ @font-face {
+      font-family: "Kodchasan-Regular";
+  src: url('/font/Kodchasan-Regular.ttf') format('truetype');
+    }
+
+    body {
+      font-family: "Kodchasan-Regular", sans-serif !important;
+    }
 </style>
 </head>
 <header class="">
@@ -33,10 +34,10 @@ body{
           <% if(role === 'ผู้ดูแลระบบ'){ %>
           <a class="navbar-brand" href="/account">
             <% }else{ %>
-              <a class="navbar-brand" href="/dashboard">
+              <a class="navbar-brand" href="/" target="_blank">
               <% } %>
             <img src="https://www.rmutt.ac.th/wp-content/uploads/2020/03/20200310-LOGO-RMUTT.png" class="nav-logo ms-2"
-            alt="logo" style="width: 15rem;" /></a><a class="btn btn-success border" href="/">หน้าหลัก</a>
+            alt="logo" style="width: 15rem;" /></a>
           </div>
           <h3 class="text-white  mb-0 position-absolute top-50 start-50 translate-middle"><%= process.title %></h3>
         <div class="justify-content-end  text-white fs-6" id="navbarNavAltMarkup">
