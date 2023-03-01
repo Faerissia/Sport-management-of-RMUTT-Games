@@ -9,100 +9,109 @@
                 <title>แบบ4</title>
 
                 <style>
-                    /* body {
-                        background-color: DarkSalmon;
-                    } */
-
                     .wrapper {
-                        display: flex;
-                        height: auto;
-                        justify-content: center;
+                      position: relative;
+                      display: flex;
+                      height: auto;
+                      width: auto;
+                      justify-content: start;
                     }
-
+            
                     .item {
-                        display: flex;
-                        flex-direction: row-reverse;
-
+                      display: flex;
+                      flex-direction: row-reverse;
                     }
-
+            
                     .item p {
-                        padding: 20px;
-                        margin: 0;
-                        min-width: 150px;
-                        text-align: center;
-                        background-color: rgb(228, 245, 243);
+                      padding: 10px;
+                      margin: 0;
+                      min-width: 180px;
+                      text-align: center;
+                      background-color: rgb(228, 245, 243);
                     }
-
+            
                     .item .box {
-                        padding: 20px;
-                        margin: 0;
-                        min-width: 200px;
-                        /* text-align: center; */
-                        background-color: rgb(228, 245, 243);
+                      padding: 5px;
+                      margin: 0;
+                      min-width: 8em;
+                      /* text-align: center; */
+                      background-color: rgb(228, 245, 243);
                     }
-
+            
+                    .item-text {
+                      position: absolute;
+                      left: 0;
+                      height: auto;
+                      overflow: hidden;
+                      font-size: 1em;
+                      font-weight: bold;
+                    }
+                    .item-text span {
+                      width: 9em;
+                    }
+            
                     .item-parent {
-                        position: relative;
-                        margin-left: 50px;
-                        display: flex;
-                        align-items: center;
+                      position: relative;
+                      margin-left: 20px;
+                      display: flex;
+                      align-items: center;
                     }
-
+            
                     .item-parent:after {
-                        position: absolute;
-                        content: '';
-                        width: 25px;
-                        height: 2px;
-                        left: 0;
-                        top: 50%;
-                        background-color: #000000;
-                        transform: translateX(-100%);
+                      position: absolute;
+                      content: '';
+                      width: 10px;
+                      height: 2px;
+                      left: 0;
+                      top: 50%;
+                      background-color: #000000;
+                      transform: translateX(-100%);
                     }
-
+            
                     .item-childrens {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: center;
                     }
-
+            
                     .item-child {
-                        display: flex;
-                        align-items: flex-start;
-                        justify-content: flex-end;
-                        margin-top: 10px;
-                        margin-bottom: 10px;
-                        position: relative;
+                      display: flex;
+                      align-items: flex-start;
+                      justify-content: flex-end;
+                      margin-top: 10px;
+                      margin-bottom: 10px;
+                      position: relative;
                     }
-
+            
                     .item-child:before {
-                        content: '';
-                        position: absolute;
-                        background-color: #000000;
-                        right: 0;
-                        top: 50%;
-                        transform: translateX(100%);
-                        width: 25px;
-                        height: 2px;
+                      content: '';
+                      position: absolute;
+                      background-color: #000000;
+                      right: 0;
+                      top: 50%;
+                      transform: translateX(100%);
+                      width: 10px;
+                      height: 2px;
                     }
-
+            
                     .item-child:after {
-                        content: '';
-                        position: absolute;
-                        background-color: #000000;
-                        right: -25px;
-                        height: calc(50% + 22px);
-                        width: 2px;
-                        top: 50%;
+                      content: '';
+                      position: absolute;
+                      background-color: #000000;
+                      right: -10px;
+                      height: calc(50% + 22px);
+                      width: 2px;
+                      top: 50%;
                     }
-
+            
                     .item-child:last-child:after {
-                        transform: translateY(-100%);
+                      transform: translateY(-100%);
                     }
-
+            
                     .item-child:only-child:after {
-                        display: none;
+                      display: none;
                     }
-                </style>
+                  </style>
             </head>
             <body>
                 <h1>

@@ -1,120 +1,424 @@
-<%- include("../../../partials/header") %>
-    <%- include("../../../partials/sidebar") %>
-        <div class="col-10 py-3 mx-auto">
+<%- include("../../../partials/header") %> <%- include("../../../partials/sidebar") %>
+<div class="col-10 py-3 mx-auto">
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <title>แบบ4</title>
+      <style>
+        .wrapper {
+          position: relative;
+          display: flex;
+          height: auto;
+          width: auto;
+          justify-content: start;
+        }
 
-            <!DOCTYPE html>
-            <html lang="en">
+        .item {
+          display: flex;
+          flex-direction: row-reverse;
+        }
 
-            <head>
-                <title>แบบ4</title>
+        .item p {
+          padding: 10px;
+          margin: 0;
+          min-width: 180px;
+          text-align: center;
+          background-color: rgb(228, 245, 243);
+        }
 
-                <style>
-                    /* body {
-                        background-color: DarkSalmon;
-                    } */
+        .item .box {
+          padding: 5px;
+          margin: 0;
+          min-width: 8em;
+          /* text-align: center; */
+          background-color: rgb(228, 245, 243);
+        }
 
-                    .wrapper {
-                        display: flex;
-                        height: auto;
-                        justify-content: center;
-                    }
+        .item-text {
+          position: absolute;
+          left: 0;
+          height: auto;
+          overflow: hidden;
+          font-size: 1em;
+          font-weight: bold;
+        }
+        .item-text span {
+          width: 9em;
+        }
 
-                    .item {
-                        display: flex;
-                        flex-direction: row-reverse;
+        .item-parent {
+          position: relative;
+          margin-left: 20px;
+          display: flex;
+          align-items: center;
+        }
 
-                    }
+        .item-parent:after {
+          position: absolute;
+          content: '';
+          width: 10px;
+          height: 2px;
+          left: 0;
+          top: 50%;
+          background-color: #000000;
+          transform: translateX(-100%);
+        }
 
-                    .item p {
-                        padding: 20px;
-                        margin: 0;
-                        min-width: 150px;
-                        text-align: center;
-                        background-color: rgb(228, 245, 243);
-                    }
+        .item-childrens {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
 
-                    .item .box {
-                        padding: 20px;
-                        margin: 0;
-                        min-width: 200px;
-                        /* text-align: center; */
-                        background-color: rgb(228, 245, 243);
-                    }
+        .item-child {
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-end;
+          margin-top: 10px;
+          margin-bottom: 10px;
+          position: relative;
+        }
 
-                    .item-parent {
-                        position: relative;
-                        margin-left: 50px;
-                        display: flex;
-                        align-items: center;
-                    }
+        .item-child:before {
+          content: '';
+          position: absolute;
+          background-color: #000000;
+          right: 0;
+          top: 50%;
+          transform: translateX(100%);
+          width: 10px;
+          height: 2px;
+        }
 
-                    .item-parent:after {
-                        position: absolute;
-                        content: '';
-                        width: 25px;
-                        height: 2px;
-                        left: 0;
-                        top: 50%;
-                        background-color: #000000;
-                        transform: translateX(-100%);
-                    }
+        .item-child:after {
+          content: '';
+          position: absolute;
+          background-color: #000000;
+          right: -10px;
+          height: calc(50% + 22px);
+          width: 2px;
+          top: 50%;
+        }
 
-                    .item-childrens {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                    }
+        .item-child:last-child:after {
+          transform: translateY(-100%);
+        }
 
-                    .item-child {
-                        display: flex;
-                        align-items: flex-start;
-                        justify-content: flex-end;
-                        margin-top: 10px;
-                        margin-bottom: 10px;
-                        position: relative;
-                    }
+        .item-child:only-child:after {
+          display: none;
+        }
+      </style>
+    </head>
+    <body>
+      <h1><%= tournamentName %></h1>
 
-                    .item-child:before {
-                        content: '';
-                        position: absolute;
-                        background-color: #000000;
-                        right: 0;
-                        top: 50%;
-                        transform: translateX(100%);
-                        width: 25px;
-                        height: 2px;
-                    }
+      <%- include("../../../partials/menu_staff.ejs") %>
 
-                    .item-child:after {
-                        content: '';
-                        position: absolute;
-                        background-color: #000000;
-                        right: -25px;
-                        height: calc(50% + 22px);
-                        width: 2px;
-                        top: 50%;
-                    }
+      <div class="container-md">
+        <div class="wrapper">
+          <!-- ตัวประกาศ -->
+          <div class="item">
+            <!-- ตัวคลุม -->
 
-                    .item-child:last-child:after {
-                        transform: translateY(-100%);
-                    }
+            <div class="item-parent">
+              <!-- ผู้ชนะ-->
+              <!-- Parent1 ชนะ -->
+              <div class="box card border border-dark" id="score15">
+                <div class="d-flex justify-content-between">
+                  <div class=""><%= data[1].team2 %></div>
+                  <div class="point" style="height: 100%">
+                    <strong> <%= data[1].score2 %> </strong>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                    .item-child:only-child:after {
-                        display: none;
-                    }
-                </style>
-            </head>
-            <body>
-                <h1>
-                    <%= tournamentName %>
-                </h1>
+            <div class="item-childrens">
+              <!--ประกาศลูกของช่องผู้ชนะ  -->
+              <div class="item-child">
+                <!-- ชี้ลูก -->
+                <div class="item">
+                  <!-- ขอบเขตลูก -->
+                  <div class="item-parent">
+                    <!-- Parent1.2 รองบน -->
+                    <div class="box card border border-dark" id="score13">
+                      <% if (data[6]&& data[6].score1 !== null && data[6].team1 !== null) { %>
+                      <div class="d-flex justify-content-between">
+                        <div class=""><%= data[6].team1 %></div>
+                        <div class="point" style="height: 100%">
+                          <strong> <%= data[6].score1%> </strong>
+                        </div>
+                      </div>
+                      <% } else { %>
+                      <div class="d-flex justify-content-center">
+                        <div class="text-center">TBD</div>
+                      </div>
+                      <% } %>
+                    </div>
+                  </div>
 
-                <%- include("../../../partials/menu_staff.ejs") %>
+                  <div class="item-childrens">
+                    <div class="item-child">
+                      <div class="item">
+                        <div class="item-parent">
+                          <!-- Parent2 ก่อนรอง1บน  -->
+                          <div class="box card border border-dark" id="score9">
+                            <% if (data[4]&& data[4].score1 !== null && data[4].team1 !== null) { %>
+                            <div class="d-flex justify-content-between">
+                              <div class=""><%= data[4].team1 %></div>
+                              <div class="point" style="height: 100%">
+                                <strong> <%= data[4].score1 %> </strong>
+                              </div>
+                            </div>
+                            <% } else { %>
+                            <div class="d-flex justify-content-center">
+                              <div class="text-center">TBD</div>
+                            </div>
+                            <% } %>
+                          </div>
+                        </div>
+                        <div class="item-childrens">
+                          <div class="item-child">
+                            <!-- ผู้เล่น1 -->
+                            <div class="box card border border-dark" id="score1">
+                              <div class="d-flex justify-content-between">
+                                <div class=""><%= data[0].team1 %></div>
+                                <div class="point" style="height: 100%">
+                                  <strong> <%= data[0].score1 %> </strong>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="item-child">
+                            <!-- ผู้เล่น2 -->
+                            <div class="box card border border-dark" id="score2">
+                              <div class="d-flex justify-content-between">
+                                <div class=""><%= data[0].team2 %></div>
+                                <div class="point" style="height: 100%">
+                                  <strong> <%= data[0].score2 %> </strong>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- ------------------------------- แม่แยก -------------------------------- -->
+                    <div class="item-child">
+                      <div class="item">
+                        <div class="item-parent">
+                          <!-- Parent2 ก่อนรอง1ล่าง -->
+                          <div class="box card border border-dark" id="score10">
+                            <% if (data[4]&& data[4].score2 !== null && data[4].team2 !== null) { %>
+                            <div class="d-flex justify-content-between">
+                              <div class=""><%= data[4].team2 %></div>
+                              <div class="point" style="height: 100%">
+                                <strong> <%= data[4].score2 %> </strong>
+                              </div>
+                            </div>
+                            <% } else { %>
+                            <div class="d-flex justify-content-center">
+                              <div class="text-center">TBD</div>
+                            </div>
+                            <% } %>
+                          </div>
+                        </div>
+                        <div class="item-childrens">
+                          <div class="item-child">
+                            <!-- ผู้เล่น3 -->
+                            <div class="box card border border-dark" id="score3">
+                              <div class="d-flex justify-content-between">
+                                <div class=""><%= data[1].team1 %></div>
+                                <div class="point" style="height: 100%">
+                                  <strong> <%= data[1].score1 %> </strong>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="item-child">
+                            <!-- ผู้เล่น4 -->
+                            <div class="box card border border-dark" id="score4">
+                              <div class="d-flex justify-content-between">
+                                <div class=""><%= data[1].team2 %></div>
+                                <div class="point" style="height: 100%">
+                                  <strong> <%= data[1].score2 %> </strong>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                
-                   
-
-            </body>
-
-            </html>
+              <!-- -------------------------------- set 2 -------------------------------- -->
+              <div class="item-child">
+                <div class="item">
+                  <div class="item-parent">
+                    <!-- Parent1.2 รองล่าง -->
+                    <div class="box card border border-dark" id="score14">
+                      <% if (data[6]&& data[6].score2 !== null && data[6].team2 !== null) { %>
+                      <div class="d-flex justify-content-between">
+                        <div class=""><%= data[6].team2 %></div>
+                        <div class="point" style="height: 100%">
+                          <strong> <%= data[6].score2 %> </strong>
+                        </div>
+                      </div>
+                      <% } else { %>
+                      <div class="d-flex justify-content-center">
+                        <div class="text-center">TBD</div>
+                      </div>
+                      <% } %>
+                    </div>
+                  </div>
+                  <div class="item-childrens">
+                    <div class="item-child">
+                      <div class="item">
+                        <div class="item-parent">
+                          <!-- Parent2 ก่อนรอง2บน -->
+                          <div class="box card border border-dark" id="score11">
+                            <% if (data[5]&& data[5].score1 !== null && data[5].team1 !== null) { %>
+                            <div class="d-flex justify-content-between">
+                              <div class=""><%= data[5].team1 %></div>
+                              <div class="point" style="height: 100%">
+                                <strong> <%= data[5].score1%> </strong>
+                              </div>
+                            </div>
+                            <% } else { %>
+                            <div class="d-flex justify-content-center">
+                              <div class="text-center">TBD</div>
+                            </div>
+                            <% } %>
+                          </div>
+                        </div>
+                        <div class="item-childrens">
+                          <div class="item-child">
+                            <!-- ผู้เล่น5 -->
+                            <div class="box card border border-dark" id="score5">
+                              <div class="d-flex justify-content-between">
+                                <div class=""><%= data[2].team1 %></div>
+                                <div class="point" style="height: 100%">
+                                  <strong> <%= data[2].score1 %> </strong>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="item-child">
+                            <!-- ผู้เล่น6 -->
+                            <div class="box card border border-dark" id="score6">
+                              <div class="d-flex justify-content-between">
+                                <div class=""><%= data[2].team2 %></div>
+                                <div class="point" style="height: 100%">
+                                  <strong> <%= data[2].score2 %> </strong>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="item-child">
+                      <div class="item">
+                        <div class="item-parent">
+                          <!-- Parent2 ก่อนรอง2ล่าง -->
+                          <div class="box card border border-dark" id="score12">
+                            <% if (data[5]&& data[5].score2 !== null && data[5].team2 !== null) { %>
+                            <div class="d-flex justify-content-between">
+                              <div class=""><%= data[5].team2 %></div>
+                              <div class="point border-start-1" style="height: 100%">
+                                <strong> <%= data[5].score2 %> </strong>
+                              </div>
+                            </div>
+                            <% } else { %>
+                            <div class="d-flex justify-content-center">
+                              <div class="text-center">TBD</div>
+                            </div>
+                            <% } %>
+                          </div>
+                        </div>
+                        <div class="item-childrens">
+                          <div class="item-child">
+                            <!-- ผู้เล่น7 -->
+                            <div class="box card border border-dark" id="score7">
+                              <div class="d-flex justify-content-between">
+                                <div class=""><%= data[3].team1 %></div>
+                                <div class="point" style="height: 100%">
+                                  <strong> <%= data[3].score1 %> </strong>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="item-child">
+                            <!-- ผู้เล่น8 -->
+                            <div class="box card border border-dark" id="score8">
+                              <div class="d-flex justify-content-between">
+                                <div class=""><%= data[3].team2 %></div>
+                                <div class="point" style="height: 100%">
+                                  <strong> <%= data[3].score2 %> </strong>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <script>
+        const data = JSON.parse('<%-JSON.stringify(data) %>');
+        console.log(data);
+        if (data[0].score1 > data[0].score2) {
+          document.getElementById('score1').className = 'box card border border-dark  text-bg-success';
+        } else {
+          document.getElementById('score2').className = 'box card border border-dark  text-bg-success';
+        }
+
+        if (data[1].score1 > data[1].score2) {
+          document.getElementById('score3').className = 'box card border border-dark  text-bg-success';
+        } else {
+          document.getElementById('score4').className = 'box card border border-dark  text-bg-success';
+        }
+
+        if (data[2].score1 > data[2].score2) {
+          document.getElementById('score5').className = 'box card border border-dark  text-bg-success';
+        } else {
+          document.getElementById('score6').className = 'box card border border-dark  text-bg-success';
+        }
+        if (data[3].score1 > data[3].score2) {
+          document.getElementById('score7').className = 'box card border border-dark  text-bg-success';
+        } else {
+          document.getElementById('score8').className = 'box card border border-dark  text-bg-success';
+        }
+
+        if (data[4].score1 > data[4].score2) {
+          document.getElementById('score9').className = 'box card border border-dark  text-bg-success';
+        } else {
+          document.getElementById('score10').className = 'box card border border-dark  text-bg-success';
+        }
+
+        if (data[5].score1 > data[5].score2) {
+          document.getElementById('score11').className = 'box card border border-dark  text-bg-success';
+        } else {
+          document.getElementById('score12').className = 'box card border border-dark  text-bg-success';
+        }
+        if (data[6].score1 > data[6].score2) {
+          document.getElementById('score13').className = 'box card border border-dark  text-bg-success';
+        } else {
+          document.getElementById('score14').className = 'box card border border-dark  text-bg-success';
+        }
+
+        if (data[3].score2 != null) {
+          document.getElementById('score15').className = 'box card border border-dark  text-bg-success';
+        }
+      </script>
+    </body>
+  </html>
+</div>

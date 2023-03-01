@@ -1,15 +1,15 @@
-<%- include("partials/header") %>
-        <div class="container  mx-auto ">
 
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <title>Sample Site</title>
-   
-</head>
-<body>
- 
     
+  </head>
+  <body>
+    
+    
+    <%- include("partials/header") %>
+    <div class="container  mx-auto ">
         <div class="container w-50" style="margin-top: 10%;">   
 
 
@@ -28,13 +28,16 @@
               <% if (messages.error) { %>
                 <div class="alert alert-danger w-100 mx-auto" role="alert"><%= messages.error %></div>
             <% } %>
-              <div class="text-center">
-                  <button class="mt-5 w-25  btn btn-lg btn-success" type="submit">Sign in</button>
+              <div class="text-center w-75 mx-auto ">
+                  <button class="mt-5 w-100  btn btn-lg btn-success" type="submit">Sign in</button>
               </div>
             </form>
           </main>
           
-    </div>
+        </div>
+      </div>
 </body>
 </html>
-</div>
+
+
+
