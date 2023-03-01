@@ -451,7 +451,7 @@
           const data = JSON.parse('<%-JSON.stringify(data) %>');
   
           console.log(data);
-          if (data[5].score1 > data[5].score2) {
+          if (data[5].score1 < data[5].score2) {
             document.getElementById('score2').className = 'box card border border-dark  text-bg-success';
           } else {
             document.getElementById('score3').className = 'box card border border-dark  text-bg-success';
@@ -461,7 +461,7 @@
           } else {
             document.getElementById('score5').className = 'box card border border-dark  text-bg-success';
           }
-          if (data[3].score1 > data[3].score2) {
+          if (data[3].score1 < data[3].score2) {
             document.getElementById('score6').className = 'box card border border-dark  text-bg-success';
           } else {
             document.getElementById('score7').className = 'box card border border-dark  text-bg-success';

@@ -412,7 +412,7 @@ router.get('/match/(:tnmID)', (req, res, next)=> {
                     })
 
                 }else if(rows[0].tnmTypegame === 'single'){
-                    dbConnection.query("SELECT m.round,m.matchID,p1.playerID AS p1ID,p1.playerFName AS player1_name,p2.playerID AS p2ID, p2.playerFName AS player2_name, m.score1, m.score2,m.pDate, DATE_FORMAT(m.time, '%H:%i') as time,m.timeend,place.placeName FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 LEFT JOIN place ON place.placeID = m.placeID WHERE m.tnmID = "+tnmID, (error, rows) => {
+                    dbConnection.query("SELECT m.round,m.matchID,p1.playerID AS p1ID,p1.playerFName AS player1_name,p2.playerID AS p2ID, p2.playerFName AS player2_name, m.score1, m.score2,m.pDate, DATE_FORMAT(m.time, '%H:%i') as time,m.timeend,place.placeName,m.seed FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 LEFT JOIN place ON place.placeID = m.placeID WHERE m.tnmID = "+tnmID, (error, rows) => {
                         if(error) throw error;
                         dbConnection.query('SELECT p.placeID,p.placeName FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN sport_type st ON st.typeID = s.typeID LEFT JOIN place p ON p.typeID = st.typeID WHERE tnmID = '+tnmID ,(err,results)=>{
                             if(err) throw err;
@@ -878,6 +878,9 @@ router.post('/matchedit/(:tnmID)', async (req,res,next) =>{
     let score1 = req.body.score1;
     let score2 = req.body.score2;
     let round = req.body.round;
+    let formseed = req.body.seed;
+
+    let minusseed = formseed-1;
 
     const daysOfWeek = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
     const today = new Date(pDate);
@@ -897,7 +900,13 @@ router.post('/matchedit/(:tnmID)', async (req,res,next) =>{
     dbConnection.query('SELECT * FROM tournament WHERE tnmID = '+tnmID,(error,typeoftour)=>{
        
         if(typeoftour[0].tnmTypegame === 'single'){
-            
+
+        dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? AND seed = ? ',[tnmID,minusseed],(error,less)=>{
+
+          if(less.length && !less[0].score1 && !less[0].score2){
+            req.flash('error','กรุณาบันทึกการแข่งขันก่อนหน้า');
+            res.redirect('/tournament/match/'+tnmID);
+          }else{
           if(score1 && score2){
             let form_data={score1:score1,score2:score2,placeID:placeID,time:time,timeend:Endtime,pDate:pDate}
             dbConnection.query('UPDATE matchplay SET ? WHERE matchID ='+matchID,form_data,(error,rows)=>{
@@ -911,7 +920,8 @@ router.post('/matchedit/(:tnmID)', async (req,res,next) =>{
             dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? AND seed = ? ',[tnmID,checkseed],(error,seedcheck)=>{
                 if(error) throw error;
                 let numbye = Math.pow(2, Math.ceil(Math.log2(rows.length))) - rows.length;
-                if(!seedcheck.length || seedcheck[0].participant1 === null || seedcheck[0].participant2 === null){
+
+                 if(!seedcheck.length || seedcheck[0].participant1 === null || seedcheck[0].participant2 === null){
                 if(numbye === 0){
                     let nextround = parseInt(round) + 1;
                     if(score1 > score2){
@@ -1283,7 +1293,8 @@ router.post('/matchedit/(:tnmID)', async (req,res,next) =>{
             res.redirect('/tournament/match/'+tnmID);
         })
           }
-
+        }
+        })
         }else{
             let form_data ={
                 pDate: pDate,

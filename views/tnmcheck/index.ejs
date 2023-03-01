@@ -43,7 +43,7 @@
             </ul>
         </div>
         <div class="card-body">
-            <% if(data.length) { %>
+            
                 <table class="table">
                     <thead>
                         <tr>
@@ -58,6 +58,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <% if(data.length) { %>
                         <% for(let i = 0; i < data.length; i++) { %>
                             <% if(data[i].sportPlaynum > 1){ %>
                                 <% data[i].wait_count = data[i].wait_count / data[i].sportPlaynum %>
@@ -86,8 +87,9 @@
                             <% } %>
                         <% } %>
                     </tbody>
+                    <% } %>
                 </table>
-            <% } %>
+            
 
             <!-- if result is empty-->
             <% if(!data.length) { %>

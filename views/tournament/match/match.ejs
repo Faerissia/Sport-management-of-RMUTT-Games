@@ -57,14 +57,34 @@
                 <%= messages.error %>
             </div>
             <% } %>
+
+            <script type="text/javascript">
+                function confirm_delete() {
+                    return confirm('คุณแน่ใจแล้วหรือไม่?\nถ้าบันทึกคะแนนแล้วไม่สามารถแก้ไขคะแนนได้');
+                    }
+                
+                
+                function check_input() {
+                    var inputs = document.querySelectorAll('[id^="score"]');
+                    for (var i = 0; i < inputs.length; i++) {
+                        if (inputs[i].value) {
+                            if (!confirm_delete()) {
+                            return false; // Cancel form submission
+                            }
+                        break; // Stop looping after displaying confirmation message
+                        }
+                    }
+  return true;
+                }
+            </script>
             
-    <% if(data && data[0]) { %>
+            
     
-     <% if(!data[0].teamID) { %>
+    
             <!-- //แบบเดี่ยว -->
             <div class="card-body">
 
-                <% if(data.length) { %>
+                
                     <table class="table  w-75 mx-auto my-5 border  border-dark table-striped table-hover text-center align-middle">
                         <thead style="background-color: rgb(96, 166, 253); ">
                             <tr>
@@ -76,8 +96,13 @@
                                 <th width="200px">ตัวเลือก</th>
                             </tr>
                         </thead>
+                        <% if(data && data[0]) { %>
+                            <% if(data.length) { %>
                         <tbody>
+                            
                             <% for(let i = 0; i < data.length; i++) { %>
+                                
+                                
                                 <tr>
                                     <td><%= i+1 %></td>
                                 <% if(data[i].pDate === null){ %>
@@ -95,8 +120,10 @@
                                     <td><%= data[i].score1%> - <%= data[i].score2%></td>
                                     <% } %>
                                     <td>
-                                        
+                                        <% if(data[i].score1 && data[i].score2){ %>
+                                            <% }else{ %>
                                     <button class="modal-trigger btn btn-warning" onclick="document.getElementById('modal<%= i %>').style.display='block'">แก้ไข</button>
+                                                <% } %>
                                             <div id="modal<%= i %>" class="modal">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -125,16 +152,17 @@
                                                         <input type="hidden" name="participant1" value="<%= data[i].p1ID %>">
                                                         <div>
                                                         <%= data[i].player1_name %>
-                                                        <input type="text" class="form-control" name="score1">
+                                                        <input type="text" class="form-control" name="score1" id="score1<%= i%>">
                                                         </div>
                                                         <input type="hidden" name="participant2" value="<%= data[i].p2ID %>">
                                                         <div>
                                                         <%= data[i].player2_name %>
-                                                        <input type="text" class="form-control" name="score2">
+                                                        <input type="text" class="form-control" name="score2" id="score2<%= i%>">
                                                         </div>
                                                         <input type="hidden" name="matchID" value="<%= data[i].matchID %>">
                                                         <input type="hidden" name="round" value="<%= data[i].round %>">
-                                                        <button value="sunbmit" class="btn btn-success">บันทึก</button>
+                                                        <input type="hidden" name="seed" value="<%= data[i].seed %>">
+                                                        <button value="sunbmit" class="btn btn-success"  onclick="return check_input()">บันทึก</button>
                                                     </form>
                                                 </div>  
                                             </div>
@@ -143,44 +171,12 @@
                                 </tr>
                             <% } %>
                         </tbody>
+                        <% } %>
+                        <% } %>
                     </table>
-                <% } %>
-    <% } %>
-    
+                
 
-    
-    <!-- //แบบทีม -->
-            <div class="card-body">
-                <% if(data[0].teamID) { %>
-                    <table class="table  w-75 mx-auto my-5 border  border-dark table-striped table-hover text-center align-middle">
-                        <thead style="background-color: rgb(96, 166, 253); ">
-                            <tr>
-                                <th scope="col">ชื่อทีมที่เข้าร่วม</th>
-                                <th scope="col">จำนวนสมาชิก</th>
-                                <th scope="col">ชื่อตัวแทน</th>
-                                <th scope="col">เบอร์ติดต่อ</th>
-                                <th width="200px">ตัวเลือก</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% for(let i = 0; i < data.length; i++) { %>
-                                <% if(data[i].teamStatus === 'accept') { %>
-                                <tr>
-                                    <td><%= data[i].teamName %></td>
-                                    <td></td>
-                                    <td><%= data[i].NameAgent %></td>
-                                    <td><%= data[i].teamPhoneA %></td>
-                                    <td>
-                                        <a href="../tournament/edit/<%= data[i].teamID %>" class="btn btn-warning edit">แก้ไข</a>
-                                        <a href="../tournament/delete/<%= data[i].teamID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                        <a href="/tournament/participant/team/<%= data[i].teamID %>" class="btn btn-primary page">ดู</a>
-                                    </td>
-                                </tr>
-                            <% }} %>
-                        </tbody>
-                    </table>
-                <% } %>
-    <% } %>
+   
     
 
 
