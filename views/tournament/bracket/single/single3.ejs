@@ -6,17 +6,15 @@
             <html lang="en">
 
             <head>
-                <title>แบบ4</title>
-
+                <title>แบบ3</title>
                 <style>
-                    /* body {
-                        background-color: DarkSalmon;
-                    } */
 
                     .wrapper {
+                        position: relative;
                         display: flex;
                         height: auto;
-                        justify-content: center;
+                        width: auto;
+                        justify-content: start;
                     }
 
                     .item {
@@ -26,24 +24,38 @@
                     }
 
                     .item p {
-                        padding: 20px;
+                        padding: 10px;
                         margin: 0;
-                        min-width: 150px;
+                        min-width: 180px;
                         text-align: center;
                         background-color: rgb(228, 245, 243);
                     }
 
                     .item .box {
-                        padding: 20px;
+                        padding: 5px;
                         margin: 0;
-                        min-width: 200px;
+                        min-width: 8em;
                         /* text-align: center; */
                         background-color: rgb(228, 245, 243);
                     }
 
+                    .item-text {
+                        
+                        position: absolute;
+                        left: 0;
+                        height: auto;
+                        overflow: hidden;
+                        font-size: 1em;
+                        font-weight: bold;
+                    }
+                    .item-text span{
+                        width: 9em;
+                    }
+
+
                     .item-parent {
                         position: relative;
-                        margin-left: 50px;
+                        margin-left: 20px;
                         display: flex;
                         align-items: center;
                     }
@@ -51,7 +63,7 @@
                     .item-parent:after {
                         position: absolute;
                         content: '';
-                        width: 25px;
+                        width: 10px;
                         height: 2px;
                         left: 0;
                         top: 50%;
@@ -81,7 +93,7 @@
                         right: 0;
                         top: 50%;
                         transform: translateX(100%);
-                        width: 25px;
+                        width: 10px;
                         height: 2px;
                     }
 
@@ -89,7 +101,7 @@
                         content: '';
                         position: absolute;
                         background-color: #000000;
-                        right: -25px;
+                        right: -10px;
                         height: calc(50% + 22px);
                         width: 2px;
                         top: 50%;
@@ -106,11 +118,12 @@
             </head>
             <body>
                 <h1>
-                    <%= tournamentName %>
+                    <%= tournamentName %> 
                 </h1>
 
                 <%- include("../../../partials/menu_staff.ejs") %>
-
+                
+                <div class="container-md m-0">
                 รอบที่ 1
                 <br>
                 <%= data[0].team1 %><%= data[0].score1 %> vs 
@@ -129,6 +142,193 @@
                         <%= data[1].team2 %>
                         <% } %>
                    
+
+                        <div class="wrapper"> <!-- ตัวประกาศ -->
+                            
+                            <div class="item mt-5"> <!-- ตัวคลุม -->
+                              
+                                <div class="item-parent" style="top: 13%;"> <!-- ผู้ชนะ-->
+                                    <!-- Parent1 ชนะ -->
+                                    <div class="box card border border-dark" id="score1">
+                                        <div class="d-flex justify-content-center">
+                                            <% if (data[1]?.score1 && data[1]?.score2) { %>
+                                                <% if(data[1]?.score1 > data[1]?.score2){ %>
+                                                <div class=""><%= data[1].team1 %></div>
+                                                <% }else{ %>
+                                                <div class=""><%= data[1].team2 %></div>
+                                                <% } %>
+                                                <%  }else{  %>
+                                                  <br>
+                                                  <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="item-childrens"> <!--ประกาศลูกของช่องผู้ชนะ  -->
+                                    <div class="item-child"> <!-- ชี้ลูก -->
+                                        <div class="item"> <!-- ขอบเขตลูก -->
+                                            
+                                            <div class="item-parent">
+                                                <!-- Parent1.2 รองบน -->
+                                                <div class="box card border border-dark" id="score2">
+                                                    <% if (data[1]&& data[1].score2 !==null && data[1].team2 !==null){%>
+                                                        <div class="d-flex justify-content-between">
+                                                            <div class="">
+                                                                <%= data[1].team2 %>
+                                                            </div>
+                                                            <div class="" style="height: 100%;">
+                                                               <% if (data[1]?.score2) {%>
+                                                                <strong>
+                                                                    <%= data[1].score2%>
+                                                                </strong>
+                                                                <% } %>
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        <% } else { %>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="text-center">
+                                                                    TBD
+                                                                </div>
+                                                            </div>
+                                                            <% } %>
+                                                </div>
+                                            </div>
+
+                                            <div class="item-childrens">
+                                                <div class="item-child">
+                                                    <div class="item">
+                                                        <div class="item-child">
+                                                           
+                                                            <!-- Parent2 ก่อนรอง1บน  -->
+                                                            <div class="box card border border-dark" id="score4">
+                                                                <% if (data[0]?.team1 ) { %>
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div class="">
+                                                                            <%= data[0].team1 %>
+                                                                        </div>
+                                                                        <% if (data[0]?.score1) { %>
+                                                                            <strong>
+                                                                                <%= data[0].score1 %>
+                                                                            </strong>
+                                                                          <% } %>
+                                                                    </div>
+                                                                    <% } else { %>
+                                                                        <div class="d-flex justify-content-center">
+                                                                            <div class="text-center">
+                                                                                TBD
+                                                                            </div>
+                                                                        </div>
+                                                                        <% } %>
+                                                            </div>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+                                                <!-- ------------------------------- แม่แยก -------------------------------- -->
+                                                <div class="item-child">
+                                                    <div class="item">
+                                                        <div class="item-child">
+                                                            <!-- Parent2 ก่อนรอง1ล่าง -->
+                                                            <div class="box card border border-dark" id="score5">
+                                                                <% if (data[0]&& data[0].score2 !==null && data[0].team2 !==null) { %>
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <div class="">
+                                                                            <%= data[0].team2 %>
+                                                                        </div>
+                                                                        <% if (data[0]?.score2) { %>
+                                                                            <strong>
+                                                                                <%= data[0].score2 %>
+                                                                            </strong>
+                                                                          <% } %>
+                                                                    </div>
+                                                                    <% } else { %>
+                                                                        <div class="d-flex justify-content-center">
+                                                                            <div class="text-center">
+                                                                                TBD
+                                                                            </div>
+                                                                        </div>
+                                                                        <% } %>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- -------------------------------- set 2 -------------------------------- -->
+                                    <div class="item-child">
+                                        <div class="item">
+                                            <div class="item-childrens">
+                                                <!-- Parent1.2 รองล่าง  ฺbye-->
+                                                <div class="box card border border-dark" id="score3">
+                                                    <% if (data[1]&& data[1].score1 !==null && data[1].team1 !==null) {%>
+                                                        <div class="d-flex justify-content-between">
+                                                            <div class="">
+                                                                <%= data[1].team1 %>
+                                                            </div>
+                                                            <% if (data[1]?.score1) { %>
+                                                                <strong>
+                                                                    <%= data[1].score1 %>
+                                                                </strong>
+                                                              <% } %>
+                                                        </div>
+                                                        <% } else { %>
+                                                            <div class="d-flex justify-content-center">
+                                                                <div class="text-center">
+                                                                    TBD
+                                                                </div>
+                                                            </div>
+                                                            <% } %>
+                                                </div>
+
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                                <div class="item-text d-flex mt-3 ">
+                                                              
+                                    <span class=" text-center" >รอบรองชิงชนะเลิศ</span>
+                                    <span class=" text-center" >รอบชิงชนะเลิศ</span>
+                                    <span class=" text-center" >ชนะเลิศ</span>
+                                </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        const data = JSON.parse('<%-JSON.stringify(data) %>');
+                        console.log(data);
+                        if (data[0].score1 < data[0].score2) {
+                            document.getElementById("score2").className = "box card border border-dark  text-bg-success";
+                        } else {
+                            document.getElementById("score3").className = "box card border border-dark  text-bg-success";
+                        }
+
+                        if (data[1].score1 > data[1].score2) {
+                            document.getElementById("score4").className = "box card border border-dark  text-bg-success";
+                        } else {
+                            document.getElementById("score5").className = "box card border border-dark  text-bg-success";
+                        }
+
+                    
+
+                        // ผู้ชนะ
+                        if (data[1].score1 != null &&data[1].score2 != null) {
+                            document.getElementById("score1").className = "box card border border-dark  text-bg-success";
+                        }
+
+                    </script>
+
+
+
+
+
+
 
             </body>
 
