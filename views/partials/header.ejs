@@ -12,14 +12,8 @@
   <!-- icon -->
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
   <!--  -->
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kodchasan&display=swap" rel="stylesheet">
-  <style>
-  
-
-    @font-face {
+<style>
+ @font-face {
       font-family: "Kodchasan-Regular";
   src: url('/font/Kodchasan-Regular.ttf') format('truetype');
     }
@@ -27,29 +21,25 @@
     body {
       font-family: "Kodchasan-Regular", sans-serif !important;
     }
-  </style>
+</style>
 </head>
-
 <header class="">
   <nav class="navbar navbar-expand-lg " style="background-color: #437fc7 ">
     <div class="container-fluid  text-center  px-0 m-0 position-relative">
-
+      
       <% if(status_login){ %>
-
-
+      
+        
         <div class="float-start">
-          <% if(role==='ผู้ดูแลระบบ' ){ %>
-            <a class="navbar-brand" href="/account">
-              <% }else{ %>
-                <a class="navbar-brand" href="/dashboard">
-                  <% } %>
-                    <img src="https://www.rmutt.ac.th/wp-content/uploads/2020/03/20200310-LOGO-RMUTT.png"
-                      class="nav-logo ms-2" alt="logo" style="width: 15rem;" />
-                </a><a class="btn btn-success border" href="/" target="_blank">หน้าหลัก</a>
-        </div>
-        <h3 class="text-white  mb-0 position-absolute top-50 start-50 translate-middle">
-          <%= process.title %>
-        </h3>
+          <% if(role === 'ผู้ดูแลระบบ'){ %>
+          <a class="navbar-brand" href="/account">
+            <% }else{ %>
+              <a class="navbar-brand" href="/" target="_blank">
+              <% } %>
+            <img src="https://www.rmutt.ac.th/wp-content/uploads/2020/03/20200310-LOGO-RMUTT.png" class="nav-logo ms-2"
+            alt="logo" style="width: 15rem;" /></a>
+          </div>
+          <h3 class="text-white  mb-0 position-absolute top-50 start-50 translate-middle"><%= process.title %></h3>
         <div class="justify-content-end  text-white fs-6" id="navbarNavAltMarkup">
           <%= user %> |
             <a class="text-white text-decoration-none " style="margin-right: 30px;" href="/logout">ออกจากระบบ</a>
@@ -60,9 +50,7 @@
                 src="https://www.rmutt.ac.th/wp-content/uploads/2020/03/20200310-LOGO-RMUTT.png" class="nav-logo ms-2"
                 alt="logo" style="width: 15rem;" /></a>
           </div>
-          <h3 class="text-white mb-0 position-absolute top-50 start-50 translate-middle">
-            <%= process.title %>
-          </h3>
+          <h3 class="text-white mb-0 position-absolute top-50 start-50 translate-middle"><%= process.title %></h3>
           <div class="justify-content-end  fs-6" id="navbarNavAltMarkup">
             <a class="text-white text-decoration-none" style="margin-right: 30px;" href="/login">เข้าสู่ระบบ</a>
           </div>
