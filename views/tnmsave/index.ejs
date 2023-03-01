@@ -61,19 +61,17 @@
                             <tr>
                                 <% if(data[i].pDate === null || data[i].paceName === null || data[i].time === null || data[i].tnmTypegame === 'leaderboard') { %>
 
-                                <% }else if(data[i].score1 && data[i].score2){
-
-                                }else{ %>
+                                <% }else if(data[i].score1 === null || data[i].score2 === null){ %>
                                 <td><%= i+1 %></td>
                                 <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
                                 <td><%= data[i].round %></td>
-                                <td><%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
+                        
+                                <td><%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %> <%= data[i].time.slice(0, 5); %> - <%= data[i].timeend.slice(0, 5); %></td>
                                 <td><%= data[i].placeName %></td>
                                 <td>
                                     
-                                    <a href="../doc/scoresheet.png" download="scoresheet.png" class="btn btn-info delete">ใบคะแนน</a>
-                                    <a>บันทึก</a>
+                                    <a href="../doc/scoresheet.png" download="scoresheet.png" class="btn btn-warning">ใบคะแนน</a>
                                     <a href="../tournament/match/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
                                 </td>
                                 <% }%> 

@@ -904,13 +904,14 @@ router.post('/matchedit/(:tnmID)', async (req,res,next) =>{
                 if(error) throw error;
             })
           
-            dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC LIMIT 1 ',tnmID,(error,seedcheck)=>{
-              const seedchecker = seedcheck[0].seed;
+            
             dbConnection.query(`SELECT * FROM player WHERE playerStatus = 'accept' AND tnmID =`+tnmID,(error,rows)=>{
-             const numteam = rows.length;
+              const numteam = rows.length;
+              let checkseed = numteam -1 ;
+            dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? AND seed = ? ',[tnmID,checkseed],(error,seedcheck)=>{
                 if(error) throw error;
                 let numbye = Math.pow(2, Math.ceil(Math.log2(rows.length))) - rows.length;
-                if(seedchecker != numteam-1){
+                if(!seedcheck.length || seedcheck[0].participant1 === null || seedcheck[0].participant2 === null){
                 if(numbye === 0){
                     let nextround = parseInt(round) + 1;
                     if(score1 > score2){
