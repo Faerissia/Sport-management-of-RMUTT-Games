@@ -31,22 +31,22 @@
                                             <div class="row  ">
                                                 <div class="col-2">
                                                     <label  class="form-label" >ชื่อ</label>
-                                                    <input type="text" class="form-control border border-dark" name="name" required>
+                                                    <input type="text" class="form-control border border-dark" name="name" value="<%= name %>" required>
                                                 </div>
                                                 <div class="col-2">
                                                     <label  class="form-label" >นามสกุล</label>
-                                                    <input type="text" class="form-control border border-dark" name="lname" required>
+                                                    <input type="text" class="form-control border border-dark" name="lname" value="<%= lname %>" required>
                                                 </div>
                                             </div>
 
                                             <div class="row">
                                                 <div class="col-2">
                                                     <label  class="form-label" >เบอร์โทร</label>
-                                                    <input type="text" class="form-control border border-dark" name="phone" required>
+                                                    <input type="text" class="form-control border border-dark" name="phone" value="<%= phone %>" required>
                                                 </div>
                                                 <div class="col-4">
                                                     <label  class="form-label" >อีเมล</label>
-                                                    <input type="email" class="form-control border border-dark" name="email" required>
+                                                    <input type="email" class="form-control border border-dark" name="email" value="<%= email %>" required>
                                                 </div>
                                             </div>
 
@@ -70,8 +70,8 @@
                                                     <label style="margin-top: 10px;">ระดับผู้ใช้งาน</label>
                                                     <select name="level" class="form-select border border-dark" required>
                                                         <option selected disabled >ระดับผู้ใช้งาน</option>
-                                                        <option value="<%= level='ผู้ดูแลระบบ' %>">ผู้ดูแลระบบ</option>
-                                                        <option value="<%= level='เจ้าหน้าที่' %>">เจ้าหน้าที่</option>
+                                                        <option value="ผู้ดูแลระบบ" <%= level = 'ผู้ดูแลระบบ' ? 'selected' : '' %> >ผู้ดูแลระบบ</option>
+                                                        <option value="เจ้าหน้าที่" <%= level = 'เจ้าหน้าที่' ? 'selected' : '' %> >เจ้าหน้าที่</option>
                                                     </select>
                                                 </div>
                                             </div>

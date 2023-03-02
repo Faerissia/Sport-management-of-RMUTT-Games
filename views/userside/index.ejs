@@ -32,42 +32,39 @@
                                         style=" height: 5rem; background-color: #6DAFFE;">
                                         <h4 class="  text-body fw-bolder position-absolute top-50 start-50 translate-middle text-wrap"
                                             style="font-size: .8 em;">
-                                            รายการที่เปิดรับสมัคร</h4> <!-- name -->
+                                            เปิดรับสมัคร</h4> <!-- name -->
                                         <a class=" text-body btn btn-warning btn-sm  position-absolute top-50 end-0 translate-middle-y me-4 "
-                                            role="button" href="/showall" style="font-size: .8 rem;  
+                                            role="button" href="/opening" style="font-size: .8 rem;  
                                             ">ดูทั้งหมด</a>
                                     </div>
                                     <div
                                         class="d-flex flex-row rounded-bottom-2  justify-content-center bg-secondary bg-opacity-25 pb-2">
                 
                                         <div class="align-items-start justify-content-center d-flex flex-wrap ">
-                                            <% if(data.length) { %>
-                                                <% for(let i=0; i < 4; i++) { %>
-                                                    <% if(data && data[i]){ %>
-                                                        <% if(data[i].Renddate > new Date() ) { %>
+                                            
+                                            <% if(opening.length) { %>
+                                                <% for(let i=0; i < opening.length; i++) { %>
                                                         <div class="card mx-3 my-4 rounded-4 bg-light" style="width: 15rem">
-                                                            <a href="/tnmdetail/<%= data[i].tnmID %>"
+                                                            <a href="/tnmdetail/<%= opening[i].tnmID %>"
                                                                 class="text-decoration-none text-dark  fw-bolder">
                                                                 <div class="card-header bg-transparent text-truncate " >
-                                                                    <%= data[i].tnmName %>
+                                                                    <%= opening[i].tnmName %>
                                                                 </div>
                 
-                                                                <img src="images/<%= data[i].tnmPicture %>"
+                                                                <img src="images/<%=opening[i].tnmPicture %>"
                                                                     class="card-img-top img-fluid rounded-0" style="height: 15rem">
                                                                 <div class="card-body">
-                                                                     วันที่แข่ง <%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit'
-                                                                                        , month: 'long' , year:'numeric'}) %> -
-                                                                                        <%= data[i].tnmEnddate.toLocaleDateString('th-TH',{day: '2-digit'
-                                                                                        , month: 'long' , year:'numeric'}) %>
+                                                                    เปิดรับสมัคร <%= opening[i].Rstartdate.toLocaleDateString('th-TH',{day: '2-digit'
+                                                                    , month: 'long' , year:'numeric'}) %> -
+                                                                    <%= opening[i].Renddate.toLocaleDateString('th-TH',{day: '2-digit'
+                                                                    , month: 'long' , year:'numeric'}) %>
                                                                 </div>
                                                             </a>
                                                         </div>
                                                         <% } %>
-                                                        <% } %>
                                                             <% } %>
-                                                                <% } %>
                 
-                                                                    <% if(!data.length) { %>
+                                                                    <% if(!opening.length) { %>
                                                                         <h4 class="text-center text-wrap" style="margin-top: 50px; margin-bottom: 50px;">ไม่พบรายการแข่งขัน</h4>
                                                                         <% } %>
                                         </div>
@@ -75,107 +72,98 @@
                                     </div>
                                 </div>
                                 <!---------------------------------------------------------------------------------------------->
-                                <!---------------------------------------------------------------------------------------------->
-            <div class="card rounded-2 mt-5  mx-5 ">
-                    <div class="card-header p-2 d-flex  justify-content-center  text-center position-relative"
-                        style=" height: 5rem; background-color: #6DAFFE;">
-                        <h4 class="  text-body fw-bolder position-absolute top-50 start-50 translate-middle text-wrap"
-                            style="font-size: .8 em;">
-                            การแข่งขันที่ดำเนินการอยู่</h4> <!-- name -->
-                        <a class=" text-body btn btn-warning btn-sm  position-absolute top-50 end-0 translate-middle-y me-4 "
-                            role="button" href="/showall" style="font-size: .8 rem;  
-                            ">ดูทั้งหมด</a>
-                    </div>
-                    <div
-                        class="d-flex flex-row rounded-bottom-2  justify-content-center bg-secondary bg-opacity-25 pb-2">
-                        <div class="card-group align-items-start justify-content-center d-flex flex-wrap ">
-                            <% if(data.length) { %>
-                                <% for(let i=0; i < 4; i++) { %>
-                                    <% if(data && data[i]){ %>
-                                        <% if(data[i].tnmStartdate > new Date() && data[i].tnmEnddate < new Date()) { %>
-                                        <div class="card mx-3 my-4 rounded-4 bg-light  " style="width: 15rem">
-                                            <a href="/tnmdetail/<%= data[i].tnmID %>"
-                                                class="text-decoration-none text-dark  fw-bolder">
-                                                <div class="card-header bg-transparent text-truncate ">
-                                                    <%= data[i].tnmName %>
-                                                </div>
-
-                                                <img src="images/<%= data[i].tnmPicture %>"
-                                                    class="card-img-top img-fluid rounded-0" style="height: 15rem">
-                                                <div class="card-body">
-                                                    <%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit'
-                                                    , month: 'long' , year:'numeric'}) %> -
-                                                    <%= data[i].tnmEnddate.toLocaleDateString('th-TH',{day: '2-digit'
-                                                    , month: 'long' , year:'numeric'}) %>
-                                                </div>
-                                            </a>
-                                        </div>
-                                        <% }else{ %>
-                                            <h4 class="text-center text-wrap" style="margin-top: 50px; margin-bottom: 50px;">ไม่พบรายการแข่งขัน</h4>
-                                            <% } %>
-                                        <% } %>
-                                            
-                                            <% } %>
-                                                <% } %>
-                                                
-                        </div>
-
-                    </div>
-                </div>
-                <!---------------------------------------------------------------------------------------------->
-                <!---------------------------------------------------------------------------------------------->
+                                   <!---------------------------------------------------------------------------------------------->
+                                   <div class="card rounded-2 mt-5  mx-5">
+                                    <div class="card-header p-2 d-flex  justify-content-center  text-center position-relative"
+                                        style=" height: 5rem; background-color: #6DAFFE;">
+                                        <h4 class="  text-body fw-bolder position-absolute top-50 start-50 translate-middle text-wrap"
+                                            style="font-size: .8 em;">
+                                            อยู่ระหว่างแข่งขัน</h4> <!-- name -->
+                                        <a class=" text-body btn btn-warning btn-sm  position-absolute top-50 end-0 translate-middle-y me-4 "
+                                            role="button" href="/ongoing" style="font-size: .8 rem;  
+                                            ">ดูทั้งหมด</a>
+                                    </div>
+                                    <div
+                                        class="d-flex flex-row rounded-bottom-2  justify-content-center bg-secondary bg-opacity-25 pb-2">
                 
-
-                <div class="card rounded-2 mt-5  mx-5">
-                    <div class="card-header p-2 d-flex  justify-content-center  text-center position-relative"
-                        style=" height: 5rem; background-color: #6DAFFE;">
-                        <h4 class="  text-body fw-bolder position-absolute top-50 start-50 translate-middle text-wrap"
-                            style="font-size: .8 em;">
-                            สิ้นสุดการแข่งขันแล้ว</h4> <!-- name -->
-                        <a class=" text-body btn btn-warning btn-sm  position-absolute top-50 end-0 translate-middle-y me-4 "
-                            role="button" href="/showall" style="font-size: .8 rem;  
-                            ">ดูทั้งหมด</a>
-                    </div>
-                    <div
-                        class="d-flex flex-row rounded-bottom-2  justify-content-center bg-secondary bg-opacity-25 pb-2">
-
-                        <div class="align-items-start justify-content-center d-flex flex-wrap ">
-                                <% for(let i=0; i < 4; i++) { %>
-                                    <% if(data && data[i]){ %>
-                                        <% if(data[i].st1) { %>
-                                        <div class="card mx-3 my-4 rounded-4 bg-light" style="width: 15rem">
-                                            <a href="/tnmdetail/<%= data[i].tnmID %>"
-                                                class="text-decoration-none text-dark  fw-bolder">
-                                                <div class="card-header bg-transparent text-truncate ">
-                                                    <%= data[i].tnmName %>
-                                                    <%= data[i].st1 %>
-                                                </div>
-
-                                                <img src="images/<%= data[i].tnmPicture %>"
-                                                    class="card-img-top img-fluid rounded-0" style="height: 15rem">
-                                                <div class="card-body">
-                                                    <%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit'
-                                                    , month: 'long' , year:'numeric'}) %> -
-                                                    <%= data[i].tnmEnddate.toLocaleDateString('th-TH',{day: '2-digit'
-                                                    , month: 'long' , year:'numeric'}) %>
-                                                </div>
-                                            </a>
+                                        <div class="align-items-start justify-content-center d-flex flex-wrap ">
+                                            
+                                            <% if(ongoing.length) { %>
+                                                <% for(let i=0; i < ongoing.length; i++) { %>
+                                                        <div class="card mx-3 my-4 rounded-4 bg-light" style="width: 15rem">
+                                                            <a href="/tnmdetail/<%= ongoing[i].tnmID %>"
+                                                                class="text-decoration-none text-dark  fw-bolder">
+                                                                <div class="card-header bg-transparent text-truncate " >
+                                                                    <%= ongoing[i].tnmName %>
+                                                                </div>
+                
+                                                                <img src="images/<%=ongoing[i].tnmPicture %>"
+                                                                    class="card-img-top img-fluid rounded-0" style="height: 15rem">
+                                                                <div class="card-body">
+                                                                    ช่วงวันที่แข่งขัน <%= ongoing[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit'
+                                                                    , month: 'long' , year:'numeric'}) %> -
+                                                                    <%= ongoing[i].tnmEnddate.toLocaleDateString('th-TH',{day: '2-digit'
+                                                                    , month: 'long' , year:'numeric'}) %>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                        <% } %>
+                                                            <% } %>
+                
+                                                                    <% if(!ongoing.length) { %>
+                                                                        <h4 class="text-center text-wrap" style="margin-top: 50px; margin-bottom: 50px;">ไม่พบรายการแข่งขัน</h4>
+                                                                        <% } %>
                                         </div>
-                                        <% }else{ %>
-                                            <h4 class="text-center text-wrap" style="margin-top: 50px; margin-bottom: 50px;">ไม่พบรายการแข่งขัน</h4>
-                                            <% }%>
-                                        <% } %>
-                                            <% } %>
-
-                                                    
+                
+                                    </div>
+                                </div>
+                                <!---------------------------------------------------------------------------------------------->
+                                               <!---------------------------------------------------------------------------------------------->
+                                               <div class="card rounded-2 mt-5  mx-5">
+                                                <div class="card-header p-2 d-flex  justify-content-center  text-center position-relative"
+                                                    style=" height: 5rem; background-color: #6DAFFE;">
+                                                    <h4 class="  text-body fw-bolder position-absolute top-50 start-50 translate-middle text-wrap"
+                                                        style="font-size: .8 em;">
+                                                        เสร็จสิ้นการแข่งขัน</h4> <!-- name -->
+                                                    <a class=" text-body btn btn-warning btn-sm  position-absolute top-50 end-0 translate-middle-y me-4 "
+                                                        role="button" href="/ending" style="font-size: .8 rem;">ดูทั้งหมด</a>
+                                                </div>
+                                                <div
+                                                    class="d-flex flex-row rounded-bottom-2  justify-content-center bg-secondary bg-opacity-25 pb-2">
+                            
+                                                    <div class="align-items-start justify-content-center d-flex flex-wrap ">
                                                         
-                        </div>
-
-                    </div>
-                </div>
-                <!---------------------------------------------------------------------------------------------->
-
-            </body>
+                                                        <% if(ending.length) { %>
+                                                            <% for(let i=0; i < ending.length; i++) { %>
+                                                                    <div class="card mx-3 my-4 rounded-4 bg-light" style="width: 15rem">
+                                                                        <a href="/tnmdetail/<%= ending[i].tnmID %>"
+                                                                            class="text-decoration-none text-dark  fw-bolder">
+                                                                            <div class="card-header bg-transparent text-truncate " >
+                                                                                <%= ending[i].tnmName %>
+                                                                            </div>
+                            
+                                                                            <img src="images/<%=ending[i].tnmPicture %>"
+                                                                                class="card-img-top img-fluid rounded-0" style="height: 15rem">
+                                                                            <div class="card-body">
+                                                                                ช่วงวันที่แข่งขัน <%= ending[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit'
+                                                                                , month: 'long' , year:'numeric'}) %> -
+                                                                                <%= ending[i].tnmEnddate.toLocaleDateString('th-TH',{day: '2-digit'
+                                                                                , month: 'long' , year:'numeric'}) %>
+                                                                            </div>
+                                                                        </a>
+                                                                    </div>
+                                                                    <% } %>
+                                                                        <% } %>
+                            
+                                                                                <% if(!ending.length) { %>
+                                                                                    <h4 class="text-center text-wrap" style="margin-top: 50px; margin-bottom: 50px;">ไม่พบรายการแข่งขัน</h4>
+                                                                                    <% } %>
+                                                    </div>
+                            
+                                                </div>
+                                            </div>
+                                            <!---------------------------------------------------------------------------------------------->
+                            </body>
 
             </html>
         </div>

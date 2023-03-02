@@ -41,7 +41,7 @@
             </ul>
         </div>
         <div class="card-body">
-            <% if(data.length) { %>
+            
                 <table class="table">
                     <thead>
                         <tr>
@@ -53,7 +53,9 @@
                             <th width="200px">ตัวเลือก</th>
                         </tr>
                     </thead>
+                    <% if(data.length) { %>
                     <tbody>
+                        
                         <% for(let i = 0; i < data.length; i++) { %>
                             <tr>
                                 <% if(data[i].sportPlaynum > 1){ %>
@@ -66,13 +68,14 @@
                                 <td><%= data[i].accept_count %></td>
                                 <td>
                                     <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                                    <a href="../tournament/detail/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
+                                    <a href="../tournament/bracket/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
                                 </td>
                             </tr>
                         <% } %>
                     </tbody>
+                    <% } %>
                 </table>
-            <% } %>
+            
 
             <!-- if result is empty-->
             <% if(!data.length) { %>

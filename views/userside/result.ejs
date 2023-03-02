@@ -82,11 +82,8 @@
                   <th scope="col"><iconify-icon icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon></th>
                   <th scope="col"><iconify-icon icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon></th>
                   <th scope="col" class="">
-                    
 
-                     <iconify-icon class="item1" icon="noto:1st-place-medal" width="40" height="40"></iconify-icon>
-                     <iconify-icon class="item2" icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon>
-                     <iconify-icon class="item3" icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon>
+                    การแข่งขันที่เข้าร่วม
                  
                   </th>
                 </tr>
@@ -99,7 +96,7 @@
                     <td>
                       <div class="box  w-auto text-start ms-5">
                         <div class=" btn btn btn-warning text-start  " style="width: 60%; ">
-                          <a class="text-decoration-none text-dark " href="/gold/<%=merge[i].uniID %>">
+                          <a class="text-decoration-none text-dark " href="/allrank/<%=merge[i].uniID %>">
                               <div class="col">
                                 <%= merge[i].name %>
                               </div>
@@ -112,9 +109,9 @@
                     <td><%=merge[i].st1 %></td>
                     <td><%=merge[i].nd2 %></td>
                     <td><%=merge[i].rd3 %></td>
-                    <td><%=merge[i].total %></td>
+                    <td><%= merge[i].tnm %></td>
                   </tr>
-                  <% sumall += merge[i].total; sumst1 += merge[i].st1; sumnd2 += merge[i].nd2; sumrd3 += merge[i].rd3; %>
+                  <%sumst1 += merge[i].st1; sumnd2 += merge[i].nd2; sumrd3 += merge[i].rd3; %>
                   <% } %>
 
               </tbody>
@@ -135,7 +132,7 @@
                   <td scope="col"><%= sumst1 %></td>
                   <td scope="col"><%= sumnd2 %></td>
                   <td scope="col"><%= sumrd3 %></td>
-                  <td scope="col"><%= sumall %></td>
+                  <td scope="col"></td>
                 </tr>
 
               </tfoot>

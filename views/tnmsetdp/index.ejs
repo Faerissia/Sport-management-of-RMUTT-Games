@@ -47,6 +47,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th scope="col">#</th>
                             <th scope="col">ชื่อการแข่งขัน</th>
                             <th scope="col">ประเภทกีฬา</th>
                             <th scope="col">ครั้งที่แข่งขัน</th>
@@ -63,6 +64,8 @@
                             <tr>
                                 <% if(data[i].tnmTypegame === 'leaderboard' && data[i].notset === 0){ %>
                                     <% }else{%>
+                                        <% if(data[i].notset != 0){ %>
+                                <td><%= i+1 %></td>
                                 <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
                                 <td><%= data[i].totalmatch%></td>
@@ -72,11 +75,13 @@
                                     <a href="../tournament/detail/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
                                 </td>
                                 <% } %>
+                                <% } %>
                             </tr>
                             <% } %>
                     </tbody>
+                    <% } %>
                 </table>
-            <% } %>
+            
 
             <!-- if result is empty-->
             <% if(!data.length) { %>
