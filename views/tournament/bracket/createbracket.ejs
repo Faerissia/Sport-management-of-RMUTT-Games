@@ -20,6 +20,9 @@
 
         <%- include("../../partials/menu_staff.ejs") %>
 
+        <% if (messages.error) { %>
+            <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+        <% } %>
 
     <form action="/tournament/createbracket/<%= tnmID %>" method="post">
 
@@ -67,8 +70,8 @@
                 <br>
                 <label>เลือกผู้เล่นที่ได้บาย</label>
                 <% for(i=0;i < singlebye;i++){ %>
-                <select name="byename" class="form-select border-dark">
-                    <option>--เลือก--</option>
+                <select name="byename" class="form-select border-dark" required>
+                    <option value="blank">--เลือก--</option>
                     <% for(j=0;j< data.length;j++){ %>
                     <option value="<%= data[j].playerID %>"><%= data[j].playerFName %></option>
                     <% } %>
@@ -79,8 +82,8 @@
             <label>ผู้เล่นที่เหลือ</label>
             
             <% for(k=0;k < data.length-singlebye;k++){ %>
-                <select name="otherteam" class="form-select border-dark">
-                    <option>--เลือก--</option>
+                <select name="otherteam" class="form-select border-dark" required>
+                    <option value="blank">--เลือก--</option>
                     <% for(x=0;x< data.length;x++){ %>
                     <option value="<%= data[x].playerID %>"><%= data[x].playerFName %></option>
                     <% } %>

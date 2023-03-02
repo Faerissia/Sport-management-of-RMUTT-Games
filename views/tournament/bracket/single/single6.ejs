@@ -113,25 +113,8 @@
     <body>
       <h1><%= tournamentName %></h1>
 
-      <%- include("../../../partials/menu_staff.ejs") %> รอบที่ 1
-      <br />
-      <%= data[0].team1 %><%= data[0].score1 %> vs <%= data[0].team2 %><%= data[0].score2 %>
-      <br />
-      <%= data[1].team1 %><%= data[1].score1 %> vs <%= data[1].team2 %><%= data[1].score2 %>
-      <br />
-      รอบที่ 2
-      <br />
-      <%= data[2].team1 %><%= data[2].score1 %> vs <%= data[2].team2 %><%= data[2].score2 %>
-      <br />
-      <%= data[3].team1 %><%= data[3].score1 %> vs <%= data[3].team2 %><%= data[3].score2 %>
-      <br />
-      รอบที่ 3
-      <br />
-      <%= data[4].team1 %><%= data[4].score1 %> vs <%= data[4].team2 %><%= data[4].score2 %>
-      <br />
-      ผู้ชนะ
-      <br />
-      <% if(data[4].score1 > data[4].score2){ %> <%= data[4].team1 %> <% }else{ %> <%= data[4].team2 %> <% } %>
+      <%- include("../../../partials/menu_staff.ejs") %>
+
 
       <div class="container-sm">
         <div class="wrapper">
