@@ -41,7 +41,7 @@
             </ul>
         </div>
         <div class="card-body">
-            <% if(data.length) { %>
+            
                 <table class="table">
                     <thead>
                         <tr>
@@ -53,7 +53,9 @@
                             <th width="200px">ตัวเลือก</th>
                         </tr>
                     </thead>
+                    <% if(data.length) { %>
                     <tbody>
+                        
                         <% for(let i = 0; i < data.length; i++) { %>
                             <tr>
                                 <% if(data[i].sportPlaynum > 1){ %>
@@ -71,8 +73,9 @@
                             </tr>
                         <% } %>
                     </tbody>
+                    <% } %>
                 </table>
-            <% } %>
+            
 
             <!-- if result is empty-->
             <% if(!data.length) { %>
