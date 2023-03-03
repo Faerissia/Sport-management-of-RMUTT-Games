@@ -56,7 +56,7 @@ router.post('/add', (req, res, next) =>{
     let level = req.body.level;
     let errors = false;
 
-    if(cpassword != password) {
+    if(cpassword === password) {
         errors = true;
         req.flash('error', 'password ไม่ตรงกัน');
         res.render('account/add', {
@@ -65,7 +65,9 @@ router.post('/add', (req, res, next) =>{
             name: name,
             lname: lname,
             phone: phone,
-            level: level
+            level: level,
+            status_login: req.session.loggedin,
+            user: user
         })
     }
 
@@ -91,10 +93,12 @@ router.post('/add', (req, res, next) =>{
                     lname: form_data.lname,
                     phone: form_data.phone,
                     level: form_data.level,
-                    status: form_data.status
+                    status: form_data.status,
+                    status_login: req.session.loggedin,
+                    user: user
                 })
             } else {
-                req.flash('success', 'account successfully added');
+                req.flash('success', 'เพิ่มบัญชีผู้ใช้งานเรียบร้อยแล้ว!');
                 res.redirect('/account');
             }
         })
@@ -118,7 +122,9 @@ router.get('/edit/(:accountID)', (req, res, next) => {
                 lname: rows[0].lname,
                 phone: rows[0].phone,
                 level: rows[0].level,
-                status: rows[0].status,status_login: req.session.loggedin
+                status: rows[0].status,
+                status_login: req.session.loggedin,
+                user: user
             })
         }
     });
@@ -147,7 +153,9 @@ router.post('/update/:accountID', (req, res, next) => {
             lname: lname,
             phone: phone,
             level: level,
-            status: status
+            status: status,
+            status_login: req.session.loggedin,
+            user: user
         })
     }
     // if no error
@@ -173,10 +181,12 @@ router.post('/update/:accountID', (req, res, next) => {
                     lname: form_data.lname,
                     phone: form_data.phone,
                     level: form_data.level,
-                    status: form_data.status
+                    status: form_data.status,
+                    status_login: req.session.loggedin,
+                    user: user
                 })
             } else {
-                req.flash('success', 'ได้ทำการเพิ่มบัญชีผู้ใช้งานเรียบร้อยแล้ว');
+                req.flash('success', 'แก้ไขข้อมูลบัญชีผู้ใช้งานเรียบร้อยแล้ว');
                 res.redirect('/account')
             }
         })
@@ -213,7 +223,9 @@ router.get('/page/(:accountID)',(req, res, next) => {
                 lname: rows[0].lname,
                 phone: rows[0].phone,
                 level: rows[0].level,
-                status: rows[0].status,status_login: req.session.loggedin
+                status: rows[0].status,
+                status_login: req.session.loggedin,
+                user: user
             })
         }
     });

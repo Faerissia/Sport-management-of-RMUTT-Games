@@ -36,7 +36,7 @@ router.post('/search-tnmsave', (req, res) => {
 
 // display tnmsave page
 router.get('/', (req, res, next) => {
-    dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,m.round,m.pDate,m.time,p.placeName,t.tnmTypegame FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN matchplay m ON t.tnmID = m.tnmID LEFT JOIN place p ON p.placeID = m.placeID', (err, rows) => {
+    dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,m.round,m.pDate,m.time,p.placeName,t.tnmTypegame,m.score1,m.score2,m.time,m.timeend FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN matchplay m ON t.tnmID = m.tnmID LEFT JOIN place p ON p.placeID = m.placeID', (err, rows) => {
     if(req.session.loggedin){
         if(role === 'เจ้าหน้าที่'){ 
         res.render('tnmsave', { data: rows,status_login: req.session.loggedin,user: user });

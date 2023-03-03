@@ -132,7 +132,8 @@ dbConnection.query('SELECT * FROM tournament WHERE tnmID = '+tnmID,(err,tnm)=>{
         from: 'thesissportmanagement@gmail.com',
         to: playerEmail,
         subject: 'ผลการสมัครเข้าร่วมการแข่งขัน',
-        text: 'เจ้าหน้าที่ได้ตรวจสอบข้อมูลและอนุมัติผู้สมัครเข้าร่วมการแข่งขัน '+tnm[0].tnmName+' เรียบร้อยแล้ว '
+        text: '',
+        html:`<h2>เจ้าหน้าที่ได้ตรวจสอบข้อมูลและอนุมัติท่านเข้าร่วมการแข่งขัน `+ tnm[0].tnmName +` เรียบร้อยแล้ว</h2>`
       };
 
 
@@ -162,7 +163,8 @@ router.get('/team/accept/(:teamID)', (req, res, next) => {
         from: 'thesissportmanagement@gmail.com',
         to: teamEmailA,
         subject: 'ผลการสมัครเข้าร่วมการแข่งขัน',
-        text: 'เจ้าหน้าที่ได้ตรวจสอบข้อมูลและอนุมัติทีมเข้าร่วมการแข่งขัน '+ tnm[0].tnmName +' เรียบร้อยแล้ว '
+        text: '',
+        html:`<h2>เจ้าหน้าที่ได้ตรวจสอบข้อมูลและอนุมัติทีมเข้าร่วมการแข่งขัน `+ tnm[0].tnmName +` เรียบร้อยแล้ว</h2> `
       };
     
       transporter.sendMail(mailOptions, function(error, info){
@@ -197,7 +199,8 @@ router.get('/player/deny/(:playerID)', (req, res, next) => {
         from: 'thesissportmanagement@gmail.com',
         to: playerEmail,
         subject: 'ผลการสมัครเข้าร่วมการแข่งขัน',
-        text: 'ขออภัยท่านไม่ได้รับเลือกเข้าร่วมการแข่งขัน '+tnm[0].tnmName
+        text: '',
+        html:`<h2>ขออภัยท่านไม่ได้รับเลือกเข้าร่วมการแข่งขัน  `+ tnm[0].tnmName +`</h2>`
       };
 
       transporter.sendMail(mailOptions, function(error, info){
@@ -205,7 +208,7 @@ router.get('/player/deny/(:playerID)', (req, res, next) => {
           console.log('Email sent: ' + info.response);
     dbConnection.query('UPDATE player SET ? WHERE playerID ='+thisplayerID,form_data, (err, rows) => {
         req.flash('success','ปฏิเสธผู้เล่นเรียบร้อย');
-        res.redirect('/tnmcheck/candidate/'+tnmID);
+        res.redirect('/tnmcheck/candidatesolo/'+tnmID);
     })
 })
 })
@@ -226,7 +229,8 @@ router.get('/team/deny/(:teamID)', (req, res, next) => {
         from: 'thesissportmanagement@gmail.com',
         to: playerEmail,
         subject: 'ผลการสมัครเข้าร่วมการแข่งขัน',
-        text: 'ขออภัยทีมของท่านไม่ได้รับเลือกเข้าร่วมการแข่งขัน '+tnm[0].tnmName
+        text: '',
+        html:`<h2>ขออภัยทีมของท่านไม่ได้รับเลือกเข้าร่วมการแข่งขัน  `+ tnm[0].tnmName +`</h2>`
       };
 
       transporter.sendMail(mailOptions, function(error, info){
@@ -291,7 +295,7 @@ router.post('/emailsingle/(:playerID)',(req,res)=>{
         to: emailto,
         subject: 'แก้ไขข้อมูลผู้สมัครเข้าร่วมการแข่งขัน '+tnm[0].tnmName,
         text: '',
-        html:'<p>รายละเอียดการแก้ไข: '+ editemailer+'</p>' +
+        html:'<h2>รายละเอียดการแก้ไข: '+ editemailer+'</h2>' +
             '<a href="http://localhost:3000/mosingle/'+thisplayerID+'">คลิ๊กที่นี้</a>'
 
       };

@@ -82,7 +82,8 @@
                             <div class="col-auto ">
                                 <img id="imgpreview" class="w-50 rounded mx-auto mb-2 bg-dark" alt=""
                                     style="height: 8.6rem;  ">
-                                <input type="file" class="form-control border-dark" id="validationImage" value=""
+                                <input type="file" class="form-control border-dark"  maxlength="4000000"
+                                accept="image/jpg,image/png" id="validationImage" value=""
                                     name="teamPic" required onchange="preview()">
                             </div>
 
@@ -94,8 +95,7 @@
                         <hr style="height:2px;border-width:0;color:black;background-color:black">
                         <br>
                         <% for(let i=0; i < data[0].sportPlaynum; i++) { %>
-                            <p>ผู้เล่นคนที่ <%= i+1 %>
-                            </p>
+                            <p class="text-start">ผู้เล่นคนที่ <%= i+1 %></p>
                             <div class="row">
                                 <!-- row -->
                                 <div class="row mt-2 row-cols-4">
@@ -206,22 +206,44 @@
                                 </div>
 
                                 <!-- row -->
-                                <div class="row row-cols-1 mb-3">
-                                    <div class="row my-2   row-cols-2 ">
+                                <div class="row row-cols-1 mb-1">
+                                    <div class="row my-2   row-cols-4 ">
                                         <div class="col-3 text-start ">
                                             <label for="validationFile" class="col-form-label">เอกสารยืนยันตัวตน</label>
                                         </div>
                                         <div class="col ">
                                             <input type="file" class="form-control border-dark" id="validationFile"
-                                                value="" name="playerFile1" required>
+                                            maxlength="4000000" accept="image/jpg,image/png,application/pdf"
+                                            value="" name="playerFile1" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row row-cols-1 mb-1">
+                                    <div class="row my-2   row-cols-4 ">
+                                        <div class="col-3 text-start ">
+                                            <label for="validationFile" class="col-form-label">(<%= data[0].tnmUrl %>)</label>
+                                        </div>
+                                        <div class="col ">
+                                            <input type="file" class="form-control border-dark" id="validationFile"
+                                            maxlength="4000000" accept="image/jpg,image/png,application/pdf"
+                                            value="" name="playerFile2">
                                         </div>
                                     </div>
                                 </div>
 
-
-
-
-
+                                <div class="row row-cols-1 mb-1">
+                                    <div class="row my-2   row-cols-4 ">
+                                        <div class="col-3 text-start ">
+                                            <label for="validationFile" class="col-form-label"></label>
+                                        </div>
+                                        <div class="col ">
+                                            <input type="file" class="form-control border-dark" id="validationFile"
+                                            maxlength="4000000" accept="image/jpg,image/png,application/pdf"
+                                            value="" name="playerFile3">
+                                        </div>
+                                    </div>
+                                </div>
 
 
                                 
@@ -242,6 +264,7 @@
 
                 </form>
             </div>
+
 
             <script>
                 $(document).ready(function () {

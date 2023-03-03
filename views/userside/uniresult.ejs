@@ -22,8 +22,11 @@
             <div class="card">
               <div class="row g-0 " style="min-height: 100px;">
                 <div class="col-md-4 " style="background: #6DAFFE;">
-                  <h5 class="mt-4" >การแข่งขันทั้งหมด</h5>
-                  
+                  <a href="/allrank/<%=uni[0].uniID %>" class="nav-link active align-mddle">
+                  <div class="py-1">
+                  <h5 class="mt-4">การแข่งขันทั้งหมด</h5>
+                  </div>
+                </a>
                 </div>
                 <div class="col-md-8 my-auto">
                   <div class="card-body ">
@@ -114,6 +117,15 @@
                         <td scope="col"><iconify-icon icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon></td>
                         <% }else if (data[i].rd3){ %>
                             <td scope="col"><iconify-icon icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon></td>
+                            <% } %>
+                    <% if(data[i].place === '1st'){ %>
+                      <td scope="col"><iconify-icon icon="noto:1st-place-medal" width="40" height="40"></iconify-icon></td>
+                      <% }else if(data[i].place === '2nd'){ %>
+                        <td scope="col"><iconify-icon icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon></td>
+                        <% }else if(data[i].place === '3rd'){ %>
+                          <td scope="col"><iconify-icon icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon></td>
+                          <% }else if(data[i].place === null){ %>
+                            <td scope="col" style="height: 40px; width: 40px;"></td>
                             <% } %>
                 </tr>
                 <% } %>
