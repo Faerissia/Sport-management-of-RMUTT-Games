@@ -93,6 +93,11 @@ router.post("/value_date", (req, res) => {
   dbConnection.query(
     "SELECT sportID,sportName FROM sport ORDER BY sportID asc",
     (err, selcetsport1) => {
+      if (err) {
+        console.log( "==========================================================================");
+        console.log(err);
+        console.log( "==========================================================================");
+      }
       selcetsport = selcetsport1;
     }
   );
@@ -124,13 +129,12 @@ router.post("/value_date", (req, res) => {
       /* ------------------------------ zone chart_1 ------------------------------ */
   dbConnection.query(sql_1, (err, rows) => {
     if (err) {
-      console.log(
-        "=========================================================================="
-      );
+      console.log( "==========================================================================");
       console.log(err);
+      console.log( "==========================================================================");
     }
-    // console.log("\ntable sql chart_1");
-    // console.table(rows);
+    console.log("\ntable sql chart_1");
+    console.table(rows);
 
     const counts = {};
 
@@ -152,7 +156,12 @@ router.post("/value_date", (req, res) => {
   /* ------------------------------- zone sport ------------------------------- */
   dbConnection.query(
     sql_2,
-    (err2, rowsport) => {
+    (err, rowsport) => {
+      if (err) {
+        console.log( "==========================================================================");
+        console.log(err);
+        console.log( "==========================================================================");
+      }
       sport_count = [];
       sport_count = rowsport;
     }
@@ -166,8 +175,14 @@ router.post("/value_date", (req, res) => {
   let date = new Date();
 
   dbConnection.query(sql_3, (err, rows) => {
-    // console.log("\t tnmStartdate");
-    // console.table(rows);
+    if (err) {
+      console.log( "==========================================================================");
+      console.log(err);
+      console.log( "==========================================================================");
+    }
+    console.log("\t tnmStartdate");
+    console.table(rows);
+    
 
     for (let index = 0; index < rows.length; index++) {
       var tnmStartdate = rows[index].tnmStartdate;
@@ -181,6 +196,7 @@ router.post("/value_date", (req, res) => {
         count_In += 1;
         result.push({
           Datamath: index,
+          Name: rows[index].tnmName,
           chack: "In competition",
           tnmID: rows[index].tnmID,
           sportID: rows[index].sportID,
@@ -195,6 +211,7 @@ router.post("/value_date", (req, res) => {
           count_fin += 1;
           result.push({
             Datamath: index,
+            Name: rows[index].tnmName,
             chack: "competition is over",
             tnmID: rows[index].tnmID,
             sportID: rows[index].sportID,
@@ -210,8 +227,13 @@ router.post("/value_date", (req, res) => {
   });
 
   dbConnection.query(sql_4, (err, rows) => {
-    // console.log("\t Rstartdate");
-    // console.table(rows);
+    if (err) {
+      console.log( "==========================================================================");
+      console.log(err);
+      console.log( "==========================================================================");
+    }
+    console.log("\t Rstartdate");
+    console.table(rows);
 
     for (let index = 0; index < rows.length; index++) {
       var RStrdate = rows[index].Rstartdate;
@@ -224,6 +246,7 @@ router.post("/value_date", (req, res) => {
         count_Out += 1;
         result.push({
           Datamath: index,
+          Name: rows[index].tnmName,
           chack: "Waiting to register",
           tnmID: rows[index].tnmID,
           sportID: rows[index].sportID,
@@ -239,11 +262,11 @@ router.post("/value_date", (req, res) => {
     value.push({ In: count_In, Out: count_Out, fin: count_fin });
 
     // display result total
-    // console.log("\ntable result");
-    // console.table(result);
+    console.log("\ntable result");
+    console.table(result);
     
-    // console.log("\ntable value");
-    // console.table(value);
+    console.log("\ntable value");
+    console.table(value);
 
     res.render("dashboard", {
       status_login: req.session.loggedin,
@@ -278,6 +301,11 @@ router.get("/", (req, res, err) => {
       dbConnection.query(
         "SELECT sportID,sportName FROM sport ORDER BY sportID asc",
         (err, selcetsport1) => {
+          if (err) {
+            console.log( "==========================================================================");
+            console.log(err);
+            console.log( "==========================================================================");
+          }
           selcetsport = selcetsport1;
         }
       );
@@ -286,12 +314,10 @@ router.get("/", (req, res, err) => {
 
       dbConnection.query("SELECT LEFT(MONTHNAME(tnmEnddate), 3) AS Month, COUNT(tnmEnddate) AS Count FROM tournament WHERE tnmEnddate BETWEEN " +sql_S + " AND " +sql_E + "  GROUP BY  Month ORDER BY Month ", (err, rows) => {
         if (err) {
-          console.log(
-            "=========================================================================="
-          );
+          console.log( "==========================================================================");
           console.log(err);
+          console.log( "==========================================================================");
         }
-
         const counts = {};
 
         monthNames.forEach((month) => {
@@ -310,7 +336,12 @@ router.get("/", (req, res, err) => {
       });
       /* ------------------------------- zone sport ------------------------------- */
       dbConnection.query("SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmEnddate BETWEEN " +sql_S +" AND " + sql_E +" GROUP BY t.sportID;",
-        (err2, rowsport) => {
+        (err, rowsport) => {
+          if (err) {
+            console.log( "==========================================================================");
+            console.log(err);
+            console.log( "==========================================================================");
+          }
           sport_count = [];
           sport_count = rowsport;
         }
@@ -325,6 +356,11 @@ router.get("/", (req, res, err) => {
 
       dbConnection.query("SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE tnmStartdate  BETWEEN " +sql_S +" AND " +sql_E +" ",
       (err, rows) => {
+        if (err) {
+          console.log( "==========================================================================");
+          console.log(err);
+          console.log( "==========================================================================");
+        }
         // console.log("\t tnmStartdate");
         // console.table(rows);
 
@@ -340,6 +376,7 @@ router.get("/", (req, res, err) => {
             count_In += 1;
             result.push({
               Datamath: index,
+              Name: rows[index].tnmName,
               chack: "In competition",
               tnmID: rows[index].tnmID,
               sportID: rows[index].sportID,
@@ -354,6 +391,7 @@ router.get("/", (req, res, err) => {
               count_fin += 1;
               result.push({
                 Datamath: index,
+                Name: rows[index].tnmName,
                 chack: "competition is over",
                 tnmID: rows[index].tnmID,
                 sportID: rows[index].sportID,
@@ -370,6 +408,11 @@ router.get("/", (req, res, err) => {
 
       dbConnection.query("SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE Rstartdate  BETWEEN " +sql_S +" AND " +sql_E +" ", 
       (err, rows) => {
+        if (err) {
+          console.log( "==========================================================================");
+          console.log(err);
+          console.log( "==========================================================================");
+        }
         // console.log("\t Rstartdate");
         // console.table(rows);
 
@@ -384,6 +427,7 @@ router.get("/", (req, res, err) => {
             count_Out += 1;
             result.push({
               Datamath: index,
+              Name: rows[index].tnmName,
               chack: "Waiting to register",
               tnmID: rows[index].tnmID,
               sportID: rows[index].sportID,
@@ -397,7 +441,12 @@ router.get("/", (req, res, err) => {
         }
         value = [];
         value.push({ In: count_In, Out: count_Out, fin: count_fin });
+        
 
+        value_select.push({
+          date_S: formatDate(sql_S),
+          date_E: formatDate(sql_E),
+        });
         // display result total
         // console.log("result");
         // console.table(result);

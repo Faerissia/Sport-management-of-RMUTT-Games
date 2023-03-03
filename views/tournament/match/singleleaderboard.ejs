@@ -46,7 +46,7 @@
                                 <div id="popup" style="display: none;" class="border border-dark">
                                     <% const mdate=data[0].pDate.toISOString().substring(0, 10);%>
                                         <button id="close-button" class="close-button">x</button>
-                                        <h2>แก้ไขวันที่และเวลา</h2>
+                                        <h2>แก้ไขวันที่เวลาและสถานที่</h2>
                                         <form action="/tournament/datetime" method="post">
                                             <div class="row row-cols-1">
                                                 <div class="col-12 mt-3">
@@ -66,8 +66,10 @@
                                                             <label for="" class="form-label">เวลา </label>
                                                         </div>
                                                         <div class="col">
-                                                            <input type="time" name="time" class="col-form-label border border-dark" value="<%=data[0].time%>">
+                                                            <input type="time" name="time" class="col-form-label border border-dark" value="<%=data[0].time%>"> - 
+                                                            <input type="time" name="timeend" class="col-form-label border border-dark" value="<%=data[0].timeend%>">
                                                         </div>
+                                                        
                                                     </div>
                                                 </div>
                                                 <div class="col-12 mt-3">

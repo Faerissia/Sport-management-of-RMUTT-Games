@@ -310,5 +310,17 @@ router.post('/emailsingle/(:playerID)',(req,res)=>{
 })
 })
 
+router.get('/delete/(:playerID)',(req,res)=>{
+    let playerID = req.params.playerID;
+    dbConnection.query('DELETE FROM player WHERE playerID = ?',[playerID],(err,result)=>{
+        if(err){
+            req.flash('error','ไม่สามารถลบผู้เล่นได้');
+            res.redirect('/tnmcheck');
+        }else{
+            req.flash('success','ได้ลบผู้เล่นเรียบร้อยแล้ว!');
+            res.redirect('/tnmcheck');
+        }
+    })
+})
 
 module.exports = router;
