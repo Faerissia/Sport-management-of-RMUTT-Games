@@ -227,7 +227,7 @@ router.get('/team/deny/(:teamID)', (req, res, next) => {
 
     let mailOptions = {
         from: 'thesissportmanagement@gmail.com',
-        to: playerEmail,
+        to: teamEmailA,
         subject: 'ผลการสมัครเข้าร่วมการแข่งขัน',
         text: '',
         html:`<h2>ขออภัยทีมของท่านไม่ได้รับเลือกเข้าร่วมการแข่งขัน  `+ tnm[0].tnmName +`</h2>`

@@ -367,7 +367,7 @@ router.post('/singlereg', (req, res, next) =>{
         subject: 'รหัส OTP สำหรับการยืนยันอีเมลสมัครเข้าร่วมการแข่งขัน',
         text: '',
         html:`<h1>ยืนยันการลงทะเบียนการแข่งขัน `+tnm[0].tnmName+`</h1>
-                <h2>รหัส OTP ของคุณคือ : ` + teamOTP + `</h2>`
+                <h2>รหัส OTP ของคุณคือ : ` + OTP + `</h2>`
       };
 
       transporter.sendMail(mailOptions, function(error, info){
@@ -435,13 +435,15 @@ router.post('/teamreg', async (req, res, next) =>{
         for (let j = 1; j <= 3; j++) {
             if(req.files[`playerFile${j}`] && Array.isArray(req.files[`playerFile${j}`])){
                 let playerFile = req.files[`playerFile${j}`][i];
-              let name_pfile = new Date().getTime() + '_' + playerFile.name;
-              playerFile.mv('./assets/player/' + name_pfile);
-              playerFiles.push(name_pfile);
+                console.log(playerFile)
+                let  name_pfile = new Date().getTime() +'_'+playerFile.name;
+                playerFile.mv('./assets/player/' + name_pfile);
+                playerFiles.push(name_pfile);
             }
+            playerFileName = playerFiles.join(',');
           }
 
-        playerFileName = playerFiles.join(',');
+        console.log('join',playerFileName);
         
     let rows = await new Promise((resolve, reject) => {
         dbConnection.query('SELECT * FROM player WHERE playerIDCard = ? AND tnmID = ?', [playerIDCard[i], tnmID], (err, rows) => {
