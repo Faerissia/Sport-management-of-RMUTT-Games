@@ -220,6 +220,18 @@ router.get('/tnmbracket/(:tnmID)', (req, res, next) => {
                 dbConnection.query(`SELECT p1.playerFName AS team1, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
                     res.render('userside/tnm/bracket/roundrobin', {data: rows, tnmID:tnmID,status_login: req.session.loggedin});
                 })
+            }else if(rows[0].tnmTypegame ==='single'){
+                dbConnection.query(`SELECT * FROM player WHERE playerStatus='accept' AND tnmID =`+tnmID,(err,result)=>{
+                    if(result.length === 3){
+                        dbConnection.query(`SELECT * FROM matchplay WHERE tnmID =`+tnmID,(err,rows)=>{
+                        res.render('userside/tnm/bracket/single/single3', {data: rows, tnmID:tnmID,status_login: req.session.loggedin});
+                        })
+                    }else if(result.length === 6){
+                        dbConnection.query(`SELECT * FROM matchplay WHERE tnmID =`+tnmID,(err,rows)=>{
+                            res.render('userside/tnm/bracket/single/single6', {data: rows, tnmID:tnmID,status_login: req.session.loggedin});
+                            })
+                    }
+                })
             }else{
                 res.render('userside/tnm/blankpage',{tnmID: tnmID,status_login: req.session.loggedin });
             }

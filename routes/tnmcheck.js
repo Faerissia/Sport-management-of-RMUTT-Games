@@ -310,7 +310,7 @@ router.post('/emailsingle/(:playerID)',(req,res)=>{
 })
 })
 
-router.get('/delete/(:playerID)',(req,res)=>{
+router.get('/delete/player/(:playerID)',(req,res)=>{
     let playerID = req.params.playerID;
     dbConnection.query('DELETE FROM player WHERE playerID = ?',[playerID],(err,result)=>{
         if(err){
