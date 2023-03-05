@@ -14,6 +14,12 @@
     <h1>หน้าผู้เข้าร่วม <%= tournamentName %></h1>
     <%- include("../partials/menu_staff.ejs") %>
 
+    <script type="text/javascript">
+        function confirm_delete() {
+          return confirm('คุณแน่ใจใช่หรือไม่ที่จะลบผู้เล่น?');
+        }
+        </script>
+
  <% if(!data[0].teamID) { %>
         <!-- //แบบเดี่ยว -->
         <div class="card-body">
@@ -30,19 +36,18 @@
                     </thead>
                     <tbody class="">
                         <% for(let i = 0; i < data.length; i++) { %>
-                            <% if(data[i].playerStatus === 'accept') { %>
                             <tr>
                                 <td><%= data[i].playerFName %> <%= data[i].playerLName %></td>
                                 <td><%= data[i].playerGender %></td>
                                 <td><%= data[i].age %></td>
                                 <td><%= data[i].playerPhone%></td>
                                 <td>
-                                    <a href="../tournament/edit/<%= data[i].tnmID %>" class="btn btn-warning edit">แก้ไข</a>
-                                    <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
+                                    <a href="/tnmcheck/edit/player/<%= data[i].playerID %>" class="btn btn-warning edit">แก้ไข</a>
+                                    <a href="/tnmcheck/delete/player/<%= data[i].playerID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
                                     <a href="/tournament/participant/player/<%= data[i].playerID %>" class="btn btn-primary page">ดู</a>
                                 </td>
                             </tr>
-                        <% }} %>
+                        <% } %>
                     </tbody>
                     <% } %>
                     <% } %>
@@ -53,6 +58,7 @@
 <!-- //แบบทีม -->
         <div class="card-body">
             <% if(data[0].teamID) { %>
+                
                 <table class="table">
                     <thead>
                         <tr>
@@ -65,10 +71,9 @@
                     </thead>
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
-                            <% if(data[i].teamStatus === 'accept') { %>
                             <tr>
                                 <td><%= data[i].teamName %></td>
-                                <td></td>
+                                <td><%= data[i].playernum %></td>
                                 <td><%= data[i].NameAgent %></td>
                                 <td><%= data[i].teamPhoneA %></td>
                                 <td>
@@ -77,7 +82,7 @@
                                     <a href="/tournament/participant/team/<%= data[i].teamID %>" class="btn btn-primary page">ดู</a>
                                 </td>
                             </tr>
-                        <% }} %>
+                    <% } %>
                     </tbody>
                     <% } %>
 <% } %>

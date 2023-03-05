@@ -1,0 +1,40 @@
+<!-- for user  -->
+<%- include("../../../../partials/header") %>
+<div class="container-xxl mt-5 px-3">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>หน้าสายการแข่งขัน</title>
+</head>
+<body>
+
+
+
+<!-- กรอบ box  -->
+<div class=" d-flex flex-column text-center h-auto mb-5 border   border-dark rounded-3 "
+style="background:#D9D9D9 ;">
+
+<!-- menubar -->
+<%- include("../../../../partials/menuuser.ejs") %>
+
+    <!-- เนื้อหาด้านใน ใส่แค่ให้รู้พื้นที่ ลบด้วย -->
+    <div class="d-block">
+        <div class="card-body">
+            <% if(data && data[0]) { %>
+                
+                
+            
+            <% } %>
+
+            <!-- if result is empty-->
+            <% if(!data || !data[0]) { %>
+                <p class="text-center">ไม่พบรายการของการแข่งขัน</p>
+            <% } %>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>
+</div>

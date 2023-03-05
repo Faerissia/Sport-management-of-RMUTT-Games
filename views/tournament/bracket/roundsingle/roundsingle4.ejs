@@ -1,0 +1,131 @@
+<%- include("../../../partials/header") %>
+<%- include("../../../partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Document</title>
+<style>
+    th, td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+}
+
+/* th {
+  background-color: lightgray;
+
+}
+
+td:first-child {
+  background-color: lightgray;
+} */
+</style>
+</head>
+<body>
+    <h1><%= tournamentName %></h1>
+
+        <%- include("../../../partials/menu_staff.ejs") %>
+
+        <% if (messages.error) { %>
+          <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+      <% } %>
+      
+        <br>
+        <h1 class="text-center">Round Robin</h1>
+    <table class="table  w-75 mx-auto my-5  table-hover text-center align-middle">
+      <thead class="table-primary" style="background-color: rgb(96, 166, 253); ">
+        <tr>
+          <th class="table-light border-dark"></th>
+          <% let teamNames = []; %>
+          <% data.forEach(function(match) { %>
+            <% if (!teamNames.includes(match.team1)) { teamNames.push(match.team1); } %>
+            <% if (!teamNames.includes(match.team2)) { teamNames.push(match.team2); } %>
+          <% }); %>
+          <% teamNames.forEach(function(teamName) { %>
+            <th><%= teamName %></th>
+          <% }); %>
+        </tr>
+      </thead>
+      <tbody>
+        <% teamNames.forEach(function(teamName) { %>
+          <tr>
+            <td class="table-primary border-dark fw-bold"><%= teamName %></td>
+            <% teamNames.forEach(function(opponent) { %>
+              <!-- <td> -->
+                <% let score1 = ""; %>
+                <% let score2 = ""; %>
+                <% let winner = ""; %>
+                <% let matchExists = false; %>
+                <% data.forEach(function(match) { %>
+                  <% if (match.team1 === teamName && match.team2 === opponent) { %>
+                    <% score1 = match.score1; %>
+                    <% score2 = match.score2; %>
+                    <% if (match.score1 > match.score2) { winner = match.team1; } %>
+                    <% if (match.score2 > match.score1) { winner = match.team2; } %>
+                    <% matchExists = true; %>
+                  <% } else if (match.team2 === teamName && match.team1 === opponent) { %>
+                    <% score1 = match.score2; %>
+                    <% score2 = match.score1; %>
+                    <% if (match.score2 > match.score1) { winner = match.team1; } %>
+                    <% if (match.score1 > match.score2) { winner = match.team2; } %>
+                    <% matchExists = true; %>
+                  <% } %>
+                <% }); %>
+                <% if (matchExists) { %>
+                 <td> <%= score2 %> - <%= score1 %></td>
+                <% } else { %>
+                <td class="table-danger border-dark ">X</td>
+                <% } %>
+              <!-- </td> -->
+            <% }); %>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+        <br><br>
+    
+        <h3 class="text-center">ตารางคะแนน</h3>
+        <table class="table  w-75 mx-auto my-5  table-hover text-center align-middle">
+          <thead style="background-color: rgb(96, 166, 253); ">
+            <tr>
+              <th>ชื่อ</th>
+              <th>ชนะ(ครั้ง)</th>
+              <th>แพ้(ครั้ง)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% 
+              let scoreboard = {};
+              data.forEach(function(match) {
+                if (!scoreboard[match.team1]) {
+                  scoreboard[match.team1] = { wins: 0, losses: 0 };
+                }
+                if (!scoreboard[match.team2]) {
+                  scoreboard[match.team2] = { wins: 0, losses: 0 };
+                }
+                if (match.score1 > match.score2) {
+                  scoreboard[match.team1].wins++;
+                  scoreboard[match.team2].losses++;
+                }
+                if (match.score2 > match.score1) {
+                  scoreboard[match.team2].wins++;
+                  scoreboard[match.team1].losses++;
+                }
+              });
+               let sortedScoreboard = Object.entries(scoreboard).sort((a, b) => b[1].wins - a[1].wins);%>
+        <% sortedScoreboard.forEach(function(team) { %>
+          <tr>
+            <td><%= team[0] %></td>
+            <td><%= team[1].wins %></td>
+            <td><%= team[1].losses %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+          
+
+</body>
+</html>
+</div>
