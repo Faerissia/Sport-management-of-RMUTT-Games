@@ -115,14 +115,18 @@ style="background:#D9D9D9 ;">
 <%- include("../../partials/menuuser.ejs") %>
 
 <div class="container ">
-  
+  <% if(data.length){ %>
   <div class="d-flex justify-content-center flex-wrap">
   <% for(let i = 0; i < data.length; i++) { %>
       <% if(data[i].linkvid) { %>
+        <% let videoUrl = data[i].linkvid; %>
+        <% videoID = videoUrl.split("/").pop(); %>
+
   <div class="card" style="width: 350px; height: 300px;">
       <%= data[i].date.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%>
-  <%= data[i].linkvid %>
-  <%= data[i].description %>
+      <iframe src="https://youtube.com/embed/<%= videoID %>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <%= data[i].description %>
+  </div>
   </div>
   <% } %>
    <%if(data[i].filePic){ %>
@@ -138,6 +142,7 @@ style="background:#D9D9D9 ;">
       <%= data[i].description %>
   </div>
       <% }} %> 
+      <% } %>
 
       <%if(!data.length){ %>
         <div class="row py-5">
