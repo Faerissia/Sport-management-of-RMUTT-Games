@@ -407,20 +407,24 @@ router.get('/tnmbracket/(:tnmID)', (req, res, next) => {
 
 router.get('/tnmparticipant/(:tnmID)', (req, res, next) => {
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName,f.name AS FacName FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID WHERE t.tnmID = ' + tnmID, (err, rows) => {
-        if(rows.length){
-        if (rows[0].teamID === null){
-            res.render('userside/tnm/tnmparticipant', { data: rows,tnmID: tnmID,status_login: req.session.loggedin });
-        } else {
-            dbConnection.query('SELECT * FROM team WHERE tnmID = '+tnmID, (err, rows) => {
-            res.render('userside/tnm/tnmparticipant', { data: rows,tnmID: tnmID,status_login: req.session.loggedin });
+    dbConnection.query(`SELECT * FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID =`+tnmID,(err,result)=>{
+        
+        if (result[0].sportPlaynum === 1){
+            dbConnection.query(`SELECT *,f.name AS facName,u.name AS uniName,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age FROM player p LEFT JOIN faculty f ON p.facultyID = f.facultyID 
+            LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerStatus ='accept' AND p.tnmID = `+tnmID,(err,rows)=>{
+                res.render('userside/tnm/participant/singleparticipant', { data: rows,tnmID: tnmID,status_login: req.session.loggedin });
         })
-    }
-}
-else{
-    res.render('userside/tnm/tnmparticipant',{tnmID: tnmID,status_login: req.session.loggedin});
-}
-})
+        }else{
+            dbConnection.query(`SELECT * FROM team WHERE teamStatus ='accept' AND tnmID = `+tnmID,(err,rows)=>{
+            dbConnection.query(`SELECT *,f.name AS facName,u.name AS uniName,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age FROM player p LEFT JOIN faculty f ON p.facultyID = f.facultyID 
+            LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerStatus ='accept' AND p.tnmID = `+tnmID,(err,player)=>{
+            res.render('userside/tnm/participant/teamparticipant', { player,data: rows,tnmID: tnmID,status_login: req.session.loggedin });
+            })
+            })
+        }
+
+    })
+
 })
 
 router.get('/tnmmatch/(:tnmID)', (req, res, next) => {

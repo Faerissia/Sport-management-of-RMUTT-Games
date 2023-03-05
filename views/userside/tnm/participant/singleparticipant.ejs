@@ -1,0 +1,77 @@
+<%- include("../../../partials/header") %>
+    <div class="container-xxl mt-5 px-3">
+        <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+            <title>ผู้เข้าร่วม</title>
+        </head>
+
+        <body>
+
+
+            
+            <!-- กรอบ box  -->
+            <div class=" d-flex flex-column text-center h-auto mb-5 border   border-dark rounded-3 "
+                style="background:#D9D9D9 ;">
+
+                <!-- menubar -->
+
+                <%- include("../../../partials/menuuser.ejs") %>
+
+                        <% if(data.length) { %>
+                            <!-- //แบบเดี่ยว -->
+                            <div class="card-body">
+                                <table class="table w-75 mx-auto mt-5  text-center  table-hover table-striped">
+                                    <thead>
+                                        <tr style="background-color: rgb(96, 166, 253);">
+                                            <th>#</th>
+                                            <th scope="col">ชื่อ - นามสกุล</th>
+                                            <th scope="col">เพศ</th>
+                                            <th scope="col">อายุ</th>
+                                            <th scope="col">มหาวิทยาลัย</th>
+                                            <th scope="col">คณะ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-group-divider bg-white ">
+                                        <% for(let i=0; i < data.length; i++) { %>
+                                                <tr>
+                                                    <td><%= i+1 %></td>
+                                                    <td>
+                                                        <%= data[i].playerFName %>
+                                                            <%= data[i].playerLName %>
+                                                    </td>
+                                                    <td>
+                                                        <%= data[i].playerGender %>
+                                                    </td>
+                                                    <td>
+                                                        <%= data[i].age %>
+                                                    </td>
+                                                    <td> <%= data[i].uniName %></td>
+                                                    <td>
+                                                        <%= data[i].facName%>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                    </tbody>
+                                </table>
+                                <% } %>
+
+                                            <!-- if result is empty-->
+                                            <% if(!data.length) { %>
+                                                <div class="row py-5">
+                                                    <h1>ไม่พบรายการ</h1>
+                                                </div>
+                                                <% } %>
+
+
+                                                    <!-- out box -->
+                            </div>
+
+
+
+            </div>
+        </body>
+
+        </html>
+    </div>
