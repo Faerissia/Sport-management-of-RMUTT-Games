@@ -444,6 +444,10 @@ router.get('/tnmmatch/(:tnmID)', (req, res, next) => {
                         res.render('userside/tnm/match/roundrobin',{place: results,data: rows,tnmID:tnmID,status_login: req.session.loggedin})
                     })
                 })
+        }else if(rows[0].tnmTypegame === 'single'){
+
+        }else if(rows[0].tnmTypegame === 'roundsingle'){
+
         }else{
                 res.render('userside/tnm/blankpage',{tnmID: tnmID,status_login: req.session.loggedin });
             }
@@ -460,6 +464,10 @@ router.get('/tnmmatch/(:tnmID)', (req, res, next) => {
                         res.render('userside/tnm/match/roundrobin',{place: results,data: rows,tnmID:tnmID,status_login: req.session.loggedin})
                     })
                 })
+        }else if(rows[0].tnmTypegame === 'single'){
+
+        }else if(rows[0].tnmTypegame === 'roundsingle'){
+
         }else{
                 res.render('userside/tnm/blankpage',{tnmID: tnmID,status_login: req.session.loggedin });
             }
