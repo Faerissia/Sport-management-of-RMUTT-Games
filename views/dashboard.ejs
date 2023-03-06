@@ -10,7 +10,7 @@
 
                 <title>Dashboard</title>
             </head>
-
+         
             <body>
 
                 <% if (messages.error) { %>
@@ -84,7 +84,7 @@
                                                             </form>
                                                             <div class="col-12 mx-auto text-center">
                                                                 <label for="value_startdate "
-                                                                    class="col-form-label ">หมายเหตุ ( เลือกช่วงได้ ไม่เกิน
+                                                                    class="col-form-label ">หมายเหตุ ( ช่วงเวลาไม่เกิน
                                                                     1 ปี )</label>
                                                             </div>
 
@@ -151,13 +151,16 @@
                                                             // set value after reset
                                                             const value_select = JSON.parse('<%-JSON.stringify(value_select) %>');
                                                             if (value_select && value_select.length > 0) {
-                                                                console.log(value_select);
+                                                                // console.log(value_select);
+                                                                if (value_select[0]?.sport) {
+                                                                    document.getElementById('value_sport').value = value_select[0].sport
+                                                                }
                                                                 document.getElementById('value_startdate').value = value_select[0].date_S
                                                                 // console.log(value_select[0].date_S);
                                                                 document.getElementById('value_enddate').value = value_select[0].date_E
                                                                 // console.log(value_select[0].date_E);
-                                                                document.getElementById('value_sport').value = value_select[0].sport
-                                                                console.log(value_select[0].sport);
+                                                                // document.getElementById('value_sport').value = value_select[0].sport
+                                                                // console.log(value_select[0].sport);
                                                             }
                                                         </script>
 
@@ -225,7 +228,7 @@
 
                                                 <script>
                                                     const display_month = JSON.parse('<%-JSON.stringify(display_month) %>');
-                                                    console.log(display_month);
+                                                    // console.log(display_month);
 
                                                     // const label_x = display_month.map((item) => { return item.month })
                                                     const label_y = display_month.map((item) => { return item.value })
@@ -285,13 +288,20 @@
                                                                 }
                                                             }
                                                             , plugins: {
-                                                                // legend: {
-                                                                //     display: false
-                                                                // },
+                                                                legend: {
+                                                                    labels: { 
+                                                                    font: {
+                                                                        family: "Kodchasan-Regular",
+                                                                        size: 15,
+                                                                        }
+                                                                        ,color: 'dark'
+                                                                    }
+                                                                },
                                                                 datalabels: {
                                                                     display: true,
                                                                     color: 'black',
                                                                     font: {
+                                                                        
                                                                         size: 12,
                                                                         weight: 'bold'
                                                                     },
@@ -342,6 +352,7 @@
                                                     // console.log("🚀 ~ file: dashboard.ejs:258 ~ sport_y", sport_y)
 
                                                     const ctx1 = document.getElementById('myChart1');
+                                                    // Chart.defaults.font.family ="Kodchasan-Regular"
 
                                                     myChart1 = new Chart(ctx1, {
                                                         type: 'bar',
@@ -362,14 +373,22 @@
                                                             maintainAspectRatio: false,
                                                             indexAxis: 'y',
                                                             scales: {
+                                                                   
+                                                                padding: 200,
+
                                                                 y: {
+
                                                                     ticks: {
+                                                                        font: {
+                                                                                // family: 'Kodchasan-Regular', 
+                                                                                size: 14,
+                                                                            },
                                                                         color: 'dark'
                                                                     }, grid: {
                                                                         display: false
                                                                     },
                                                                     beginAtZero: true,
-
+                                                                    
                                                                 }, x: {
                                                                     ticks: {
                                                                         color: 'dark'
@@ -382,9 +401,15 @@
                                                                     max: maxValuesport + 1,
                                                                 }
                                                             }, plugins: {
-                                                                // legend: {
-                                                                //     display: false
-                                                                // },
+                                                                legend: {
+                                                                    labels: { 
+                                                                    font: {
+                                                                        family: "Kodchasan-Regular",
+                                                                        size: 15,
+                                                                        }
+                                                                        ,color: 'dark'
+                                                                }
+                                                                },
                                                                 datalabels: {
                                                                     display: true,
                                                                     color: 'dark',

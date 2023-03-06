@@ -441,7 +441,12 @@ router.get("/", (req, res, err) => {
         }
         value = [];
         value.push({ In: count_In, Out: count_Out, fin: count_fin });
+        
 
+        value_select.push({
+          date_S: formatDate(sql_S),
+          date_E: formatDate(sql_E),
+        });
         // display result total
         // console.log("result");
         // console.table(result);
