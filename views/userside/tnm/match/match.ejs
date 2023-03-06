@@ -27,11 +27,11 @@
                                 <% for(let i = 0; i < data.length; i++) { %>
                                     <tr>
                                         <td><%= i+1 %></td>
-                                    <% if(data[i].pDate === null){ %>
+                                        <% if(data[i].pDate === null || data[i].time === null || data[i].timeend === null){ %>
                                         <td><%= data[i].pDate %></td>
                                         <% }else{ %>
                                             <td><%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit' ,
-                                                month: 'long' , year:'numeric'}) %></td>
+                                                month: 'long' , year:'numeric'}) %> <%= data[i].time.slice(0, 5); %> - <%= data[i].timeend.slice(0, 5); %></td>
                                             <% } %>
                                         <td><%= data[i].placeName %></td>
                                         <td><%= data[i].player1_name %> vs <%= data[i].player2_name %></td>

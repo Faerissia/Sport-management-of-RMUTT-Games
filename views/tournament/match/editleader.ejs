@@ -11,7 +11,13 @@
         <h1>หน้าผู้เข้าร่วม <%= tournamentName %></h1>
         <%- include("../../partials/menu_staff.ejs") %>
         <div class="mt-3">
-        <h4>แข่งวันที่ เวลา</h4>
+        <h4>แข่งวันที่ <% if(data[0].pDate){ %>
+            <%=data[0].pDate.toLocaleDateString('th-TH',{day: '2-digit' , month: 'long' , year:'numeric'}) %> 
+            <% } %>
+            เวลา <% if(data[0].time && data[0].timeend){ %>
+                <%= data[0].time.slice(0, 5); %> - <%= data[0].timeend.slice(0, 5); %>
+                <% } %>
+             สถานที่<%= data[0].placeName %></h4>
     </div>
         <div class="card">
             <% if(data.length) { %>
@@ -30,7 +36,7 @@
                             <tr>
                                 <th scope="row"><%= i+1 %></th>
                                 <td><%= data[i].teamName %></td>
-                                <input type="hidden" name="mlID" value="<%= data[i].mlID%>">
+                                <input type="hidden" name="matchID" value="<%= data[i].matchID%>">
                                 <td><input type="text" name="score" class="form-control" value="<%= data[i].score %>" required></td>
                             </tr>
                         <% } %>

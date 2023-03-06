@@ -227,7 +227,7 @@ router.get('/team/deny/(:teamID)', (req, res, next) => {
 
     let mailOptions = {
         from: 'thesissportmanagement@gmail.com',
-        to: playerEmail,
+        to: teamEmailA,
         subject: 'ผลการสมัครเข้าร่วมการแข่งขัน',
         text: '',
         html:`<h2>ขออภัยทีมของท่านไม่ได้รับเลือกเข้าร่วมการแข่งขัน  `+ tnm[0].tnmName +`</h2>`
@@ -310,5 +310,17 @@ router.post('/emailsingle/(:playerID)',(req,res)=>{
 })
 })
 
+router.get('/delete/player/(:playerID)',(req,res)=>{
+    let playerID = req.params.playerID;
+    dbConnection.query('DELETE FROM player WHERE playerID = ?',[playerID],(err,result)=>{
+        if(err){
+            req.flash('error','ไม่สามารถลบผู้เล่นได้');
+            res.redirect('/tnmcheck');
+        }else{
+            req.flash('success','ได้ลบผู้เล่นเรียบร้อยแล้ว!');
+            res.redirect('/tnmcheck');
+        }
+    })
+})
 
 module.exports = router;

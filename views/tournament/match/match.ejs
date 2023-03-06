@@ -105,12 +105,12 @@
                                 
                                 <tr>
                                     <td><%= i+1 %></td>
-                                <% if(data[i].pDate === null){ %>
+                                <% if(data[i].pDate === null || data[i].time === null || data[i].timeend === null){ %>
                                     
                                     <td><%= data[i].pDate %></td>
                                     <% }else{ %>
                                         <td><%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit' ,
-                                            month: 'long' , year:'numeric'}) %></td>
+                                            month: 'long' , year:'numeric'}) %> <%= data[i].time.slice(0, 5); %> - <%= data[i].timeend.slice(0, 5); %></td>
                                         <% } %>
                                     <td><%= data[i].placeName %></td>
                                     <td><%= data[i].player1_name %> vs <%= data[i].player2_name %></td>
@@ -121,6 +121,7 @@
                                     <% } %>
                                     <td>
                                         <% if(data[i].score1 && data[i].score2){ %>
+                                    <button class="modal-trigger btn btn-primary" onclick="document.getElementById('view<%= i %>').style.display='block'">ดู</button>
                                             <% }else{ %>
                                     <button class="modal-trigger btn btn-warning" onclick="document.getElementById('modal<%= i %>').style.display='block'">แก้ไข</button>
                                                 <% } %>
@@ -129,7 +130,7 @@
                                                     <div class="modal-header">
                                                         <span class="close" onclick="document.getElementById('modal<%= i %>').style.display='none'">&times;</span>
                                                     </div>
-                                                    <form action="/tournament/matchedit/<%= tnmID %>" method="post">
+                                                    <form action="/tournament/matchedit/<%= tnmID %>" method="post" encType="multipart/form-data">
                                                         <% if(data[i].pDate === null){ %>
                                                             วันที่
                                                             <input type="date" name="pDate" value="<%= data[i].pDate %>" required>
@@ -162,10 +163,32 @@
                                                         <input type="hidden" name="matchID" value="<%= data[i].matchID %>">
                                                         <input type="hidden" name="round" value="<%= data[i].round %>">
                                                         <input type="hidden" name="seed" value="<%= data[i].seed %>">
+                                                        <input type="file" name="scoresheet" maxlength="4000000" accept="image/jpg,image/png,application/pdf"><br>
                                                         <button value="sunbmit" class="btn btn-success"  onclick="return check_input()">บันทึก</button>
                                                     </form>
                                                 </div>  
                                             </div>
+
+
+                                            <div id="view<%= i %>" class="modal">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <span class="close" onclick="document.getElementById('view<%= i %>').style.display='none'">&times;</span>
+                                                    </div>
+                                                    <% if(data[i].pDate){ %>
+                                                    วันที่ : <%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit' ,
+                                                    month: 'long' , year:'numeric'}) %>
+                                                    <% } %>
+                                                    สถานที่ : <%=data[i].placeName %>
+                                                    <% if(data[i].time && data[i].timeend){ %>
+                                                    เวลา : <%= data[i].time.slice(0, 5); %> - <%= data[i].timeend.slice(0, 5); %>
+                                                    <% } %>
+                                                    ผลการแข่งขัน <%= data[i].player1_name %><%= data[i].score1 %> <%= data[i].player2_name %><%= data[i].score2 %>
+                                                    ไฟล์ : <a href="../../scoresheet/<%= data[i].matchfile %>" download=""><%= data[i].matchfile %></a>
+                                                    
+                                                </div>  
+                                            </div>
+
 
                                     </td>
                                 </tr>
