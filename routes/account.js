@@ -45,8 +45,9 @@ router.get('/add',(req, res, next) => {
 })
 
 
+
 // add new account
-router.post('/add', (req, res, next) =>{
+router.post('/add', async (req, res, next) =>{
     let email = req.body.email;
     let password = req.body.password;
     let cpassword = req.body.password;
@@ -55,6 +56,28 @@ router.post('/add', (req, res, next) =>{
     let phone = req.body.phone;
     let level = req.body.level;
     let errors = false;
+
+    let checkemail = await new Promise((resolve,reject)=> { 
+        dbConnection.query('SELECT * FROM account WHERE email LIKE ?',(error,checkemail)=>{
+        if (error) reject(error);
+        resolve(checkemail);
+    })
+    })
+
+    if(checkemail.length){
+        req.flash('error','ผู้ใช้งานซ้ำ');
+        res.render('account/add', {
+            email: email,
+            password: password,
+            name: name,
+            lname: lname,
+            phone: phone,
+            level: level,
+            status_login: req.session.loggedin,
+            user: user
+        })
+    }
+    
 
     if(cpassword === password) {
         errors = true;
@@ -70,6 +93,8 @@ router.post('/add', (req, res, next) =>{
             user: user
         })
     }
+
+    
 
     // if no error
     if(!errors) {
