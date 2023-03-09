@@ -7,6 +7,8 @@ const dbConnection = require('./util/db');
 const session = require('express-session');
 const fileUpload = require('express-fileupload');
 const fs = require('fs');
+const MySQLStore = require('express-mysql-session')(session);
+
 
 //routes variable
 const edittitle = require('./routes/edittitle');
@@ -24,10 +26,6 @@ const tnmsave = require('./routes/tnmsave');
 const uindex = require('./routes/userside/uindex');
 const placetable = require('./routes/placetable');
 
-global.status_login;
-global.role;
-global.user;
-
 
 // all environments
   const title = fs.readFileSync(path.join(__dirname,'title.txt'), 'utf-8');
@@ -40,11 +38,20 @@ app.use(bodyParser.json({ extended: true }))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname,"assets")))
 app.use(flash());
+
+const sessionStore = new MySQLStore({
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'thesis'
+});
 app.use(session({
   secret: 'secret',
-  resave: 'true',
+  resave: false,
   saveUninitialized: true,
-  cookie: { maxAge: 60 * 60 * 2000 }
+  store: sessionStore,
+  cookie: { maxAge: 60 * 60 * 2000,
+  secure: false}
 }))
 
 
@@ -63,44 +70,47 @@ app.get('/login',(req, res) => {
   })
 
 
-app.post('/login', (req, res) => {
-  var email = req.body.email;
-  var password = req.body.password;
+  app.post('/login', (req, res) => {
+    var email = req.body.email;
+    var password = req.body.password;
+  
+    if (email && password) {
+      dbConnection.query(
+        "SELECT * FROM account WHERE email = ? AND password = ?",
+        [email, password],
+        function (err, results) {
+          if (results.length > 0) {
+            const active = results[0].status;
+           role = results[0].level;
+            if(active === 'ใช้งาน'){
+              req.session.loggedin = true;
+                const user = {
+                  accountID: results[0].accountID,
+                  name: results[0].name,
+                  lname: results[0].lname,
+                  level: role};
+                  req.session.user = user;
+                if(role === 'ผู้ดูแลระบบ'){
+                  res.redirect("/account");
+                }else{
+                    res.redirect("/dashboard");
+                }
 
-  if (email && password) {
-    dbConnection.query(
-      "SELECT * FROM account WHERE email = ? AND password = ?",
-      [email, password],
-      function (err, results) {
-        if (results.length > 0) {
-          var active = results[0].status;
-          role = results[0].level;
-          if(active === 'ใช้งาน'){
-          req.session.loggedin = true;
-          req.session.email = email;
-          req.session.password = password;
-          user = results[0].name + " " + results[0].lname;
-          console.log(role)
-          if(role === 'ผู้ดูแลระบบ'){
-            res.redirect("/account");
+            }else{
+              req.flash('error','กรุณาติดต่อผู้ดูแลระบบ!')
+            res.redirect('login');
+            }
           }else{
-              res.redirect("/dashboard");
+            req.flash('error','email หรือ password ไม่ถูกต้อง!')
+            res.redirect('login');
           }
-          }else{
-            req.flash('error','กรุณาติดต่อผู้ดูแลระบบ!')
-          res.redirect('login');
-          }
-        }else{
-          req.flash('error','email หรือ password ไม่ถูกต้อง!')
-          res.redirect('login');
         }
-      }
-    );
-  }else {
-    req.flash('error','กรุณากรอกข้อมูลให้ครบถ้วน!')
-    res.redirect('login');
-  }
-});
+      );
+    }else {
+      req.flash('error','กรุณากรอกข้อมูลให้ครบถ้วน!')
+      res.redirect('login');
+    }
+  });
 
 app.get('/logout', (req, res) => {
   req.session.destroy(function (err) {

@@ -7,4 +7,12 @@ let dbConnection = mysql.createConnection({
     database : 'thesis'
   });
 
+  dbConnection.connect( (error)=>{
+    if(error) {
+      console.log(error)
+    }else{
+      console.log("SUCCESS MYSQL CONNECT!")
+    }
+  })
+
 module.exports = dbConnection;
