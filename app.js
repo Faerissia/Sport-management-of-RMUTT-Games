@@ -42,7 +42,7 @@ app.use(express.static(path.join(__dirname,"assets")))
 app.use(flash());
 app.use(session({
   secret: 'secret',
-  resave: 'true',
+  resave: false,
   saveUninitialized: true,
   cookie: { maxAge: 60 * 60 * 2000 }
 }))
@@ -77,8 +77,8 @@ app.post('/login', (req, res) => {
           role = results[0].level;
           if(active === 'ใช้งาน'){
           req.session.loggedin = true;
-          req.session.email = email;
-          req.session.password = password;
+          req.session.userId = results[0].accountID;
+          console.log(req.session.userId);
           user = results[0].name + " " + results[0].lname;
           console.log(role)
           if(role === 'ผู้ดูแลระบบ'){
