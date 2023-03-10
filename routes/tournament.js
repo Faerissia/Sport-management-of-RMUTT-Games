@@ -73,7 +73,7 @@ router.post('/add', function(req, res, next) {
         let tnmFile = req.files[`tnmFile${i}`];
         console.log(tnmFiles)
         let  name_pfile = new Date().getTime() +'_'+tnmFile.name;
-        tnmFile.mv('./assets/player/' + name_pfile);
+        tnmFile.mv('./assets/doc/' + name_pfile);
         tnmFiles.push(name_pfile);
     }
     }
@@ -243,7 +243,7 @@ router.get('/delete/(:tnmID)', function(req, res, next) {
 
 router.get('/detail/(:tnmID)', function(req, res, next) {
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT t.*,s.* FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID = ' + tnmID, (err, rows, fields) => {
+    dbConnection.query('SELECT t.*,s.* FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID = ' + tnmID, (err, rows) => {
         if(req.session.username){
             if(req.session.level === 'เจ้าหน้าที่'){
                 tournamentName = rows[0].tnmName;

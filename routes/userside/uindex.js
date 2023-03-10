@@ -202,7 +202,7 @@ router.get('/showall', function(req, res, next) {
 router.get('/tnmdetail/(:tnmID)', function(req, res, next) {
     let tnmID = req.params.tnmID;
     dbConnection.query('SELECT * FROM tournament LEFT JOIN sport ON tournament.sportID = sport.sportID WHERE tnmID = ' + tnmID, (err, rows) => {
-            res.render('userside/tnm/tnmdetail', { data: rows,tnmID: tnmID});
+        res.render('userside/tnm/tnmdetail', { data: rows,tnmID: tnmID});
     })
 })
 
