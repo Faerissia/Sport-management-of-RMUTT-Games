@@ -199,7 +199,10 @@
                                 <label for="validationFile" class="col-form-label">เอกสารยืนยันตัวตน</label>
                             </div>
                             <div class="col-auto">
-                                <a href="../../player/<%= data[i].playerFile1%>" download="<%= data[i].playerFile1 %>"><%= data[i].playerFile1 %></a>
+                                <% const file = data[0].playerFile1.split(','); %>
+                                <% for(let j=0;j<file.length;j++){ %>
+                                <a href="../doc/<%= file[j] %>" download="<%= file[j] %>">ไฟล์ <%=i+1%></a>
+                                <% } %>
                             </div>
                         </div>
                     </div>
