@@ -12,7 +12,7 @@ let transporter = nodemailer.createTransport({
     }
   });
 
-router.post('/search-tnmcheck', (req, res) => {
+router.post('/search-tnmcheck', function(req, res, next) {
     let query = req.body.search;
     if(!query){
         res.redirect('/tnmcheck');
@@ -22,36 +22,27 @@ router.post('/search-tnmcheck', (req, res) => {
     
     dbConnection.query(sql, like, (err, results) => {
         if(err) throw err;
-        res.render('tnmcheck', {data: results,status_login: req.session.loggedin,user: user});
+        res.render('tnmcheck', {data: results});
     });
 }
 });
 
 // display tnmcheck page
-router.get('/', (req, res, next) => {
+router.get('/', function(req, res, next) {
     const sql = "SELECT t.tnmID,t.tnmName,t.Renddate,s.sportID,s.sportName,s.sportPlaynum, SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count, SUM(CASE p.playerStatus WHEN 'deny' THEN 1 ELSE 0 END) AS deny_count, SUM(CASE p.playerStatus WHEN 'wait' THEN 1 ELSE 0 END) AS wait_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p on t.tnmID = p.tnmID GROUP BY t.tnmID;";
-
     dbConnection.query(sql, (err, rows) => {
-    if(req.session.loggedin){
-        if(role === 'เจ้าหน้าที่'){
-            res.render('tnmcheck', { data: rows,status_login: req.session.loggedin,user: user });
-        }else{
-            req.flash('error','ไม่สามารถเข้าถึงได้');
-            res.redirect('login');
-        }
-    }else{
-        res.redirect('error404');
-    }
+            res.render('tnmcheck', { data: rows });
+
     })
 })
 
 // display tnmcheck page
-router.get('/candidatesolo/(:tnmID)', (req, res, next) => {
+router.get('/candidatesolo/(:tnmID)', function(req, res, next) {
     let thistnmID = req.params.tnmID;
     dbConnection.query('SELECT p.playerID,p.playerFName,p.playerLName,p.playerGender,p.detailDoc,TIMESTAMPDIFF(YEAR, p.playerBirthday, CURDATE()) AS age,p.playerPhone,p.playerRegDate,p.playerStatus,p.teamID,t.tnmID,t.tnmName,team.teamName,team.NameAgent,team.LnameAgent,team.teamPhoneA,team.teamEmailA,team.teamStatus FROM player p LEFT JOIN tournament t on p.tnmID = t.tnmID LEFT JOIN team ON team.teamID = p.teamID LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID = '+thistnmID, (err, rows) => {
-        if(req.session.loggedin){
-        if(role === 'เจ้าหน้าที่'){
-            res.render('./tnmcheck/candidate/solocan', { data: rows,thistnmID: thistnmID,status_login: req.session.loggedin,user: user });
+        if(req.session.username){
+        if(req.session.level === 'เจ้าหน้าที่'){
+            res.render('./tnmcheck/candidate/solocan', { data: rows,thistnmID: thistnmID});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('../login');
@@ -63,7 +54,7 @@ router.get('/candidatesolo/(:tnmID)', (req, res, next) => {
 })
 
 // display tnmcheck page
-router.get('/candidateteam/(:tnmID)', (req, res, next) => {
+router.get('/candidateteam/(:tnmID)', function(req, res, next) {
     let thistnmID = req.params.tnmID;
     dbConnection.query(`SELECT teamID, tnmID, tnmName, teamName, NameAgent, LnameAgent, teamPhoneA, teamEmailA, teamStatus, teamRegDate, GROUP_CONCAT(detailDoc SEPARATOR '') as detailDoc FROM (SELECT t.tnmID,team.teamID,t.tnmName,team.teamName,team.NameAgent,team.LnameAgent,team.teamPhoneA,team.teamEmailA,team.teamStatus,team.teamRegDate, p.detailDoc
     FROM tournament t
@@ -73,9 +64,9 @@ router.get('/candidateteam/(:tnmID)', (req, res, next) => {
     WHERE t.tnmID = ?
     ) team_player_data
     GROUP BY teamID, tnmID, tnmName, teamName, NameAgent, LnameAgent, teamPhoneA, teamEmailA, teamStatus, teamRegDate`,thistnmID, (err, rows) => {
-        if(req.session.loggedin){
-        if(role === 'เจ้าหน้าที่'){
-            res.render('./tnmcheck/candidate/teamcan', { data: rows,thistnmID: thistnmID,status_login: req.session.loggedin,user: user });
+        if(req.session.username){
+        if(req.session.level === 'เจ้าหน้าที่'){
+            res.render('./tnmcheck/candidate/teamcan', { data: rows,thistnmID: thistnmID});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('../login');
@@ -86,12 +77,12 @@ router.get('/candidateteam/(:tnmID)', (req, res, next) => {
         })
 })
 
-router.get('/player/(:playerID)', (req, res, next) => {
+router.get('/player/(:playerID)', function(req, res, next) {
     let thisplayerID = req.params.playerID;
     dbConnection.query('SELECT p.*,t.tnmID,t.tnmName,f.uniID,f.facultyID,f.name AS facName,u.uniID,u.name AS uniName FROM player p LEFT JOIN tournament t ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerID = '+thisplayerID, (err, rows) => {
-        if(req.session.loggedin){
-        if(role === 'เจ้าหน้าที่'){
-            res.render('./tnmcheck/candidate/player', { data: rows,status_login: req.session.loggedin,user: user });
+        if(req.session.username){
+        if(req.session.level === 'เจ้าหน้าที่'){
+            res.render('./tnmcheck/candidate/player', { data: rows});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('../../login');
@@ -102,12 +93,12 @@ router.get('/player/(:playerID)', (req, res, next) => {
     })
 })
 
-router.get('/team/(:teamID)', (req, res, next) => {
+router.get('/team/(:teamID)', function(req, res, next) {
     let thisteamID = req.params.teamID;
     dbConnection.query('SELECT t.*, p.*,f.name AS facName,u.name AS uniName FROM team t JOIN player p ON t.teamID = p.teamID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE t.teamID = '+thisteamID, (err, rows) => {
-        if(req.session.loggedin){
-        if(role === 'เจ้าหน้าที่'){
-            res.render('./tnmcheck/candidate/team', { data: rows,status_login: req.session.loggedin,user: user });
+        if(req.session.username){
+        if(req.session.level === 'เจ้าหน้าที่'){
+            res.render('./tnmcheck/candidate/team', { data: rows});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('../../login');
@@ -118,7 +109,7 @@ router.get('/team/(:teamID)', (req, res, next) => {
     })
 })
 
-router.get('/player/accept/(:playerID)', (req, res, next) => {
+router.get('/player/accept/(:playerID)', function(req, res, next) {
     let thisplayerID = req.params.playerID;
 
     dbConnection.query('SELECT * FROM player WHERE playerID ='+thisplayerID, (err, rows) => {
@@ -150,7 +141,7 @@ dbConnection.query('SELECT * FROM tournament WHERE tnmID = '+tnmID,(err,tnm)=>{
 })
 })
 
-router.get('/team/accept/(:teamID)', (req, res, next) => {
+router.get('/team/accept/(:teamID)', function(req, res, next) {
     let thisteamID = req.params.teamID;
 
     
@@ -187,7 +178,7 @@ router.get('/team/accept/(:teamID)', (req, res, next) => {
 })
 })
 
-router.get('/player/deny/(:playerID)', (req, res, next) => {
+router.get('/player/deny/(:playerID)', function(req, res, next) {
     let thisplayerID = req.params.playerID;
     dbConnection.query('SELECT * FROM player WHERE playerID ='+thisplayerID, (err, rows) => {
     let tnmID = rows[0].tnmID;
@@ -215,7 +206,7 @@ router.get('/player/deny/(:playerID)', (req, res, next) => {
 })
 })
 
-router.get('/team/deny/(:teamID)', (req, res, next) => {
+router.get('/team/deny/(:teamID)', function(req, res, next) {
     let thisteamID = req.params.teamID;
     
     dbConnection.query('SELECT * FROM team WHERE teamID ='+thisteamID, (err, rows) => {
@@ -245,12 +236,12 @@ router.get('/team/deny/(:teamID)', (req, res, next) => {
 })
 })
 
-router.get('/edit/player/(:playerID)',(req,res,next)=>{
+router.get('/edit/player/(:playerID)', function(req,res,next){
     let thisplayerID = req.params.playerID;
     dbConnection.query('SELECT p.*,t.tnmID,t.tnmName,f.uniID,f.facultyID,f.name AS facName,u.uniID,u.name AS uniName FROM player p LEFT JOIN tournament t ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerID = '+thisplayerID, (err, rows) => {
-        if(req.session.loggedin){
-        if(role === 'เจ้าหน้าที่'){
-            res.render('./tnmcheck/edit/player', { data: rows,status_login: req.session.loggedin,user: user });
+        if(req.session.username){
+        if(req.session.level === 'เจ้าหน้าที่'){
+            res.render('./tnmcheck/edit/player', { data: rows});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('../../login');
@@ -261,12 +252,12 @@ router.get('/edit/player/(:playerID)',(req,res,next)=>{
     })
 })
 
-router.get('/emailsingle/(:playerID)',(req,res,next)=>{
+router.get('/emailsingle/(:playerID)', function(req,res,next){
     let thisplayerID = req.params.playerID;
     dbConnection.query('SELECT p.*,t.tnmID,t.tnmName,f.uniID,f.facultyID,f.name AS facName,u.uniID,u.name AS uniName FROM player p LEFT JOIN tournament t ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerID = '+thisplayerID, (err, rows) => {
-        if(req.session.loggedin){
-        if(role === 'เจ้าหน้าที่'){
-            res.render('./tnmcheck/email/player', { data: rows,status_login: req.session.loggedin,user: user });
+        if(req.session.username){
+        if(req.session.level === 'เจ้าหน้าที่'){
+            res.render('./tnmcheck/email/player', { data: rows});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('../../login');
@@ -277,7 +268,7 @@ router.get('/emailsingle/(:playerID)',(req,res,next)=>{
     })
 })
 
-router.post('/emailsingle/(:playerID)',(req,res)=>{
+router.post('/emailsingle/(:playerID)', function(req,res,next){
     let thisplayerID = req.params.playerID;
     let tnmID = req.body.tnmID;
     let emailto = req.body.emailto;
@@ -310,7 +301,7 @@ router.post('/emailsingle/(:playerID)',(req,res)=>{
 })
 })
 
-router.get('/delete/player/(:playerID)',(req,res)=>{
+router.get('/delete/player/(:playerID)', function(req,res,next){
     let playerID = req.params.playerID;
     dbConnection.query('DELETE FROM player WHERE playerID = ?',[playerID],(err,result)=>{
         if(err){

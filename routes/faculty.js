@@ -2,7 +2,7 @@ let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
 
-router.post('/search-fac', (req, res) => {
+router.post('/search-fac', function(req, res,next) {
     let uniName = req.body.uniName;
     let query = req.body.search;
     let uniID = req.body.uniID;
@@ -13,18 +13,18 @@ router.post('/search-fac', (req, res) => {
         let data = [uniID,'%' + query + '%'];
         dbConnection.query(sql, data, (err, results) => {
             if(err) throw err;
-            res.render('faculty', {data: results,uniID,uniName,status_login: req.session.loggedin,user: user});
+            res.render('faculty', {data: results,uniID,uniName});
         });
     }
 });
 
 // display faculty list
-router.get('/(:uniID)', (req, res, next) => {
+router.get('/(:uniID)', function(req, res, next) {
     let uniID = req.params.uniID;
     dbConnection.query('SELECT u.uniID , f.name AS facName ,u.name AS uniName,f.facultyID FROM  faculty f LEFT JOIN university u ON f.uniID = u.uniID WHERE u.uniID = '+ uniID, (err, rows) => {
-        if(req.session.loggedin){
-            if(role === 'เจ้าหน้าที่'){
-                res.render('faculty', { data: rows,uniID: uniID,status_login: req.session.loggedin,user: user });
+        if(req.session.username){
+            if(req.session.level === 'เจ้าหน้าที่'){
+                res.render('faculty', { data: rows,uniID: uniID});
             }else{
                 req.flash('error','ไม่สามารถเข้าถึงได้');
                 res.redirect('login');
@@ -36,12 +36,12 @@ router.get('/(:uniID)', (req, res, next) => {
 })
 
 //display add faculty to list
-router.get('/add/(:uniID)',(req, res, next) => {
+router.get('/add/(:uniID)', function(req, res, next) {
     let uniID = req.params.uniID;
     dbConnection.query('SELECT uniID FROM university WHERE uniID = '+ uniID, (err, rows) => {
-        if(req.session.loggedin){
-        if(role === 'เจ้าหน้าที่'){     
-            res.render('faculty/add',{ data: rows,status_login: req.session.loggedin });
+        if(req.session.username){
+        if(req.session.level === 'เจ้าหน้าที่'){     
+            res.render('faculty/add',{ data: rows});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
@@ -53,7 +53,7 @@ router.get('/add/(:uniID)',(req, res, next) => {
 })
 
 // add new faculty to list
-router.post('/add', (req, res, next) =>{
+router.post('/add', function(req, res, next) {
     let name = req.body.name;
     let uniID = req.body.uniID;
     let errors = false;
@@ -92,10 +92,10 @@ router.post('/add', (req, res, next) =>{
 })
 
 // display edit faculty to list
-router.get('/edit/(:facultyID)', (req, res, next) => {
+router.get('/edit/(:facultyID)', function(req, res, next) {
     let facultyID = req.params.facultyID;
     dbConnection.query('SELECT * FROM faculty WHERE facultyID = ' + facultyID, (err, rows, fields) => {
-        if(role === 'เจ้าหน้าที่'){
+        if(req.session.level === 'เจ้าหน้าที่'){
         if (rows.length <= 0) {
             req.flash('error', 'Book not found with id = ' + facultyID)
             res.redirect('/faculty');
@@ -104,7 +104,7 @@ router.get('/edit/(:facultyID)', (req, res, next) => {
                 title: 'แก้ไข มหาวิทยาลัย',
                 facultyID: rows[0].facultyID,
                 name: rows[0].name,
-                uniID: rows[0].uniID,status_login: req.session.loggedin
+                uniID: rows[0].uniID
             })
         }}else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
@@ -114,7 +114,7 @@ router.get('/edit/(:facultyID)', (req, res, next) => {
 })
 
 // update faculty page
-router.post('/update/(:facultyID)', (req, res, next) => {
+router.post('/update/(:facultyID)', function(req, res, next) {
     let facultyID = req.params.facultyID;
     let name = req.body.name;
     let uniID = req.body.uniID;
@@ -152,7 +152,7 @@ router.post('/update/(:facultyID)', (req, res, next) => {
 })
 
 // delete faculty
-router.get('/delete/(:facultyID)', (req, res, next) => {
+router.get('/delete/(:facultyID)', function(req, res, next) {
     let facultyID = req.params.facultyID;
     dbConnection.query('DELETE FROM faculty WHERE facultyID = ' + facultyID, (err, result) => {
         if (err) {

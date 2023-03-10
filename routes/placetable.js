@@ -4,7 +4,7 @@ let router = express.Router();
 let dbConnection = require('../util/db');
 
 
-router.post('/search-placetable', (req, res) => {
+router.post('/search-placetable', function(req, res, next) {
     let place = req.body.place;
     let sporttype = req.body.sporttype;
     let date = req.body.date;
@@ -22,7 +22,7 @@ router.post('/search-placetable', (req, res) => {
             const daysOfWeek = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
             const today = new Date(date);
             const currentDay = daysOfWeek[today.getDay()];
-        res.render('placetable',{today,sporttype,thisDate,currentDay,opening,match,place,status_login: req.session.loggedin,user: user});
+        res.render('placetable',{today,sporttype,thisDate,currentDay,opening,match,place});
     })
     })
     })
@@ -38,7 +38,7 @@ router.post('/search-placetable', (req, res) => {
             const daysOfWeek = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
             const today = new Date();
             const currentDay = daysOfWeek[today.getDay()];
-        res.render('placetable',{today,sporttype,thisDate,currentDay,opening,match,place,status_login: req.session.loggedin,user: user});
+        res.render('placetable',{today,sporttype,thisDate,currentDay,opening,match,place});
     })
     })
     })
@@ -55,7 +55,7 @@ router.post('/search-placetable', (req, res) => {
             const daysOfWeek = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
             const today = new Date(date);
             const currentDay = daysOfWeek[today.getDay()];
-        res.render('placetable',{today,sporttype,thisDate,currentDay,opening,match,place,status_login: req.session.loggedin,user: user});
+        res.render('placetable',{today,sporttype,thisDate,currentDay,opening,match,place});
     })
     })
     })
@@ -70,7 +70,7 @@ router.post('/search-placetable', (req, res) => {
             const daysOfWeek = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
             const today = new Date(date);
             const currentDay = daysOfWeek[today.getDay()];
-        res.render('placetable',{today,sporttype,thisDate,currentDay,opening,match,place,status_login: req.session.loggedin,user: user});
+        res.render('placetable',{today,sporttype,thisDate,currentDay,opening,match,place});
     })
     })
     })
@@ -86,7 +86,7 @@ router.post('/search-placetable', (req, res) => {
             const daysOfWeek = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
             const today = new Date();
             const currentDay = daysOfWeek[today.getDay()];
-        res.render('placetable',{today,sporttype,thisDate,currentDay,opening,match,place,status_login: req.session.loggedin,user: user});
+        res.render('placetable',{today,sporttype,thisDate,currentDay,opening,match,place});
     })
     })
     })
@@ -101,7 +101,7 @@ router.post('/search-placetable', (req, res) => {
             const daysOfWeek = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
             const today = new Date();
             const currentDay = daysOfWeek[today.getDay()];
-        res.render('placetable',{today,sporttype,thisDate,currentDay,opening,match,place,status_login: req.session.loggedin,user: user});
+        res.render('placetable',{today,sporttype,thisDate,currentDay,opening,match,place});
     })
     })
     })
@@ -116,7 +116,7 @@ router.post('/search-placetable', (req, res) => {
             const daysOfWeek = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
             const today = new Date(date);
             const currentDay = daysOfWeek[today.getDay()];
-        res.render('placetable',{today,sporttype,thisDate,currentDay,opening,match,place,status_login: req.session.loggedin,user: user});
+        res.render('placetable',{today,sporttype,thisDate,currentDay,opening,match,place});
     })
     })
     })
@@ -125,18 +125,18 @@ router.post('/search-placetable', (req, res) => {
 });
 
 // display place page
-router.get('/', (req, res, next) => {
+router.get('/', function(req, res, next) {
     dbConnection.query('SELECT * FROM place', (err, place) => {
         dbConnection.query('SELECT * FROM matchplay WHERE pDate AND time AND timeend AND placeID IS NOT NULL',(err,match)=>{
             dbConnection.query('SELECT * FROM place_opening',(err,opening)=>{
                 dbConnection.query('SELECT * FROM sport_type',(err,sporttype)=>{    
-        if(req.session.loggedin){
-        if(role === 'เจ้าหน้าที่'){
+        if(req.session.username){
+        if(req.session.level === 'เจ้าหน้าที่'){
             let thisDate = new Date().toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'});
             const daysOfWeek = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
             let today = new Date();
             const currentDay = daysOfWeek[today.getDay()];
-            res.render('placetable', { today,sporttype,currentDay,thisDate,opening,match,place,status_login: req.session.loggedin,user: user });
+            res.render('placetable', { today,sporttype,currentDay,thisDate,opening,match,place});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');

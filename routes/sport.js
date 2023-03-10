@@ -3,11 +3,11 @@ let router = express.Router();
 let dbConnection = require('../util/db');
 
 // display sport page
-router.get('/', (req, res, next) => {
+router.get('/', function(req, res, next) {
     dbConnection.query('SELECT * FROM sport ORDER BY sportID asc', (err, rows) => {
-        if(req.session.loggedin){
-            if(role === 'เจ้าหน้าที่'){
-                res.render('sport', { data: rows,status_login: req.session.loggedin,user: user });
+        if(req.session.username){
+            if(req.session.level === 'เจ้าหน้าที่'){
+                res.render('sport', { data: rows});
             }else{
                 req.flash('error','ไม่สามารถเข้าถึงได้');
                 res.redirect('login');
@@ -19,13 +19,13 @@ router.get('/', (req, res, next) => {
 })
 
 //display add sport page
-router.get('/add',(req, res, next) => {
-    if(req.session.loggedin){
-    if(role === 'เจ้าหน้าที่'){
+router.get('/add', function(req, res, next) {
+    if(req.session.username){
+    if(req.session.level === 'เจ้าหน้าที่'){
         res.render('sport/add',{
             sportName:'',
             sportPlaynum:'',
-            type:'',status_login: req.session.loggedin,user: user
+            type:''
     })
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้')
@@ -37,7 +37,7 @@ router.get('/add',(req, res, next) => {
 })
 
 // add new sport
-router.post('/add', (req, res, next) =>{
+router.post('/add', function(req, res, next) {
     let sportName = req.body.sportName;
     let sportPlaynum = req.body.sportPlaynum;
     let type = req.body.type;
@@ -81,10 +81,10 @@ router.post('/add', (req, res, next) =>{
 })
 
 // display edit book page
-router.get('/edit/(:sportID)', (req, res, next) => {
+router.get('/edit/(:sportID)', function(req, res, next) {
     let sportID = req.params.sportID;
     dbConnection.query('SELECT * FROM sport WHERE sportID = ' + sportID, (err, rows, fields) => {
-        if(role === 'เจ้าหน้าที่'){
+        if(req.session.level === 'เจ้าหน้าที่'){
         if (rows.length <= 0) {
             req.flash('error', 'Book not found with id = ' + sportID)
             res.redirect('/sport');
@@ -94,7 +94,7 @@ router.get('/edit/(:sportID)', (req, res, next) => {
                 sportID: rows[0].sportID,
                 sportName: rows[0].sportName,
                 sportPlaynum: rows[0].sportPlaynum,
-                type: rows[0].type,status_login: req.session.loggedin,user: user
+                type: rows[0].type
             })
         }
         }else{
@@ -105,7 +105,7 @@ router.get('/edit/(:sportID)', (req, res, next) => {
 })
 
 // update book page
-router.post('/update/:sportID', (req, res, next) => {
+router.post('/update/:sportID', function(req, res, next) {
     let sportID = req.params.sportID;
     let sportName = req.body.sportName;
     let sportPlaynum = req.body.sportPlaynum;
@@ -148,7 +148,7 @@ router.post('/update/:sportID', (req, res, next) => {
 })
 
 // delete sport
-router.get('/delete/(:sportID)', (req, res, next) => {
+router.get('/delete/(:sportID)', function(req, res, next) {
     let sportID = req.params.sportID;
 
     dbConnection.query('DELETE FROM sport WHERE sportID = ' + sportID, (err, result) => {
