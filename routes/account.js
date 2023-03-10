@@ -45,22 +45,24 @@ router.get('/add',function(req, res, next) {
 router.post('/add', async function(req, res, next){
     let email = req.body.email;
     let password = req.body.password;
-    let cpassword = req.body.password;
+    let cpassword = req.body.cpassword;
     let name = req.body.name;
     let lname = req.body.lname;
     let phone = req.body.phone;
     let level = req.body.level;
     let errors = false;
 
+    const usernamecheck = ['%' + email + '%'];
+
     let checkemail = await new Promise((resolve,reject)=> { 
-        dbConnection.query('SELECT * FROM account WHERE email LIKE ?',(error,checkemail)=>{
+        dbConnection.query('SELECT * FROM account WHERE email LIKE ?',usernamecheck,(error,checkemail)=>{
         if (error) reject(error);
         resolve(checkemail);
     })
     })
 
     if(checkemail.length){
-        req.flash('error','ผู้ใช้งานซ้ำ');
+        req.flash('error','อีเมลนี้ได้ถูกใช้งานแล้ว');
         res.render('account/add', {
             email: email,
             password: password,
@@ -73,7 +75,7 @@ router.post('/add', async function(req, res, next){
     }
     
 
-    if(cpassword === password) {
+    if(cpassword !== password) {
         errors = true;
         req.flash('error', 'password ไม่ตรงกัน');
         res.render('account/add', {
@@ -113,7 +115,7 @@ router.post('/add', async function(req, res, next){
                     status: form_data.status
                 })
             } else {
-                req.flash('success', 'เพิ่มบัญชีผู้ใช้งานเรียบร้อยแล้ว!');
+                req.flash('success', 'ได้เพิ่มบัญชีของ',name,lname,'เรียบร้อยแล้ว!');
                 res.redirect('/account');
             }
         })

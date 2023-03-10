@@ -28,10 +28,11 @@ router.get('/', function(req, res, next) {
             res.render('tournament', { data: rows});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
-            res.redirect('login');
+            res.redirect('/login');
         }
     }else{
-        res.redirect('/error404');
+      req.flash('error','กรุณาเข้าสู่ระบบ');
+        res.redirect('/login');
     }
         })
 })
@@ -62,13 +63,20 @@ router.post('/add', function(req, res, next) {
     let errors = false;
 
     let tnmPicture = req.files.tnmPicture;
-    let tnmFile1 = req.files.tnmFile1;
-
     let name_tnmPicture = new Date().getTime() +'_'+tnmPicture.name;
-    let name_tnmFile1 = new Date().getTime() +'_'+tnmFile1.name;
-
     tnmPicture.mv('./assets/images/' + name_tnmPicture);
-    tnmFile1.mv('./assets/doc/' + name_tnmFile1);
+
+
+    let tnmFiles = [];
+    for(let i =1;i <= 3; i++){
+        if(req.files[`tnmFile${i}`]){
+        let tnmFile = req.files[`tnmFile${i}`];
+        console.log(tnmFiles)
+        let  name_pfile = new Date().getTime() +'_'+tnmFile.name;
+        tnmFile.mv('./assets/player/' + name_pfile);
+        tnmFiles.push(name_pfile);
+    }
+    }
     
 
 
@@ -85,8 +93,7 @@ router.post('/add', function(req, res, next) {
             tnmUrl: tnmUrl,
             tnmDetail: tnmDetail,
             tnmPicture: name_tnmPicture,
-            tnmFile1: name_tnmFile1
-        }
+            tnmFile1: tnmFiles.join(',')}
 
         // insert query db
         dbConnection.query('INSERT INTO tournament SET ?', form_data, (err, result) => {
@@ -105,7 +112,7 @@ router.post('/add', function(req, res, next) {
                     tnmFile1: form_data.name_tnmFile1
                 })
             } else {
-                req.flash('success', 'tournament successfully added');
+                req.flash('success', 'ได้เพิ่มการแข่งขัน',tnmName,'เรียบร้อยแล้ว');
                 res.redirect('/tournament');
             }
         })
@@ -2940,6 +2947,8 @@ res.redirect('/tournament/match/'+tnmID);
 })
 
 router.post('/datetime',function(req,res,next){
+
+
     let date = req.body.date;
     let time = req.body.time;
     let timeend = req.body.timeend;
@@ -2949,6 +2958,7 @@ router.post('/datetime',function(req,res,next){
     const daysOfWeek = ['อาทิตย์', 'จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์'];
     const today = new Date(date);
     const currentDay = daysOfWeek[today.getDay()];
+
 
     dbConnection.query('SELECT * FROM place_opening WHERE day = ? AND placeID ='+placeID,currentDay,(error,placeopen)=>{
     dbConnection.query('SELECT * FROM matchplay WHERE pDate = ? AND ? BETWEEN time AND timeend AND ? BETWEEN time and timeend AND placeID = ?;',[date,time,timeend,placeID],(err,checkmatch)=>{

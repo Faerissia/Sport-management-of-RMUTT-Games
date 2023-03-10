@@ -924,19 +924,19 @@ console.log(rows)
    })
 
    router.get('/opening', function(req,res,next){
-    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.Rstartdate >= CURRENT_DATE() OR t.Renddate <= CURRENT_DATE() GROUP BY t.tnmID;',(error,results)=>{
+    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.Rstartdate >= CURRENT_DATE() AND t.Renddate <= CURRENT_DATE() GROUP BY t.tnmID;',(error,results)=>{
        res.render('userside/status/opening',{data:results})
     })
    })
 
    router.get('/ongoing', function(req,res,next){
-    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmStartdate >= CURRENT_DATE() OR t.tnmEnddate <= CURRENT_DATE() GROUP BY t.tnmID;',(error,results)=>{
+    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmStartdate >= CURRENT_DATE() AND t.tnmEnddate <= CURRENT_DATE() GROUP BY t.tnmID;',(error,results)=>{
        res.render('userside/status/ongoing',{data:results})
     })
    })
 
    router.get('/ending', function(req,res,next){
-    dbConnection.query('SELECT * FROM tournament WHERE st1 IS NOT NULL',(error,results)=>{
+    dbConnection.query('SELECT * FROM tournament WHERE st1 AND nd2 AND rd3 IS NOT NULL',(error,results)=>{
        res.render('userside/status/ending',{data:results})
     })
    })
