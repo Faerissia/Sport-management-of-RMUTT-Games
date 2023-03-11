@@ -49,16 +49,19 @@ router.get('/add',(req, res, next) => {
 router.post('/add', (req, res, next) =>{
     let email = req.body.email;
     let password = req.body.password;
-    let cpassword = req.body.password;
+    let cpassword = req.body.cpassword;
     let name = req.body.name;
     let lname = req.body.lname;
     let phone = req.body.phone;
     let level = req.body.level;
     let errors = false;
+    console.log("🚀 ~ file: account.js:59 ~ router.post ~ cpassword:", cpassword)
+    console.log("🚀 ~ file: account.js:61 ~ router.post ~ password:", password)
 
-    if(cpassword === password) {
+
+    if(cpassword !== password) {
         errors = true;
-        req.flash('error', 'password ไม่ตรงกัน');
+        req.flash('error', 'รหัสผ่าน ไม่ตรงกัน');
         res.render('account/add', {
             email: email,
             password: password,

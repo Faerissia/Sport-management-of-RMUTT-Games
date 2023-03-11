@@ -1,9 +1,9 @@
 <%- include("../../../partials/header") %> <%- include("../../../partials/sidebar") %>
-<div class="container-sm py-3">
+<div class="col-10 py-3">
   <!DOCTYPE html>
   <html lang="en">
     <head>
-      <title>แบบ9</title>
+      <title>สายการแข่งขัน</title>
 
       <style>
         .wrapper {
@@ -114,7 +114,8 @@
     <body>
       <h1><%= tournamentName %></h1>
 
-      <%- include("../../../partials/menu_staff.ejs") %> รอบที่ 1 <% if(data[7].score1 > data[7].score2){ %> <%= data[7].team1 %> <% }else{ %> <%= data[7].team2 %> <% } %>
+      <%- include("../../../partials/menu_staff.ejs") %> 
+
       <div class="container-sm m-0">
         <div class="wrapper">
           <!-- ตัวประกาศ -->
@@ -480,7 +481,7 @@
 
           <div class="item-text d-flex mt-3">
             <span class="text-center">รอบที่ 1</span>
-            <span class="text-center">รอบ 8 ทีมสุดท้าย</span>
+            <span class="text-center">รอบ 8 ทีม</span>
             <span class="text-center">รอบรองชิงชนะเลิศ</span>
             <span class="text-center">รอบชิงชนะเลิศ</span>
             <span class="text-center">ชนะเลิศ</span>

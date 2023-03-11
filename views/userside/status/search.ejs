@@ -31,7 +31,7 @@
                 <div class="float-end mt-5">
                 <form action="/search-result" method="post">
                     <div class="input-group">
-                    <div class="col">
+                    <div class="col me-2">
                         <select name="sport" class="form-control border border-dark">
                             <option value="">เลือกประเภทกีฬา</option>
                                 <% for(a=0;a<data.length;a++){ %>
@@ -39,7 +39,7 @@
                                     <% } %>
                             </select>
                         </div>
-                        <div class="col">
+                        <div class="col me-2">
                             <select name="status" class="form-control border border-dark">
                                 <option value="">สถานะการแข่งขัน</option>
                                         <option value="opening">เปิดรับสมัคร</option>
@@ -47,10 +47,10 @@
                                         <option value="ending">สิ้นสุดการแข่งขันแล้ว</option>
                                 </select>
                             </div>
-                            <div class="col">
+                            <div class="col me-1">
                         <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา ชื่อการแข่งขัน">
                     </div>
-                    <div class="col">
+                    <div class="col-auto me-3">
                         <button type="submit" class="btn btn-primary ">ค้นหา</button>
                     </div>
                     </div>
@@ -69,8 +69,8 @@
                     <div class="row w-100  text-center mx-auto">
                 <% if(data.length) { %>
                     <% for(let i=0; i < data.length; i++) { %>
-                            <div class="col-auto ">
-                            <div class="card mx-3 my-4 rounded-4 bg-light" style="width: 17rem">
+                            <div class="col-4 ">
+                            <div class="card mx-auto my-4 rounded-4 bg-light " style="width: 17rem">
                                 <a href="/tnmdetail/<%= data[i].tnmID %>"
                                     class="text-decoration-none text-dark  fw-bolder">
                                     <div class="card-header bg-transparent text-truncate " >

@@ -24,16 +24,42 @@
         </script>
 
         <h1>รายการแข่งขันที่ต้องบันทึกผล</h1>
-        <a href="/tournament/add" class="btn btn-primary">เพิ่มการแข่งขัน</a>
-        <form action="/tnmsave/search-tnmsave" method="post">
-            <div class="input-group">
-                วันที่แข่งขัน
-                <input type="date" name="startDate" class="form-control border border-dark">
-                <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา ชื่อการแข่งขัน">
-                
-                <button type="submit" class="btn btn-primary">ค้นหา</button>
+        <div class="row">
+
+            <div class="col">
+                <a href="/tournament/add" class="btn btn-primary">เพิ่มการแข่งขัน</a>
             </div>
-        </form>
+            <div class="col">
+    
+                <div class="row ">
+                <form action="/tnmsave/search-tnmsave" method="post">
+                    <div class="input-group">
+                            <div class="col-auto text-end my-auto me-2">
+        
+                                วันที่แข่งขัน
+                            </div>
+                            <div class="col me-2">
+                                <input type="date" name="startDate" class="form-control border border-dark">
+                                
+                            </div>
+                            <div class="col">
+                                <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา ชื่อการแข่งขัน">
+        
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary">ค้นหา</button>
+        
+                            </div>
+                        
+                            
+                    </div>
+        
+                </form>
+                </div>
+            </div>
+                
+        </div>
+
     <div class="card w-100">
         <div class="card-header">
             <ul class="nav nav-pills w-100">
