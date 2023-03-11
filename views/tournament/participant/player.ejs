@@ -55,7 +55,10 @@
             </div><% data[0].tnmID %>
             <div class="form-group">
                 <label>เอกสารยืนยันตัวตน:</label>
-                <a href="../../player/<%= data[0].playerFile1%>" download="<%= data[0].playerFile1 %>"><%= data[0].playerFile1 %></a>
+                <% const file = data[0].playerFile1.split(','); %>
+                <% for(let j=0;j<file.length;j++){ %>
+                <a href="../doc/<%= file[j] %>" download="<%= file[j] %>">ไฟล์ <%=i+1%></a>
+                <% } %>
             </div>
             <div class="form-group" style="margin-top: 10px;">
                 <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>

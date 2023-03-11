@@ -4,7 +4,7 @@ let dbConnection = require('../util/db');
 
 
 
-router.post('/search-uni', (req, res) => {
+router.post('/search-uni', function(req, res, next) {
     let query = req.body.search;
     if(!query) {
         res.redirect('/uni');
@@ -13,17 +13,17 @@ router.post('/search-uni', (req, res) => {
         let data = ['%' + query + '%'];
         dbConnection.query(sql, data, (err, results) => {
             if(err) throw err;
-            res.render('uni', {data: results,status_login: req.session.loggedin,user: user});
+            res.render('uni', {data: results});
         });
     }
 });
 
 
 // display uni page
-router.get('/', (req, res, next) => {
+router.get('/', function(req, res, next) {
     dbConnection.query('SELECT university.uniID, university.name, COUNT(faculty.uniID) AS count ,university.status FROM university LEFT JOIN faculty ON university.uniID = faculty.uniID GROUP BY university.uniID ORDER BY uniID asc', (err, rows) => {
-        if(role === 'เจ้าหน้าที่'){
-            res.render('uni', { data: rows,status_login: req.session.loggedin,user: user});
+        if(req.session.level === 'เจ้าหน้าที่'){
+            res.render('uni', { data: rows});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
@@ -32,11 +32,11 @@ router.get('/', (req, res, next) => {
 })
 
 //display add uni page
-router.get('/add',(req, res, next) => {
-    if(role === 'เจ้าหน้าที่'){
+router.get('/add', function(req, res, next) {
+    if(req.session.level === 'เจ้าหน้าที่'){
         res.render('uni/add',{
         name:'',
-        status:'',status_login: req.session.loggedin,user: user
+        status:''
     })
     }else{
         req.flash('error','ไม่สามารถเข้าถึงได้');
@@ -45,7 +45,7 @@ router.get('/add',(req, res, next) => {
 })
 
 // add new uni
-router.post('/add', (req, res, next) =>{
+router.post('/add', function(req, res, next){
     let name = req.body.name;
     let status = req.body.status;
     let errors = false;
@@ -85,7 +85,7 @@ router.post('/add', (req, res, next) =>{
 })
 
 // display edit uni page
-router.get('/edit/(:uniID)', (req, res, next) => {
+router.get('/edit/(:uniID)', function(req, res, next) {
     let uniID = req.params.uniID;
 
     dbConnection.query('SELECT * FROM university WHERE uniID = ' + uniID, (err, rows, fields) => {
@@ -97,14 +97,14 @@ router.get('/edit/(:uniID)', (req, res, next) => {
                 title: 'แก้ไข มหาวิทยาลัย',
                 uniID: rows[0].uniID,
                 name: rows[0].name,
-                status: rows[0].status,status_login: req.session.loggedin,user: user
+                status: rows[0].status
             })
         }
     });
 })
 
 // update book page
-router.post('/update/:uniID', (req, res, next) => {
+router.post('/update/:uniID', function(req, res, next) {
     let uniID = req.params.uniID;
     let name = req.body.name;
     let status = req.body.status;
@@ -143,7 +143,7 @@ router.post('/update/:uniID', (req, res, next) => {
 })
 
 // delete uni
-router.get('/delete/(:uniID)', (req, res, next) => {
+router.get('/delete/(:uniID)', function(req, res, next) {
     let uniID = req.params.uniID;
 
     dbConnection.query('DELETE FROM university WHERE uniID = ' + uniID, (err, result) => {

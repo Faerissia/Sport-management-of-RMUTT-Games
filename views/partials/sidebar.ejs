@@ -4,7 +4,8 @@
             <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-3 text-white min-vh-100">
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
                     id="menu">
-                    <% if(role==='ผู้ดูแลระบบ'){ %>
+
+                    <% if(level === 'ผู้ดูแลระบบ'){ %>
                         <li class="nav-item">
                             <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
                                 <li class="w-100">
@@ -20,65 +21,66 @@
                                  </li>
                             </ul>
                         </li>
-                    <% } else{ %>
-                    <li class="nav-item">
-                        <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
-                            <li class="w-100">
-                                <a href="/dashboard" class="nav-link px-0 text-white"> แดชบอร์ด
-                                        <hr class="my-2  border border-1 border-white">
-                                    </a>
-                            </li>
-                            <li class="w-100">
-                                <a href="/sport" class="nav-link px-0 text-white"> กีฬา
-                                        <hr class="my-2  border border-1 border-white">
-                                    </a>
-                            </li>
-                            <li class="w-100">
-                                <a href="/tnmcheck" class="nav-link px-0 text-white"> การแข่งขันที่ต้องตรวจข้อมูลผู้สมัคร
-                                        <hr class="my-2  border border-1 border-white">
-                                    </a>
-                            </li>
-                            <li class="w-100">
-                                <a href="/tournament" class="nav-link px-0 text-white"> การแข่งขันที่ต้องกำหนดรูปแบบ
-                                        <hr class="my-2  border border-1 border-white">
-                                    </a>
-                            </li>
-                            <li class="w-100">
-                                <a href="/tnmsetdp" class="nav-link px-0 text-white"> การแข่งขันที่ต้องกำหนดวันเวลาและสถานที่
-                                        <hr class="my-2  border border-1 border-white">
-                                    </a>
-                            </li>
-                            <li class="w-100">
-                                <a href="/tnmsave" class="nav-link px-0 text-white"> การแข่งขันที่ต้องบันทึกผล
-                                        <hr class="my-2  border border-1 border-white">
-                                    </a>
-                            </li>
-                            <li class="w-100">
-                                <a href="/place" class="nav-link px-0 text-white"> สถานที่แข่งขัน
-                                        <hr class="my-2  border border-1 border-white">
-                                    </a>
-                            </li>
-                            <li class="w-100">
-                                <a href="/placetable" class="nav-link px-0 text-white"> ตารางการใช้งานสถานที่แข่งขัน
-                                        <hr class="my-2  border border-1 border-white">
-                                    </a>
-                            </li>
-                            <li class="w-100">
-                                <a href="/uni" class="nav-link px-0 text-white"> มหาวิทยาลัย/คณะ
-                                        <hr class="my-2  border border-1 border-white">
-                                    </a>
-                            </li>
-                            <li class="w-100">
-                               <a href="/tnmsearch" class="nav-link px-0 text-white"> ประวัติการแข่งขัน
-                                        
-                                        <hr class="my-2  border border-1 border-white">
-                                    </a>
-                            </li>
-                            
-                            
-                        </ul>
-                    </li>
-                    <% } %>
+                    <% }else{ %>
+                        <li class="nav-item">
+                            <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                                <li class="w-100">
+                                    <a href="/dashboard" class="nav-link px-0 text-white"> แดชบอร์ด
+                                            <hr class="my-2  border border-1 border-white">
+                                        </a>
+                                </li>
+                                <li class="w-100">
+                                    <a href="/sport" class="nav-link px-0 text-white"> กีฬา
+                                            <hr class="my-2  border border-1 border-white">
+                                        </a>
+                                </li>
+                                <li class="w-100">
+                                    <a href="/tnmcheck" class="nav-link px-0 text-white"> การแข่งขันที่ต้องตรวจข้อมูลผู้สมัคร
+                                            <hr class="my-2  border border-1 border-white">
+                                        </a>
+                                </li>
+                                <li class="w-100">
+                                    <a href="/tournament" class="nav-link px-0 text-white"> การแข่งขันที่ต้องกำหนดรูปแบบ
+                                            <hr class="my-2  border border-1 border-white">
+                                        </a>
+                                </li>
+                                <li class="w-100">
+                                    <a href="/tnmsetdp" class="nav-link px-0 text-white"> การแข่งขันที่ต้องกำหนดวันเวลาและสถานที่
+                                            <hr class="my-2  border border-1 border-white">
+                                        </a>
+                                </li>
+                                <li class="w-100">
+                                    <a href="/tnmsave" class="nav-link px-0 text-white"> การแข่งขันที่ต้องบันทึกผล
+                                            <hr class="my-2  border border-1 border-white">
+                                        </a>
+                                </li>
+                                <li class="w-100">
+                                    <a href="/place" class="nav-link px-0 text-white"> สถานที่แข่งขัน
+                                            <hr class="my-2  border border-1 border-white">
+                                        </a>
+                                </li>
+                                <li class="w-100">
+                                    <a href="/placetable" class="nav-link px-0 text-white"> ตารางการใช้งานสถานที่แข่งขัน
+                                            <hr class="my-2  border border-1 border-white">
+                                        </a>
+                                </li>
+                                <li class="w-100">
+                                    <a href="/uni" class="nav-link px-0 text-white"> มหาวิทยาลัย/คณะ
+                                            <hr class="my-2  border border-1 border-white">
+                                        </a>
+                                </li>
+                                <li class="w-100">
+                                   <a href="/tnmsearch" class="nav-link px-0 text-white"> ประวัติการแข่งขัน
+                                            
+                                            <hr class="my-2  border border-1 border-white">
+                                        </a>
+                                </li>
+                                
+                                
+                            </ul>
+                        </li>
+                            <% } %>
+                    
 
             </div>
         </div>

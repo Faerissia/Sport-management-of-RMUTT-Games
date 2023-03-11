@@ -271,9 +271,6 @@ router.post("/value_date", (req, res) => {
     console.table(value);
 
     res.render("dashboard", {
-      status_login: req.session.loggedin,
-      user: user,
-      role: role,
       result: result,
       count: value,
       display_month,
@@ -287,8 +284,8 @@ router.post("/value_date", (req, res) => {
 
 // default 
 router.get("/", (req, res, err) => {
-  if (req.session.loggedin) {
-    if (role === "เจ้าหน้าที่") {
+  if (req.session.username) {
+    if (req.session.level === "เจ้าหน้าที่") {
       value_select= []
       let value = [];
       //default date
@@ -455,9 +452,6 @@ router.get("/", (req, res, err) => {
         // console.log("resuvaluelt");
         // console.table(value);
         res.render("dashboard", {
-          status_login: req.session.loggedin,
-          user: user,
-          role: role,
           result: result,
           count: value,
           display_month,

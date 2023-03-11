@@ -188,13 +188,6 @@
                             <input type="text" class="form-control border-dark  my-auto" id="validation"
                                 value="<%= data[i].playerIDCard %>" name="playerIDCard" disabled>
                         </div>
-                        <div class="col-2 text-end">
-                            <label for="validation" class="col-form-label">รหัสนักศีกษา</label>
-                        </div>
-                        <div class="col-auto">
-                            <input type="text" class="form-control border-dark" id="validation" value="<%= data[i].playerStudentID %>"
-                                name="playerStudentID" autocomplete="off" disabled>
-                        </div>
                     </div>
 
                     <!-- row -->
@@ -204,7 +197,10 @@
                                 <label for="validationFile" class="col-form-label">เอกสารยืนยันตัวตน</label>
                             </div>
                             <div class="col-auto">
-                                <a href="../../player/<%= data[i].playerFile1%>" download="<%= data[i].playerFile1 %>"><%= data[i].playerFile1 %></a>
+                                <% const file = data[0].playerFile1.split(','); %>
+                                <% for(let j=0;j<file.length;j++){ %>
+                                <a href="../doc/<%= file[j] %>" download="<%= file[j] %>">ไฟล์ <%=i+1%></a>
+                                <% } %>
                             </div>
                         </div>
                     </div>

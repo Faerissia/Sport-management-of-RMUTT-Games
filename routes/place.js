@@ -4,7 +4,7 @@ let router = express.Router();
 let dbConnection = require('../util/db');
 
 
-router.post('/search-place', (req, res) => {
+router.post('/search-place', function(req, res, next) {
     let query = req.body.search;
     if(!query) {
         res.redirect('/place');
@@ -13,17 +13,17 @@ router.post('/search-place', (req, res) => {
         let data = ['%' + query + '%'];
         dbConnection.query(sql, data, (err, results) => {
             if(err) throw err;
-            res.render('place', {data: results,status_login: req.session.loggedin,user: user});
+            res.render('place', {data: results});
         });
     }
 });
 
 // display place page
-router.get('/', (req, res, next) => {
+router.get('/', function(req, res, next) {
     dbConnection.query('SELECT * FROM place ORDER BY placeID asc', (err, rows) => {
-        if(req.session.loggedin){
-        if(role === 'เจ้าหน้าที่'){
-            res.render('place', { data: rows,status_login: req.session.loggedin,user: user });
+        if(req.session.username){
+        if(req.session.level === 'เจ้าหน้าที่'){
+            res.render('place', { data: rows});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
@@ -35,11 +35,11 @@ router.get('/', (req, res, next) => {
 })
 
 //display add place page
-router.get('/add',(req, res, next) => {
+router.get('/add', function(req, res, next) {
     dbConnection.query('SELECT typeID,nameType FROM sport_type ORDER BY typeID asc', (err, rows) => {
-        if(req.session.loggedin){    
-        if(role === 'เจ้าหน้าที่'){
-                res.render('place/add',{data: rows,status_login: req.session.loggedin,user: user})
+        if(req.session.username){    
+        if(req.session.level === 'เจ้าหน้าที่'){
+                res.render('place/add',{data: rows})
             }else{
                 req.flash('error','ไม่มีสิทธิ์เข้าถึง')
                 res.redirect('dashboard');
@@ -51,7 +51,7 @@ router.get('/add',(req, res, next) => {
 })
 
 // add new place
-router.post('/add', (req, res, next) =>{
+router.post('/add', function(req, res, next) {
     let placeName = req.body.placeName;
     let typeID = req.body.typeID;
     let placeUrl = req.body.placeUrl;
@@ -107,10 +107,10 @@ router.post('/add', (req, res, next) =>{
 )
 
 // display edit place page
-router.get('/edit/(:placeID)', (req, res, next) => {
+router.get('/edit/(:placeID)', function(req, res, next) {
     let placeID = req.params.placeID;
     dbConnection.query('SELECT s.*,p.* FROM place p LEFT JOIN sport_type s ON s.typeID = p.typeID WHERE placeID = ' + placeID, (err, rows, fields) => {
-        if(role === 'เจ้าหน้าที่'){
+        if(req.session.level === 'เจ้าหน้าที่'){
         if (rows.length <= 0) {
             req.flash('error', 'place not found with id = ' + placeID)
             res.redirect('/place');
@@ -123,7 +123,7 @@ router.get('/edit/(:placeID)', (req, res, next) => {
                 typeID: rows[0].typeID,
                 placeUrl: rows[0].placeUrl,
                 placeFile: rows[0].placeFile,
-                placeDetail: rows[0].placeDetail,status_login: req.session.loggedin,user: user
+                placeDetail: rows[0].placeDetail
             })
         }
     }else{
@@ -134,7 +134,7 @@ router.get('/edit/(:placeID)', (req, res, next) => {
 })
 
 // update place page
-router.post('/update/(:placeID)', (req, res, next) => {
+router.post('/update/(:placeID)', function(req, res, next) {
     let placeID = req.params.placeID;
     let placeName = req.body.placeName;
     let typeID = req.body.typeID;
@@ -171,7 +171,7 @@ router.post('/update/(:placeID)', (req, res, next) => {
 })
 
 // delete place
-router.get('/delete/(:placeID)', (req, res, next) => {
+router.get('/delete/(:placeID)', function(req, res, next) {
     let placeID = req.params.placeID;
 
     dbConnection.query('DELETE FROM place WHERE placeID = ' + placeID, (err, result) => {
@@ -185,15 +185,15 @@ router.get('/delete/(:placeID)', (req, res, next) => {
     })
 })
 
-router.get('/page/(:placeID)', (req, res, next) => {
+router.get('/page/(:placeID)', function(req, res, next) {
     let placeID = req.params.placeID;
     dbConnection.query('SELECT p.*,s.* FROM place p LEFT JOIN sport_type s ON p.typeID = s.typeID WHERE placeID =' + placeID, (err, rows) => {
-        if(role === 'เจ้าหน้าที่'){
+        if(req.session.level === 'เจ้าหน้าที่'){
         if (rows.length <= 0) {
             req.flash('error', 'ไม่พบสถานที่แข่งขัน ' + placeID)
             res.redirect('/place');
         } else {
-            res.render('place/page', { data: rows,status_login: req.session.loggedin,user: user })
+            res.render('place/page', { data: rows})
         }
     }else{
         req.flash('error','ไม่สามารถเข้าถึงได้');

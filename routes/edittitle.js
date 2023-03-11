@@ -1,16 +1,13 @@
 let express = require('express');
 let router = express.Router();
 
-router.get("/", (req, res, err) => {
-    if (req.session.loggedin) {
+router.get("/", function(req, res, err) {
+    if (req.session.username) {
       res.render("titleedit", {
-        status_login: req.session.loggedin,
-        process,
-        user: user,
-        role: role,
+        process
       });
     } else {
-      res.redirect("error404");
+      res.redirect("/login");
     }
   });
 

@@ -2,7 +2,7 @@ let express = require('express');
 let router = express.Router();
 let dbConnection = require('../util/db');
 
-router.post('/search-account', (req, res) => {
+router.post('/search-account', function(req, res, next) {
     let query = req.body.search;
     if(!query){
         res.redirect('/account');
@@ -11,29 +11,24 @@ router.post('/search-account', (req, res) => {
         let like = ['%' + query + '%','%' + query +'%'];
     dbConnection.query(sql, like, (err, results) => {
         if(err) throw err;
-        res.render('account', {data: results,status_login: req.session.loggedin,user: user});
+        res.render('account', {data: results});
     });
 }
 });
 
 // display account page
-router.get('/', (req, res, next) => {
+router.get('/', function(req, res, next) {
+    if(req.session.username){
         dbConnection.query('SELECT * FROM account ORDER BY accountID asc', (err, rows) => {
-            if(req.session.loggedin){
-                if(role === 'ผู้ดูแลระบบ'){
-                    res.render('account', { data: rows ,status_login: req.session.loggedin,user: user});
-                }else{
-                    req.flash('error','ไม่สามารถเข้าถึงได้');
-                    res.redirect('login');
-                }
-            }else{
-                res.redirect('error404');
-            }
-        })
+                    res.render('account', { data: rows});
+        })}
+        else{
+            res.redirect('/login');
+        }
     })
 
 //display add account page
-router.get('/add',(req, res, next) => {
+router.get('/add',function(req, res, next) {
     res.render('account/add',{
         email:'',
         password:'',
@@ -41,12 +36,13 @@ router.get('/add',(req, res, next) => {
         lname:'',
         phone:'',
         cpassword:'',
-        level:'',status_login: req.session.loggedin,user: user});
+        level:''});
 })
 
 
+
 // add new account
-router.post('/add', (req, res, next) =>{
+router.post('/add', async function(req, res, next){
     let email = req.body.email;
     let password = req.body.password;
     let cpassword = req.body.cpassword;
@@ -55,13 +51,18 @@ router.post('/add', (req, res, next) =>{
     let phone = req.body.phone;
     let level = req.body.level;
     let errors = false;
-    console.log("🚀 ~ file: account.js:59 ~ router.post ~ cpassword:", cpassword)
-    console.log("🚀 ~ file: account.js:61 ~ router.post ~ password:", password)
 
+    const usernamecheck = ['%' + email + '%'];
 
-    if(cpassword !== password) {
-        errors = true;
-        req.flash('error', 'รหัสผ่าน ไม่ตรงกัน');
+    let checkemail = await new Promise((resolve,reject)=> { 
+        dbConnection.query('SELECT * FROM account WHERE email LIKE ?',usernamecheck,(error,checkemail)=>{
+        if (error) reject(error);
+        resolve(checkemail);
+    })
+    })
+
+    if(checkemail.length){
+        req.flash('error','อีเมลนี้ได้ถูกใช้งานแล้ว');
         res.render('account/add', {
             email: email,
             password: password,
@@ -69,10 +70,25 @@ router.post('/add', (req, res, next) =>{
             lname: lname,
             phone: phone,
             level: level,
-            status_login: req.session.loggedin,
             user: user
         })
     }
+    
+
+    if(cpassword !== password) {
+        errors = true;
+        req.flash('error', 'password ไม่ตรงกัน');
+        res.render('account/add', {
+            email: email,
+            password: password,
+            name: name,
+            lname: lname,
+            phone: phone,
+            level: level,
+        })
+    }
+
+    
 
     // if no error
     if(!errors) {
@@ -96,12 +112,10 @@ router.post('/add', (req, res, next) =>{
                     lname: form_data.lname,
                     phone: form_data.phone,
                     level: form_data.level,
-                    status: form_data.status,
-                    status_login: req.session.loggedin,
-                    user: user
+                    status: form_data.status
                 })
             } else {
-                req.flash('success', 'เพิ่มบัญชีผู้ใช้งานเรียบร้อยแล้ว!');
+                req.flash('success', 'ได้เพิ่มบัญชีของ',name,lname,'เรียบร้อยแล้ว!');
                 res.redirect('/account');
             }
         })
@@ -109,7 +123,7 @@ router.post('/add', (req, res, next) =>{
 })
 
 // display edit account page
-router.get('/edit/(:accountID)', (req, res, next) => {
+router.get('/edit/(:accountID)', function(req, res, next)  {
     let accountID = req.params.accountID;
     dbConnection.query('SELECT * FROM account WHERE accountID = ' + accountID, (err, rows, fields) => {
         if (rows.length <= 0) {
@@ -125,16 +139,14 @@ router.get('/edit/(:accountID)', (req, res, next) => {
                 lname: rows[0].lname,
                 phone: rows[0].phone,
                 level: rows[0].level,
-                status: rows[0].status,
-                status_login: req.session.loggedin,
-                user: user
+                status: rows[0].status
             })
         }
     });
 })
 
 // update account page
-router.post('/update/:accountID', (req, res, next) => {
+router.post('/update/:accountID', function(req, res, next) {
     let accountID = req.params.accountID;
     let email = req.body.email;
     let password = req.body.password;
@@ -156,9 +168,7 @@ router.post('/update/:accountID', (req, res, next) => {
             lname: lname,
             phone: phone,
             level: level,
-            status: status,
-            status_login: req.session.loggedin,
-            user: user
+            status: status
         })
     }
     // if no error
@@ -184,9 +194,7 @@ router.post('/update/:accountID', (req, res, next) => {
                     lname: form_data.lname,
                     phone: form_data.phone,
                     level: form_data.level,
-                    status: form_data.status,
-                    status_login: req.session.loggedin,
-                    user: user
+                    status: form_data.status
                 })
             } else {
                 req.flash('success', 'แก้ไขข้อมูลบัญชีผู้ใช้งานเรียบร้อยแล้ว');
@@ -197,7 +205,7 @@ router.post('/update/:accountID', (req, res, next) => {
 })
 
 // delete account
-router.get('/delete/(:accountID)', (req, res, next) => {
+router.get('/delete/(:accountID)', function(req, res, next) {
     let accountID = req.params.accountID;
 
     dbConnection.query('DELETE FROM account WHERE accountID = ' + accountID, (err, result) => {
@@ -211,7 +219,7 @@ router.get('/delete/(:accountID)', (req, res, next) => {
     })
 })
 
-router.get('/page/(:accountID)',(req, res, next) => {
+router.get('/page/(:accountID)', function(req, res, next) {
     let accountID = req.params.accountID;
     dbConnection.query('SELECT * FROM account WHERE accountID = ' + accountID, (err, rows, fields) => {
         if (rows.length <= 0) {
@@ -226,9 +234,7 @@ router.get('/page/(:accountID)',(req, res, next) => {
                 lname: rows[0].lname,
                 phone: rows[0].phone,
                 level: rows[0].level,
-                status: rows[0].status,
-                status_login: req.session.loggedin,
-                user: user
+                status: rows[0].status
             })
         }
     });

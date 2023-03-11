@@ -24,9 +24,7 @@ const tnmsave = require('./routes/tnmsave');
 const uindex = require('./routes/userside/uindex');
 const placetable = require('./routes/placetable');
 
-global.status_login;
-global.role;
-global.user;
+
 
 
 // all environments
@@ -42,28 +40,35 @@ app.use(express.static(path.join(__dirname,"assets")))
 app.use(flash());
 app.use(session({
   secret: 'secret',
-  resave: 'true',
+  resave: false,
   saveUninitialized: true,
   cookie: { maxAge: 60 * 60 * 2000 }
 }))
+app.use(function(req, res, next) {
+  res.locals.username = req.session.username;
+  res.locals.level = req.session.level;
+  next();
+});
 
 
-app.post('/change-title', function(req, res) {
+
+
+app.post('/change-title', function(req, res, next) {
   process.title = req.body.title;
   fs.writeFileSync(path.join(__dirname, 'title.txt'), process.title);
   res.redirect('/dashboard');
 });
 
-app.get('/login',(req, res) => {
-  if (req.session.loggedin) {
+app.get('/login', function(req, res) {
+  if (req.session.username) {
     res.redirect('dashboard');
   } else {
-    res.render('login',{status_login: req.session.loggedin});
+    res.render('login');
   }
   })
 
 
-app.post('/login', (req, res) => {
+app.post('/login', function(req, res, next) {
   var email = req.body.email;
   var password = req.body.password;
 
@@ -73,13 +78,11 @@ app.post('/login', (req, res) => {
       [email, password],
       function (err, results) {
         if (results.length > 0) {
-          var active = results[0].status;
-          role = results[0].level;
+          const active = results[0].status;
+          const role = results[0].level;
           if(active === 'ใช้งาน'){
-          req.session.loggedin = true;
-          req.session.email = email;
-          req.session.password = password;
-          user = results[0].name + " " + results[0].lname;
+          req.session.username = results[0].name + " " + results[0].lname;
+          req.session.level = results[0].level;
           console.log(role)
           if(role === 'ผู้ดูแลระบบ'){
             res.redirect("/account");
@@ -102,7 +105,7 @@ app.post('/login', (req, res) => {
   }
 });
 
-app.get('/logout', (req, res) => {
+app.get('/logout', function(req, res, next) {
   req.session.destroy(function (err) {
     res.redirect('login');
   })
@@ -110,8 +113,8 @@ app.get('/logout', (req, res) => {
 
 app.use(bodyParser. text({type: '/'}));
 
-app.get('/error404', (req, res) => {
-    res.render('error',{status_login: req.session.loggedin});
+app.get('/error404', function(req, res, next) {
+    res.render('error');
 })
 
 app.use('/',uindex);

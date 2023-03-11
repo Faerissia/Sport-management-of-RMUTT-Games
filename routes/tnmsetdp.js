@@ -5,7 +5,7 @@ const fileUpload = require('express-fileupload');
 
 router.use(fileUpload());
 
-router.post('/search-tnmsetdp', (req, res) => {
+router.post('/search-tnmsetdp', function(req, res, next) {
     let query = req.body.search;
     if(!query){
         res.redirect('/tnmsetdp');
@@ -15,17 +15,17 @@ router.post('/search-tnmsetdp', (req, res) => {
     
     dbConnection.query(sql, like, (err, results) => {
         if(err) throw err;
-        res.render('tnmsetdp', {data: results,status_login: req.session.loggedin,user: user});
+        res.render('tnmsetdp', {data: results});
     });
 }
 });
 
 // display tnmsetdp page
-router.get('/', (req, res, next) => {
+router.get('/', function(req, res, next) {
     dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportName,t.Renddate,SUM(CASE WHEN m.matchID IS NULL THEN 0 ELSE 1 END) AS totalmatch,SUM(CASE WHEN m.pDate IS NULL THEN 1 ELSE 0 END) AS notset,t.tnmTypegame FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN matchplay m ON t.tnmID = m.tnmID GROUP BY t.tnmID', (err, rows) => {
-        if(req.session.loggedin){
-        if(role === 'เจ้าหน้าที่'){
-            res.render('tnmsetdp', { data: rows,status_login: req.session.loggedin,user: user });
+        if(req.session.username){
+        if(req.session.level === 'เจ้าหน้าที่'){
+            res.render('tnmsetdp', { data: rows});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
             res.redirect('login');
@@ -37,10 +37,11 @@ router.get('/', (req, res, next) => {
 })
 
 //display add tnmsetdp page
-router.get('/add', (req, res, next) => {
+router.get('/add', function(req, res, next) {
     dbConnection.query('SELECT sportID,sportName FROM sport ORDER BY sportID asc', (err, rows) => {
-        if(role === 'เจ้าหน้าที่'){
-            res.render('tournament/add', { data: rows,
+        if(req.session.level === 'เจ้าหน้าที่'){
+            res.render('tournament/add', { 
+                    data: rows,
                     tnmName:'',
                     sportID:'',
                     Rstartdate:'',
@@ -58,7 +59,7 @@ router.get('/add', (req, res, next) => {
 })
 
 // delete tnmsetdp
-router.get('/delete/(:tnmID)', (req, res, next) => {
+router.get('/delete/(:tnmID)', function(req, res, next) {
     let tnmID = req.params.tnmID;
 
     dbConnection.query('DELETE FROM tournament WHERE tnmID = ' + tnmID, (err, result) => {
