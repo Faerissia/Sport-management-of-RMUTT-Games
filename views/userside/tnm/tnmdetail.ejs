@@ -33,7 +33,7 @@
                                 <%= data[0].tnmName %>
                             </p>
                             <% let date = new Date()%>
-                            <% if(date > data[0].Rstartdate || date < data[0].Renddate) { %>
+                            <% if(date >= data[0].Rstartdate && date <= data[0].Renddate) { %>
                             <% if(data[0].sportPlaynum > 1){ %>
                                 <a class="btn btn-warning " href="/teamreg/<%= data[0].tnmID %>">สมัครแข่งขัน</a>
                                 <% }else{ %>
