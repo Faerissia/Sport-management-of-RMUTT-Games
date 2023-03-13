@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 10, 2023 at 04:17 PM
+-- Generation Time: Mar 13, 2023 at 01:03 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -670,7 +670,9 @@ INSERT INTO `player` (`playerID`, `playerIDCard`, `playerFName`, `playerLName`, 
 (350, '6504648674949', 'ปฏิพล', 'คำลือ', 'ชาย', '2023-02-21', '0984984162', 'firstlnw0099@gmail.com', 28, NULL, '1676969165180_b3me2cq1z1b71.png,1676969165180_4584093.png', 55, NULL, 'accept', '2023-02-21'),
 (351, '1980494894940', 'ธีรนัย', 'Ruaklittichai', 'ชาย', '2023-02-20', '0984926565', 'firstlnw0099@gmail.com', 1, NULL, '1676900567538_66kebb6ah7k8ejiakacgi.jpg', 55, NULL, 'accept', '2023-02-20'),
 (352, '1651608987497', 'นนทพัทธ์', 'ฤกษ์ฤทธิชัย', 'ชาย', '2023-03-09', '0984956546', 'firstlnw0099@gmail.com', 4, NULL, '1678460251414_b3me2cq1z1b71.png,1678460251416_4584093.png', 59, NULL, 'wait', '2023-03-10'),
-(353, '6301648964997', 'วสวิญญ์', 'รัตน์โชติ', 'ชาย', '2023-03-10', '0624283195', 'firstlnw0099@gmail.com', 8, NULL, '1678460446496_b3me2cq1z1b71.png,1678460446499_à¸ªà¸à¸²à¸¡.png', 59, NULL, 'wait', '2023-03-10');
+(353, '6301648964997', 'วสวิญญ์', 'รัตน์โชติ', 'ชาย', '2023-03-10', '0624283195', 'firstlnw0099@gmail.com', 8, NULL, '1678460446496_b3me2cq1z1b71.png,1678460446499_à¸ªà¸à¸²à¸¡.png', 59, NULL, 'wait', '2023-03-10'),
+(354, '2160849849409', 'วสวิญญ์', 'รัตน์โชติ', 'ชาย', '2023-03-08', '0624283195', 'firstlnw0099@gmail.com', 3, NULL, '1678627285829_rmutt sport mobile splash.png', 28, NULL, 'wait', '2023-03-12'),
+(355, '5106196897979', 'วสวิญญ์', 'รัตน์โชติ', 'ชาย', '2023-03-08', '0624283195', 'firstlnw0099@gmail.com', 4, NULL, '1678629739178_rmutt sport mobile splash.png', 28, NULL, 'wait', '2023-03-12');
 
 -- --------------------------------------------------------
 
@@ -1024,7 +1026,7 @@ ALTER TABLE `place_opening`
 -- AUTO_INCREMENT for table `player`
 --
 ALTER TABLE `player`
-  MODIFY `playerID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=354;
+  MODIFY `playerID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=356;
 
 --
 -- AUTO_INCREMENT for table `sport`
