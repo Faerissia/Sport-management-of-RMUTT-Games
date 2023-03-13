@@ -26,7 +26,7 @@
                     <table class="table  w-75 mx-auto my-5 border  border-dark table-striped table-hover text-center align-middle">
                     <thead style="background-color: rgb(96, 166, 253); ">
                         <tr>
-                            <th width="100px">ลำดับที่</th>
+                            <th  width="100px">ลำดับที่</th>
                             <th scope="col">ชื่อทีม</th>
                             <th width="200px">คะแนน</th>
                         </tr>
@@ -37,7 +37,7 @@
                                 <th scope="row"><%= i+1 %></th>
                                 <td><%= data[i].teamName %></td>
                                 <input type="hidden" name="matchID" value="<%= data[i].matchID%>">
-                                <td><input type="text" name="score" class="form-control" value="<%= data[i].score %>" required></td>
+                                <td class="align-middle text-center"><input type="text" name="score" class="form-control text-center" value="<%= data[i].score %>" required></td>
                             </tr>
                         <% } %>
                     </tbody>

@@ -92,45 +92,48 @@
   <hr style="height:2px;border-width:0;color:black;background-color:black">
 
   <% if(typeof data[0] !== 'undefined' && data[0].tnmID !== null) { %>
-    <table class="table">
+    <div class="table-responsive">
+      <table class="table">
         <thead style="background-color: #6DAFFE;">
             <tr>
-                <th width="50">ลำดับ</th>
-                <th width="350">ประเภทกีฬา</th>
-                <th>ชื่อการแข่งขัน</th>
-                <th width="200">วันที่แข่งขัน</th>
-                <th width="100px">เหรียญ</th>
+                <th class="align-middle" width="50">ลำดับ</th>
+                <th class="align-middle text-center" width="350">ประเภทกีฬา</th>
+                <th class="align-middle text-center"  >ชื่อการแข่งขัน</th>
+                <th class="align-middle text-center" width="200">วันที่แข่งขัน</th>
+                <th class="align-middle text-center" width="100px">เหรียญ</th>
             </tr>
         </thead>
         <tbody>
             <% for(let i=0; i < data.length; i++) { %>
                 <tr>
-                    <th scope="row"><%= i+1 %></th>
-                    <td><%= data[i].sportName %></td>
-                    <td><%= data[i].tnmName %></td>
+                    <th class="align-middle text-center" scope="row"><%= i+1 %></th>
+                    <td class="align-middle text-center"><%= data[i].sportName %></td>
+                    <td class="align-middle text-center"><%= data[i].tnmName %></td>
                     <% if(data[i].tnmstartDate){ %>
-                    <td><%= data[i].tnmstartDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
+                    <td class="align-middle text-center"><%= data[i].tnmstartDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
                     <% } %>
                     <% if(data[i].st1){%>
-                        <td scope="col"><iconify-icon icon="noto:1st-place-medal" width="40" height="40"></iconify-icon></td>
+                        <td scope="col" class="align-middle text-center"><iconify-icon icon="noto:1st-place-medal" width="40" height="40"></iconify-icon></td>
                     <% }else if(data[i].nd2){ %>
-                        <td scope="col"><iconify-icon icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon></td>
+                        <td scope="col" class="align-middle text-center"><iconify-icon icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon></td>
                         <% }else if (data[i].rd3){ %>
-                            <td scope="col"><iconify-icon icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon></td>
+                            <td scope="col" class="align-middle text-center"><iconify-icon icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon></td>
                             <% } %>
                     <% if(data[i].place === '1st'){ %>
-                      <td scope="col"><iconify-icon icon="noto:1st-place-medal" width="40" height="40"></iconify-icon></td>
+                      <td scope="col" class="align-middle text-center"><iconify-icon icon="noto:1st-place-medal" width="40" height="40"></iconify-icon></td>
                       <% }else if(data[i].place === '2nd'){ %>
-                        <td scope="col"><iconify-icon icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon></td>
+                        <td scope="col" class="align-middle text-center"><iconify-icon icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon></td>
                         <% }else if(data[i].place === '3rd'){ %>
-                          <td scope="col"><iconify-icon icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon></td>
+                          <td scope="col" class="align-middle text-center"><iconify-icon icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon></td>
                           <% }else if(data[i].place === null){ %>
-                            <td scope="col" style="height: 40px; width: 40px;"></td>
+                            <td scope="col" class="align-middle text-center" style="height: 40px; width: 40px;"></td>
                             <% } %>
                 </tr>
                 <% } %>
         </tbody>
     </table>
+    </div>
+    
     <% } %>
 
 

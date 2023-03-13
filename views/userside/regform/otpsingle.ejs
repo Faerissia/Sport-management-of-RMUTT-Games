@@ -1,23 +1,163 @@
 <%- include("../../partials/header") %>
 <div class="col-10 py-3 mx-auto">
-            <!DOCTYPE html>
-            <html lang="en">
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <title>ยืนยัน OTP</title>
+    </head>
 
-            <head>
-                <title>ยืนยัน OTP</title>
-            </head>
+    <body>
+      <% if (messages.error) { %>
+      <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+      <% } %>
 
-            <body>
-                <% if (messages.error) { %>
-                    <div class="alert alert-danger" role="alert">
-                        <%= messages.error %>
-                    </div>
-                    <% } %>
-                
+      <script>
+        function submitForm() {
+          // รับค่าจากฟิลด์แต่ละตัว
+          var codeBox1Value = document.getElementById('codeBox1').value;
+          var codeBox2Value = document.getElementById('codeBox2').value;
+          var codeBox3Value = document.getElementById('codeBox3').value;
+          var codeBox4Value = document.getElementById('codeBox4').value;
+
+          // ตรวจสอบค่าว่างหรือไม่
+          if (codeBox1Value === '' || codeBox2Value === '' || codeBox3Value === '' || codeBox4Value === '') {
+            alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');
+            document.getElementById('myForm').reset();
+            return false; // ไม่ส่งฟอร์มเมื่อข้อมูลไม่ครบ
+          }
+
+          // รวมค่าจากฟิลด์ทั้ง 4 ตัวเข้าด้วยกัน
+          var total = codeBox1Value + codeBox2Value + codeBox3Value + codeBox4Value;
+          console.log('🚀 ~ file: tnmhighlight.ejs:171 ~ submitForm ~ total:', total);
+
+          // กำหนดค่าให้กับฟิลด์ hidden ในฟอร์ม
+          document.getElementById('otp').value = total;
+          console.log('ค่า' + document.getElementById('otp').value);
+          // ส่งฟอร์มไปยังเซิร์ฟเวอร์
+          document.getElementById('myForm').submit();
+        }
+
+        function getCodeBoxElement(index) {
+          return document.getElementById('codeBox' + index);
+        }
+        function onKeyUpEvent(index, event) {
+          const eventCode = event.which || event.keyCode;
+          if (getCodeBoxElement(index).value.length === 1) {
+            if (index !== 4) {
+              getCodeBoxElement(index + 1).focus();
+            } else {
+              getCodeBoxElement(index).blur(2);
+              // Submit code
+
+              console.log('submit code');
+            }
+          }
+          if (eventCode === 8 && index !== 1) {
+            getCodeBoxElement(index - 1).focus();
+          }
+        }
+        function onFocusEvent(index) {
+          for (item = 1; item < index; item++) {
+            const currentElement = getCodeBoxElement(item);
+            if (!currentElement.value) {
+              currentElement.focus();
+              break;
+            }
+          }
+        }
+      </script>
+      <div class="card border-dark mx-auto mb-5" style="max-width: 40dvw">
+        <div class="container">
+          <div class="card-header display-4 text-dark">ยืนยันการสมัคร</div>
+          <!-- <p class="display-4">ยืนยันการสมัคร</p> -->
+          <p class="h4 mt-2 text-dark">ส่งรหัส OTP ไปที่อีเมล : <%= playerEmail %></p>
+          <form id="myForm" action="/verifysingle" method="post">
+            <div class="row">
+              <label class="h5 mt-2 text-dark">โปรดใส่รหัส OTP :</label>
+              <div class="container">
+                <div class="d-flex mb-2 justify-content-center p-2">
+                  <div class="mx-1">
+                    <input
+                      id="codeBox1"
+                      type="text"
+                      maxlength="1"
+                      onkeyup="onKeyUpEvent(1, event)"
+                      onfocus="onFocusEvent(1)"
+                      class="form-control text-center border-dark"
+                      style="width: 60px"
+                      required
+                    />
+                  </div>
+                  <div class="mx-1">
+                    <input
+                      id="codeBox2"
+                      type="text"
+                      maxlength="1"
+                      onkeyup="onKeyUpEvent(2, event)"
+                      onfocus="onFocusEvent(2)"
+                      class="form-control text-center border-dark"
+                      style="width: 60px"
+                      required
+                    />
+                  </div>
+                  <div class="mx-1">
+                    <input
+                      id="codeBox3"
+                      type="text"
+                      maxlength="1"
+                      onkeyup="onKeyUpEvent(3, event)"
+                      onfocus="onFocusEvent(3)"
+                      class="form-control text-center border-dark"
+                      style="width: 60px"
+                      required
+                    />
+                  </div>
+                  <div class="mx-1">
+                    <input
+                      id="codeBox4"
+                      type="text"
+                      maxlength="1"
+                      onkeyup="onKeyUpEvent(4, event)"
+                      onfocus="onFocusEvent(4)"
+                      class="form-control text-center border-dark"
+                      style="width: 60px"
+                      required
+                    />
+                  </div>
+                </div>
+                <input type="hidden" name="submitOTP" id="otp" />
+                <input type="hidden" name="OTP" value="<%= OTP %>" />
+                <input type="hidden" name="playerFName" value="<%= playerFName %>" />
+                <input type="hidden" name="playerLName" value="<%= playerLName %>" />
+                <input type="hidden" name="playerGender" value="<%= playerGender %>" />
+                <input type="hidden" name="playerBirthday" value="<%= playerBirthday %>" />
+                <input type="hidden" name="playerPhone" value="<%= playerPhone %>" />
+                <input type="hidden" name="playerEmail" value="<%= playerEmail %>" />
+                <input type="hidden" name="facultyID" value="<%= facultyID %>" />
+                <input type="hidden" name="playerIDCard" value="<%= playerIDCard %>" />
+                <input type="hidden" name="playerFile1" value="<%= playerFile1 %>" />
+                <input type="hidden" name="tnmID" value="<%= tnmID %>" />
+
+                <button type="button" class="btn btn-success mb-3" onclick="submitForm()">ยืนยัน</button>
+                <button type="reset" class="d-none"></button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- 
                 <form action="/verifysingle" method="post">
                     <label for="otp">ส่งรหัส OTP ไปที่อีเมล : <%= playerEmail %></label>
                     <label>โปรดใส่รหัส OTP :</label>
+
+
                     <input type="text" name="submitOTP" id="otp" required>
+
+
+
+
+
                     <input type="hidden" name="OTP" value="<%= OTP %>">
                     <input type="hidden" name="playerFName" value="<%= playerFName %>">
                     <input type="hidden" name="playerLName" value="<%= playerLName %>">
@@ -29,10 +169,11 @@
                     <input type="hidden" name="playerIDCard" value="<%= playerIDCard %>">
                     <input type="hidden" name="playerFile1" value="<%= playerFile1 %>">
                     <input type="hidden" name="tnmID" value="<%= tnmID %>">
+
+
+
                     <input type="submit" value="ยืนยัน" class="btn btn-success">
-                </form>
-
-            </body>
-
-            </html>
-        </div>
+                </form> -->
+    </body>
+  </html>
+</div>
