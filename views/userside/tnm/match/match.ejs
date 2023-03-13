@@ -33,7 +33,7 @@
                                             <td><%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit' ,
                                                 month: 'long' , year:'numeric'}) %> <%= data[i].time.slice(0, 5); %> - <%= data[i].timeend.slice(0, 5); %></td>
                                             <% } %>
-                                        <td><a href="/tnmplace/<%= data[i].placeID %>"><%= data[i].placeName %></a></td>
+                                        <td><%= data[i].placeName %></td>
                                         <td><%= data[i].player1_name %> vs <%= data[i].player2_name %></td>
                                         <% if(data[i].score1=== null && data[i].score2 === null){ %>
                                             <td>0 - 0</td>

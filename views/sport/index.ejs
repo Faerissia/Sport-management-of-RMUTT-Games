@@ -46,7 +46,6 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
                             <th scope="col">ชื่อกีฬา</th>
                             <th scope="col">จำนวนผู้เล่น</th>
                             <th width="200px">ตัวเลือก</th>
@@ -55,7 +54,6 @@
                     <tbody>
                         <% for(let i = 0; i < data.length; i++) { %>
                             <tr>
-                                <th scope="row"><%= data[i].sportID %></th>
                                 <td><%= data[i].sportName %></td>
                                 <td><%= data[i].sportPlaynum %></td>
                                 <td>

@@ -3,8 +3,7 @@
   <!DOCTYPE html>
   <html lang="en">
     <head>
-      <title>แบบ6</title>
-
+      <title>สายการแข่งขัน</title>
       <style>
         .wrapper {
           position: relative;
@@ -113,9 +112,7 @@
     <body>
       <h1><%= tournamentName %></h1>
 
-      <%- include("../../../partials/menu_staff.ejs") %>
-
-
+      <%- include("../../../partials/menu_staff.ejs") %> 
       <div class="container-sm">
         <div class="wrapper">
           <div class="item mt-5">
@@ -123,15 +120,13 @@
               <!-- 1 ผู้ขนะ -->
               <div class="box card border border-dark" id="score1">
                 <div class="d-flex justify-content-center">
-                  <% if (data[4]?.score1 && data[4]?.score2) { %>
-                    <% if(data[4]?.score1 > data[4]?.score2){ %>
-                    <div class=""><%= data[4].team1 %></div>
-                    <% }else{ %>
-                    <div class=""><%= data[4].team2 %></div>
-                    <% } %>
-                    <%  }else{  %>
-                      <br>
-                      <% } %>
+                  <% if (data[4]?.score1 && data[4]?.score2) { %> <% if(data[4]?.score1 > data[4]?.score2){ %>
+                  <div class=""><%= data[4].team1 %></div>
+                  <% }else{ %>
+                  <div class=""><%= data[4].team2 %></div>
+                  <% } %> <% }else{ %>
+                  <br>
+                  <% } %>
 
                   <div class="point border-start-1" style="height: 100%"></div>
                 </div>
@@ -142,7 +137,7 @@
                 <div class="item">
                   <div class="item-parent">
                     <div class="box card border border-dark" id="score2">
-                      <% if (data[4]&& data[4].score1 !==null && data[4].team1 !==null){%>
+                      <% if (data[4]&& data[4]?.team1){%>
                       <div class="d-flex justify-content-between">
                         <div class=""><%= data[4].team1 %></div>
                         <div class="" style="height: 100%">
@@ -163,7 +158,7 @@
                       <div class="item">
                         <div class="item-child">
                           <div class="box card border border-dark" id="score4">
-                            <% if (data[2]&& data[2].score1 !==null && data[2].team1 !==null) { %>
+                            <% if (data[2]&& data[2]?.team1) { %>
                             <div class="d-flex justify-content-between">
                               <div class=""><%= data[2].team1 %></div>
                               <% if (data[2]?.score1 ) { %>
@@ -183,7 +178,7 @@
                       <div class="item">
                         <div class="item-parent">
                           <div class="box card border border-dark" id="score5">
-                            <% if (data[2]&& data[2].score2 !==null && data[2].team2 !==null) {%>
+                            <% if (data[2]&& data[2]?.team2) {%>
                             <div class="d-flex justify-content-between">
                               <div class=""><%= data[2].team2 %></div>
                               <% if (data[2]?.score2) { %>
@@ -201,7 +196,7 @@
                           <div class="item-child">
                             <div class="item">
                               <div class="box card border border-dark" id="score8">
-                                <% if (data[1]&& data[1].score1 !==null && data[1].team1 !==null) { %>
+                                <% if (data[1]&& data[1]?.team1) { %>
                                 <div class="d-flex justify-content-between">
                                   <div class=""><%= data[1].team1 %></div>
                                   <% if (data[1]?.score1 ) { %>
@@ -219,7 +214,7 @@
 
                           <div class="item-child">
                             <div class="box card border border-dark" id="score9">
-                              <% if (data[1]&& data[1].score2 !==null && data[1].team2 !==null) { %>
+                              <% if (data[1]&& data[1]?.team2) { %>
                               <div class="d-flex justify-content-between">
                                 <div class=""><%= data[1].team2 %></div>
                                 <% if (data[1]?.score2) { %>
@@ -243,7 +238,7 @@
                 <div class="item">
                   <div class="item-parent">
                     <div class="box card border border-dark" id="score3">
-                      <% if (data[4]&& data[4].score2 !==null && data[4].team2 !==null){%>
+                      <% if (data[4]&& data[4]?.team2){%>
                       <div class="d-flex justify-content-between">
                         <div class=""><%= data[4].team2 %></div>
                         <div class="" style="height: 100%">
@@ -265,7 +260,7 @@
                       <div class="item">
                         <div class="item-parent">
                           <div class="box card border border-dark" id="score6">
-                            <% if (data[3]&& data[3].score2 !==null && data[3].team2 !==null) {%>
+                            <% if (data[3]&& data[3]?.team2) {%>
                             <div class="d-flex justify-content-between">
                               <div class=""><%= data[3].team2 %></div>
                               <% if (data[3]?.score2) { %>
@@ -283,7 +278,7 @@
                           <div class="item-child">
                             <div class="item">
                               <div class="box card border border-dark" id="score10">
-                                <% if (data[0]&& data[0].score1 !==null && data[0].team1 !==null) { %>
+                                <% if (data[0]&& data[0]?.team1) { %>
                                 <div class="d-flex justify-content-between">
                                   <div class=""><%= data[0].team1 %></div>
                                   <% if (data[0]?.score1 ) { %>
@@ -301,7 +296,7 @@
 
                           <div class="item-child">
                             <div class="box card border border-dark" id="score11">
-                              <% if (data[0]&& data[0].score2 !==null && data[0].team2 !==null) { %>
+                              <% if (data[0]&& data[0]?.team2) { %>
                               <div class="d-flex justify-content-between">
                                 <div class=""><%= data[0].team2 %></div>
                                 <% if (data[0]?.score2) { %>
@@ -321,7 +316,7 @@
 
                     <div class="item-child">
                       <div class="box card border border-dark" id="score7">
-                        <% if (data[3]&& data[3].score1 !==null && data[3].team1 !==null) { %>
+                        <% if (data[3]&& data[3]?.team1) { %>
                         <div class="d-flex justify-content-between">
                           <div class=""><%= data[3].team1 %></div>
                           <% if (data[3]?.score1) { %>
@@ -342,7 +337,7 @@
           </div>
           <div class="item-text d-flex mt-3">
             <span class="text-center">รอบที่ 1</span>
-            <span class="text-center">รอบ 4 ทีมสุดท้าย</span>
+            <span class="text-center">รอบ 4 ทีม</span>
             <span class="text-center">รอบชิงชนะเลิศ</span>
             <span class="text-center">ชนะเลิศ</span>
           </div>
@@ -351,36 +346,44 @@
       <script>
         const data = JSON.parse('<%-JSON.stringify(data) %>');
         console.log(data);
-        if (data[4].score1 > data[4].score2) {
-          document.getElementById('score2').className = 'box card border border-dark  text-bg-success';
-        } else {
-          document.getElementById('score3').className = 'box card border border-dark  text-bg-success';
+        if (data[4]?.score1 && data[4]?.score2) {
+          if (data[4]?.score1 > data[4]?.score2) {
+            document.getElementById('score2').className = 'box card border border-dark  text-bg-success';
+          } else {
+            document.getElementById('score3').className = 'box card border border-dark  text-bg-success';
+          }
         }
-
-        if (data[2].score1 > data[2].score2) {
-          document.getElementById('score4').className = 'box card border border-dark  text-bg-success';
-        } else {
-          document.getElementById('score5').className = 'box card border border-dark  text-bg-success';
+        if (data[2]?.score1 && data[2]?.score2) {
+          if (data[2]?.score1 > data[2]?.score2) {
+            document.getElementById('score4').className = 'box card border border-dark  text-bg-success';
+          } else {
+            document.getElementById('score5').className = 'box card border border-dark  text-bg-success';
+          }
         }
-
-        if (data[3].score1 < data[3].score2) {
-          document.getElementById('score6').className = 'box card border border-dark  text-bg-success';
-        } else {
-          document.getElementById('score7').className = 'box card border border-dark  text-bg-success';
+        if (data[3]?.score1 && data[3]?.score2) {
+          if (data[3]?.score1 < data[3]?.score2) {
+            document.getElementById('score6').className = 'box card border border-dark  text-bg-success';
+          } else {
+            document.getElementById('score7').className = 'box card border border-dark  text-bg-success';
+          }
         }
-        if (data[1].score1 > data[1].score2) {
-          document.getElementById('score8').className = 'box card border border-dark  text-bg-success';
-        } else {
-          document.getElementById('score9').className = 'box card border border-dark  text-bg-success';
+        if (data[1]?.score1 && data[1]?.score2) {
+          if (data[1]?.score1 > data[1]?.score2) {
+            document.getElementById('score8').className = 'box card border border-dark  text-bg-success';
+          } else {
+            document.getElementById('score9').className = 'box card border border-dark  text-bg-success';
+          }
         }
-        if (data[0].score1 > data[0].score2) {
-          document.getElementById('score10').className = 'box card border border-dark  text-bg-success';
-        } else {
-          document.getElementById('score11').className = 'box card border border-dark  text-bg-success';
+        if (data[0]?.score1 && data[0]?.score2) {
+          if (data[0]?.score1 > data[0]?.score2) {
+            document.getElementById('score10').className = 'box card border border-dark  text-bg-success';
+          } else {
+            document.getElementById('score11').className = 'box card border border-dark  text-bg-success';
+          }
         }
 
         // ผู้ชนะ
-        if (data[4].score1 != null && data[4].score2 != null) {
+        if (data[4]?.score1 != null && data[4]?.score2 != null) {
           document.getElementById('score1').className = 'box card border border-dark  text-bg-success';
         }
       </script>

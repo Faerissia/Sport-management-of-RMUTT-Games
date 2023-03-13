@@ -1,33 +1,37 @@
-<%- include("partials/header") %>
-<%- include("partials/sidebar") %>
-        <div class="col-10 py-3 mx-auto">
+<%- include("partials/header") %> <%- include("partials/sidebar") %>
+<div class="col-10 py-3 mx-auto">
+  <html lang="en">
+    <head>
+      <title>แก้ไขชื่อระบบ</title>
+    </head>
+    <body>
+      <% if (messages.error) { %>
+      <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+      <% } %> <% if (messages.success) { %>
+      <div class="alert alert-success" role="alert"><%= messages.success %></div>
+      <% } %>
+        <div class="display-6">แก้ไขชื่อระบบ</div>
+      <div class="card">
+        <div class="card-header ">
+            <ul class="nav nav-pills w-100">
+                <li class="nav-link ml-auto">
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+          <!-- <h4 class="card-title">Title</h4> -->
+          <div class="card-text">
+            <div class="jumbotron">
+              <form action="/change-title" method="post">
+                <label for="title" class="form-label">ชื่อระบบ:</label>
+                <input type="text" class="form-control border border-dark" style="width: 30%" id="title" name="title" value="<%= process.title %>" />
 
-<html lang="en">
-	<head>
-		<title>Dashboard</title>
-	</head>
-<body>
-
-	<% if (messages.error) { %>
-        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
-    <% } %>
-    
-    <% if (messages.success) { %>
-        <div class="alert alert-success" role="alert"><%= messages.success %></div>
-    <% } %>
-
-<div class="jumbotron">
-	
-    <form action="/change-title" method="post">
-        <label for="title">ชื่อระบบ:</label>
-        <input type="text" id="title" name="title" value="<%= process.title %>">
-        <input type="submit" value="ตกลง">
-      </form>
-</div>	
-
-</body>
-</html>
+                <input type="submit" class="btn btn-success mt-3" value="ตกลง" />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
+  </html>
 </div>
-
-
-

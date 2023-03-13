@@ -10,21 +10,7 @@
 
                 <title>Dashboard</title>
             </head>
-            <style>
- /* Set font family for chart elements */
-.chartjs-x-axis-label,
-.chartjs-y-axis-label,
-.chartjs-tick,
-.chartjs-tooltip {
-  font-family: "Kodchasan-Regular", sans-serif;
-}
-
-/* Set font family for chart title */
-.chartjs-chart-title {
-  font-family: "Kodchasan-Regular", sans-serif;
-}
-
-            </style>
+         
             <body>
 
                 <% if (messages.error) { %>
@@ -63,7 +49,7 @@
                                                                         <select for="value_sport"
                                                                             class="form-select border-dark "
                                                                             id="value_sport" name="value_sport">
-                                                                            <option selected value="text-start">ทั้งหมด</option>
+                                                                            <option selected value="">ทั้งหมด</option>
                                                                             <% for(let i=0; i <selcetsport.length;i++){%>
                                                                                 <option class="text-start"
                                                                                     value="<%= selcetsport[i].sportID %>">

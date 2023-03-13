@@ -26,43 +26,55 @@
 <h1>ค้าหารายการแข่งขัน</h1>
 
 
-<button class="btn btn-success float-end" id="download-button">Download CSV</button>
 
 
 
-<div class="row">
-    <div class="col ">
 
-    <div class="float-start">
+
     <form action="/tnmsearch/search-tnmsearch" method="post">
-        <div class="input-group">
-            <div class="col">
-            <p>ช่วงวันที่แข่งขัน</p>
+            
+
+        <div class="row w-100">
+            <div class="col-auto my-auto">
+                
+                    <label  class="form-label" >ช่วงวันที่แข่งขัน</label>
+       
+                </div>
+                <div class="col-auto">
             <input type="date" name="startDate" class="form-control border border-dark">
-        </div>
-        <div>
-            <p>ถึง</p>
-            <input type="date" name="endDate" class="form-control border border-dark">
-        </div>
-        <div class="col">
+                    
+                </div>
+                <div class="col-auto my-auto">
+                    <label  class="form-label" >ถึง</label>
+                    
+                </div>
+                <div class="col-auto">
+                      <input type="date" name="endDate" class="form-control border border-dark">
+                    
+                </div>
+        
+        <div class="col-auto">
             <select name="sport" class="form-control border border-dark">
                 <option value="">เลือกประเภทกีฬา</option>
-                    <% for(a=0;a<data.length;a++){ %>
-                        <option value="<%= data[a].sportID %>"><%= data[a].sportName %></option>
+                    <% for(a=0;a<sport.length;a++){ %>
+                        <option value="<%= sport[a].sportID %>"><%= sport[a].sportName %></option>
                         <% } %>
                 </select>
             </div>
-                <div class="col">
+                <div class="col-auto">
             <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา ชื่อการแข่งขัน">
         </div>
-        <div class="col">
+        <div class="col-auto">
             <button type="submit" class="btn btn-primary ">ค้นหา</button>
         </div>
+        <div class="col text-end">
+            <button class="btn btn-success " id="download-button">Download CSV</button>
+
         </div>
+
+    </div>
     </form>
-</div>
-</div>
-</div>
+    
 
 
 

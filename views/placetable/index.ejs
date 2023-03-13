@@ -38,18 +38,22 @@ td {
 <div class="float-end">
 <% let isoday = today.toISOString().split('T')[0]%>
   <form action="/placetable/search-placetable" method="post">
-    <label for="date">วันที่</label>
-    <input type="date" name="date" value="<%= isoday%>"> 
-    <label> ชนิดกีฬา</label>
-    <select name="sporttype">
-      <option value="">ทั้งหมด</option>
+    <div class="d-flex" style="height: 36px;">
+      <!-- <p class="align-self-center mb-0 mx-3">วันที่</p> -->
+    <label for="date" class="text-nowrap align-self-center mx-3">วันที่</label>
+    <input type="date" class="border-dark form-control" name="date" value="<%= isoday%>"> 
+    <label class="text-nowrap align-self-center mx-3">ชนิดกีฬา</label>
+    <select name="sporttype" class="border-dark form-select">
+      <option value="" >ทั้งหมด</option>
       <% for(s = 0; s < sporttype.length; s++){ %>
       <option value="<%= sporttype[s].typeID %>"><%= sporttype[s].nameType %></option>
       <% } %>
     </select>
-    <label>ชื่อสถานที่</label>
-    <input type="text" name="place">
+    <label class="text-nowrap align-self-center mx-3">ชื่อสถานที่</label>
+
+    <input type="text" class="border-dark form-control" name="place">
     <input type="submit" class="btn btn-primary" value="ค้นหา">
+  </div>
   </form>
     </div>
 

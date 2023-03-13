@@ -1,13 +1,10 @@
-<%- include("../../partials/header") %>
-    <%- include("../../partials/sidebar") %>
-        <div class="col-10 py-3 mx-auto">
-
-            <!DOCTYPE html>
-            <html lang="en">
-
-            <head>
-                <title>match</title>
-                <style>
+<%- include("../../partials/header") %> <%- include("../../partials/sidebar") %>
+<div class="col-10 py-3 mx-auto">
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <title>match</title>
+      <!-- <style>
                     #popup {
                         position: absolute;
                         top: 50%;
@@ -27,174 +24,174 @@
                         top: 0;
                         right: 0;
                     }
-                </style>
-            </head>
+                </style> -->
+    </head>
 
-            <body>
-                <h1>หน้าผู้เข้าร่วม <%= tournamentName %>
-                </h1>
-                <%- include("../../partials/menu_staff.ejs") %>
-                
-                <% if (messages.error) { %>
-                    <div class="alert alert-danger" role="alert">
-                        <%= messages.error %>
-                    </div>
-                    <% } %>
+    <body>
+      <h1>หน้าผู้เข้าร่วม <%= tournamentName %></h1>
+      <%- include("../../partials/menu_staff.ejs") %> <% if (messages.error) { %>
+      <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+      <% } %>
 
-                    <div class="row mt-3">
-                        <div class="col-auto ">
-                            <button id="popup-button" class="btn btn-warning">แก้ไขวันที่และเวลา</button>
-                        </div>
-                        <div class="col-6 text-start">
-                            <% if(data && data[0] && data[0].pDate !== null && data[0].time !== null) {%>
-                                <h4>แข่งวันที่ <%=data[0].pDate.toLocaleDateString('th-TH',{day: '2-digit' ,
-                                        month: 'long' , year:'numeric'}) %> เวลา <%= data[0].time%> - <%= data[0].timeend%>
-                                 สถานที่ <%= place[0].placeName %></h4>
-                                <div id="popup" style="display: none;" class="border border-dark">
-                                    <% const mdate=data[0].pDate.toISOString().substring(0, 10);%>
-                                        <button id="close-button" class="close-button">x</button>
-                                        <h2>แก้ไขวันที่และเวลา</h2>
-                                        <form action="/tournament/datetime" method="post">
-                                            <div class="row row-cols-1">
-                                                <div class="col-12 mt-3">
-                                                    <div class="row">
-                                                    <div class="col-2">
-                                                        <label for="" class="form-label">แข่งขันวันที่ </label>
-                                                    </div>
-                                                    <div class="col">
-                                                        <input type="hidden" name="tnmID" value="<%= tnmID%>">
-                                                        <input type="date" name="date" class="col-form-label border border-dark" value="<%= mdate%>">
-                                                    </div>
-                                                </div>
-                                                </div>
-                                                <div class="col-12 mt-3">
-                                                    <div class="row">
-                                                        <div class="col-2">
-                                                            <label for="" class="form-label">เวลา </label>
-                                                        </div>
-                                                        <div class="col">
-                                                            <input type="time" name="time" class="col-form-label border border-dark" value="<%=data[0].time%>"> -
-                                                            <input type="time" name="timeend" class="col-form-label border border-dark" value="<%=data[0].timeend%>">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-12 mt-3">
-                                                    <div class="row row-cols-2">
-                                                        <div class="col-2">
-                                                            <label for="" class="form-label">สถานที่ </label>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <select  class="form-select border border-dark " name="placeID">
-                                                                <% for(let i=0; i < place.length; i++) { %>
-                                                                    <option value="<%= place[i].placeID %>">
-                                                                        <%= place[i].placeName %>
-                                                                    </option>
-                                                                    <% } %>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col">
-                                                    <button class="btn btn-success" type="submit">ยืนยัน</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                </div>
-                                <% }else{%>
-                                    <h4>แข่งวันที่ เวลา </h4>
-                                    <div id="popup" style="display: none;" class="border border-dark">
-                                        <button id="close-button" class="close-button">x</button>
-                                        <h2>แก้ไขวันที่และเวลา</h2>
-                                        <form action="/tournament/datetime" method="post">
-                                            <input type="hidden" name="tnmID" value="<%= tnmID%>">
-                                            แข่งขันวันที่
-                                            <input type="date" name="date">
-                                            เวลา
-                                            <input type="time" name="time"> -
-                                            <input type="time" name="timeend">
-                                            สถานที่
-                                            <select name="placeID">
-                                                <% for(let i=0; i < place.length; i++) { %>
-                                                    <option value="<%= place[i].placeID %>">
-                                                        <%= place[i].placeName %>
-                                                    </option>
-                                                    <% } %>
-                                            </select>
-                                            <button class="btn btn-success" type="submit">ยืนยัน</button>
-                                        </form>
-                                    </div>
-                                    <% } %>
-                        </div>
-                        <div class="col-3 text-start">
-                            <% if(data[0].teamID){ %>
-                            <a href="/tournament/editteamleader/<%= tnmID%>" class="btn btn-warning">แก้ไขคะแนน</a>
-                            <% }else{ %>
-                            <a href="/tournament/editsingleleader/<%= tnmID%>" class="btn btn-warning">แก้ไขคะแนน</a>
-                            <% } %>
-
-                        </div>
-                    </div>
-
-                    <div class="card-body">
-                        <% if(data.length) { %>
-                            <table class="table  w-75 mx-auto my-5 border  border-dark table-striped table-hover text-center align-middle">
-                                <thead style="background-color: rgb(96, 166, 253); ">
-                                    <tr>
-                                        <th width="100px">ลำดับที่</th>
-                                        <% if(!data[0].teamID){ %>
-                                        <th scope="col">ชื่อผู้เล่น</th>
-                                        <% }else{ %>
-                                        <th scope="col">ชื่อทีม</th>
-                                        <% } %>
-                                        <th width="200px">คะแนน</th>
-                                    </tr>
-                                </thead>
-                                <tbody style="background-color: white;">
-                                    <% for(let i=0; i < data.length; i++) { %>
-                                        <tr>
-                                            <th scope="row">
-                                                <%= i+1 %>
-                                            </th>
-                                            <td>
-                                                <%= data[i].teamName %>
-                                            </td>
-                                            <td>
-                                                <%= data[i].score %>
-                                            </td>
-                                        </tr>
-                                        <% } %>
-                                </tbody>
-                            </table>
-                            <% } %>
-
-                                <!-- if result is empty-->
-                                <% if(!data.length) { %>
-                                    <p class="text-center">ไม่พบรายการ</p>
-                                    <% } %>
-                    </div>
-
-        
-            </body>
-            <script>
-                var popupButton = document.getElementById("popup-button");
-                var popup = document.getElementById("popup");
-
-                popupButton.addEventListener("click", function () {
-                    if (popup.style.display === "none") {
-                        popup.style.display = "block";
-                    } else {
-                        popup.style.display = "none";
-                    }
-                });
-            </script>
-            <script>
-                var closeButton = document.getElementById("close-button");
-                closeButton.addEventListener("click", function () {
-                    if (popup.style.display === "block") {
-                        popup.style.display = "none";
-                    }
-                });
-            </script>
-
-            </html>
+      <div class="row mt-3">
+        <div class="col-auto">
+          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop">แก้ไขวันที่และเวลา</button>
         </div>
+
+        <!-- Button trigger modal -->
+
+        <div class="col-6 text-start">
+          <% if(data && data[0] && data[0].pDate !== null && data[0].time !== null) {%>
+          <h4>
+            แข่งวันที่ <%=data[0].pDate.toLocaleDateString('th-TH',{day: '2-digit' , month: 'long' , year:'numeric'}) %> เวลา <%= data[0].time%> - <%= data[0].timeend%> สถานที่ <%= place[0].placeName
+            %>
+          </h4>
+
+          <!-- Modal -->
+          <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">แก้ไขวันที่และเวลา</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <% const mdate=data[0].pDate.toISOString().substring(0, 10); %>
+                  <form action="/tournament/datetime" method="post">
+                    <div class="row row-cols-1">
+                      <div class="col-12 mt-3">
+                        <div class="row">
+                          <div class="col-3 text-center align-self-center">
+                            <label for="" class="form-label">แข่งขันวันที่ </label>
+                          </div>
+                          <div class="col-auto">
+                            <input type="hidden" name="tnmID" value="<%= tnmID%>" />
+                            <input type="date" name="date" class="form-control border border-dark" value="<%= mdate%>" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 mt-3">
+                        <div class="row">
+                          <div class="col-3 text-center align-self-center">
+                            <label for="" class="form-label">เวลา </label>
+                          </div>
+                          <div class="col-auto">
+                            <div class="d-flex">
+                              <input type="time" name="time" class="form-control border border-dark" value="<%=data[0].time%>" />
+                              <p class="align-self-center mb-0 mx-3">ถึง</p>
+
+                              <input type="time" name="timeend" class="form-control border border-dark" value="<%=data[0].timeend%>" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 mt-3">
+                        <div class="row row-cols-2">
+                          <div class="col-3 text-center align-self-center">
+                            <label for="" class="form-label">สถานที่ </label>
+                          </div>
+                          <div class="col-auto">
+                            <select class="form-select border border-dark" name="placeID">
+                              <% for(let i=0; i < place.length; i++) { %>
+                              <option value="<%= place[i].placeID %>"><%= place[i].placeName %></option>
+                              <% } %>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-success" type="submit">ยืนยัน</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <% }else{%>
+          <h4>แข่งวันที่ เวลา</h4>
+          <div id="popup" style="display: none" class="border border-dark">
+            <button id="close-button" class="close-button">x</button>
+            <h2>แก้ไขวันที่และเวลา</h2>
+            <form action="/tournament/datetime" method="post">
+              <input type="hidden" name="tnmID" value="<%= tnmID%>" />
+              แข่งขันวันที่
+              <input type="date" name="date" />
+              เวลา
+              <input type="time" name="time" /> -
+              <input type="time" name="timeend" />
+              สถานที่
+              <select name="placeID">
+                <% for(let i=0; i < place.length; i++) { %>
+                <option value="<%= place[i].placeID %>"><%= place[i].placeName %></option>
+                <% } %>
+              </select>
+              <button class="btn btn-success" type="submit">ยืนยัน</button>
+            </form>
+          </div>
+          <% } %>
+        </div>
+        <div class="col-3 text-start">
+          <% if(data[0].teamID){ %>
+          <a href="/tournament/editteamleader/<%= tnmID%>" class="btn btn-warning">แก้ไขคะแนน</a>
+          <% }else{ %>
+          <a href="/tournament/editsingleleader/<%= tnmID%>" class="btn btn-warning">แก้ไขคะแนน</a>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <% if(data.length) { %>
+        <table class="table w-75 mx-auto my-5 border border-dark table-striped table-hover text-center align-middle">
+          <thead style="background-color: rgb(96, 166, 253)">
+            <tr>
+              <th width="100px">ลำดับที่</th>
+              <% if(!data[0].teamID){ %>
+              <th scope="col">ชื่อผู้เล่น</th>
+              <% }else{ %>
+              <th scope="col">ชื่อทีม</th>
+              <% } %>
+              <th width="200px">คะแนน</th>
+            </tr>
+          </thead>
+          <tbody style="background-color: white">
+            <% for(let i=0; i < data.length; i++) { %>
+            <tr>
+              <th scope="row"><%= i+1 %></th>
+              <td><%= data[i].teamName %></td>
+              <td><%= data[i].score %></td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+        <% } %>
+
+        <!-- if result is empty-->
+        <% if(!data.length) { %>
+        <p class="text-center">ไม่พบรายการ</p>
+        <% } %>
+      </div>
+    </body>
+    <script>
+      var popupButton = document.getElementById('popup-button');
+      var popup = document.getElementById('popup');
+
+      popupButton.addEventListener('click', function () {
+        if (popup.style.display === 'none') {
+          popup.style.display = 'block';
+        } else {
+          popup.style.display = 'none';
+        }
+      });
+    </script>
+    <script>
+      var closeButton = document.getElementById('close-button');
+      closeButton.addEventListener('click', function () {
+        if (popup.style.display === 'block') {
+          popup.style.display = 'none';
+        }
+      });
+    </script>
+  </html>
+</div>

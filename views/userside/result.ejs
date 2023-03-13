@@ -61,82 +61,76 @@
 
        
         <%- include("../partials/menuindex") %>
-
-        <div class="display-4 mb-2">
+          <br>
+        <div class="display-4 mb-2 ">
           สรุปเหรียญรางวัล
         </div>
+        <br>
 
           <% if(merge.length) { %>
-            <table class="table table-striped table-hover table-bordered border-dark mt-2">
-              <thead style="background-color: #6DAFFE;">
-                <tr class="text-center ">
-                  <!-- <th scope="col">อันดับ</th> -->
-                  <th>ลำดับที่</th>
-                  <th scope="col " > 
-                  <div class="my-auto h-100">
-
-                    มหาวิทยาลัย
-                  </div>
-                  </th>
-                  <th scope="col"><iconify-icon icon="noto:1st-place-medal" width="40" height="40"></iconify-icon></th>
-                  <th scope="col"><iconify-icon icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon></th>
-                  <th scope="col"><iconify-icon icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon></th>
-                  <th scope="col" class="">
-
-                    การแข่งขันที่เข้าร่วม
-                 
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <% let sumall = 0; let sumst1 = 0; let sumnd2 =0; let sumrd3 = 0; %>
-                <% for(let i=0; i < merge.length; i++) { %>
-                  <tr class="text-center">
-                    <td><%=i+1%></td>
-                    <td>
-                      <div class="box  w-auto text-start ms-5">
-                        <div class=" btn btn btn-warning text-start  " style="width: 60%; ">
-                          <a class="text-decoration-none text-dark " href="/allrank/<%=merge[i].uniID %>">
-                              <div class="col">
-                                <%= merge[i].name %>
-                              </div>
-
-                          </a>
-                        </div>
-                      </div>
-
-                    </td>
-                    <td><%=merge[i].st1 %></td>
-                    <td><%=merge[i].nd2 %></td>
-                    <td><%=merge[i].rd3 %></td>
-                    <td><%= merge[i].tnm %></td>
+            <div class="table-responsive">
+              <table class="table table-striped table-hover table-bordered border-dark mt-2">
+                <thead style="background-color: #6DAFFE;">
+                  <tr class="text-center ">
+                    <!-- <th scope="col">อันดับ</th> -->
+                    <th scope="col" class="align-middle">ลำดับที่</th>
+                    <th scope="col" class="align-middle">มหาวิทยาลัย</th>
+                    <th scope="col"><iconify-icon icon="noto:1st-place-medal" width="40" height="40"></iconify-icon></th>
+                    <th scope="col"><iconify-icon icon="noto:2nd-place-medal" width="40" height="40"></iconify-icon></th>
+                    <th scope="col"><iconify-icon icon="noto:3rd-place-medal" width="40" height="40"></iconify-icon></th>
+                    <th scope="col" class="align-middle">การแข่งขันที่เข้าร่วม</th>
                   </tr>
-                  <%sumst1 += merge[i].st1; sumnd2 += merge[i].nd2; sumrd3 += merge[i].rd3; %>
-                  <% } %>
-
-              </tbody>
-              <tfoot class="text-center">
-
-                <tr>
-                  <!-- <th scope="col">อันดับ</th> -->
-                  <td colspan="2" scope="col">
-                    <div class="box  w-auto text-start ms-5">
-                      <div class=" btn  btn-primary"  style="width: 80%; ">
-                        <div class="text-center text-light">
-                          รวม
+                </thead>
+                <tbody>
+                  <% let sumall = 0; let sumst1 = 0; let sumnd2 =0; let sumrd3 = 0; %>
+                  <% for(let i=0; i < merge.length; i++) { %>
+                    <tr class="text-center">
+                      <td class="align-middle"><%=i+1%></td>
+                      <td class="align-middle">
+                        <div class="box  w-auto text-start ms-5">
+                          <div class=" btn btn btn-warning text-start  " style="width: 60%; ">
+                            <a class="text-decoration-none text-dark " href="/allrank/<%=merge[i].uniID %>">
+                                <div class="col">
+                                  <%= merge[i].name %>
+                                </div>
+  
+                            </a>
+                          </div>
+                        </div>
+  
+                      </td>
+                      <td class="align-middle"><%=merge[i].st1 %></td>
+                      <td class="align-middle"><%=merge[i].nd2 %></td>
+                      <td class="align-middle"><%=merge[i].rd3 %></td>
+                      <td class="align-middle"><%= merge[i].tnm %></td>
+                    </tr>
+                    <%sumst1 += merge[i].st1; sumnd2 += merge[i].nd2; sumrd3 += merge[i].rd3; %>
+                    <% } %>
+  
+                </tbody>
+                <tfoot class="text-center">
+  
+                  <tr>
+                    <!-- <th scope="col">อันดับ</th> -->
+                    <td class="align-middle" colspan="2" scope="col">
+                      <div class="box  w-auto text-start ms-5">
+                        <div class=" btn  btn-primary"  style="width: 80%; ">
+                          <div class="text-center text-light">
+                            รวม
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                  
-                  <td scope="col"><%= sumst1 %></td>
-                  <td scope="col"><%= sumnd2 %></td>
-                  <td scope="col"><%= sumrd3 %></td>
-                  <td scope="col"></td>
-                </tr>
-
-              </tfoot>
-            </table>
+                    </td>
+                    
+                    <td class="align-middle" scope="col"><%= sumst1 %></td>
+                    <td class="align-middle" scope="col"><%= sumnd2 %></td>
+                    <td class="align-middle" scope="col"><%= sumrd3 %></td>
+                    <td class="align-middle" scope="col"></td>
+                  </tr>
+  
+                </tfoot>
+              </table>
+            </div>
             <% } %>
 
               <% if(!merge.length) { %>
