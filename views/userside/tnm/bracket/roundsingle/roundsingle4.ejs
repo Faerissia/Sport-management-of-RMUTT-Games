@@ -137,7 +137,7 @@ style="background:#D9D9D9 ;">
     <!-- เนื้อหาด้านใน ใส่แค่ให้รู้พื้นที่ ลบด้วย -->
     <div class="d-block">
         <div class="card-body bg-light">
-            <% if(data && data[0]) { %>
+            <% if(data.length) { %>
                 <br>
                 <p class="display-5 text-start ms-2">การสายการแข่งรอบที่1</p>
                 <h1 class="text-center">Round Robin</h1>
@@ -146,13 +146,18 @@ style="background:#D9D9D9 ;">
                 <tr>
                   <th class="table-light border-dark"></th>
                   <% let teamNames = []; %>
+                  <% let teampics = []; %>
                   <% data.forEach(function(match) { %>
                     <% if (!teamNames.includes(match.team1)) { teamNames.push(match.team1); } %>
                     <% if (!teamNames.includes(match.team2)) { teamNames.push(match.team2); } %>
                   <% }); %>
+
+
                   <% teamNames.forEach(function(teamName) { %>
                     <th><%= teamName %></th>
                   <% }); %>
+
+
                 </tr>
               </thead>
               <tbody>
@@ -233,7 +238,7 @@ style="background:#D9D9D9 ;">
             </table>
         
         
-            <p class="display-5 text-start ms-2"> การสายการแข่งรอบที่2<p>
+            <p class="display-5 text-start ms-2"> สายการแข่งรอบที่2<p>
         <div class=" mx-auto w-50">
           <div class="container-md ">
             <div class="wrapper">
@@ -425,15 +430,7 @@ style="background:#D9D9D9 ;">
               document.getElementById('score7').className = 'box card border border-dark  text-bg-success';
             }
           </script>
-        
-
-
-
-
-
-
-                
-                
+           
             
             <% } %>
 
