@@ -16,7 +16,7 @@
                         <table class="table mt-5 w-75 mx-auto table-bordered  border-dark text-center">
                             <thead class="" style="background-color: #6DAFFE;">
                                 <tr>
-                                    <th scope="col">Match</th>
+                                    <th scope="col">Match </th>
                                     <th scope="col">Date & Time</th>
                                     <th scope="col">สถานที่การแข่งขัน</th>
                                     <th scope="col">คู่ระหว่าง</th>
@@ -33,7 +33,7 @@
                                             <td><%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit' ,
                                                 month: 'long' , year:'numeric'}) %> <%= data[i].time.slice(0, 5); %> - <%= data[i].timeend.slice(0, 5); %></td>
                                             <% } %>
-                                        <td><a href="/tnmplace/<%= data[0].placeID%>"><%= data[i].placeName %></a></td>
+                                        <td ><a  href="/tnmplace/<%= data[0].placeID%>"><%= data[i].placeName %></a></td>
                                         <td><%= data[i].player1_name %> vs <%= data[i].player2_name %></td>
                                         <% if(data[i].score1=== null && data[i].score2 === null){ %>
                                             <td>0 - 0</td>
