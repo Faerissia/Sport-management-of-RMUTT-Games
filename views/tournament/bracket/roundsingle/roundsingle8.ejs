@@ -226,9 +226,10 @@
     </table>
           
 
-    <p class="display-5"> การสายการแข่งรอบที่2<p>
+    <p class="display-5 text-start ms-2"> การสายการแข่งรอบที่2<p>
       <div class=" mx-auto w-50">
         <div class="container-sm">
+          <% const datasingle = data.filter(item => item.seed !== null);%>
           <div class="wrapper">
             <!-- ตัวประกาศ -->
   
@@ -240,10 +241,10 @@
                 <!-- Parent1 ชนะ -->
                 <div class="box card border border-dark" id="score1">
                   <div class="d-flex justify-content-center">
-                    <% if (data[6]?.score1 && data[6]?.score2) { %> <% if(data[6]?.score1 > data[6]?.score2){ %>
-                    <div class=""><%= data[6].team1 %></div>
+                    <% if (datasingle[6]?.score1 && datasingle[6]?.score2) { %> <% if(datasingle[6]?.score1 > datasingle[6]?.score2){ %>
+                    <div class=""><%= datasingle[6].team1 %></div>
                     <% }else{ %>
-                    <div class=""><%= data[6].team2 %></div>
+                    <div class=""><%= datasingle[6].team2 %></div>
                     <% } %> <% }else{ %>
                     <br />
                     <% } %>
@@ -261,12 +262,12 @@
                     <div class="item-parent">
                       <!-- Parent1.2 รองบน -->
                       <div class="box card border border-dark" id="score2">
-                        <% if (data[6]&& data[6]?.team1){%>
+                        <% if (datasingle[6]&& datasingle[6]?.team1){%>
                         <div class="d-flex justify-content-between">
-                          <div class=""><%= data[6].team1 %></div>
+                          <div class=""><%= datasingle[6].team1 %></div>
                           <div class="" style="height: 100%">
-                            <% if (data[6]?.score1) {%>
-                            <strong> <%= data[6].score1%> </strong>
+                            <% if (datasingle[6]?.score1) {%>
+                            <strong> <%= datasingle[6].score1%> </strong>
                             <% } %>
                           </div>
                         </div>
@@ -284,12 +285,12 @@
                           <div class="item-parent">
                             <!-- Parent2 ก่อนรอง1บน  -->
                             <div class="box card border border-dark" id="score4">
-                              <% if (data[4]&& data[4]?.team1){%>
+                              <% if (datasingle[4]&& datasingle[4]?.team1){%>
                               <div class="d-flex justify-content-between">
-                                <div class=""><%= data[4].team1 %></div>
+                                <div class=""><%= datasingle[4].team1 %></div>
                                 <div class="" style="height: 100%">
-                                  <% if (data[4]?.score1) {%>
-                                  <strong> <%= data[4].score1%> </strong>
+                                  <% if (datasingle[4]?.score1) {%>
+                                  <strong> <%= datasingle[4].score1%> </strong>
                                   <% } %>
                                 </div>
                               </div>
@@ -304,11 +305,11 @@
                             <div class="item-child">
                               <!-- ผู้เล่น1 -->
                               <div class="box card border border-dark" id="score8">
-                                <% if (data[0]&& data[0]?.team1) {%>
+                                <% if (datasingle[0]&& datasingle[0]?.team1) {%>
                                 <div class="d-flex justify-content-between">
-                                  <div class=""><%= data[0].team1 %></div>
-                                  <% if (data[0]?.score1) { %>
-                                  <strong> <%= data[0].score1 %> </strong>
+                                  <div class=""><%= datasingle[0].team1 %></div>
+                                  <% if (datasingle[0]?.score1) { %>
+                                  <strong> <%= datasingle[0].score1 %> </strong>
                                   <% } %>
                                 </div>
                                 <% } else { %>
@@ -321,11 +322,11 @@
                             <div class="item-child">
                               <!-- ผู้เล่น2 -->
                               <div class="box card border border-dark" id="score9">
-                                <% if (data[0]&& data[0]?.team2) {%>
+                                <% if (datasingle[0]&& datasingle[0]?.team2) {%>
                                 <div class="d-flex justify-content-between">
-                                  <div class=""><%= data[0].team2 %></div>
-                                  <% if (data[0]?.score2) { %>
-                                  <strong> <%= data[0].score2 %> </strong>
+                                  <div class=""><%= datasingle[0].team2 %></div>
+                                  <% if (datasingle[0]?.score2) { %>
+                                  <strong> <%= datasingle[0].score2 %> </strong>
                                   <% } %>
                                 </div>
                                 <% } else { %>
@@ -344,12 +345,12 @@
                           <div class="item-parent">
                             <!-- Parent2 ก่อนรอง1ล่าง -->
                             <div class="box card border border-dark" id="score5">
-                              <% if (data[4]&& data[4]?.team2){%>
+                              <% if (datasingle[4]&& datasingle[4]?.team2){%>
                               <div class="d-flex justify-content-between">
-                                <div class=""><%= data[4].team2 %></div>
+                                <div class=""><%= datasingle[4].team2 %></div>
                                 <div class="" style="height: 100%">
-                                  <% if (data[4]?.score2) {%>
-                                  <strong> <%= data[4].score2%> </strong>
+                                  <% if (datasingle[4]?.score2) {%>
+                                  <strong> <%= datasingle[4].score2%> </strong>
                                   <% } %>
                                 </div>
                               </div>
@@ -364,11 +365,11 @@
                             <div class="item-child">
                               <!-- ผู้เล่น3 -->
                               <div class="box card border border-dark" id="score10">
-                                <% if (data[1]&& data[1]?.team1) {%>
+                                <% if (datasingle[1]&& datasingle[1]?.team1) {%>
                                 <div class="d-flex justify-content-between">
-                                  <div class=""><%= data[1].team1 %></div>
-                                  <% if (data[1]?.score1) { %>
-                                  <strong> <%= data[1].score1 %> </strong>
+                                  <div class=""><%= datasingle[1].team1 %></div>
+                                  <% if (datasingle[1]?.score1) { %>
+                                  <strong> <%= datasingle[1].score1 %> </strong>
                                   <% } %>
                                 </div>
                                 <% } else { %>
@@ -381,11 +382,11 @@
                             <div class="item-child">
                               <!-- ผู้เล่น4 -->
                               <div class="box card border border-dark" id="score11">
-                                <% if (data[1]&& data[1]?.team2) {%>
+                                <% if (datasingle[1]&& datasingle[1]?.team2) {%>
                                 <div class="d-flex justify-content-between">
-                                  <div class=""><%= data[1].team2 %></div>
-                                  <% if (data[1]?.score2) { %>
-                                  <strong> <%= data[1].score2 %> </strong>
+                                  <div class=""><%= datasingle[1].team2 %></div>
+                                  <% if (datasingle[1]?.score2) { %>
+                                  <strong> <%= datasingle[1].score2 %> </strong>
                                   <% } %>
                                 </div>
                                 <% } else { %>
@@ -408,12 +409,12 @@
                     <div class="item-parent">
                       <!-- Parent1.2 รองล่าง -->
                       <div class="box card border border-dark" id="score3">
-                        <% if (data[6]&& data[6]?.team2){%>
+                        <% if (datasingle[6]&& datasingle[6]?.team2){%>
                         <div class="d-flex justify-content-between">
-                          <div class=""><%= data[6].team2 %></div>
+                          <div class=""><%= datasingle[6].team2 %></div>
                           <div class="" style="height: 100%">
-                            <% if (data[6]?.score2) {%>
-                            <strong> <%= data[6].score2%> </strong>
+                            <% if (datasingle[6]?.score2) {%>
+                            <strong> <%= datasingle[6].score2%> </strong>
                             <% } %>
                           </div>
                         </div>
@@ -430,12 +431,12 @@
                           <div class="item-parent">
                             <!-- Parent2 ก่อนรอง2บน -->
                             <div class="box card border border-dark" id="score6">
-                              <% if (data[5]&& data[5]?.team1){%>
+                              <% if (datasingle[5]&& datasingle[5]?.team1){%>
                               <div class="d-flex justify-content-between">
-                                <div class=""><%= data[5].team1 %></div>
+                                <div class=""><%= datasingle[5].team1 %></div>
                                 <div class="" style="height: 100%">
-                                  <% if (data[5]?.score1) {%>
-                                  <strong> <%= data[5].score1%> </strong>
+                                  <% if (datasingle[5]?.score1) {%>
+                                  <strong> <%= datasingle[5].score1%> </strong>
                                   <% } %>
                                 </div>
                               </div>
@@ -450,11 +451,11 @@
                             <div class="item-child">
                               <!-- ผู้เล่น5 -->
                               <div class="box card border border-dark" id="score12">
-                                <% if (data[2]&& data[2]?.team1) {%>
+                                <% if (datasingle[2]&& datasingle[2]?.team1) {%>
                                 <div class="d-flex justify-content-between">
-                                  <div class=""><%= data[2].team1 %></div>
-                                  <% if (data[2]?.score1) { %>
-                                  <strong> <%= data[2].score1 %> </strong>
+                                  <div class=""><%= datasingle[2].team1 %></div>
+                                  <% if (datasingle[2]?.score1) { %>
+                                  <strong> <%= datasingle[2].score1 %> </strong>
                                   <% } %>
                                 </div>
                                 <% } else { %>
@@ -467,11 +468,11 @@
                             <div class="item-child">
                               <!-- ผู้เล่น6 -->
                               <div class="box card border border-dark" id="score13">
-                                <% if (data[2]&& data[2]?.team2) {%>
+                                <% if (datasingle[2]&& datasingle[2]?.team2) {%>
                                 <div class="d-flex justify-content-between">
-                                  <div class=""><%= data[2].team2 %></div>
-                                  <% if (data[2]?.score2) { %>
-                                  <strong> <%= data[2].score2 %> </strong>
+                                  <div class=""><%= datasingle[2].team2 %></div>
+                                  <% if (datasingle[2]?.score2) { %>
+                                  <strong> <%= datasingle[2].score2 %> </strong>
                                   <% } %>
                                 </div>
                                 <% } else { %>
@@ -489,12 +490,12 @@
                           <div class="item-parent">
                             <!-- Parent2 ก่อนรอง2ล่าง -->
                             <div class="box card border border-dark" id="score7">
-                              <% if (data[5]&& data[5]?.team2){%>
+                              <% if (datasingle[5]&& datasingle[5]?.team2){%>
                               <div class="d-flex justify-content-between">
-                                <div class=""><%= data[5].team2 %></div>
+                                <div class=""><%= datasingle[5].team2 %></div>
                                 <div class="" style="height: 100%">
-                                  <% if (data[5]?.score2) {%>
-                                  <strong> <%= data[5].score2%> </strong>
+                                  <% if (datasingle[5]?.score2) {%>
+                                  <strong> <%= datasingle[5].score2%> </strong>
                                   <% } %>
                                 </div>
                               </div>
@@ -509,13 +510,13 @@
                             <div class="item-child">
                               <div class="item">
                                 <!-- ผู้เล่น7 -->
-                                <div class="box card border border-dark" id="score7">
-                                  <% if (data[3]&& data[3]?.team1){%>
+                                <div class="box card border border-dark" id="score14">
+                                  <% if (datasingle[3]&& datasingle[3]?.team1){%>
                                   <div class="d-flex justify-content-between">
-                                    <div class=""><%= data[3].team1 %></div>
+                                    <div class=""><%= datasingle[3].team1 %></div>
                                     <div class="" style="height: 100%">
-                                      <% if (data[3]?.score1) {%>
-                                      <strong> <%= data[3].score1%> </strong>
+                                      <% if (datasingle[3]?.score1) {%>
+                                      <strong> <%= datasingle[3].score1%> </strong>
                                       <% } %>
                                     </div>
                                   </div>
@@ -530,11 +531,11 @@
                             <div class="item-child">
                               <!-- ผู้เล่น8  bye-->
                               <div class="box card border border-dark" id="score15">
-                                <% if (data[3]&& data[3]?.team2) {%>
+                                <% if (datasingle[3]&& datasingle[3]?.team2) {%>
                                 <div class="d-flex justify-content-between">
-                                  <div class=""><%= data[3].team2 %></div>
-                                  <% if (data[3]?.score2) { %>
-                                  <strong> <%= data[3].score2 %> </strong>
+                                  <div class=""><%= datasingle[3].team2 %></div>
+                                  <% if (datasingle[3]?.score2) { %>
+                                  <strong> <%= datasingle[3].score2 %> </strong>
                                   <% } %>
                                 </div>
                                 <% } else { %>
@@ -563,52 +564,51 @@
         </div>
         <script>
           const data = JSON.parse('<%-JSON.stringify(data) %>');
-  
-          console.log(data);
-          if (data[6]?.score1 && data[6]?.score2) {
-            if (data[6]?.score1 > data[6]?.score2) {
+           const datasingle = data.filter(item => item.seed !== null);
+          if (datasingle[6]?.score1 && datasingle[6]?.score2) {
+            if (datasingle[6]?.score1 > datasingle[6]?.score2) {
               document.getElementById('score2').className = 'box card border border-dark  text-bg-success';
             } else {
               document.getElementById('score3').className = 'box card border border-dark  text-bg-success';
             }
           }
-          if (data[4]?.score1 && data[4]?.score2) {
-            if (data[4]?.score1 > data[4]?.score2) {
+          if (datasingle[4]?.score1 && datasingle[4]?.score2) {
+            if (datasingle[4]?.score1 > datasingle[4]?.score2) {
               document.getElementById('score4').className = 'box card border border-dark  text-bg-success';
             } else {
               document.getElementById('score5').className = 'box card border border-dark  text-bg-success';
             }
           }
-          if (data[5]?.score1 && data[5]?.score2) {
-            if (data[5]?.score1 > data[5]?.score2) {
+          if (datasingle[5]?.score1 && datasingle[5]?.score2) {
+            if (datasingle[5]?.score1 > datasingle[5]?.score2) {
               document.getElementById('score6').className = 'box card border border-dark  text-bg-success';
             } else {
               document.getElementById('score7').className = 'box card border border-dark  text-bg-success';
             }
           }
-          if (data[0]?.score1 && data[0]?.score2) {
-            if (data[0]?.score1 > data[0]?.score2) {
+          if (datasingle[0]?.score1 && datasingle[0]?.score2) {
+            if (datasingle[0]?.score1 > datasingle[0]?.score2) {
               document.getElementById('score8').className = 'box card border border-dark  text-bg-success';
             } else {
               document.getElementById('score9').className = 'box card border border-dark  text-bg-success';
             }
           }
-          if (data[1]?.score1 && data[1]?.score2) {
-            if (data[1]?.score1 > data[1]?.score2) {
+          if (datasingle[1]?.score1 && datasingle[1]?.score2) {
+            if (datasingle[1]?.score1 > datasingle[1]?.score2) {
               document.getElementById('score10').className = 'box card border border-dark  text-bg-success';
             } else {
               document.getElementById('score11').className = 'box card border border-dark  text-bg-success';
             }
           }
-          if (data[2]?.score1 && data[2]?.score2) {
-            if (data[2]?.score1 > data[2]?.score2) {
+          if (datasingle[2]?.score1 && datasingle[2]?.score2) {
+            if (datasingle[2]?.score1 > datasingle[2]?.score2) {
               document.getElementById('score12').className = 'box card border border-dark  text-bg-success';
             } else {
               document.getElementById('score13').className = 'box card border border-dark  text-bg-success';
             }
           }
-          if (data[3]?.score1 && data[3]?.score2) {
-            if (data[3]?.score1 > data[3]?.score2) {
+          if (datasingle[3]?.score1 && datasingle[3]?.score2) {
+            if (datasingle[3]?.score1 > datasingle[3]?.score2) {
               document.getElementById('score14').className = 'box card border border-dark  text-bg-success';
             } else {
               document.getElementById('score15').className = 'box card border border-dark  text-bg-success';
@@ -616,11 +616,10 @@
           }
   
           // ผู้ชนะ
-          if (data[6]?.score1 != null && data[6]?.score2 != null) {
-            document.getElementById('score1').className = 'box card border border-dark  text-bg-success';
-          }
+          if (datasingle[6]?.score1 != null && datasingle[6]?.score2 != null) {
+              document.getElementById('score1').className = 'box card border border-dark  text-bg-success';
+            }
         </script>
-        
       
       </div>
       
