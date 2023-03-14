@@ -529,7 +529,7 @@ router.get('/match/(:tnmID)', function(req, res, next) {
                         
                     })
                 }else if(rows[0].tnmTypegame === 'roundrobin'){
-                    dbConnection.query("SELECT p1.playerID AS p1ID,p1.playerFName AS player1_name,p2.playerID AS p2ID, p2.playerFName AS player2_name, m.score1,m.matchfile, m.score2,m.pDate, DATE_FORMAT(m.time, '%H:%i') as time,m.timeend,place.placeName FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 LEFT JOIN place ON place.placeID = m.placeID WHERE m.tnmID = "+tnmID, (error, rows) => {
+                    dbConnection.query("SELECT p1.playerID AS p1ID,p1.playerFName AS player1_name,p2.playerID AS p2ID, p2.playerFName AS player2_name, m.matchID,m.score1,m.matchfile, m.score2,m.pDate, DATE_FORMAT(m.time, '%H:%i') as time,m.timeend,place.placeName FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 LEFT JOIN place ON place.placeID = m.placeID WHERE m.tnmID = "+tnmID, (error, rows) => {
                         if(error) throw error;
                         dbConnection.query('SELECT p.placeID,p.placeName FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN sport_type st ON st.typeID = s.typeID LEFT JOIN place p ON p.typeID = st.typeID WHERE tnmID = '+tnmID ,(err,results)=>{
                             if(err) throw err;
@@ -1532,6 +1532,57 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
                           })
                         })
                         break;
+                        }else if(result[i].participant1 && result[i].participant2 && numteam > 16 && numteam < 32 && nextround === 2 && result.length < 8){
+                          console.log('numteam > 16 && numteam < 32 && nextround === 2 && result.length < 8')
+                          dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC',tnmID,(error,rows)=>{
+                            if(error) throw error;
+                            let thisseed = rows[0].seed +1;
+                          
+                          let nextmatch = {
+                            tnmID:tnmID,
+                            participant1:participant1,
+                            seed:thisseed,
+                            round:nextround
+                          }
+                          dbConnection.query('INSERT INTO matchplay SET ?',nextmatch,(error,rows)=>{
+                            if(error) throw error;
+                          })
+                        })
+                        break;
+                        }else if(result[i].participant1 && result[i].participant2 && numteam > 16 && numteam < 32 && nextround === 3 && result.length < 4){
+                          console.log('numteam > 16 && numteam < 32 && nextround === 3 && result.length < 4')
+                          dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC',tnmID,(error,rows)=>{
+                            if(error) throw error;
+                            let thisseed = rows[0].seed +1;
+                          
+                          let nextmatch = {
+                            tnmID:tnmID,
+                            participant1:participant1,
+                            seed:thisseed,
+                            round:nextround
+                          }
+                          dbConnection.query('INSERT INTO matchplay SET ?',nextmatch,(error,rows)=>{
+                            if(error) throw error;
+                          })
+                        })
+                        break;
+                        }else if(result[i].participant1 && result[i].participant2 && numteam > 16 && numteam < 32 && nextround === 4 && result.length < 2){
+                          console.log('numteam > 16 && numteam < 32 && nextround === 4 && result.length < 2')
+                          dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC',tnmID,(error,rows)=>{
+                            if(error) throw error;
+                            let thisseed = rows[0].seed +1;
+                          
+                          let nextmatch = {
+                            tnmID:tnmID,
+                            participant1:participant1,
+                            seed:thisseed,
+                            round:nextround
+                          }
+                          dbConnection.query('INSERT INTO matchplay SET ?',nextmatch,(error,rows)=>{
+                            if(error) throw error;
+                          })
+                        })
+                        break;
                         }else if(result[i].participant1 && !result[i].participant2){
                           console.log('เข้า 1')
                             let nextmatch = { participant2:participant1}
@@ -1610,6 +1661,57 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
                         break;
                         }else if(result[i].participant1 && result[i].participant2 && numteam > 8 && numteam < 16 && nextround === 3 && result.length < 2){
                           console.log('numteam > 8 && numteam < 16 && thisround === 3 && result.length < 2')
+                          dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC',tnmID,(error,rows)=>{
+                            if(error) throw error;
+                            let thisseed = rows[0].seed +1;
+                          
+                          let nextmatch = {
+                            tnmID:tnmID,
+                            participant1:participant2,
+                            seed:thisseed,
+                            round:nextround
+                          }
+                          dbConnection.query('INSERT INTO matchplay SET ?',nextmatch,(error,rows)=>{
+                            if(error) throw error;
+                          })
+                        })
+                        break;
+                        }else if(result[i].participant1 && result[i].participant2 && numteam > 16 && numteam < 32 && nextround === 2 && result.length < 8){
+                          console.log('numteam > 16 && numteam < 32 && nextround === 2 && result.length < 8')
+                          dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC',tnmID,(error,rows)=>{
+                            if(error) throw error;
+                            let thisseed = rows[0].seed +1;
+                          
+                          let nextmatch = {
+                            tnmID:tnmID,
+                            participant1:participant2,
+                            seed:thisseed,
+                            round:nextround
+                          }
+                          dbConnection.query('INSERT INTO matchplay SET ?',nextmatch,(error,rows)=>{
+                            if(error) throw error;
+                          })
+                        })
+                        break;
+                        }else if(result[i].participant1 && result[i].participant2 && numteam > 16 && numteam < 32 && nextround === 3 && result.length < 4){
+                          console.log('numteam > 16 && numteam < 32 && nextround === 3 && result.length < 4')
+                          dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC',tnmID,(error,rows)=>{
+                            if(error) throw error;
+                            let thisseed = rows[0].seed +1;
+                          
+                          let nextmatch = {
+                            tnmID:tnmID,
+                            participant1:participant2,
+                            seed:thisseed,
+                            round:nextround
+                          }
+                          dbConnection.query('INSERT INTO matchplay SET ?',nextmatch,(error,rows)=>{
+                            if(error) throw error;
+                          })
+                        })
+                        break;
+                        }else if(result[i].participant1 && result[i].participant2 && numteam > 16 && numteam < 32 && nextround === 4 && result.length < 2){
+                          console.log('numteam > 16 && numteam < 32 && nextround === 4 && result.length < 2')
                           dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC',tnmID,(error,rows)=>{
                             if(error) throw error;
                             let thisseed = rows[0].seed +1;
@@ -1914,6 +2016,57 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
                         })
                       })
                       break;
+                      }else if(result[i].participant1 && result[i].participant2 && numteam > 16 && numteam < 32 && nextround === 2 && result.length < 8){
+                        console.log('numteam > 16 && numteam < 32 && nextround === 2 && result.length < 8')
+                        dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC',tnmID,(error,rows)=>{
+                          if(error) throw error;
+                          let thisseed = rows[0].seed +1;
+                        
+                        let nextmatch = {
+                          tnmID:tnmID,
+                          participant1:participant1,
+                          seed:thisseed,
+                          round:nextround
+                        }
+                        dbConnection.query('INSERT INTO matchplay SET ?',nextmatch,(error,rows)=>{
+                          if(error) throw error;
+                        })
+                      })
+                      break;
+                      }else if(result[i].participant1 && result[i].participant2 && numteam > 16 && numteam < 32 && nextround === 3 && result.length < 4){
+                        console.log('numteam > 16 && numteam < 32 && nextround === 3 && result.length < 4')
+                        dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC',tnmID,(error,rows)=>{
+                          if(error) throw error;
+                          let thisseed = rows[0].seed +1;
+                        
+                        let nextmatch = {
+                          tnmID:tnmID,
+                          participant1:participant1,
+                          seed:thisseed,
+                          round:nextround
+                        }
+                        dbConnection.query('INSERT INTO matchplay SET ?',nextmatch,(error,rows)=>{
+                          if(error) throw error;
+                        })
+                      })
+                      break;
+                      }else if(result[i].participant1 && result[i].participant2 && numteam > 16 && numteam < 32 && nextround === 4 && result.length < 2){
+                        console.log('numteam > 16 && numteam < 32 && nextround === 4 && result.length < 2')
+                        dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC',tnmID,(error,rows)=>{
+                          if(error) throw error;
+                          let thisseed = rows[0].seed +1;
+                        
+                        let nextmatch = {
+                          tnmID:tnmID,
+                          participant1:participant1,
+                          seed:thisseed,
+                          round:nextround
+                        }
+                        dbConnection.query('INSERT INTO matchplay SET ?',nextmatch,(error,rows)=>{
+                          if(error) throw error;
+                        })
+                      })
+                      break;
                       }else if(result[i].participant1 && !result[i].participant2){
                         console.log('เข้า 1')
                           let nextmatch = { participant2:participant1}
@@ -1992,6 +2145,57 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
                       break;
                       }else if(result[i].participant1 && result[i].participant2 && numteam > 8 && numteam < 16 && nextround === 3 && result.length < 2){
                         console.log('numteam > 8 && numteam < 16 && thisround === 3 && result.length < 2')
+                        dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC',tnmID,(error,rows)=>{
+                          if(error) throw error;
+                          let thisseed = rows[0].seed +1;
+                        
+                        let nextmatch = {
+                          tnmID:tnmID,
+                          participant1:participant2,
+                          seed:thisseed,
+                          round:nextround
+                        }
+                        dbConnection.query('INSERT INTO matchplay SET ?',nextmatch,(error,rows)=>{
+                          if(error) throw error;
+                        })
+                      })
+                      break;
+                      }else if(result[i].participant1 && result[i].participant2 && numteam > 16 && numteam < 32 && nextround === 2 && result.length < 8){
+                        console.log('numteam > 16 && numteam < 32 && nextround === 2 && result.length < 8')
+                        dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC',tnmID,(error,rows)=>{
+                          if(error) throw error;
+                          let thisseed = rows[0].seed +1;
+                        
+                        let nextmatch = {
+                          tnmID:tnmID,
+                          participant1:participant2,
+                          seed:thisseed,
+                          round:nextround
+                        }
+                        dbConnection.query('INSERT INTO matchplay SET ?',nextmatch,(error,rows)=>{
+                          if(error) throw error;
+                        })
+                      })
+                      break;
+                      }else if(result[i].participant1 && result[i].participant2 && numteam > 16 && numteam < 32 && nextround === 3 && result.length < 4){
+                        console.log('numteam > 16 && numteam < 32 && nextround === 3 && result.length < 4')
+                        dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC',tnmID,(error,rows)=>{
+                          if(error) throw error;
+                          let thisseed = rows[0].seed +1;
+                        
+                        let nextmatch = {
+                          tnmID:tnmID,
+                          participant1:participant2,
+                          seed:thisseed,
+                          round:nextround
+                        }
+                        dbConnection.query('INSERT INTO matchplay SET ?',nextmatch,(error,rows)=>{
+                          if(error) throw error;
+                        })
+                      })
+                      break;
+                      }else if(result[i].participant1 && result[i].participant2 && numteam > 16 && numteam < 32 && nextround === 4 && result.length < 2){
+                        console.log('numteam > 16 && numteam < 32 && nextround === 4 && result.length < 2')
                         dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY seed DESC',tnmID,(error,rows)=>{
                           if(error) throw error;
                           let thisseed = rows[0].seed +1;
@@ -2126,18 +2330,21 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
         
         })
         }else if(typeoftour[0].tnmTypegame === 'roundrobin'){ 
-
+          console.log('เข้าหน้า คะแนน roundrobin')
           if(req.files){
+            console.log('มีไฟล์')
             let scoresheet = req.files.scoresheet; 
             let name_scoresheet = new Date().getTime() +'_'+scoresheet.name;
             scoresheet.mv('./assets/scoresheet/' + name_scoresheet);
             let form_data={score1:score1,score2:score2,placeID:placeID,time:time,timeend:Endtime,pDate:pDate,matchfile:name_scoresheet}
-            dbConnection.query('UPDATE matchplay SET ? WHERE matchID ='+matchID,form_data,(error,rows)=>{
+            dbConnection.query('UPDATE matchplay SET ? WHERE matchID = ?',[form_data,matchID],(error,rows)=>{
               if(error) throw error;
           })
           }else{
+            console.log('ไม่มีไฟล์')
             let form_data={score1:score1,score2:score2,placeID:placeID,time:time,timeend:Endtime,pDate:pDate}
-            dbConnection.query('UPDATE matchplay SET ? WHERE matchID ='+matchID,form_data,(error,rows)=>{
+            console.log(matchID)
+            dbConnection.query('UPDATE matchplay SET ? WHERE matchID = ?',[form_data,matchID],(error,rows)=>{
               if(error) throw error;
           })
         }

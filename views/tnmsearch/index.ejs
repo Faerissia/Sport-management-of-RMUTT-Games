@@ -28,49 +28,58 @@
 
 
 
-
-
-
-    <form action="/tnmsearch/search-tnmsearch" method="post">
-        
-        <div class="row w-100">
-            <div class="col-auto my-auto">
-                
-                    <label  class="form-label" >ช่วงวันที่แข่งขัน</label>
-       
-                </div>
-                <div class="col-auto">
-            <input type="date" name="startDate" class="form-control border border-dark">
+<div class="row">
+    <div class="col">
+        <form action="/tnmsearch/search-tnmsearch" method="post">
+            <div class="row w-100">
+              
+                        <div class="col-auto my-auto">
+                            
+                                <label  class="form-label" >ช่วงวันที่แข่งขัน</label>
+                   
+                            </div>
+                            <div class="col-auto">
+                        <input type="date" name="startDate" class="form-control border border-dark">
+                                
+                            </div>
+                            <div class="col-auto my-auto">
+                                <label  class="form-label" >ถึง</label>
+                                
+                            </div>
+                            <div class="col-auto">
+                                  <input type="date" name="endDate" class="form-control border border-dark">
+                                
+                            </div>
                     
+                    <div class="col-auto">
+                        <select name="sport" class="form-control border border-dark">
+                            <option value="">เลือกประเภทกีฬา</option>
+                                <% for(a=0;a<sport.length;a++){ %>
+                                    <option value="<%= sport[a].sportID %>"><%= sport[a].sportName %></option>
+                                    <% } %>
+                            </select>
+                        </div>
+                            <div class="col-auto">
+                        <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา ชื่อการแข่งขัน">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary ">ค้นหา</button>
+                    </div>
+             
+            
                 </div>
-                <div class="col-auto my-auto">
-                    <label  class="form-label" >ถึง</label>
-                    
-                </div>
-                <div class="col-auto">
-                      <input type="date" name="endDate" class="form-control border border-dark">
-                    
-                </div>
-        
-        <div class="col-auto">
-            <select class="form-control border border-dark" name="sport">
-                <option value="">เลือกประเภทกีฬา</option>
-                <% for(let a =0;a<sport.length;a++){ %>
-                <option value="<%= sport[a].sportID %>"><%= sport[a].sportName %></option>
-                <% } %>
-                </select>
-            </div>
-                <div class="col-auto">
-            <input type="text" name="search" class="form-control border border-dark" placeholder="ค้นหา ชื่อการแข่งขัน">
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary ">ค้นหา</button>
-        </div>
+            </form>
     </div>
-    </form>
-    <div class="col text-end">
+    
+    
+    
+    
+    <div class="col-auto text-end">
         <button class="btn btn-success " id="download-button">Download CSV</button>
+    
     </div>
+</div>
+
 
 
 
