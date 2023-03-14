@@ -50,7 +50,16 @@
                             <div class="block w-50 bg-light  border border-dark  rounded-3 p-4 pe-0 pb-5">
 
                                 <div class="row row-cols-1  text-start ">
-
+                                    <div class="row row-cols-6 ">
+                                        <div class="col-1"><iconify-icon icon="fluent-mdl2:open-enrollment" width="25" height="25"></iconify-icon></div>
+                                        <div class="col-auto">วันที่รับสมัคร</div>
+                                        <div class="col-auto ">
+                                            <%= data[0].Rstartdate.toLocaleDateString('th-TH',{day: '2-digit' ,
+                                                month: 'long' , year:'numeric'}) %> - <%=
+                                                    data[0].Renddate.toLocaleDateString('th-TH',{day: '2-digit' ,
+                                                    month: 'long' , year:'numeric'}) %>
+                                        </div>
+                                    </div>
                                     <div class="row row-cols-6 ">
                                         <div class="col-1"><iconify-icon width="25" height="25"
                                                 icon="fa6-solid:table"></iconify-icon></div>
@@ -88,8 +97,8 @@
 
                                     <div class="row row-cols-6 ">
                                         <div class="col-1"><iconify-icon
-                                                icon="material-symbols:file-present-outline-rounded" width="20"
-                                                height="20"></iconify-icon></div>
+                                                icon="material-symbols:file-present-outline-rounded" width="25"
+                                                height="25"></iconify-icon></div>
                                         <div class="col-auto">ไฟล์แนบ</div>
 
                                         <div class="col-auto">

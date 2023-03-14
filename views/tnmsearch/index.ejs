@@ -32,8 +32,7 @@
 
 
     <form action="/tnmsearch/search-tnmsearch" method="post">
-            
-
+        
         <div class="row w-100">
             <div class="col-auto my-auto">
                 
@@ -54,11 +53,11 @@
                 </div>
         
         <div class="col-auto">
-            <select name="sport" class="form-control border border-dark">
+            <select class="form-control border border-dark" name="sport">
                 <option value="">เลือกประเภทกีฬา</option>
-                    <% for(a=0;a<sport.length;a++){ %>
-                        <option value="<%= sport[a].sportID %>"><%= sport[a].sportName %></option>
-                        <% } %>
+                <% for(let a =0;a<sport.length;a++){ %>
+                <option value="<%= sport[a].sportID %>"><%= sport[a].sportName %></option>
+                <% } %>
                 </select>
             </div>
                 <div class="col-auto">
@@ -67,14 +66,12 @@
         <div class="col-auto">
             <button type="submit" class="btn btn-primary ">ค้นหา</button>
         </div>
-        <div class="col text-end">
-            <button class="btn btn-success " id="download-button">Download CSV</button>
-
-        </div>
-
     </div>
     </form>
-    
+    <div class="col text-end">
+        <button class="btn btn-success " id="download-button">Download CSV</button>
+    </div>
+
 
 
 

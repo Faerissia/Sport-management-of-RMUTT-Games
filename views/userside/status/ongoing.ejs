@@ -18,40 +18,40 @@
                 style="font-size: .8 em;">
                 อยู่ระหว่างการแข่งขัน</h4>
         </div>
-        <div
-            class="d-flex flex-row rounded-bottom-2  justify-content-center bg-secondary bg-opacity-25 pb-2">
+        <div class="card-body bg-secondary bg-opacity-25 pb-2">
 
-            <div class="align-items-start justify-content-center d-flex flex-wrap ">
                 <% if(data.length) { %>
+                    <div class="row row-cols-1 row-cols-md-4 g-4 p-4">
                     <% for(let i=0; i < data.length; i++) { %>
 
-                            <div class="card mx-3 my-4 rounded-4 bg-light" style="width: 17rem">
-                                <a href="/tnmdetail/<%= data[i].tnmID %>"
-                                    class="text-decoration-none text-dark  fw-bolder">
-                                    <div class="card-header bg-transparent text-truncate " >
-                                        <%= data[i].tnmName %>
-                                    </div>
+                        <div class="col">
+                            <a href="/tnmdetail/<%= data[i].tnmID %>"
+                                class="text-decoration-none text-dark  fw-bolder">
+                            <div class="card border-dark mb-3" style="max-width: 18rem;">
+                                <div class="card-header bg-transparent border-dark d-flex justify-content-center align-items-center" style="height: 65px;"><%= data[i].tnmName %></div>
+                                <img class="p-1 card-img" src="images/<%= data[i].tnmPicture %>"
+                                class="card-img-top img-fluid rounded-0" style="height: 16rem">
+                                <div class="card-body text-dark">
+                                    <p class="card-title">ช่วงวันที่แข่งขัน</p>
+                                    <p class="card-text">  
+                                      <%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit', month: 'short' , year:'2-digit'}) %> -
+                                     <%= data[i].tnmEnddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'short' , year:'2-digit'}) %> </label>
+                                     <% if(data[i].sportPlaynum > 1 ){ %>
+                                         <% data[i].nop = data[i].nop / data[i].sportPlaynum %>
+                                         <% } %></p>
+                                </div>
+                                <div class="card-footer bg-transparent border-dark">จำนวนผู้สมัคร <%= data[i].nop %> คน</div>
+                              </div>
+                            </a>
+                        </div>
 
-                                    <img src="images/<%= data[i].tnmPicture %>"
-                                        class="card-img-top img-fluid rounded-0" style="height: 16rem">
-                                    <div class="card-body">
-                                         <label style="font-size: 14px;">เปิดรับสมัคร 
-                                         <%= data[i].Rstartdate.toLocaleDateString('th-TH',{day: '2-digit', month: 'short' , year:'2-digit'}) %> -
-                                        <%= data[i].Renddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'short' , year:'2-digit'}) %> </label>
-                                        <% if(data[i].sportPlaynum > 1 ){ %>
-                                            <% data[i].nop = data[i].nop / data[i].sportPlaynum %>
-                                            <% } %>
-                                        <label>จำนวนผู้เข้าร่วม <%= data[i].nop %></label>
-                                    </div>
-                                </a>
-                            </div>
                             <% } %>
+                            </div>
                             <% } %>
 
                                         <% if(!data.length) { %>
                                             <h4 class="text-center text-wrap" style="margin-top: 50px; margin-bottom: 50px;">ไม่พบรายการแข่งขัน</h4>
                                             <% } %>
-            </div>
 
         </div>
     </div>

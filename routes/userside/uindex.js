@@ -15,11 +15,11 @@ let transporter = nodemailer.createTransport({
 
 // display tnmcheck page
 router.get('/', function(req, res, next){
-    dbConnection.query('SELECT * FROM tournament WHERE CURDATE() BETWEEN Rstartdate AND Renddate ORDER BY Rstartdate DESC LIMIT 4', (err, opening) => {
+    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.Rstartdate >= CURRENT_DATE() AND t.Renddate <= CURRENT_DATE() GROUP BY t.tnmID ORDER BY t.Rstartdate DESC LIMIT 4', (err, opening) => {
          if (err) console.log('error',err);
-         dbConnection.query('SELECT * FROM tournament WHERE CURDATE() BETWEEN tnmStartdate AND tnmEnddate ORDER BY Rstartdate DESC LIMIT 4',(err,ongoing)=>{
+         dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmStartdate >= CURRENT_DATE() AND t.tnmEnddate <= CURRENT_DATE() OR t.st1 IS NULL GROUP BY t.tnmID ORDER BY t.tnmStartdate DESC LIMIT 4',(err,ongoing)=>{
             if (err) console.log('error',err);
-            dbConnection.query('SELECT * FROM tournament WHERE st1 IS NOT NULL ORDER BY tnmID DESC LIMIT 4',(err,ending)=>{
+            dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.st1 IS NOT NULL GROUP BY t.tnmID ORDER BY t.tnmStartdate DESC LIMIT 4',(err,ending)=>{
                 if (err) console.log('error',err);
                 res.render('userside/index', { opening,ongoing,ending});
     })
@@ -286,15 +286,15 @@ router.get('/tnmbracket/(:tnmID)', function(req, res, next) {
                 dbConnection.query(`SELECT * FROM player WHERE playerStatus ='accept' AND tnmID =`+tnmID,(err,roundsingle)=>{
                     let rsnum = Math.pow(2,Math.floor(Math.log2(roundsingle.length)));
                     if(rsnum === 4){
-                        dbConnection.query(`SELECT p1.playerFName AS team1, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
+                        dbConnection.query(`SELECT p1.playerFName AS team1, p2.playerFName AS team2, m.score1, m.score2,m.seed FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
                             res.render('userside/tnm/bracket/roundsingle/roundsingle4', {data: rows, tnmID:tnmID});
                         })
                     }else if(rsnum === 8){
-                        dbConnection.query(`SELECT p1.playerFName AS team1, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
+                        dbConnection.query(`SELECT p1.playerFName AS team1, p2.playerFName AS team2, m.score1, m.score2,m.seed FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
                             res.render('userside/tnm/bracket/roundsingle/roundsingle8', {data: rows, tnmID:tnmID});
                         })
                     }else{
-                        dbConnection.query(`SELECT p1.playerFName AS team1, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
+                        dbConnection.query(`SELECT p1.playerFName AS team1, p2.playerFName AS team2, m.score1, m.score2,m.seed FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
                             res.render('userside/tnm/bracket/roundsingle/roundsingle', {data: rows, tnmID:tnmID});
                         })
                     }
@@ -380,15 +380,15 @@ router.get('/tnmbracket/(:tnmID)', function(req, res, next) {
             dbConnection.query(`SELECT * FROM team WHERE teamStatus ='accept' AND tnmID =`+tnmID,(err,roundsingle)=>{
                 let rsnum = Math.pow(2,Math.floor(Math.log2(roundsingle.length)));
                 if(rsnum === 4){
-                    dbConnection.query(`SELECT t1.teamName AS team1, t2.teamName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
+                    dbConnection.query(`SELECT t1.teamName AS team1, t2.teamName AS team2, m.score1, m.score2,m.seed,t1.teamPic as pic1,t2.teamPic as pic2 FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
                         res.render('userside/tnm/bracket/roundsingle/roundsingle4', {data: rows, tnmID:tnmID});
                     })
                 }else if(rsnum === 8){
-                    dbConnection.query(`SELECT t1.teamName AS team1, t2.teamName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
+                    dbConnection.query(`SELECT t1.teamName AS team1, t2.teamName AS team2, m.score1, m.score2,m.seed FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
                         res.render('userside/tnm/bracket/roundsingle/roundsingle8', {data: rows, tnmID:tnmID});
                     })
                 }else{
-                    dbConnection.query(`SELECT t1.teamName AS team1, t2.teamName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
+                    dbConnection.query(`SELECT t1.teamName AS team1, t2.teamName AS team2, m.score1, m.score2,m.seed FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
                         res.render('userside/tnm/bracket/roundsingle/roundsingle', {data: rows, tnmID:tnmID});
                     })
                 }
@@ -934,25 +934,25 @@ console.log(rows)
    })
 
    router.get('/opening', function(req,res,next){
-    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.Rstartdate >= CURRENT_DATE() AND t.Renddate <= CURRENT_DATE() GROUP BY t.tnmID;',(error,results)=>{
+    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.Rstartdate >= CURRENT_DATE() AND t.Renddate <= CURRENT_DATE() GROUP BY t.tnmID ORDER BY t.Rstartdate DESC;',(error,results)=>{
        res.render('userside/status/opening',{data:results})
     })
    })
 
    router.get('/ongoing', function(req,res,next){
-    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmStartdate >= CURRENT_DATE() AND t.tnmEnddate <= CURRENT_DATE() GROUP BY t.tnmID;',(error,results)=>{
+    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmStartdate >= CURRENT_DATE() AND t.tnmEnddate <= CURRENT_DATE() OR t.st1 IS NULL GROUP BY t.tnmID ORDER BY t.tnmStartdate DESC;',(error,results)=>{
        res.render('userside/status/ongoing',{data:results})
     })
    })
 
    router.get('/ending', function(req,res,next){
-    dbConnection.query('SELECT * FROM tournament WHERE st1 AND nd2 AND rd3 IS NOT NULL',(error,results)=>{
+    dbConnection.query('SELECT * FROM tournament WHERE st1 AND nd2 AND rd3 IS NOT NULL ORDER BY tnmStartdate DESC;',(error,results)=>{
        res.render('userside/status/ending',{data:results})
     })
    })
 
    router.get('/search', function(req,res,next){
-    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID GROUP BY t.tnmID;',(error,results)=>{
+    dbConnection.query('SELECT t.*,s.*,count(p.playerFName) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.st1 IS NOT NULL GROUP BY t.tnmID ORDER BY t.tnmStartdate DESC;',(error,results)=>{
        res.render('userside/status/search',{data:results})
     })
    })
