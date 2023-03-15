@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2023 at 01:03 PM
+-- Generation Time: Mar 14, 2023 at 05:39 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -232,7 +232,7 @@ INSERT INTO `matchplay` (`matchID`, `participant1`, `participant2`, `playerID`, 
 (515, 194, 188, NULL, NULL, 3, 1, NULL, 39, '2', 4, '2023-03-01', '14:41:00', '18:41:00', 34, NULL),
 (516, 190, 192, NULL, NULL, 3, 1, NULL, 39, '2', 5, '2023-03-29', '14:41:00', '16:41:00', 33, NULL),
 (517, 194, 190, NULL, NULL, 1, 3, NULL, 39, '3', 6, '2023-03-16', '14:43:00', '16:41:00', 35, NULL),
-(531, 274, 275, NULL, NULL, NULL, NULL, NULL, 48, '1', 1, NULL, NULL, NULL, NULL, NULL),
+(531, 274, 275, NULL, NULL, 3, 1, NULL, 48, '1', 1, '2023-03-07', '16:25:00', '17:25:00', 33, NULL),
 (532, 276, 277, NULL, NULL, NULL, NULL, NULL, 48, '1', 2, NULL, NULL, NULL, NULL, NULL),
 (533, 278, 279, NULL, NULL, NULL, NULL, NULL, 48, '1', 3, NULL, NULL, NULL, NULL, NULL),
 (534, 280, 281, NULL, NULL, NULL, NULL, NULL, 48, '1', 4, NULL, NULL, NULL, NULL, NULL),
@@ -292,8 +292,8 @@ INSERT INTO `matchplay` (`matchID`, `participant1`, `participant2`, `playerID`, 
 (675, 292, 293, NULL, NULL, 3, 2, NULL, 49, '1', 2, '2023-03-09', '12:00:00', '13:00:00', 33, NULL),
 (679, 290, 292, NULL, NULL, 3, 1, NULL, 49, '2', 3, '2023-03-15', '10:00:00', '12:00:00', 33, NULL),
 (680, 91, 90, NULL, NULL, 3, 1, NULL, 54, '2', 3, '2023-03-08', '14:00:00', '15:00:00', 33, NULL),
-(681, 343, 344, NULL, NULL, NULL, NULL, NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(682, 343, 345, NULL, NULL, NULL, NULL, NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(681, 343, 344, NULL, NULL, 5, 1, NULL, 55, NULL, NULL, '2023-03-14', '14:37:00', '15:37:00', 33, NULL),
+(682, 343, 345, NULL, NULL, 5, 1, NULL, 55, NULL, NULL, '2023-03-14', '14:38:00', '15:38:00', 34, NULL),
 (683, 343, 346, NULL, NULL, NULL, NULL, NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (684, 343, 347, NULL, NULL, NULL, NULL, NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (685, 343, 348, NULL, NULL, NULL, NULL, NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -328,7 +328,7 @@ INSERT INTO `matchplay` (`matchID`, `participant1`, `participant2`, `playerID`, 
 (714, 349, 350, NULL, NULL, NULL, NULL, NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (715, 349, 351, NULL, NULL, NULL, NULL, NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (716, 350, 351, NULL, NULL, NULL, NULL, NULL, 55, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(717, 296, 297, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(717, 296, 297, NULL, NULL, 3, 1, NULL, 50, NULL, NULL, '2023-03-13', '18:24:00', '19:24:00', 33, NULL),
 (718, 296, 298, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (719, 296, 299, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (720, 296, 342, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -337,7 +337,8 @@ INSERT INTO `matchplay` (`matchID`, `participant1`, `participant2`, `playerID`, 
 (723, 297, 342, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (724, 298, 299, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (725, 298, 342, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(726, 299, 342, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(726, 299, 342, NULL, NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(727, 274, NULL, NULL, NULL, NULL, NULL, NULL, 48, '2', 9, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -816,7 +817,7 @@ CREATE TABLE `tournament` (
 
 INSERT INTO `tournament` (`tnmID`, `tnmName`, `sportID`, `tnmUrl`, `Rstartdate`, `Renddate`, `tnmStartdate`, `tnmEnddate`, `tnmTypegame`, `tnmDetail`, `tnmPicture`, `tnmFile1`, `accountID`, `st1`, `nd2`, `rd3`) VALUES
 (28, 'leader เดี่ยว 5 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-22', '2023-02-25', '2023-02-20', '2023-02-20', 'leaderboard', 'solosingle', '1676900517256_000_33346NG-728x485.jpg', '1676900517256_kl.jpg', NULL, '162', '180', '161'),
-(33, 'single 9 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-22', '2023-02-22', '2023-02-22', '2023-02-22', NULL, 'single 8 คน', '1677084861649_4.jpg', '1677084861649_2.jpg', NULL, '169', '173', '171'),
+(33, 'single 9 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-22', '2023-02-22', '2023-02-22', '2023-02-22', NULL, 'single 8 คน', '1677084861649_4.jpg', '1677084861649_2.jpg', NULL, NULL, NULL, NULL),
 (38, 'single 6 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-22', '2023-02-25', '2023-02-20', '2023-02-20', 'single', 'solosingle', '1676900517256_000_33346NG-728x485.jpg', '1676900517256_kl.jpg', NULL, '186', '187', '184'),
 (39, 'single 7 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-22', '2023-02-25', '2023-02-20', '2023-02-20', 'single', 'solosingle', '1676900517256_000_33346NG-728x485.jpg', '1676900517256_kl.jpg', NULL, '190', '192', '194'),
 (40, 'single 3 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-22', '2023-02-25', '2023-02-20', '2023-02-20', 'single', 'solosingle', '1676900517256_000_33346NG-728x485.jpg', '1676900517256_kl.jpg', NULL, '195', NULL, NULL),
@@ -828,12 +829,12 @@ INSERT INTO `tournament` (`tnmID`, `tnmName`, `sportID`, `tnmUrl`, `Rstartdate`,
 (47, 'single 15 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-22', '2023-02-25', '2023-02-20', '2023-02-20', NULL, 'solosingle', '1676900517256_000_33346NG-728x485.jpg', '1676900517256_kl.jpg', NULL, NULL, NULL, NULL),
 (48, 'single 16 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-22', '2023-02-25', '2023-02-20', '2023-02-20', 'single', 'solosingle', '1676900517256_000_33346NG-728x485.jpg', '1676900517256_kl.jpg', NULL, NULL, NULL, NULL),
 (49, 'round single 5 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-22', '2023-02-25', '2023-02-20', '2023-02-20', 'roundsingle', 'solosingle', '1676900517256_000_33346NG-728x485.jpg', '1676900517256_kl.jpg', NULL, '290', '292', '291'),
-(50, 'roundrobin 5 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-22', '2023-02-25', '2023-02-20', '2023-02-20', 'roundrobin', 'solosingle', '1676900517256_000_33346NG-728x485.jpg', '1676900517256_kl.jpg', NULL, '295', '296', '297'),
+(50, 'roundrobin 5 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-22', '2023-02-25', '2023-02-20', '2023-02-20', 'roundrobin', 'solosingle', '1676900517256_000_33346NG-728x485.jpg', '1676900517256_kl.jpg', NULL, NULL, NULL, NULL),
 (51, 'team single 5', 2, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-03-03', '2023-03-04', '2023-03-05', '2023-03-05', 'single', 'team single 5', '1677863260763_kl.jpg', '1677863260763_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', NULL, '76', '77', '75'),
 (52, 'team leader 5', 2, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-03-04', '2023-03-04', '2023-03-04', '2023-03-04', 'leaderboard', 'team single 5', '1677863260763_kl.jpg', '1677863260763_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', NULL, NULL, NULL, NULL),
 (53, 'team roundrobin 5', 2, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-03-04', '2023-03-04', '2023-03-04', '2023-03-04', 'roundrobin', 'team single 5', '1677863260763_kl.jpg', '1677863260763_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', NULL, NULL, NULL, NULL),
 (54, 'team round single 5', 2, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-03-04', '2023-03-04', '2023-03-04', '2023-03-04', 'roundsingle', 'team single 5', '1677863260763_kl.jpg', '1677863260763_à¹à¸à¸à¸à¸´à¸à¹à¸à¹à¸à¸à¸²à¸£à¹à¸¥à¹à¸à¹à¸à¸à¸¡à¸´à¸à¸à¸±à¸_1.jpg', NULL, '91', '89', '92'),
-(55, 'ทีม round single 9 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-22', '2023-02-22', '2023-02-22', '2023-02-22', 'roundsingle', 'single 8 คน', '1677084861649_4.jpg', '1677084861649_2.jpg', NULL, '169', '173', '171'),
+(55, 'ทีม round single 9 คน', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-02-22', '2023-02-22', '2023-02-22', '2023-02-22', 'roundsingle', 'single 8 คน', '1677084861649_4.jpg', '1677084861649_2.jpg', NULL, NULL, NULL, NULL),
 (59, 'ทดสอบการอัพโหลดแหละแสดงผลหลายไฟล์', 1, 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา', '2023-03-10', '2023-03-10', '2023-03-10', '2023-03-10', NULL, 'test', '1678456013106_2th.me_3211764.jpg', '1678456013108_b3me2cq1z1b71.png,1678456013110_4584093.png', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
@@ -1008,7 +1009,7 @@ ALTER TABLE `highlight`
 -- AUTO_INCREMENT for table `matchplay`
 --
 ALTER TABLE `matchplay`
-  MODIFY `matchID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=727;
+  MODIFY `matchID` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=728;
 
 --
 -- AUTO_INCREMENT for table `place`
