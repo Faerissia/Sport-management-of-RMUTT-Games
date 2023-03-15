@@ -101,36 +101,66 @@
 
     <h1>หน้าไฮไลต์ <%= tournamentName %></h1>
     <%- include("../partials/menu_staff.ejs") %>
-            <div class="container border">
-                <div>
+            <div class="container mt-2 ">
+              
+                <div class="card ">
                 <br>
-                <a href="/tournament/highlight/add/<%= tnmID %>" class="btn btn-primary">เพิ่มรูปภาพ/วิดีโอ</a>
+                <div class="row p-4 pt-0">
+                  <div class="col-12">
+                    <a href="/tournament/highlight/add/<%= tnmID %>" class="btn btn-primary">เพิ่มรูปภาพ/วิดีโอ</a>
+
+                  </div>
+
                 </div>
-                <div class="d-flex justify-content-center flex-wrap">
+                
+                
+                
+                  <div class="row row-cols-1 row-cols-md-3 g-4 p-4">
                 <% for(let i = 0; i < data.length; i++) { %>
                     <% if(data[i].linkvid) { %>
                       <% let videoUrl = data[i].linkvid; %>
                       <% videoID = videoUrl.split("/").pop(); %>
 
-                <div class="card" style="width: 350px; height: 300px;">
-                    <%= data[i].date.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%>
-                    <iframe src="https://youtube.com/embed/<%= videoID %>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <%= data[i].description %>
-                </div>
+                      <div class="col">
+                        <div class="card">
+                          <div class="card-header"> 
+                            <%= data[i].date.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%>
+                          </div>
+                          
+                          <div class="card-body h-auto" style=" height: 300px; ">
+                            <div class="ratio ratio-1x1">
+                              <iframe width: 100%; height: 300px; src="https://youtube.com/embed/<%= videoID %>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="YouTube video" allowfullscreen></iframe>
+                              </div>
+                          </div>
+                          <div class="card-footer"><%= data[i].description %></div>
+                        </div>
+                      </div>
+                    
+                  
+
                 <% } %>
                  <%if(data[i].filePic){ %>
-                    <div class="card" style="width: 350px; height: 300px;">
-                    <%= data[i].date.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%>
-                    <img id="myImg" src="../../images/<%=data[i].filePic%>" alt="<%= data[i].description%>">
-                        <!-- The Modal -->
-                        <div id="myModal" class="modal">
-                        <span class="close">&times;</span>
-                        <img class="modal-content" id="img01">
-                        <div id="caption"></div>
-                        </div>
-                    <%= data[i].description %>
-                </div>
+
+
+                  <div class="col">
+                    <div class="card">
+                      <div class="card-header"> 
+                        <%= data[i].date.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%>
+                      </div>
+                      
+                      <div class="card-body h-auto" style=" height: 300px;">
+                          <img id="myImg" class="img-fluid" src="../../images/<%=data[i].filePic%>" alt="<%= data[i].description%>" width: 100%; height: 300px;>
+                      </div>
+                      <div class="card-footer"><%= data[i].description %></div>
+                    </div>
+                  </div>
+                
+                    
+
                     <% }} %>  
+
+                   
+                  </div>
             </div>
 
 
