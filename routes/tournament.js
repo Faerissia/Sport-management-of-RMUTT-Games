@@ -1797,19 +1797,6 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
                           console.log('เพิ่มที่ 2 เรียบร้อย');
                         })
                       }
-
-                      //หาที่ 3
-                      if(check1 != rank[2].participant1 && check2 != rank[2].participant1){
-                        let rd3 = {rd3:rank[2].participant1}
-                        dbConnection.query('UPDATE tournament SET ? WHERE tnmID = '+tnmID,rd3,(error,rd3)=>{
-                          console.log('เพิ่มที่ 3 เรียบร้อย');
-                        })
-                      }else{
-                        let rd3 ={rd3:rank[2].participant2}
-                        dbConnection.query('UPDATE tournament SET ? WHERE tnmID = '+tnmID,rd3,(error,rd3)=>{
-                          console.log('เพิ่มที่ 3 เรียบร้อย');
-                        })
-                      }
           
 
 
@@ -2279,19 +2266,6 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
                       check2 = rank[1].participant2;
                       dbConnection.query('UPDATE tournament SET ? WHERE tnmID = '+tnmID,nd2,(error,nd2)=>{
                         console.log('เพิ่มที่ 2 เรียบร้อย');
-                      })
-                    }
-
-                    //หาที่ 3
-                    if(check1 != rank[2].participant1 && check2 != rank[2].participant1){
-                      let rd3 = {rd3:rank[2].participant1}
-                      dbConnection.query('UPDATE tournament SET ? WHERE tnmID = '+tnmID,rd3,(error,rd3)=>{
-                        console.log('เพิ่มที่ 3 เรียบร้อย');
-                      })
-                    }else{
-                      let rd3 ={rd3:rank[2].participant2}
-                      dbConnection.query('UPDATE tournament SET ? WHERE tnmID = '+tnmID,rd3,(error,rd3)=>{
-                        console.log('เพิ่มที่ 3 เรียบร้อย');
                       })
                     }
 
