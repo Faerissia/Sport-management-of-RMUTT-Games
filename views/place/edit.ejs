@@ -21,7 +21,7 @@
             แก้ไขสถานที่
         </div>
         <div class="card-body">
-            <form action="/place/update/<%= placeID %>" method="post" class="form needs-validation">
+            <form action="/place/update/<%= placeID %>" method="post" encType="multipart/form-data" class="form needs-validation">
                 <!--  -->
                 <div class="row my-2  p row-cols-2">
                     <div class="col-2 ">
@@ -63,7 +63,7 @@
                     </div>
                     <div class="col-4 ">
                         <input type="file" class="form-control border-dark" value="<%= placeFile %>" name="placeFile"
-                            autocomplete="off" >
+                            autocomplete="off" onchange="preview()" >
                             
                             <image src="/place/<%= placeFile %>" class="form-control" id="imgpreview">
                             

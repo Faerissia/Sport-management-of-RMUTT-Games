@@ -57,7 +57,7 @@
                 <label>เอกสารยืนยันตัวตน:</label>
                 <% const file = data[0].playerFile1.split(','); %>
                 <% for(let j=0;j<file.length;j++){ %>
-                <a href="../doc/<%= file[j] %>" download="<%= file[j] %>">ไฟล์ <%=i+1%></a>
+                <a href="../doc/<%= file[j] %>" download="<%= file[j] %>">ไฟล์ <%=j+1%></a>
                 <% } %>
             </div>
             <div class="form-group" style="margin-top: 10px;">

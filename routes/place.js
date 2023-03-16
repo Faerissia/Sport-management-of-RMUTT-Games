@@ -140,7 +140,11 @@ router.post('/update/(:placeID)', function(req, res, next) {
     let typeID = req.body.typeID;
     let placeUrl = req.body.placeUrl;
     let placeDetail = req.body.placeDetail;
+    let placeFile = req.files.placeFile;
     let errors = false;
+    var name_placefile = new Date().getTime() +'_'+placeFile.name;
+    placeFile.mv('./assets/place/' + name_placefile);
+
     console.log(placeID)
 
     // if no error
@@ -149,7 +153,8 @@ router.post('/update/(:placeID)', function(req, res, next) {
             placeName: placeName,
             typeID: typeID,
             placeUrl: placeUrl,
-            placeDetail: placeDetail
+            placeFile:name_placefile,
+            placeDetail: placeDetail,
         }
         // update query
         dbConnection.query("UPDATE place SET ? WHERE placeID = " + placeID, form_data, (err, result) => {
@@ -160,7 +165,9 @@ router.post('/update/(:placeID)', function(req, res, next) {
                     placeName: form_data.placeName,
                     typeID: form_data.typeID,
                     placeUrl: form_data.placeUrl,
-                    placeDetail: form_data.placeDetail
+                    placeFile: form_data.placeFile,
+                    placeDetail: form_data.placeDetail,
+              
                 })
             } else {
                 req.flash('success', 'place successfully updated');
