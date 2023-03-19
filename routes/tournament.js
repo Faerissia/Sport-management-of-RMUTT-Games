@@ -706,7 +706,7 @@ router.post('/highlight/add/(:tnmID)', function(req, res, next) {
 
 router.get('/participant/team/(:teamID)', function(req, res, next) {
     let thisteamID = req.params.teamID;
-    dbConnection.query('SELECT t.*, p.*,f.name AS facName,u.name AS uniName FROM team t JOIN player p ON t.teamID = p.teamID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE t.teamID = '+thisteamID, (err, rows) => {
+    dbConnection.query('SELECT t.*, p.*,f.name AS facName,u.name AS uniName ,tn.tnmName FROM team t JOIN player p ON t.teamID = p.teamID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID LEFT JOIN tournament tn ON tn.tnmID = t.tnmID  WHERE t.teamID = '+thisteamID, (err, rows) => {
         if(req.session.username){
         if(req.session.level === 'เจ้าหน้าที่'){
             res.render('./tournament/participant/team', { data: rows});

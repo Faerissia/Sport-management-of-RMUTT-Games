@@ -12,9 +12,7 @@
     
       <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
       <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
-      <!-- <link href="//cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css" rel="stylesheet"/> -->
- 
-<!-- <script src="//cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script> -->
+     
     </head>
 
     <body>
@@ -44,7 +42,7 @@
                 <td class="align-middle"><%=i+1%></td>
                 <td class="align-middle">
                   <div class="box w-auto text-start ">
-                    <div class="btn  btn-outline-light text-start" style="width: 100%">
+                    <div class="btn  btn-light text-start" style="width: 100%">
                       <a class="text-decoration-none text-dark" href="/allrank/<%=merge[i].uniID %>">
                         <div class="col"><%= merge[i].name %></div>
                       </a>
@@ -62,11 +60,7 @@
               <tr>
                 <!-- <th scope="col">อันดับ</th> -->
                 <td class="align-middle" colspan="2" scope="col">
-                  <div class="box w-auto text-start ms-5">
-                    <div class="btn btn-primary" style="width: 80%">
-                      <div class="text-center text-light">รวม</div>
-                    </div>
-                  </div>
+                      <div class="text-center text-dark">รวม</div>
                 </td>
 
                 <td class="align-middle text-center" scope="col"><%= sumst1 %></td>

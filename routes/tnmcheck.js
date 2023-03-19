@@ -95,7 +95,7 @@ router.get('/player/(:playerID)', function(req, res, next) {
 
 router.get('/team/(:teamID)', function(req, res, next) {
     let thisteamID = req.params.teamID;
-    dbConnection.query('SELECT t.*, p.*,f.name AS facName,u.name AS uniName FROM team t JOIN player p ON t.teamID = p.teamID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE t.teamID = '+thisteamID, (err, rows) => {
+    dbConnection.query('SELECT t.*, p.*, f.name AS facName, u.name AS uniName, tn.tnmName FROM team t JOIN player p ON t.teamID = p.teamID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID LEFT JOIN tournament tn ON t.tnmID = tn.tnmID  WHERE t.teamID = '+thisteamID, (err, rows) => {
         if(req.session.username){
         if(req.session.level === 'เจ้าหน้าที่'){
             res.render('./tnmcheck/candidate/team', { data: rows});
@@ -252,6 +252,27 @@ router.get('/edit/player/(:playerID)', function(req,res,next){
     })
 })
 
+
+
+router.get('/edit/team/(:teamID)', function(req, res, next) {
+    let thisteamID = req.params.teamID;
+    dbConnection.query('SELECT t.*, p.*, f.name AS facName, u.name AS uniName, tn.tnmName FROM team t JOIN player p ON t.teamID = p.teamID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID LEFT JOIN tournament tn ON tn.tnmID = t.tnmID WHERE t.teamID ='+thisteamID, (err, rows) => {
+        if(req.session.username){
+        if(req.session.level === 'เจ้าหน้าที่'){
+            res.render('./tnmcheck/edit/team', { data: rows});
+        }else{
+            req.flash('error','ไม่สามารถเข้าถึงได้');
+            res.redirect('../../login');
+        }
+    }else{
+        res.redirect('error404');
+    }
+    })
+})
+
+
+
+
 router.get('/emailsingle/(:playerID)', function(req,res,next){
     let thisplayerID = req.params.playerID;
     dbConnection.query('SELECT p.*,t.tnmID,t.tnmName,f.uniID,f.facultyID,f.name AS facName,u.uniID,u.name AS uniName FROM player p LEFT JOIN tournament t ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerID = '+thisplayerID, (err, rows) => {
@@ -309,6 +330,18 @@ router.get('/delete/player/(:playerID)', function(req,res,next){
             res.redirect('/tnmcheck');
         }else{
             req.flash('success','ได้ลบผู้เล่นเรียบร้อยแล้ว!');
+            res.redirect('/tnmcheck');
+        }
+    })
+})
+router.get('/delete/team/(:teamID)', function(req,res,next){
+    let teamID = req.params.playerID;
+    dbConnection.query('DELETE p, t FROM player p  JOIN team t ON t.teamID = p.teamID AND t.tnmID = p.tnmID  WHERE p.teamID = ? ',[teamID],(err,result)=>{
+        if(err){
+            req.flash('error','ไม่สามารถลบทีมได้');
+            res.redirect('/tnmcheck');
+        }else{
+            req.flash('success','ได้ลบทีมเรียบร้อยแล้ว!');
             res.redirect('/tnmcheck');
         }
     })

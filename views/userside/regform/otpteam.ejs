@@ -23,11 +23,11 @@
                       var codeBox4Value = document.getElementById('codeBox4').value;
             
                       // ตรวจสอบค่าว่างหรือไม่
-                      if (codeBox1Value === '' || codeBox2Value === '' || codeBox3Value === '' || codeBox4Value === '') {
-                        alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');
-                        document.getElementById('myForm').reset();
-                        return false; // ไม่ส่งฟอร์มเมื่อข้อมูลไม่ครบ
-                      }
+                      // if (codeBox1Value === '' || codeBox2Value === '' || codeBox3Value === '' || codeBox4Value === '') {
+                      //   alert('กรุณากรอกข้อมูลให้ครบทุกช่อง');
+                      //   document.getElementById('myForm').reset();
+                      //   return false; // ไม่ส่งฟอร์มเมื่อข้อมูลไม่ครบ
+                      // }
             
                       // รวมค่าจากฟิลด์ทั้ง 4 ตัวเข้าด้วยกัน
                       var total = codeBox1Value + codeBox2Value + codeBox3Value + codeBox4Value;
@@ -73,7 +73,7 @@
                     <div class="container">
                       <div class="card-header display-4 text-dark">ยืนยันการสมัคร</div>
                       <!-- <p class="display-4">ยืนยันการสมัคร</p> -->
-                      <p class="h4 mt-2 text-dark">ส่งรหัส OTP ไปที่อีเมล : <%= playerEmail %></p>
+                      <p class="h4 mt-2 text-dark">ส่งรหัส OTP ไปที่อีเมล : </p>
                       <form id="myForm" action="/verifyteam" method="post">
                         <div class="row">
                           <label class="h5 mt-2 text-dark">โปรดใส่รหัส OTP :</label>
@@ -128,7 +128,7 @@
                                 />
                               </div>
                             </div>
-                            <input type="hidden" name="submitOTP" id="otp" />
+                            <input type="hidden" name="otp" id="otp" />
                             <input type="hidden" name="teamOTP" value="<%= teamOTP %>">
                             <input type="hidden" name="teamName" value="<%= teamName %>" >
                             <input type="hidden" name="tnmID" value="<%=tnmID %>">

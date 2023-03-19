@@ -59,8 +59,8 @@
         <div class="card-body">
             <% if(data[0].teamID) { %>
                 
-                <table class="table">
-                    <thead>
+                <table class="table  w-75 mx-auto my-5 border  border-dark table-striped table-hover text-center align-middle">
+                    <thead style="background: rgb(96, 166, 253); ">
                         <tr>
                             <th scope="col">ชื่อทีมที่เข้าร่วม</th>
                             <th scope="col">จำนวนสมาชิก</th>
@@ -77,8 +77,8 @@
                                 <td><%= data[i].NameAgent %></td>
                                 <td><%= data[i].teamPhoneA %></td>
                                 <td>
-                                    <a href="../tournament/edit/<%= data[i].teamID %>" class="btn btn-warning edit">แก้ไข</a>
-                                    <a href="../tournament/delete/<%= data[i].teamID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
+                                    <a href="/tnmcheck/edit/team/<%= data[i].teamID %>" class="btn btn-warning edit">แก้ไข</a>
+                                    <a href="/tnmcheck/delete/team/<%= data[i].teamID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
                                     <a href="/tournament/participant/team/<%= data[i].teamID %>" class="btn btn-primary page">ดู</a>
                                 </td>
                             </tr>

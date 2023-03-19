@@ -7,10 +7,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Participant</title>
 </head>
 <body>
-    <h1>ผู้สมัครการแข่งขัน <%=data[0].tnmName %> </h1>
+    <h1 class="text-center mt-2" >ข้อมูลผู้เข้าร่วมการแข่งขัน <%=data[0].tnmName %> </h1>
     <hr style="height:2px;border-width:0;color:gray;background-color:gray">
     <form action="/tnmcheck/player" method="post">
         <div class="form-group">
@@ -55,15 +55,17 @@
             </div><% data[0].tnmID %>
             <div class="form-group">
                 <label>เอกสารยืนยันตัวตน:</label>
+                <% if(data[0]?.playerFile1)  {%>
                 <% const file = data[0].playerFile1.split(','); %>
                 <% for(let j=0;j<file.length;j++){ %>
-                <a href="../doc/<%= file[j] %>" download="<%= file[j] %>">ไฟล์ <%=i+1%></a>
+                <a href="../doc/<%= file[j] %>" download="<%= file[j] %>">ไฟล์ <%=j+1%></a>
                 <% } %>
+                <% } %>
+               
             </div>
             <div class="form-group" style="margin-top: 10px;">
                 <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
                 <a href="/tnmcheck/edit/player/<%=data[0].playerID %>" class="btn btn-warning" value="edit">แก้ไข</a>
-
             </div>
         </form>
             

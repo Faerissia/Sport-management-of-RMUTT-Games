@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>ทีมที่สมัครการแข่งขัน</title>
 </head>
 <body>
     <div class="container text-center">
@@ -226,7 +226,7 @@
         
                 <div class="form-group" style="margin-top: 10px;">
                     <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
-                    <a href="/" class="btn btn-warning" value="edit">แก้ไข</a>
+                    <a href="../edit/team/<%= data[0].teamID %> "class="btn btn-warning" value="edit">แก้ไข</a>
                     <a href="/tnmcheck/team/deny/<%= data[0].teamID%>" class="btn btn-danger" value="deny">ปฏิเสธ</a>
                     <a href="/tnmcheck/team/accept/<%= data[0].teamID%>" class="btn btn-success" value="accept">ยอมรับ</a>
                     <a href="/" class="btn btn-primary" value="otp">ส่งแก้ไข</a>

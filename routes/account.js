@@ -19,7 +19,7 @@ router.post('/search-account', function(req, res, next) {
 // display account page
 router.get('/', function(req, res, next) {
     if(req.session.username){
-        dbConnection.query('SELECT * FROM account ORDER BY accountID asc', (err, rows) => {
+        dbConnection.query('SELECT `accountID`,`email`,`password`,`name`,`lname`,`phone`,`level`AS thelevel, `status` FROM `account` ORDER BY accountID asc', (err, rows) => {
                     res.render('account', { data: rows});
         })}
         else{
@@ -36,7 +36,7 @@ router.get('/add',function(req, res, next) {
         lname:'',
         phone:'',
         cpassword:'',
-        level:''});
+        thelevel:''});
 })
 
 
@@ -49,7 +49,7 @@ router.post('/add', async function(req, res, next){
     let name = req.body.name;
     let lname = req.body.lname;
     let phone = req.body.phone;
-    let level = req.body.level;
+    let thelevel = req.body.thelevel;
     let errors = false;
 
     const usernamecheck = ['%' + email + '%'];
@@ -69,7 +69,7 @@ router.post('/add', async function(req, res, next){
             name: name,
             lname: lname,
             phone: phone,
-            level: level,
+            thelevel: thelevel,
             user: user
         })
     }
@@ -84,7 +84,7 @@ router.post('/add', async function(req, res, next){
             name: name,
             lname: lname,
             phone: phone,
-            level: level,
+            thelevel: thelevel,
         })
     }
 
@@ -98,7 +98,7 @@ router.post('/add', async function(req, res, next){
             name: name,
             lname: lname,
             phone: phone,
-            level: level
+            level: thelevel
         }
         // insert query db
         dbConnection.query('INSERT INTO account SET ?', form_data, (err, result) => {
@@ -111,7 +111,7 @@ router.post('/add', async function(req, res, next){
                     name: form_data.name,
                     lname: form_data.lname,
                     phone: form_data.phone,
-                    level: form_data.level,
+                    thelevel: form_data.thelevel,
                     status: form_data.status
                 })
             } else {
@@ -138,7 +138,7 @@ router.get('/edit/(:accountID)', function(req, res, next)  {
                 name: rows[0].name,
                 lname: rows[0].lname,
                 phone: rows[0].phone,
-                level: rows[0].level,
+                thelevel: rows[0].level,
                 status: rows[0].status
             })
         }
@@ -153,7 +153,7 @@ router.post('/update/:accountID', function(req, res, next) {
     let name = req.body.name;
     let lname = req.body.lname;
     let phone = req.body.phone;
-    let level = req.body.level;
+    let thelevel = req.body.thelevel;
     let status = req.body.status;
     let errors = false;
 
@@ -167,7 +167,7 @@ router.post('/update/:accountID', function(req, res, next) {
             name: name,
             lname: lname,
             phone: phone,
-            level: level,
+            thelevel: thelevel,
             status: status
         })
     }
@@ -179,7 +179,7 @@ router.post('/update/:accountID', function(req, res, next) {
             name: name,
             lname: lname,
             phone: phone,
-            level: level,
+            level: thelevel,
             status: status
         }
         // update query
@@ -193,7 +193,7 @@ router.post('/update/:accountID', function(req, res, next) {
                     name: form_data.name,
                     lname: form_data.lname,
                     phone: form_data.phone,
-                    level: form_data.level,
+                    thelevel: form_data.thelevel,
                     status: form_data.status
                 })
             } else {
@@ -233,7 +233,7 @@ router.get('/page/(:accountID)', function(req, res, next) {
                 name: rows[0].name,
                 lname: rows[0].lname,
                 phone: rows[0].phone,
-                level: rows[0].level,
+                thelevel: rows[0].level,
                 status: rows[0].status
             })
         }

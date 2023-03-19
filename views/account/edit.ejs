@@ -57,11 +57,12 @@
                     <div class="row">
                         <div class="col-auto">
                             <label style="margin-top: 10px;">ระดับผู้ใช้งาน</label>
-                            <select name="level" class="form-select border border-dark" autocomplete="off" required >
+                            <select name="thelevel" class="form-select border border-dark" autocomplete="off" required >
                                 
 
-                                <option value="<%= level='ผู้ดูแลระบบ' %>">ผู้ดูแลระบบ</option>
-                                <option value="<%= level='เจ้าหน้าที่' %>">เจ้าหน้าที่</option>
+                                <option selected value="<%= thelevel%>"><%= thelevel%></option>
+                                <option value="<%= thelevel='ผู้ดูแลระบบ' %>">ผู้ดูแลระบบ</option>
+                                <option value="<%= thelevel='เจ้าหน้าที่' %>">เจ้าหน้าที่</option>
                             </select>
                         </div>
                         <div class="col-auto">
