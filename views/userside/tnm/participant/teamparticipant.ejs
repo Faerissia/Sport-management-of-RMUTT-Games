@@ -80,7 +80,6 @@
                         <table class="table w-75 mx-auto mt-5  text-center  table-hover table-striped">
                             <thead>
                                 <tr style="background-color: rgb(96, 166, 253);">
-                                    <th>#</th>
                                     <th scope="col">ชื่อ - นามสกุล</th>
                                     <th scope="col">เพศ</th>
                                     <th scope="col">อายุ</th>
@@ -92,7 +91,6 @@
                                 <% for(let j=0; j < player.length; j++) { %>
                                     <% if(player[j].teamID === data[i].teamID){ %>
                                         <tr>
-                                            <td><%= j+1 %></td>
                                             <td><%= player[j].playerFName %> <%= player[j].playerLName %></td>
                                             <td><%= player[j].playerGender %></td>
                                             <td><%= player[j].age %></td>
