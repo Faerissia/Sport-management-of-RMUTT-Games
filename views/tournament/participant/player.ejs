@@ -14,55 +14,125 @@
     <hr style="height:2px;border-width:0;color:gray;background-color:gray">
     <form action="/tnmcheck/player" method="post">
         <div class="form-group">
-            <label>ชื่อ:</label>
-            <input type="text" class="form-control" value="<%= data[0].playerFName %>" disabled>
-        </div>
-            <div class="form-group">
-                <label>นามสกุล:</label>
-                <input type="text" class="form-control" value="<%= data[0].playerLName %>" disabled>
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validationFname" class="col-form-label">ชื่อ</label>
+                </div>
+                <div class="col-2">
+                    <input disabled type="text" class="form-control border-dark" id="validationFname" value="<%= data[0].playerFName %>"
+                        name="playerFName" autocomplete="off" required>
+                </div>
+                <div class="col-1 text-start">
+                    <label for="validationLname" class="col-form-label">นามสกุล</label>
+                </div>
+                <div class="col-2">
+                    <input disabled type="text" class="form-control border-dark" id="validationLname" value="<%= data[0].playerLName %>"
+                        name="playerLName" autocomplete="off" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label>เพศ:</label>
-                <input type="text" class="form-control" value="<%= data[0].playerGender %>" disabled>
+         
+            <!-- -------------------------------------------------------------- -->
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validation" class="col-form-label">เพศ</label>
+                </div>
+                <div class="col-2">
+                    <select disabled class="form-select border-dark" id="validation" name="playerGender" required>
+                        <option selected disabled value="<%= data[0].playerGender %>"><%= data[0].playerGender %></option>
+                        <option value="<%= playerGender='ชาย' %>">ชาย</option>
+                        <option value="<%= playerGender='หญิง' %>">หญิง</option>
+                    </select>
+                </div>
+                <div class="col-2 col-xl-1 text-start">
+                    <label for="validationplayerBirthday" class="col-form-label">วัน/เดือน/เกิด</label>
+                </div>
+                <div class="col-auto ">
+                    <input disabled type="date" class="form-control border-dark" id="validationplayerBirthday"
+                        value="<%= data[0].playerBirthday.toLocaleDateString('en-CA',{day: '2-digit', month: '2-digit', year:'numeric'}) %>" name="playerBirthday" autocomplete="off" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label>วัน/เดือน/ปี:</label>
-                <input type="text" class="form-control" value="<%= data[0].playerBirthday.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %>" disabled>
+           
+           
+            <!-- -------------------------------------------------------------- -->
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validationTel" class="col-form-label">เบอร์โทรติดต่อ</label>
+                </div>
+                <div class="col-2">
+                    <input disabled type="text" class="form-control border-dark" id="validationTel" value="<%= data[0].playerPhone %>"
+                        name="playerPhone" autocomplete="off" pattern="[0-9]{10}" minlength="10"
+                        maxlength="10" required>
+                </div>
+                <div class="col-1 text-start">
+                    <label for="validationEmail" class="col-form-label">อีเมล</label>
+                </div>
+                <div class="col-4">
+                    <input disabled type="email" class="form-control border-dark" id="validationEmail" value="<%= data[0].playerEmail %>"
+                        name="playerEmail" autocomplete="off" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label>เบอร์โทร:</label>
-                <input type="text" class="form-control" value="<%= data[0].playerPhone %>" disabled>
+           
+            <!-- -------------------------------------------------------------- -->
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validationUni" class="col-form-label">มหาวิทยาลัย</label>
+                </div>
+                <div class="col-4">
+                    <input disabled type="text" class="form-control border-dark" value="<%= data[0].uniName %>" disabled>
+                </div>
             </div>
-            <div class="form-group">
-                <label>อีเมล:</label>
-                <input type="email" class="form-control" value="<%= data[0].playerEmail %>" disabled>
+            <!-- -------------------------------------------------------------- -->
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validation" class="col-form-label">คณะ</label>
+                </div>
+                <div class="col-4">
+                <input disabled type="text" class="form-control border-dark" value="<%= data[0].facName %>"  disabled>
+                </div>
             </div>
-            <div class="form-group">
-                <label>มหาวิทยาลัย:</label>
-                <input type="text" class="form-control" value="<%= data[0].uniName %>" disabled>
+            <!-- -------------------------------------------------------------- -->
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validationCard" class="col-form-label">เลขประจำตัวประชาชน</label>
+                </div>
+                <div class="col-2  align-self-center ">
+                    <input disabled type="text" class="form-control border-dark text-start" id="validationCard" value="<%= data[0].playerIDCard %>"
+                        name="playerIDCard" autocomplete="off" pattern="[0-9]{13}" minlength="13"
+                        maxlength="13" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label>คณะ:</label>
-                <input type="text" class="form-control" value="<%= data[0].facName %>" disabled>
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validationCard" class="col-form-label">หมายเหตุ</label>
+                </div>
+                <div class="col-3">
+                    <input disabled type="text" class="form-control border-dark" id="validationLname" value="<%= data[0].detailDoc %>"
+                    name="playerdetailDoc" autocomplete="off" >
+                </div>
             </div>
-            <div class="form-group">
-                <label>เลขประจำตัวประชาชน:</label>
-                <input type="text" class="form-control" value="<%= data[0].playerIDCard %>" disabled>
-            </div>
-            <div class="form-group">
-                <label>รหัสนักศึกษา:</label>
-                <input type="text" class="form-control" value="<%= data[0].playerStudentID %>" disabled>
-            </div><% data[0].tnmID %>
-            <div class="form-group">
-                <label>เอกสารยืนยันตัวตน:</label>
-                <% if(data[0]?.playerFile1)  {%>
-                <% const file = data[0].playerFile1.split(','); %>
-                <% for(let j=0;j<file.length;j++){ %>
-                <a href="../doc/<%= file[j] %>" download="<%= file[j] %>">ไฟล์ <%=j+1%></a>
-                <% } %>
-                <% } %>
+            <!-- -------------------------------------------------------------- -->
+    
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validationFile" class="col-form-label">เอกสารยืนยันตัวตน</label>
+                </div>
+                <div class="col-3 align-self-center ">
+                    <% const file = data[0].playerFile1.split(','); %>
+                    <% for(let j=0;j<file.length;j++){ %>
+                    <a href="../doc/<%= file[j] %>" download="<%= file[j] %>">ไฟล์ <%=j+1%></a>
+                    <% } %>
+                </div>
                
             </div>
+
+            <!-- -------------------------------------------------------------- -->
+    
+         
+
+            <!-- คืออะไรนิ -->
+            <input type="hidden" class="" name="tnmID" value="<%= data[0].tnmID%>">
+
+        </div>
             <div class="form-group" style="margin-top: 10px;">
                 <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
                 <a href="/tnmcheck/edit/player/<%=data[0].playerID %>" class="btn btn-warning" value="edit">แก้ไข</a>

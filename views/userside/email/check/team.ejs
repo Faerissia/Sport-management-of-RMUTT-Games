@@ -7,18 +7,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ทีมที่สมัครการแข่งขัน</title>
+    <title>ส่งแก้ไขการสมัคร</title>
 </head>
 <body>
-    <div class="container text-center">
-    <h1 style="margin-top: 20;"> ทีมที่สมัครการแข่งขัน <%=data[0].tnmName %> </h1>
+    
+    <h1>ส่งแก้ไขทีมที่สมัคร  <%=data[0].tnmName %> </h1>
     <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-    <form action="/tnmcheck/team" method="post">
+    <form action="/tnmcheck/emailteam/<%= data[0].teamID %>" method="post">
         <div class="form-grou">
             <!--  -->
             <div class="row row-cols-2">
                 <div class="col-6">
-                    <div class="row mt-2">
+                    <div class="row mt-2"> 
                         <div class="col-5 text-start">
                             <label for="validationnameT" class="col-form-label">ชื่อทีม</label>
                         </div>
@@ -61,7 +61,8 @@
                         </div>
                         <div class="col-auto">
                             <input  style="width: 350px;"  type="email" class="form-control border-dark" id="validationEmail"
-                                value="<%= data[0].teamEmailA %>" name="teamEmailA" autocomplete="off" disabled>
+                                value="<%= data[0].teamEmailA %>" name="" autocomplete="off" disabled>
+                                <input type="hidden" class="form-control" name="emailto" value="<%= data[0].teamEmailA %>">
                         </div>
                     </div>
                 </div>
@@ -113,8 +114,6 @@
                         </div>
                     </div>
 
-
-
                     <!-- row -->
                     <div class="row mt-2 row-cols-4">
                         <div class="col-2 text-start">
@@ -135,8 +134,6 @@
                                 name="playerBirthday" autocomplete="off" disabled>
                         </div>
                     </div>
-
-
                     <!-- row -->
                     <div class="row mt-2 row-cols-4">
                         <div class="col-2 text-start">
@@ -179,7 +176,6 @@
                         </div>
 
                 </div>
-
                     <!-- row -->
                     <div class="row mt-2 row-cols-4">
                         <div class="col-2 text-start">
@@ -206,34 +202,34 @@
                             </div>
                         </div>
                     </div>
-
-
-
-
-
-
-
-                    
                     <br>
                     <hr style="height:2px;border-width:0;color:black;background-color:black">
                     <br>
-                    <input type="hidden" name="tnmID" value="<%= data[0].tnmID%>">
-
+                    <input type="hidden" name="playerID" value="<%= data[i].playerID%>">
+                    
                 </div>
                 <% } %>
+                <input type="hidden" name="tnmID" value="<%= data[0].tnmID%>">
+                <input type="hidden" name="teamID" value="<%= data[0].teamID%>">
         </div>
+        <div class="row my-2   row-cols-2">
+           
+            <div class="col-2 text-start">
+                <label>ส่งไปที่อีเมล(ตัวแทน) <%= data[0].teamEmailA%></label>
+                <!-- <label>รายละเอียด</label> -->
+             
+            </div>
+            <div class="col-4 align-self-center">
+                <input type="text" class="form-control border-dark" name="editemailer" style="width: 350px;" required>
+                
+            </div>
+        </div>
+            <div class="form-group" style="margin-top: 10px; ">
+                <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
+                <button value="submit" class="btn btn-success">ตกลง</button>
 
-        
-                <div class="form-group" style="margin-top: 10px;">
-                    <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
-                    <a href="../edit/team/<%= data[0].teamID %> "class="btn btn-warning" value="edit">แก้ไข</a>
-                    <a href="/tnmcheck/team/deny/<%= data[0].teamID%>" class="btn btn-danger" value="deny">ปฏิเสธ</a>
-                    <a href="/tnmcheck/team/accept/<%= data[0].teamID%>" class="btn btn-success" value="accept">ยอมรับ</a>
-                    <a href="/tnmcheck/emailteam/<%= data[0].teamID%>" class="btn btn-primary" value="otp">ส่งแก้ไข</a>
-                </div>
-
-    </form>
-</div>
+            </div>
+        </form>
             
 </body>
 </html>

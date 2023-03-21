@@ -36,6 +36,80 @@
                                                 </div>
                                             </form>
                                         </div> -->
+          <button class="btn btn-primary float-end " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">บัญชีผู้ใช้งาน</button>
+
+          <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasScrollingLabel"></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+
+                <div class="card border-dark mb-3" >
+                  <div class="card-header"></div>
+                  <div class="card-body text-dark">
+                    <h5 class="card-title">การตั้งค่าบัญชี</h5>
+                    
+              <% const data2 = data.filter(item => item.accountID === accountID);%> 
+              <% console.table( data2)%> 
+              <% console.log( accountID)%> 
+             
+             <div class="row ">
+              <div class="col-5">
+                <span for="">ชื่อ-นามสกุล</span>
+              </div>
+              <div class="col">
+                <span for=""><%= data2[0]?.name %> <%= data2[0]?.lname %></span>
+              </div>
+             </div>
+             
+             <div class="row ">
+              <div class="col-5">
+                <span for="">อีเมล</span>
+              </div>
+              <div class="col">
+                <span for=""> <%= data2[0]?.email %></span>
+              </div>
+             </div>
+
+             <div class="row ">
+              <div class="col-5">
+                <span for="">เบอร์โทรติดต่อ</span>
+              </div>
+              <div class="col">
+                <span for=""> <%= data2[0]?.phone %></span>
+              </div>
+             </div>
+          
+             <div class="row ">
+              <div class="col-5">
+                <span for="">ระดับผู้ใช้งาน</span>
+              </div>
+              <div class="col">
+                <span for=""><%= data2[0]?.thelevel %></span>
+              </div>
+             </div>
+
+             <div class="row ">
+              <div class="col-5">
+                <span for="">สถานะการใช้งาน</span>
+              </div>
+              <div class="col">
+                <span for=""><%= data2[0]?.status %></span>
+              </div>
+             </div>
+        
+             <div class="row " style="margin-top: 20%;">
+           
+              <div class="col">
+                <a href="../account/edit/<%= data2[0]?.accountID %>" class="btn btn-warning edit">แก้ไข</a>
+              </div>
+             </div>
+                  </div>
+                </div>
+              
+            </div>
+          </div>
         </div>
       </div>
 
@@ -52,22 +126,24 @@
               <tr>
                 <th scope="col">ระดับผู้ใช้งาน</th>
                 <th scope="col">ชื่อ - นามสกุล</th>
-                <th scope="col">เบอร์โทรศัพท์</th>
+                <th scope="col">เบอร์โทรติดต่อ</th>
                 <th scope="col">สถานะการใช้งาน</th>
                 <th width="200px">ตัวเลือก</th>
               </tr>
             </thead>
             <tbody>
-              <% for(let i=0; i < data.length; i++) { %>
+              <% const data1 = data.filter(item => (item.accountID) !== (accountID));%> 
+              <% console.table( data1)%> <% console.log("🚀 ~ file: index.ejs:62 ~ username:", username)%> 
+              <%for(let i=0; i < data1.length; i++) { %>
               <tr>
-                <th scope="row" class="fw-normal"><%= data[i].thelevel %></th>
-                <td><%= data[i].name %> <%= data[i].lname %></td>
-                <td><%= data[i].phone %></td>
-                <td><%= data[i].status %></td>
+                <th scope="row" class="fw-normal"><%= data1[i].thelevel %></th>
+                <td><%= data1[i].name %> <%= data1[i].lname %></td>
+                <td><%= data1[i].phone %></td>
+                <td><%= data1[i].status %></td>
                 <td class="text-center">
-                  <a href="../account/delete/<%= data[i].accountID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                  <a href="../account/edit/<%= data[i].accountID %>" class="btn btn-warning edit">แก้ไข</a>
-                  <a href="../account/page/<%= data[i].accountID %>" class="btn btn-primary">ดูข้อมูล</a>
+                  <a href="../account/delete/<%= data1[i].accountID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
+                  <a href="../account/edit/<%= data1[i].accountID %>" class="btn btn-warning edit">แก้ไข</a>
+                  <a href="../account/page/<%= data1[i].accountID %>" class="btn btn-primary">ดูข้อมูล</a>
                 </td>
               </tr>
               <% } %>

@@ -65,31 +65,42 @@
             <br>
         <% singlebye = Math.pow(2, Math.ceil(Math.log2(data.length))) - data.length; %>
             จำนวนทีมที่ได้บาย <%= singlebye %>
-
+            
             <div id="manual" class="manto">
-                <br>
-                <label>เลือกผู้เล่นที่ได้บาย</label>
-                <% for(i=0;i < singlebye;i++){ %>
-                <select name="byename" class="form-select border-dark" required>
-                    <option value="blank">--เลือก--</option>
-                    <% for(j=0;j< data.length;j++){ %>
-                    <option value="<%= data[j].playerID %>"><%= data[j].playerFName %></option>
-                    <% } %>
-            </select>
-            <% } %>
 
-            <br>
-            <label>ผู้เล่นที่เหลือ</label>
-            
-            <% for(k=0;k < data.length-singlebye;k++){ %>
-                <select name="otherteam" class="form-select border-dark" required>
-                    <option value="blank">--เลือก--</option>
-                    <% for(x=0;x< data.length;x++){ %>
-                    <option value="<%= data[x].playerID %>"><%= data[x].playerFName %></option>
-                    <% } %>
-            </select>
-            
-            <% } %>
+                <div class="container">
+                
+                    <div class="row text-center ">
+                        <div class="col align-self-start text-center  ">
+                            <label>เลือกผู้เล่นที่ได้บาย</label>
+                            <% for(i=0;i < singlebye;i++){ %>
+                            <select name="byename" class="form-select border-dark mx-auto mb-1" required style="width: 400px;">
+                                <option value="blank">--เลือก--</option>
+                                <% for(j=0;j< data.length;j++){ %>
+                                <option value="<%= data[j].playerID %>"><%= data[j].playerFName %></option>
+                                <% } %>
+                        </select>
+                        <% } %>
+                        </div>
+                        <div class="col align-self-start text-center  ">
+                            <label>ผู้เล่นที่เหลือ</label>
+                        
+                            <% for(k=0;k < data.length-singlebye;k++){ %>
+                                <select name="otherteam" class="form-select border-dark mx-auto mb-1" required  style="width: 400px;">
+                                    <option value="blank">--เลือก--</option>
+                                    <% for(x=0;x< data.length;x++){ %>
+                                    <option value="<%= data[x].playerID %>"><%= data[x].playerFName %></option>
+                                    <% } %>
+                            </select>
+                            
+                            <% } %>
+                
+                        </div>
+                    </div>
+                    
+                </div>
+
+
             </div>
 
             
