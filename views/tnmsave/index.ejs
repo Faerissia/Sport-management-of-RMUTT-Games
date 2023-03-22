@@ -78,34 +78,35 @@
                 <table id="mytable" class="table  table-striped table-hover table-bordered ">
                     <thead>
                         <tr>
-                            <th class="text-center">ลำดับที่</th>
+                            <th class="text-center" width="60px">ลำดับที่</th>
                             <th scope="col">ชื่อการแข่งขัน</th>
                             <th scope="col">ประเภทกีฬา</th>
-                            <th scope="col">รอบ</th>
+                            <th class="text-center" width="50px" >รอบ</th>
                             <th scope="col">วันเวลา</th>
                             <th scope="col">สถานที่</th>
                             <th width="130px" class="text-center">ตัวเลือก</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <% for(let i = 0; i < data.length; i++) { %>
-                            <% if(data[i].pDate === null || data[i].paceName === null || data[i].time === null || data[i].tnmTypegame === 'leaderboard') { %>
-                                
-                                <% }else if(data[i].score1 === null || data[i].score2 === null){ %>
-                                    <tr class="align-middle">
-                                <td class="text-center"><%= i+1 %></td>
-                                <td><%= data[i].tnmName %></td>
-                                <td><%= data[i].sportName %></td>
-                                <td><%= data[i].round %></td>
                         
-                                <td><%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %> <%= data[i].time.slice(0, 5); %> - <%= data[i].timeend.slice(0, 5); %></td>
+                        <% for(let i = 0; i < data.length; i++) { %>
+                            <% if(data[i].tnmTypegame === 'leaderboard'){%>
+                                
+                                <%}else if(!data[i].score1  || !data[i].score2 ){ %>
+                                    <% if(data[i].pDate !== null && data[i].time !== null && data[i].timeend !== null){ %>
+                            <tr class="align-middle"">
+                                <td class="text-center" ><%= i+1 %></td>
+                                <td><%= data[i].tnmTypegame %></td>
+                                <td><%= data[i].sportName %></td>
+                                <td class="text-center"><%= data[i].round %></td>
+                                <td><%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %> <%= data[i].time.slice(0, 5); %> - <%= 			data[i].timeend.slice(0, 5); %></td>
                                 <td><%= data[i].placeName %></td>
-                                <td class="text-center">
-                                    
+                                <td>
                                     <a href="../doc/scoresheet.png" download="scoresheet.png" class="btn btn-warning">ใบคะแนน</a>
                                     <a href="../tournament/match/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
                                 </td>
                             </tr>
+                                <% } %>
                                 <% }%> 
                         <% } %>
                     </tbody>
@@ -129,3 +130,5 @@
 </body>
 </html>
 </div>
+
+

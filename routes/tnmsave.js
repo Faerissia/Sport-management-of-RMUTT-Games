@@ -25,7 +25,7 @@ router.post('/search-tnmsave', function(req, res, next) {
     });
     }else if(startDate) {
         console.log(startDate)
-    sql = "SELECT t.tnmID, t.tnmName,s.sportName,m.round,m.pDate,m.time,p.placeName FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN matchplay m ON t.tnmID = m.tnmID LEFT JOIN place p ON p.placeID = m.placeID WHERE t.tnmStartdate = ?";
+    sql = "SELECT t.tnmID, t.tnmName,s.sportName,m.round,m.pDate,m.time,p.placeName FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN matchplay m ON t.tnmID = m.tnmID LEFT JOIN place p ON p.placeID = m.placeID WHERE m.pDate = ?";
     like = [startDate];
     dbConnection.query(sql, like, (err, results) => {
         if(err) throw err;
