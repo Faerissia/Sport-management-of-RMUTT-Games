@@ -425,7 +425,7 @@ router.post('/emailsingle/(:playerID)', function(req,res,next){
         subject: 'แก้ไขข้อมูลผู้สมัครเข้าร่วมการแข่งขัน '+tnm[0].tnmName,
         text: '',
         html:'<h2>รายละเอียดการแก้ไข: '+ editemailer+'</h2>' +
-            '<a href="http://localhost:3000/mosingle/'+thisplayerID+'">คลิ๊กที่นี้</a>'
+            '<a href="http://141.98.17.47:3000/mosingle/'+thisplayerID+'">คลิ๊กที่นี้</a>'
 
       };
 
@@ -472,7 +472,7 @@ router.post('/emailteam/(:teamID)', function(req,res,next){
         subject: 'แก้ไขข้อมูลทีมสมัครเข้าร่วมการแข่งขัน '+tnm[0].tnmName,
         text: '',
         html:'<h2>รายละเอียดการแก้ไข: '+ editemailer+'</h2>' +
-            '<a href="http://localhost:3000/moteam/'+thisteamID+'">คลิ๊กที่นี้</a>'
+            '<a href="http://141.98.17.47:3000/moteam/'+thisteamID+'">คลิ๊กที่นี้</a>'
 
       };
 
@@ -579,7 +579,7 @@ router.post('/emailteam/(:teamID)', function(req,res,next){
         subject: 'แก้ไขข้อมูลผู้สมัครเข้าร่วมการแข่งขัน '+tnm[0].tnmName,
         text: '',
         html:'<h2>รายละเอียดการแก้ไข: '+ editemailer+'</h2>' +
-            '<a href="http://localhost:3000/mosingle/'+thisplayerID+'">คลิ๊กที่นี้</a>'
+            '<a href="http://141.98.17.47:3000/mosingle/'+thisplayerID+'">คลิ๊กที่นี้</a>'
 
       };
 
