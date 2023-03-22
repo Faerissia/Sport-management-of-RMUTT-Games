@@ -1147,18 +1147,14 @@ console.log(rows)
     
    })
 
-   router.get('/email/check/player/(:plaeyID)', function(req, res, next) {
+   router.get('/email/check/player/(:playerID)', function(req, res, next) {
 
     let thisplayerID = req.params.playerID;
-    console.log("🚀 ~ file: uindex.js:1153 ~ router.get ~ thisplayerID:", thisplayerID)
 
     let playerID = req.body.playerID;
-    console.log("🚀 ~ file: uindex.js:1156 ~ router.get ~ playerID:", playerID)
     
     dbConnection.query('SELECT p.*,t.tnmID,t.tnmName,f.uniID,f.facultyID,f.name AS facName,u.uniID,u.name AS uniName FROM player p LEFT JOIN tournament t ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerID = '+thisplayerID, (err, rows) => {
-        
-        console.log('1');
-        console.log(rows);
+        if (err) throw err;
         if(rows.length && rows[0].playerStatus === 'edit'){
             res.render('userside/email/check/player',{data: rows});
         }else{

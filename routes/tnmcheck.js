@@ -337,6 +337,7 @@ router.post('/update/edit/team/(:teamID)', function(req,res,next){
     for (let i = 0; i < playerFName.length; i++) {
     values.push({playerFName:playerFName[i], playerLName:playerLName[i], playerGender:playerGender[i], playerBirthday:playerBirthday[i], playerPhone:playerPhone[i],playerEmail:playerEmail[i], playerIDCard:playerIDCard[i], detailDoc:detailDoc[i],playerID:playerID[i]})
     }
+    console.table(values);
 
 
     let sql_team = "UPDATE team SET teamName  =?, NameAgent =?, LnameAgent =?, teamPhoneA =?, teamEmailA =? WHERE teamID =?";
