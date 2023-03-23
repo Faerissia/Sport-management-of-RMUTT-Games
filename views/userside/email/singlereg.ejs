@@ -4,7 +4,7 @@
         <html lang="en">
 
         <head>
-            <title>แบบฟอร์มสมัครเข้าร่วมการแข่งขัน</title>
+            <title>แบบฟอร์มสมัครเข้าร่วมการแข่งขัน </title>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         </head>
 
@@ -65,7 +65,7 @@
                         <!-- -------------------------------------------------------------- -->
                         <div class="row my-2   row-cols-2">
                             <div class="col-2 text-start">
-                                <label for="validationTel" class="col-form-label">เบอร์โทรศัพท์</label>
+                                <label for="validationTel" class="col-form-label">เบอร์โทรติดต่อ</label>
                             </div>
                             <div class="col-2">
                                 <input type="text" class="form-control border-dark" id="validationTel" value="<%= data[0].playerPhone %>"
@@ -78,7 +78,7 @@
                             <div class="col-2 text-start">
                                 <label for="validationEmail" class="col-form-label">อีเมล</label>
                             </div>
-                            <div class="col-2">
+                            <div class="col-3">
                                 <input type="email" class="form-control border-dark" id="validationEmail" value="<%= data[0].playerEmail %>"
                                     name="playerEmail" autocomplete="off" required>
                             </div>
@@ -88,16 +88,9 @@
                             <div class="col-2 text-start">
                                 <label for="validationUni" class="col-form-label">มหาวิทยาลัย</label>
                             </div>
-                            <div class="col-auto">
-                                <select data-index="<%= 0 %>" name="university" id="university_<%= 0 %>"
-                                    class="form-select border-dark w-auto" required>
-                                    <option selected disabled value="">เลือกมหาวิทยาลัย</option>
-                                    <% data.forEach(function(university) { %>
-                                        <option value="<%= university.uniID %>">
-                                            <%= university.name %>
-                                        </option>
-                                        <% }); %>
-                                </select>
+                            <div class="col-4">
+                                     <input type="text" class="form-control border-dark" value="<%= data[0].uniName %>" disabled>
+
                             </div>
                         </div>
                         <!-- -------------------------------------------------------------- -->
@@ -105,11 +98,9 @@
                             <div class="col-2 text-start">
                                 <label for="validation" class="col-form-label">คณะ</label>
                             </div>
-                            <div class="col-auto">
-                                <select data-index="<%= 0 %>" name="facultyID" id="faculty_<%= 0 %>"
-                                    class="form-select border-dark w-auto" required>
-                                    <option value="">เลือกคณะ</option>
-                                </select>
+                            <div class="col-4">
+                                <input type="text" class="form-control border-dark" value="<%= data[0].facName %>"  disabled>
+                                
                             </div>
                         </div>
                         <!-- -------------------------------------------------------------- -->
@@ -163,6 +154,7 @@
 
                         <!-- คืออะไรนิ -->
                         <input type="hidden" class="" name="tnmID" value="<%= data[0].tnmID%>">
+                        <input type="hidden" class="" name="playerID" value="<%= data[0].playerID%>">
 
                     </div>
 

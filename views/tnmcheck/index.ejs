@@ -6,6 +6,11 @@
 <html lang="en">
 <head>
     <title>tournament</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet"/>
+      <link href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+      <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+      <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+      <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
 </head>
 <body>
 
@@ -25,15 +30,15 @@
 
 
         <h1>รายการแข่งขันที่ต้องตรวจสอบผู้สมัคร</h1>
-        <a href="/tournament/add" class="btn btn-primary">เพิ่มการแข่งขัน</a>
-        <div class="float-end">
+        <a href="/tournament/add" class="btn btn-primary mb-2">เพิ่มการแข่งขัน</a>
+        <!-- <div class="float-end">
             <form action="/tnmcheck/search-tnmcheck" method="post">
                 <div class="input-group ">
                     <input type="text" name="search" class="form-control border border-dark" placeholder="ชื่อการแข่งขัน/ชื่อผู้สมัคร">
                     <button type="submit" class="btn btn-primary">ค้นหา</button>
                 </div>
             </form>
-        </div>
+        </div> -->
     <div class="card w-100">
         <div class="card-header">
             <ul class="nav nav-pills w-100">
@@ -44,17 +49,17 @@
         </div>
         <div class="card-body">
             
-                <table class="table">
+                <table id="mytable" class="table  table-striped table-hover table-bordered ">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th scope="col">ชื่อการแข่งขัน</th>
-                            <th scope="col">ประเภทกีฬา</th>
-                            <th scope="col">ปิดรับสมัคร</th>
-                            <th scope="col">รอตรวจสอบ</th>
-                            <th scope="col">ปฏิเสธ</th>
-                            <th scope="col">อนุมัติ</th>
-                            <th width="200px">ตัวเลือก</th>
+                            
+                            <th  class="align-middle text-start" scope="col">ชื่อการแข่งขัน</th>
+                            <th  class="align-middle text-start" scope="col">ประเภทกีฬา</th>
+                            <th  class="align-middle text-start" scope="col">ปิดรับสมัคร</th>
+                            <th  class="align-middle text-start" scope="col">รอตรวจสอบ</th>
+                            <th  class="align-middle text-start" scope="col">ปฏิเสธ</th>
+                            <th  class="align-middle text-start" scope="col">อนุมัติ</th>
+                            <th  class="align-middle text-center" width="120px">ตัวเลือก</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,16 +71,15 @@
                                 <% data[i].accept_count = data[i].accept_count / data[i].sportPlaynum %>
                                 <% } %>
                             <% if(data[i].wait_count){ %>
-                            <tr>
-                                <td><%= i+1 %></td>
-                                <td><%= data[i].tnmName %></td>
-                                <td><%= data[i].sportName %></td>
-                                <td><%= data[i].Renddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
-                                <td><%= data[i].wait_count %></td>
-                                <td><%= data[i].deny_count %></td>
-                                <td><%= data[i].accept_count %></td>
-                                <td>
-                                    <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
+                            <tr  class="align-middle text-start">
+                                
+                                <td ><%= data[i].tnmName %></td>
+                                <td ><%= data[i].sportName %></td>
+                                <td ><%= data[i].Renddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>
+                                <td ><%= data[i].wait_count %></td>
+                                <td ><%= data[i].deny_count %></td>
+                                <td ><%= data[i].accept_count %></td>
+                                <td  class="align-middle text-center">
                                     <% if(data[i].sportPlaynum > 1){ %>
                                     <a href="../tnmcheck/candidateteam/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
                                     <% }else{ %>
@@ -89,6 +93,25 @@
                     </tbody>
                     <% } %>
                 </table>
+                <script>
+                    $(document).ready(function () {
+                      $('#mytable').DataTable({
+                        dom: '<"row"<"col text-start"l><"col"f>> rt <"row"<"col text-start"i><"col "p>>     <"clear">',
+                        language: {
+                          search: 'ค้นหา:',
+                          searchPlaceholder: 'ชื่อการแข่งขัน/ชื่อผู้สมัคร',
+                          lengthMenu: 'แสดง _MENU_ รายการต่อหน้า',
+                          info: 'แสดงผล _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ',
+                          paginate: {
+                            first: 'หน้าแรก',
+                            last: 'หน้าสุดท้าย',
+                            next: 'ถัดไป',
+                            previous: 'ก่อนหน้า',
+                          },
+                        },
+                      });
+                    });
+                  </script>
             
 
             <!-- if result is empty-->

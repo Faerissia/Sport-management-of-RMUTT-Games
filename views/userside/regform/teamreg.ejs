@@ -14,7 +14,7 @@
                 <h1 style="margin-top: 20;">แบบฟอร์มสมัครเข้าร่วม <%=data[0].tnmName%>
                 </h1>
                 <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-                <form action="/teamreg/" method="post" encType="multipart/form-data" class="needs-validation ">
+                <form onsubmit="return validateFile()" action="/teamreg/" method="post" encType="multipart/form-data" class="needs-validation ">
 
                     <div class="form-grou">
                         <!--  -->
@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-5 text-start">
-                                        <label for="validationTel" class="col-form-label">เบอร์โทรศัพท์</label>
+                                        <label for="validationTel" class="col-form-label">เบอร์โทรติดต่อ</label>
                                     </div>
                                     <div class="col-auto">
                                         <input type="text" class="form-control border-dark" id="validationTel" value=""
@@ -82,8 +82,8 @@
                             <div class="col-auto ">
                                 <img id="imgpreview" class="w-50 rounded mx-auto mb-2 bg-dark" alt=""
                                     style="height: 8.6rem;  ">
-                                <input type="file" class="form-control border-dark"  maxlength="4000000"
-                                accept="image/jpg,image/png" id="validationImage" value=""
+                                <input type="file" class="form-control border-dark" 
+                                accept=".png, .jpg, .pdf" id="validationImage" value=""
                                     name="teamPic" required onchange="preview()">
                             </div>
 
@@ -144,7 +144,7 @@
                                 <!-- row -->
                                 <div class="row mt-2 row-cols-4">
                                     <div class="col-2 text-start">
-                                        <label for="validation" class="col-form-label">เบอร์โทรศัพท์</label>
+                                        <label for="validation" class="col-form-label">เบอร์โทรติดต่อ</label>
                                     </div>
                                     <div class="row-cols-3">
                                         <input type="text" class="form-control border-dark" id="validation" value=""
@@ -213,7 +213,7 @@
                                         </div>
                                         <div class="col ">
                                             <input type="file" class="form-control border-dark" id="validationFile"
-                                            maxlength="4000000" accept="image/jpg,image/png,application/pdf"
+                                            maxlength="4000000" accept=".png, .jpg, .pdf"
                                             value="" name="playerFile1" required>
                                         </div>
                                     </div>
@@ -226,7 +226,7 @@
                                         </div>
                                         <div class="col ">
                                             <input type="file" class="form-control border-dark" id="validationFile"
-                                            maxlength="4000000" accept="image/jpg,image/png,application/pdf"
+                                            maxlength="4000000" accept=".png, .jpg, .pdf"
                                             value="" name="playerFile2">
                                         </div>
                                     </div>
@@ -239,7 +239,7 @@
                                         </div>
                                         <div class="col ">
                                             <input type="file" class="form-control border-dark" id="validationFile"
-                                            maxlength="4000000" accept="image/jpg,image/png,application/pdf"
+                                            maxlength="4000000" accept=".png, .jpg, .pdf"
                                             value="" name="playerFile3">
                                         </div>
                                     </div>
@@ -272,7 +272,7 @@
                         var uniID = $(this).val();
                         var index = $(this).data('index');
                         $.ajax({
-                            url: "http://localhost:3000/fetch_faculty",
+                            url: "http://141.98.17.47:4000/fetch_faculty",
                             method: "POST",
                             data: { uniID: uniID },
                             dataType: "json",

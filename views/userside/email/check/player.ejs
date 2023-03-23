@@ -1,0 +1,159 @@
+<%- include("../../../partials/header") %>
+<%- include("../../../partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ส่งแก้ไขการสมัคร</title>
+</head>
+<body>
+    <h1>ส่งแก้ไขผู้ที่สมัคร  <%=data[0].tnmName %> </h1>
+    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+    <form action="/tnmcheck/emailsingle/<%= data[0].playerID %>" method="post">
+        <div class="form-group">
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validationFname" class="col-form-label">ชื่อ</label>
+                </div>
+                <div class="col-2">
+                    <input disabled type="text" class="form-control border-dark" id="validationFname" value="<%= data[0].playerFName %>"
+                        name="playerFName" autocomplete="off" required>
+                </div>
+                <div class="col-1 text-start">
+                    <label for="validationLname" class="col-form-label">นามสกุล</label>
+                </div>
+                <div class="col-2">
+                    <input disabled type="text" class="form-control border-dark" id="validationLname" value="<%= data[0].playerLName %>"
+                        name="playerLName" autocomplete="off" required>
+                </div>
+            </div>
+         
+            <!-- -------------------------------------------------------------- -->
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validation" class="col-form-label">เพศ</label>
+                </div>
+                <div class="col-2">
+                    <input disabled type="text" class="form-control border-dark"  name="playerGender" value="<%= data[0].playerGender %>">
+                    
+                </div>
+                <div class="col-2 col-xl-1 text-start">
+                    <label for="validationplayerBirthday" class="col-form-label">วัน/เดือน/เกิด</label>
+                </div>
+                <div class="col-auto ">
+                    <input disabled type="date" class="form-control border-dark" id="validationplayerBirthday"
+                        value="<%= data[0].playerBirthday.toLocaleDateString('en-CA',{day: '2-digit', month: '2-digit', year:'numeric'}) %>" name="playerBirthday" autocomplete="off" required>
+                </div>
+            </div>
+           
+           
+            <!-- -------------------------------------------------------------- -->
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validationTel" class="col-form-label">เบอร์โทรติดต่อ</label>
+                </div>
+                <div class="col-2">
+                    <input disabled type="text" class="form-control border-dark" id="validationTel" value="<%= data[0].playerPhone %>"
+                        name="playerPhone" autocomplete="off" pattern="[0-9]{10}" minlength="10"
+                        maxlength="10" required>
+                </div>
+                <div class="col-1 text-start">
+                    <!-- <input type="text" class="form-control"  value="<%= data[0].playerEmail %>" disabled> -->
+                    
+                    <label for="validationEmail" class="col-form-label">อีเมล</label>
+                </div>
+                <div class="col-4">
+                    <input disabled type="email" class="form-control border-dark" id="validationEmail" value="<%= data[0].playerEmail %>"
+                        name="" autocomplete="off" required>
+                    <input type="hidden" class="form-control" name="emailto" value="<%= data[0].playerEmail %>">
+                </div>
+            </div>
+           
+            <!-- -------------------------------------------------------------- -->
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validationUni" class="col-form-label">มหาวิทยาลัย</label>
+                </div>
+                <div class="col-4">
+                    <input disabled type="text" class="form-control border-dark" value="<%= data[0].uniName %>" disabled>
+                </div>
+            </div>
+            <!-- -------------------------------------------------------------- -->
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validation" class="col-form-label">คณะ</label>
+                </div>
+                <div class="col-4">
+                <input disabled type="text" class="form-control border-dark" value="<%= data[0].facName %>"  disabled>
+                </div>
+            </div>
+            <!-- -------------------------------------------------------------- -->
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validationCard" class="col-form-label">เลขประจำตัวประชาชน</label>
+                </div>
+                <div class="col-2  align-self-center ">
+                    <input disabled type="text" class="form-control border-dark text-start" id="validationCard" value="<%= data[0].playerIDCard %>"
+                        name="playerIDCard" autocomplete="off" pattern="[0-9]{13}" minlength="13"
+                        maxlength="13" required>
+                </div>
+            </div>
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validationCard" class="col-form-label">หมายเหตุ</label>
+                </div>
+                <div class="col-3">
+                    <input disabled type="text" class="form-control border-dark" id="validationLname" value="<%= data[0].detailDoc %>"
+                    name="playerdetailDoc" autocomplete="off" >
+                </div>
+            </div>
+            <!-- -------------------------------------------------------------- -->
+    
+            <div class="row my-2   row-cols-2">
+                <div class="col-2 text-start">
+                    <label for="validationFile" class="col-form-label">เอกสารยืนยันตัวตน</label>
+                </div>
+                <div class="col-3 align-self-center ">
+                    <% if (data[0]?.playerFile1) { %>
+                    <% const file = data[0].playerFile1.split(','); %>
+                    <% for(let j=0;j<file.length;j++){ %>
+                    <a href="../doc/<%= file[j] %>" download="<%= file[j] %>">ไฟล์ <%=j+1%></a>
+                    <% } %>
+                    <% } %>
+                </div>
+               
+            </div>
+
+            <!-- -------------------------------------------------------------- -->
+    
+         
+
+            <!-- คืออะไรนิ -->
+            <input type="hidden" class="" name="tnmID" value="<%= data[0].tnmID%>">
+
+        </div>
+        <div class="row my-2   row-cols-2">
+           
+            <div class="col-2 text-start">
+                <label>ส่งไปที่อีเมล <%= data[0].playerEmail%></label>
+                <!-- <label>รายละเอียด</label> -->
+             
+            </div>
+            <div class="col-4 align-self-center">
+                <input type="text" class="form-control border-dark" name="editemailer" style="width: 350px;" required>
+                
+            </div>
+        </div>
+            <div class="form-group" style="margin-top: 10px;">
+                <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
+                <button value="submit" class="btn btn-success">ตกลง</button>
+
+            </div>
+        </form>
+            
+</body>
+</html>
+</div>

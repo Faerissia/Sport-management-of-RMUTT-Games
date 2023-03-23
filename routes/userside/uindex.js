@@ -958,6 +958,7 @@ console.log(rows)
 
    router.get('/ending', function(req,res,next){
     dbConnection.query('SELECT * FROM tournament WHERE st1 AND nd2 AND rd3 IS NOT NULL ORDER BY tnmEnddate DESC;',(error,results)=>{
+        results.filter(item => item.st1 !== null);
        res.render('userside/status/ending',{data:results})
     })
    })
@@ -1024,7 +1025,7 @@ console.log(rows)
 
    router.get('/mosingle/(:playerID)', function(req,res,next){
     let playerID = req.params.playerID;
-    dbConnection.query('SELECT * FROM player WHERE playerID ='+playerID,(error,result)=>{
+    dbConnection.query('SELECT p.*,t.tnmID,t.tnmName,t.tnmUrl,f.uniID,f.facultyID,f.name AS facName,u.uniID,u.name AS uniName FROM player p LEFT JOIN tournament t ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerID = '+playerID,(error,result)=>{
     if(result.length && result[0].playerStatus === 'edit'){
         res.render('userside/email/singlereg',{data: result});
     }else{
@@ -1032,18 +1033,146 @@ console.log(rows)
     }
     })
    })
+   
+    router.get('/moteam/(:teamID)', function(req, res, next) {
+    let thisteamID = req.params.teamID;
+    dbConnection.query('SELECT t.*, p.*, f.name AS facName, u.name AS uniName, tn.tnmName FROM team t JOIN player p ON t.teamID = p.teamID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID LEFT JOIN tournament tn ON tn.tnmID = t.tnmID WHERE t.teamID ='+thisteamID, (err, rows) => {
+        if(rows.length && rows[0].teamStatus === 'edit'){
+            res.render('userside/email/teamreg',{data: rows});
+        }else{
+            res.redirect('/');
+        }
+    })
+})
 
 
    router.post('/editemailsingle/(:playerID)', function(req,res,next){
-    let playerID = req.params.playerID;
-    dbConnection.query('SELECT * FROM player WHERE playerID ='+playerID,(error,result)=>{
-        
-    if(result.length && result[0].playerStatus === 'edit'){
-        res.render('userside/email/singlereg',{data: result});
-    }else{
-        res.redirect('/');
+    let thisplayerID = req.params.playerID;
+    let playerID = req.body.playerID;
+    let playerFName = req.body.playerFName;
+    let playerLName = req.body.playerLName;
+    let playerGender = req.body.playerGender;
+    let playerBirthday = req.body.playerBirthday;
+    let playerPhone = req.body.playerPhone;
+    let playerEmail = req.body.playerEmail;
+    let playerIDCard = req.body.playerIDCard;
+    let detailDoc =req.body.playerdetailDoc;
+    let tnmID =req.body.tnmID;
+    console.log(req.body);
+    let form_data = {
+    tnmID: tnmID,
+    playerFName: playerFName,
+    playerLName: playerLName,
+    playerGender: playerGender,
+    playerBirthday: playerBirthday,
+    playerPhone: playerPhone,
+    playerEmail: playerEmail,
+    playerIDCard: playerIDCard,
+    detailDoc: detailDoc,
     }
+    dbConnection.query('UPDATE player SET ? WHERE playerID ='+thisplayerID, form_data, (err, result) => {
+        if (err) {
+            console.log(JSON.stringify(err));
+            req.flash('error', err)
+            res.redirect('')
+        } else {
+            req.flash('success', 'แก้ไขข้อมูลสำเร็จ');
+            res.redirect('/email/check/player/'+playerID);
+        }
     })
+
+   
    })
+   router.post('/editemailteam/(:teamID)', function(req,res,next){
+    let thisteamID = req.params.teamID;
+    let teamID = req.params.teamID;
+    
+    let teamName = req.body.teamName;
+    let NameAgent = req.body.NameAgent;
+    let LnameAgent = req.body.LnameAgent;
+    let teamPhoneA = req.body.teamPhoneA;
+    let teamEmailA = req.body.teamEmailA;
+    
+    let tnmID = req.body.tnmID;
+
+    let playerID = req.body.playerID;
+    let playerFName = req.body.playerFName;
+    let playerLName = req.body.playerLName;
+    let playerGender = req.body.playerGender;
+    let playerBirthday = req.body.playerBirthday;
+    let playerPhone = req.body.playerPhone;
+    let playerEmail = req.body.playerEmail;
+    let playerIDCard = req.body.playerIDCard;
+    let detailDoc = req.body.detailDoc;
+
+    console.log(req.body);
+    let values = [];
+
+    for (let i = 0; i < playerFName.length; i++) {
+    values.push({playerFName:playerFName[i], playerLName:playerLName[i], playerGender:playerGender[i], playerBirthday:playerBirthday[i], playerPhone:playerPhone[i],playerEmail:playerEmail[i], playerIDCard:playerIDCard[i], detailDoc:detailDoc[i],playerID:playerID[i]})
+    }
+
+
+    let sql_team = "UPDATE team SET teamName  =?, NameAgent =?, LnameAgent =?, teamPhoneA =?, teamEmailA =? WHERE teamID =?";
+    let sql_player = "UPDATE player SET playerFName  =?, playerLName =?, playerGender =?, playerBirthday =?, playerPhone =?, playerEmail =?, playerIDCard =?, detailDoc =? WHERE playerID =?";
+   
+        // insert query db
+        dbConnection.query(sql_team ,[teamName, NameAgent, LnameAgent, teamPhoneA, teamEmailA  ,thisteamID], (err, result) => {
+            if (err) {
+                console.log(JSON.stringify(err));
+                        req.flash('error', err)
+                        res.redirect('/')
+                throw err
+            };
+            console.log("Number of teams inserted: " + result.affectedRows);
+
+
+            for (let i = 0; i < playerFName.length; i++) {
+                dbConnection.query(sql_player , [values[i].playerFName  , values[i].playerLName , values[i].playerGender , values[i].playerBirthday , values[i].playerPhone , values[i].playerEmail , values[i].playerIDCard , values[i].detailDoc  ,values[i].playerID ], function (err, result) {
+                    if (err) {
+                        console.log(JSON.stringify(err));
+                                
+                                req.flash('error', err)
+                                res.redirect('/')
+                        throw err
+                    }; 
+                })
+                
+                }
+                console.log("Number of persons inserted: " + result.affectedRows);
+                    req.flash('success', 'แก้ไขข้อมูลสำเร็จ');
+                    res.redirect('/email/check/team/'+teamID);
+    })
+    
+    
+   })
+
+   router.get('/email/check/player/(:playerID)', function(req, res, next) {
+
+    let thisplayerID = req.params.playerID;
+
+    let playerID = req.body.playerID;
+    
+    dbConnection.query('SELECT p.*,t.tnmID,t.tnmName,f.uniID,f.facultyID,f.name AS facName,u.uniID,u.name AS uniName FROM player p LEFT JOIN tournament t ON p.tnmID = t.tnmID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID WHERE p.playerID = '+thisplayerID, (err, rows) => {
+        if (err) throw err;
+        if(rows.length && rows[0].playerStatus === 'edit'){
+            res.render('userside/email/check/player',{data: rows});
+        }else{
+            res.redirect('/');
+        }
+    })
+})
+   router.get('/email/check/team/(:teamID)', function(req, res, next) {
+    
+    let thisteamID = req.params.teamID;
+    dbConnection.query('SELECT t.*, p.*, f.name AS facName, u.name AS uniName, tn.tnmName FROM team t JOIN player p ON t.teamID = p.teamID LEFT JOIN faculty f ON f.facultyID = p.facultyID LEFT JOIN university u ON u.uniID = f.uniID LEFT JOIN tournament tn ON t.tnmID = tn.tnmID  WHERE t.teamID = '+thisteamID, (err, rows) => {
+        if(rows.length && rows[0].playerStatus === 'edit'){
+            res.render('userside/email/check/team',{data: rows});
+        }else{
+            res.redirect('/');
+        }
+})
+})
+   
 
 module.exports = router;
