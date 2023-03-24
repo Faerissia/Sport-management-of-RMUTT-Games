@@ -3090,6 +3090,8 @@ router.post('/editsingleleader/(:tnmID)', function(req,res,next){
     let matchID = req.body.matchID;
     let score = req.body.score;
 
+    console.log('test');
+
     for(let i = 0; i < matchID.length; i++) {
     dbConnection.query('UPDATE matchplay SET score = '+score[i]+' WHERE matchID = '+matchID[i], function (error, rows) {
         if (error) throw error;
@@ -3108,8 +3110,6 @@ router.post('/editsingleleader/(:tnmID)', function(req,res,next){
     }
 }
 
-
-
 res.redirect('/tournament/match/'+tnmID);
 })
 
@@ -3118,21 +3118,35 @@ router.post('/editteamleader/(:tnmID)', function(req,res,next){
     let matchID = req.body.matchID;
     let score = req.body.score;
 
+    console.log('123');
+
     for(let i = 0; i < matchID.length; i++) {
       dbConnection.query('UPDATE matchplay SET score = '+score[i]+' WHERE matchID = '+matchID[i], function (error, rows) {
           if (error) throw error;
   
           
       });
-      if(i === matchID.length){
+      if(i+1 == matchID.length){
+        console.log('เข้า');
         dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY score desc LIMIT 3',tnmID,(error,rows)=>{
+          if(rows[0].playerID === null){
           let st = rows[0].teamID;
           let nd = rows[1].teamID;
           let rd = rows[2].teamID;
-        dbConnection.query("UPDATE tournament SET st1 = '"+st+"',nd2 = '"+nd+"',rd3 ='"+rd+"' WHERE tnmID =  '"+tnmID+"'",(error,rows)=>{
-          if(error) throw error;
+          dbConnection.query("UPDATE tournament SET st1 = '"+st+"',nd2 = '"+nd+"',rd3 ='"+rd+"' WHERE tnmID =  '"+tnmID+"'",(error,rows)=>{
+            if(error) throw error;
+            })
+          
+        }else{
+          let st = rows[0].playerID;
+          let nd = rows[1].playerID;
+          let rd = rows[2].playerID;
+          dbConnection.query("UPDATE tournament SET st1 = '"+st+"',nd2 = '"+nd+"',rd3 ='"+rd+"' WHERE tnmID =  '"+tnmID+"'",(error,rows)=>{
+            if(error) throw error;
+            
           })
-        })
+        }
+      })
       }
   }
 

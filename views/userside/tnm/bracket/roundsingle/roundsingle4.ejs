@@ -173,6 +173,7 @@ style="background:#D9D9D9 ;">
                         <% let winner = ""; %>
                         <% let matchExists = false; %>
                         <% data.forEach(function(match) { %>
+                          <% if(match.seed == null) { %>
                           <% if (match.team1 === teamName && match.team2 === opponent) { %>
                             <% score1 = match.score1; %>
                             <% score2 = match.score2; %>
@@ -185,10 +186,11 @@ style="background:#D9D9D9 ;">
                             <% if (match.score2 > match.score1) { winner = match.team1; } %>
                             <% if (match.score1 > match.score2) { winner = match.team2; } %>
                             <% matchExists = true; %>
+                            <% } %>
                           <% } %>
                         <% }); %>
                         <% if (matchExists) { %>
-                         <td> <%= score2 %> - <%= score1 %></td>
+                         <td><%= score1 %> - <%= score2 %></td>
                         <% } else { %>
                         <td class="table-danger border-dark ">X</td>
                         <% } %>
@@ -213,19 +215,21 @@ style="background:#D9D9D9 ;">
                     <% 
                       let scoreboard = {};
                       data.forEach(function(match) {
-                        if (!scoreboard[match.team1]) {
-                          scoreboard[match.team1] = { wins: 0, losses: 0 };
-                        }
-                        if (!scoreboard[match.team2]) {
-                          scoreboard[match.team2] = { wins: 0, losses: 0 };
-                        }
-                        if (match.score1 > match.score2) {
-                          scoreboard[match.team1].wins++;
-                          scoreboard[match.team2].losses++;
-                        }
-                        if (match.score2 > match.score1) {
-                          scoreboard[match.team2].wins++;
-                          scoreboard[match.team1].losses++;
+                                  if(match.seed == null){
+                          if (!scoreboard[match.team1]) {
+                            scoreboard[match.team1] = { wins: 0, losses: 0 };
+                          }
+                          if (!scoreboard[match.team2]) {
+                            scoreboard[match.team2] = { wins: 0, losses: 0 };
+                          }
+                          if (match.score1 > match.score2) {
+                            scoreboard[match.team1].wins++;
+                            scoreboard[match.team2].losses++;
+                          }
+                          if (match.score2 > match.score1) {
+                            scoreboard[match.team2].wins++;
+                            scoreboard[match.team1].losses++;
+                          }
                         }
                       });
                        let sortedScoreboard = Object.entries(scoreboard).sort((a, b) => b[1].wins - a[1].wins);%>
