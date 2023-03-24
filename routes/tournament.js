@@ -351,15 +351,15 @@ router.get('/bracket/(:tnmID)', function(req, res, next) {
                     let rsnum = Math.pow(2,Math.floor(Math.log2(roundsingle.length)));
 
                   if(rsnum === 4){
-                  dbConnection.query(`SELECT p1.playerFName AS team1, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
+                  dbConnection.query(`SELECT p1.playerFName AS team1,m.seed, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
                     res.render('tournament/bracket/roundsingle/roundsingle4', {tournamentName,data: rows, tnmID:tnmID});
                 })
               }else if(rsnum === 8){
-                dbConnection.query(`SELECT p1.playerFName AS team1, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
+                dbConnection.query(`SELECT p1.playerFName AS team1,m.seed, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
                   res.render('tournament/bracket/roundsingle/roundsingle8', {tournamentName,data: rows, tnmID:tnmID});
               })
               }else{
-                dbConnection.query(`SELECT p1.playerFName AS team1, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
+                dbConnection.query(`SELECT p1.playerFName AS team1,m.seed, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
                   res.render('tournament/bracket/roundsingle/roundsingle', {tournamentName,data: rows, tnmID:tnmID});
                 })
               }
@@ -451,15 +451,15 @@ router.get('/bracket/(:tnmID)', function(req, res, next) {
                         let rsnum = Math.pow(2,Math.floor(Math.log2(roundsingle.length)));
     
                       if(rsnum === 4){
-                      dbConnection.query(`SELECT t1.teamName AS team1, t2.teamName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
+                      dbConnection.query(`SELECT t1.teamName AS team1,m.seed, t2.teamName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
                         res.render('tournament/bracket/roundsingle/roundsingle4', {tournamentName,data: rows, tnmID:tnmID});
                     })
                   }else if(rsnum === 8){
-                    dbConnection.query(`SELECT t1.teamName AS team1, t2.teamName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
+                    dbConnection.query(`SELECT t1.teamName AS team1,m.seed, t2.teamName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
                       res.render('tournament/bracket/roundsingle/roundsingle8', {tournamentName,data: rows, tnmID:tnmID});
                   })
                   }else{
-                    dbConnection.query(`SELECT t1.teamName AS team1, t2.teamName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
+                    dbConnection.query(`SELECT t1.teamName AS team1,m.seed, t2.teamName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
                       res.render('tournament/bracket/roundsingle/roundsingle', {tournamentName,data: rows, tnmID:tnmID});
                     })
                   }
@@ -834,8 +834,20 @@ router.post('/createbracket/:tnmID', function(req, res, next) {
             })
             res.redirect('/tournament/bracket/'+tnmID);
         }else{
-          player = byename.concat(otherteam);
-          console.log(player.includes('blank'));
+          console.log(byename);
+          console.log(otherteam);
+          let player = [];
+          if (Array.isArray(byename)) {
+            // If data1 is an array, concatenate it with data2
+            byename.unshift(...otherteam.map(String));
+           player = byename;
+          } else {
+            // If data1 is a string, add it to the beginning of data2
+            otherteam.push(byename);
+          player = otherteam;
+          }
+
+          console.log(player);
           if(player.includes('blank') === true){
             console.log('เข้า')
             req.flash('error','กรุณาเลือกผู้เล่นให้ครบ');
@@ -3078,6 +3090,8 @@ router.post('/editsingleleader/(:tnmID)', function(req,res,next){
     let matchID = req.body.matchID;
     let score = req.body.score;
 
+    console.log('test');
+
     for(let i = 0; i < matchID.length; i++) {
     dbConnection.query('UPDATE matchplay SET score = '+score[i]+' WHERE matchID = '+matchID[i], function (error, rows) {
         if (error) throw error;
@@ -3096,8 +3110,6 @@ router.post('/editsingleleader/(:tnmID)', function(req,res,next){
     }
 }
 
-
-
 res.redirect('/tournament/match/'+tnmID);
 })
 
@@ -3106,21 +3118,35 @@ router.post('/editteamleader/(:tnmID)', function(req,res,next){
     let matchID = req.body.matchID;
     let score = req.body.score;
 
+    console.log('123');
+
     for(let i = 0; i < matchID.length; i++) {
       dbConnection.query('UPDATE matchplay SET score = '+score[i]+' WHERE matchID = '+matchID[i], function (error, rows) {
           if (error) throw error;
   
           
       });
-      if(i === matchID.length){
+      if(i+1 == matchID.length){
+        console.log('เข้า');
         dbConnection.query('SELECT * FROM matchplay WHERE tnmID = ? ORDER BY score desc LIMIT 3',tnmID,(error,rows)=>{
+          if(rows[0].playerID === null){
           let st = rows[0].teamID;
           let nd = rows[1].teamID;
           let rd = rows[2].teamID;
-        dbConnection.query("UPDATE tournament SET st1 = '"+st+"',nd2 = '"+nd+"',rd3 ='"+rd+"' WHERE tnmID =  '"+tnmID+"'",(error,rows)=>{
-          if(error) throw error;
+          dbConnection.query("UPDATE tournament SET st1 = '"+st+"',nd2 = '"+nd+"',rd3 ='"+rd+"' WHERE tnmID =  '"+tnmID+"'",(error,rows)=>{
+            if(error) throw error;
+            })
+          
+        }else{
+          let st = rows[0].playerID;
+          let nd = rows[1].playerID;
+          let rd = rows[2].playerID;
+          dbConnection.query("UPDATE tournament SET st1 = '"+st+"',nd2 = '"+nd+"',rd3 ='"+rd+"' WHERE tnmID =  '"+tnmID+"'",(error,rows)=>{
+            if(error) throw error;
+            
           })
-        })
+        }
+      })
       }
   }
 

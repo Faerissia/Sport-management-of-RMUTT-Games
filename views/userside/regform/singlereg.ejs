@@ -14,7 +14,7 @@
                 <h1 style="margin-top: 20;">แบบฟอร์มสมัครเข้าร่วม <%=data[0].tnmName%>
                 </h1>
                 <hr style="height:2px;border-width:0;color:gray;background-color:gray">
-                <form action="/singlereg/" method="post" encType="multipart/form-data" class="needs-validation ">
+                <form onsubmit="return validateFile()" action="/singlereg/" method="post" encType="multipart/form-data" class="needs-validation ">
                     <div class="form-group">
                         <div class="row my-2   row-cols-2">
                             <div class="col-2 text-start">
@@ -126,8 +126,7 @@
                                 <label for="validationFile" class="col-form-label">เอกสารยืนยันตัวตน</label>
                             </div>
                             <div class="col-3">
-                                <input type="file" class="form-control border-dark" maxlength="4000000"
-                                 accept="image/jpg,image/png,application/pdf" id="validationFile" 
+                                <input type="file" class="form-control border-dark" accept=".png, .jpg, .pdf" id="validationFile" 
                                  value="" name="playerFile1" required>
                             </div>
                         </div>
@@ -139,8 +138,7 @@
                                 <label for="validationFile" class="col-form-label">(<%= data[0].tnmUrl %>)</label>
                             </div>
                             <div class="col-3">
-                                <input type="file" class="form-control border-dark" maxlength="4000000"
-                                 accept="image/jpg,image/png,application/pdf" id="validationFile" 
+                                <input type="file" class="form-control border-dark" accept=".png, .jpg, .pdf" id="validationFile" 
                                  value="" name="playerFile2">
                             </div>
                         </div>
@@ -151,8 +149,7 @@
                             <div class="col-2 text-start">
                             </div>
                             <div class="col-3">
-                                <input type="file" class="form-control border-dark" maxlength="4000000"
-                                 accept="image/jpg,image/png,application/pdf" id="validationFile" 
+                                <input type="file" class="form-control border-dark" accept=".png, .jpg, .pdf" id="validationFile" 
                                  value="" name="playerFile3">
                             </div>
                         </div>
@@ -182,7 +179,7 @@
                         var uniID = $(this).val();
                         var index = $(this).data('index');
                         $.ajax({
-                            url: "http://localhost:3000/fetch_faculty",
+                            url: "http://141.98.17.47:4000/fetch_faculty",
                             method: "POST",
                             data: { uniID: uniID },
                             dataType: "json",
@@ -197,6 +194,28 @@
                     });
                 });
             </script>
+
+<script>
+    function validateFile() {
+      const fileInput = document.querySelector('input[name="playerFile1"]');
+      const fileInput2 = document.querySelector('input[name="playerFile2"]');
+      const fileInput3 = document.querySelector('input[name="playerFile3"]');
+      const file = fileInput.files[0];
+      const file2 = fileInput2.files[0];
+      const file3 = fileInput3.files[0];
+      if (file.size > 4000000) {
+        alert('ไฟล์แนบที่ 1 มีขนาดเกิน 4 MB');
+        return false;
+      }else if(file2.size>4000000){
+        alert('ไฟล์แนบที่ 2 มีขนาดเกิน 4 MB');
+        return false;
+      }else if( file3.size > 4000000){
+        alert('ไฟล์แนบที่ 3 มีขนาดเกิน 4 MB');
+        return false;
+      }
+      return true;
+    }
+    </script>
 
         </body>
 
