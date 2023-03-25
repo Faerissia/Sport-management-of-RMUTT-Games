@@ -66,6 +66,7 @@
                                 <% if(data[i].sportPlaynum > 1){ %>
                                     <% data[i].accept_count = data[i].accept_count / data[i].sportPlaynum %>
                                     <% } %>
+
                                 <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
                                 <td><%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></td>

@@ -27,7 +27,7 @@
                             <div class="card-body">
 
                                 <!--_________________ Form _________________-->
-                                <form action="/tournament/add" method="post" encType="multipart/form-data"
+                                <form onsubmit="return validateFile()" action="/tournament/add" method="post" encType="multipart/form-data"
                                     class="form needs-validation">
                                     <!--  -->
                                     <div class="row my-2  p row-cols-2">
@@ -133,7 +133,7 @@
                                         </div>
                                         <div class="col-3">
                                             <input type="file" class="form-control border-dark" id="validationFile"
-                                            maxlength="4000000" accept="image/jpg,image/png,application/pdf" id="validationFile" value="" name="tnmFile1" required>
+                                            size="1048576" accept=".png, .jpg, .pdf" value="" name="tnmFile1" required>
                                         </div>
                                     </div>
                                     <div class="row my-2   row-cols-2">
@@ -142,7 +142,7 @@
                                         </div>
                                         <div class="col-3">
                                             <input type="file" class="form-control border-dark" id="validationFile"
-                                            maxlength="4000000" accept="image/jpg,image/png,application/pdf" id="validationFile" value="" name="tnmFile2">
+                                            maxlength="4000000" accept=".png, .jpg, .pdf"  value="" name="tnmFile2">
                                         </div>
                                     </div>
                                     <div class="row my-2   row-cols-2">
@@ -151,7 +151,7 @@
                                         </div>
                                         <div class="col-3">
                                             <input type="file" class="form-control border-dark" id="validationFile"
-                                            maxlength="4000000" accept="image/jpg,image/png,application/pdf" id="validationFile" value="" name="tnmFile3">
+                                            maxlength="4000000" accept=".png, .jpg, .pdf"  value="" name="tnmFile3">
                                         </div>
                                     </div>
                                     </div>
@@ -174,7 +174,7 @@
                                                 <div class="col ">
                                                     <img id="imgpreview" class="w-50 rounded mx-auto mb-2 " alt=""
                                                         style="height: 10rem; display: none; ">
-                                                    <input type="file" class="form-control border-dark"
+                                                    <input type="file" accept=".png, .jpg" class="form-control border-dark"
                                                         id="validationImage" value="" name="tnmPicture" required
                                                         onchange="preview()">
                                                 </div>
@@ -193,6 +193,33 @@
                                 </form>
                             </div>
                         </div>
+
+
+                        <script>
+                            function validateFile() {
+                              const fileInput = document.querySelector('input[name="tnmFile1"]');
+                              const fileInput2 = document.querySelector('input[name="tnmFile2"]');
+                              const fileInput3 = document.querySelector('input[name="tnmFile3"]');
+                              const fileInput4 = document.querySelector('input[name="tnmPicture"]');
+                              const file = fileInput.files[0];
+                              const file2 = fileInput2.files[0];
+                              const file3 = fileInput3.files[0];
+                              const file4 = fileInput4.files[0];
+                              if (file.size > 4000000) {
+                                alert('ไฟล์แนบที่ 1 มีขนาดเกิน 4 MB');
+                                return false;
+                              }else if(file2.size>4000000){
+                                alert('ไฟล์แนบที่ 2 มีขนาดเกิน 4 MB');
+                                return false;
+                              }else if( file3.size > 4000000){
+                                alert('ไฟล์แนบที่ 3 มีขนาดเกิน 4 MB');
+                                return false;
+                              }else if(file4.size > 4000000){
+                                alert('รูปภาพปกการแข่งขันมีขนาดเกิน 4 MB');
+                              }
+                              return true;
+                            }
+                            </script>
 
             </body>
 

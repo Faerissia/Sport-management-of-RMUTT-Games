@@ -146,8 +146,10 @@ style="background:#D9D9D9 ;">
           <th class="table-light border-dark"></th>
           <% let teamNames = []; %>
           <% data.forEach(function(match) { %>
+            <% if(match.seed == null) { %>
             <% if (!teamNames.includes(match.team1)) { teamNames.push(match.team1); } %>
             <% if (!teamNames.includes(match.team2)) { teamNames.push(match.team2); } %>
+            <% } %>
           <% }); %>
           <% teamNames.forEach(function(teamName) { %>
             <th><%= teamName %></th>
@@ -180,7 +182,7 @@ style="background:#D9D9D9 ;">
                   <% } %>
                 <% }); %>
                 <% if (matchExists) { %>
-                 <td> <%= score2 %> - <%= score1 %></td>
+                 <td><%= score1 %> - <%= score2 %></td>
                 <% } else { %>
                 <td class="table-danger border-dark ">X</td>
                 <% } %>
@@ -205,6 +207,7 @@ style="background:#D9D9D9 ;">
             <% 
               let scoreboard = {};
               data.forEach(function(match) {
+                if(match.seed == null){
                 if (!scoreboard[match.team1]) {
                   scoreboard[match.team1] = { wins: 0, losses: 0 };
                 }
@@ -219,6 +222,7 @@ style="background:#D9D9D9 ;">
                   scoreboard[match.team2].wins++;
                   scoreboard[match.team1].losses++;
                 }
+              }
               });
                let sortedScoreboard = Object.entries(scoreboard).sort((a, b) => b[1].wins - a[1].wins);%>
         <% sortedScoreboard.forEach(function(team) { %>
