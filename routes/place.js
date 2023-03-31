@@ -67,11 +67,13 @@ router.post('/add', function(req, res, next) {
     let timeOpen = req.body.timeOpen;
     let timeClose = req.body.timeClose;
 
+    let url2 = placeUrl.split('/')[5];
+
     var sql_place = "INSERT INTO place (placeName,typeID,placeUrl,placeFile,placeDetail) VALUES ?";
     var sql_day = "INSERT INTO place_opening (day,timeOpen,timeClose,placeID) VALUES ?";
 
         // insert query db
-        dbConnection.query(sql_place,[[[placeName, typeID, placeUrl, name_placefile, placeDetail]]], (err, result) => {
+        dbConnection.query(sql_place,[[[placeName, typeID, url2, name_placefile, placeDetail]]], (err, result) => {
             if (err) throw err;
             var placeID = result.insertId;
             
@@ -200,7 +202,7 @@ router.get('/page/(:placeID)', function(req, res, next) {
             req.flash('error', 'ไม่พบสถานที่แข่งขัน ' + placeID)
             res.redirect('/place');
         } else {
-            res.render('place/page', { data: rows})
+            res.render('place/page', { data: rows,URL:rows[0].placeUrl})
         }
     }else{
         req.flash('error','ไม่สามารถเข้าถึงได้');

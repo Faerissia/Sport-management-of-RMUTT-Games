@@ -4,6 +4,8 @@ let dbConnection = require('../../util/db');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const { resolve } = require('path');
+const url = require('url');
+const querystring = require('querystring');
 
 let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -525,11 +527,11 @@ router.get('/tnmhighlight/(:tnmID)', function(req, res, next) {
     })
 })
 
-router.get('/tnmplace/(:placeID)',function(req, res, next){
+router.get('/tnmplace/(:placeID)', function (req, res, next){
     let placeID = req.params.placeID;
-    dbConnection.query(`SELECT * FROM place WHERE placeID = `+placeID,(err,rows) =>{
-        res.render('userside/tnm/tnmplace',{data:rows});
-
+    dbConnection.query(`SELECT * FROM place WHERE placeID = `+placeID , async (err,rows) =>{
+        
+        res.render('userside/tnm/tnmplace',{data:rows,URL:rows[0].placeUrl});
     })
     
 

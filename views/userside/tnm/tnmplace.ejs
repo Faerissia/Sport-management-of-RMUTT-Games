@@ -5,6 +5,7 @@
 
         <head>
             <title>ข้อมูบการแข่งขัน</title>
+           
         </head>
 
         <body>
@@ -48,9 +49,12 @@
                 <div class="row my-2  p row-cols-2">
                     <div class="col-2 ">
                         <label class="col-form-label">URL สถานที่</label>
+                        <iframe width="600" height="450" frameborder="0" style="border:0"
+  src="https://www.google.com/maps/embed/v1/place?q=<%= URL %>&key=AIzaSyD0L1mq9oNzqPEepFbHk0iARm-yzX0ok8A" allowfullscreen>
+</iframe>
                     </div>
                     <div class="col-4">
-                        <%- data[0].placeUrl %>
+                        
                     </div>
                 </div>
                 <!--  -->
@@ -88,37 +92,6 @@
         }
     </script>
 
-<!--                    
-                    <div class="d-flex flex-column   h-100">
-              
-
-                    
-                    <a href="javascript:history.back()" class="btn btn-danger">ย้อนกลับ</a>
-                    <div class="d-flex flex-column justify-content-center align-seft-start py-3   mx-auto w-75">
-                        <p class="text-start ms-4 mb-1 ">รายละเอียด</p>
-                        <div class="card"
-                           >
-                            <div class="text-start">
-                                <%= data[0].placeName %>
-                                
-                            </div>
-                            <div class="text-start">
-
-                                <%- data[0].placeUrl %>
-                                
-                                
-                            </div>
-                            <div class="text-start">
-
-                                <img src="../place/<%= data[0].placeFile %>" class="img-fluid" alt="photo_tnm"
-                                style="height: 300px; width: 300px;">
-                                
-                            </div>
-                        </div>
-                    </div>
-                    </div> -->
-
-            </div>
 
         </body>
 
