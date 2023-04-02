@@ -96,7 +96,7 @@
                 </div>
             </div>
             <!--  -->
-            <div class="row my-2   row-cols-2">
+            <!-- <div class="row my-2   row-cols-2">
                 <div class="col-2 ">
                     <label for="validationFile_doc"
                         class="col-form-label">เอกสารที่ใช้ในการสมัคร</label>
@@ -112,7 +112,54 @@
 
                     </select>
                 </div>
-            </div>
+            </div> -->
+            <% console.log(tnmUrl); %>
+            <div class="row my-2 row-cols-2">
+                <div class="col-2">
+                      <label for="validationFile_doc" class="col-form-label">เอกสารที่ใช้ในการสมัคร</label>
+                    </div>
+                    <div class="col-auto my-auto">
+                        <div class="form-check form-check-inline">
+                            <input type="hidden" name="tnmUrl" value="<%= tnmUrl %>">
+                            <input class="form-check-input" type="checkbox" value="บัตรประชาชน" id="idcard" name="idcard" <% if (tnmUrl.includes("บัตรประชาชน")) { %>checked<% } %>>
+                            <label class="form-check-label" for="validationFile_id">บัตรประชาชน</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="บัตรประจำตัวนักศึกษา" id="idstudent" name="idstudent" <% if (tnmUrl.includes("บัตรประจำตัวนักศึกษา")) { %>checked<% } %>>
+                            <label class="form-check-label" for="validationFile_student">บัตรประจำตัวนักศึกษา</label>
+                          </div>
+                    </div>
+                    <script>
+                        const idcardCheckbox = document.getElementById('idcard');
+                        const idstudentCheckbox = document.getElementById('idstudent');
+                        const hiddenInput = document.querySelector('input[name="tnmUrl"]');
+                      
+                        idcardCheckbox.addEventListener('change', () => {
+                          if (idcardCheckbox.checked && !idstudentCheckbox.checked) {
+                            hiddenInput.value = 'บัตรประชาชน';
+                          } else if (!idcardCheckbox.checked && idstudentCheckbox.checked) {
+                            hiddenInput.value = 'บัตรประจำตัวนักศึกษา';
+                          } else if (idcardCheckbox.checked && idstudentCheckbox.checked) {
+                            hiddenInput.value = 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา';
+                          } else {
+                            hiddenInput.value = '';
+                          }
+                        });
+                      
+                        idstudentCheckbox.addEventListener('change', () => {
+                          if (idcardCheckbox.checked && !idstudentCheckbox.checked) {
+                            hiddenInput.value = 'บัตรประชาชน';
+                          } else if (!idcardCheckbox.checked && idstudentCheckbox.checked) {
+                            hiddenInput.value = 'บัตรประจำตัวนักศึกษา';
+                          } else if (idcardCheckbox.checked && idstudentCheckbox.checked) {
+                            hiddenInput.value = 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา';
+                          } else {
+                            hiddenInput.value = '';
+                          }
+                        });
+                      </script>
+                      
+                    </div>
             <!--  -->
             <div class="row my-2   row-cols-2">
                 <div class="col-2 h-auto" style="max-height: 300px; min-height: 100px;">

@@ -101,6 +101,16 @@
 
     <h1>หน้าไฮไลต์ <%= tournamentName %></h1>
     <%- include("../partials/menu_staff.ejs") %>
+
+    
+          <% if (messages.error) { %>
+            <div class="alert alert-danger mt-2" role="alert"><%= messages.error %></div>
+        <% } %>
+        
+        <% if (messages.success) { %>
+            <div class="alert alert-success mt-2" role="alert"><%= messages.success %></div>
+        <% } %>
+
             <div class="container mt-2 ">
               
                 <div class="card ">
@@ -122,14 +132,18 @@
                       <% videoID = videoUrl.split("/").pop(); %>
 
                       <div class="col">
-                        <div class="card">
+                        <div class="card h-100">
                           <div class="card-header"> 
                             <%= data[i].date.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%>
+                            <a href="/tournament/highlight/delete/<%= data[i].highlightID %>" class=" ">
+                              <iconify-icon icon="material-symbols:delete-rounded" style="color: red;" width="20" height="20" class="float-end "></iconify-icon>
+                              <% console.log( data[i].highlightID); %>
+                            </a>
                           </div>
                           
-                          <div class="card-body h-auto" style=" height: 300px; ">
-                            <div class="">
-                              <iframe width: 100%; height: 300px; src="https://youtube.com/embed/<%= videoID %>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="YouTube video" allowfullscreen></iframe>
+                          <div class="card-body h-100" style=" height: 300px; ">
+                            <div class="ratio ratio-4x3">
+                              <iframe width: 242.99px; height: 365.07px; src="https://youtube.com/embed/<%= videoID %>" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="YouTube video" allowfullscreen></iframe>
                               </div>
                           </div>
                           <div class="card-footer"><%= data[i].description %></div>
@@ -143,13 +157,16 @@
 
 
                   <div class="col">
-                    <div class="card">
+                    <div class="card h-100"">
                       <div class="card-header"> 
                         <%= data[i].date.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'})%>
+                        <a href="/tournament/highlight/delete/<%= data[i].highlightID %>" class=" ">
+                          <iconify-icon icon="material-symbols:delete-rounded" style="color: red;" width="20" height="20" class="float-end "></iconify-icon>
+                        </a>
                       </div>
                       
-                      <div class="card-body h-auto" style=" height: 300px;">
-                          <img id="myImg" class="img-fluid" src="../../images/<%=data[i].filePic%>" alt="<%= data[i].description%>" width: 100%; height: 300px;>
+                      <div class="card-body h-100" style=" height: 400px;">
+                          <img id="myImg" class="img-fluid" src="../../images/<%=data[i].filePic%>" alt="<%= data[i].description%>" width: 100%; height: 400px;>
                       </div>
                       <div class="card-footer"><%= data[i].description %></div>
                     </div>

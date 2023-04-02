@@ -26,17 +26,19 @@
                     <div class="col-2 ">
                         <label class="col-form-label">ชื่อสถานที่</label>
                     </div>
-                    <div class="col-4">
-                        <%= data[0].placeName %>
+                    <div class="col-auto">
+                        <label class="col-form-label"><%= data[0].placeName %></label>
+                   
                     </div>
                 </div>
                 <!--  -->
                 <div class="row my-2  p row-cols-2">
                     <div class="col-2 ">
-                        <label style="margin-top: 15px;">กีฬา</label>
+                        <label class="col-form-label"> กีฬา</label>
                     </div>
                     <div class="col-auto">
-                        <%= data[0].nameType %>
+                        <label class="col-form-label"><%= data[0].nameType %></label>
+                        
                     </div>
                 </div>
                 <!--  -->
@@ -45,7 +47,7 @@
                         <label class="col-form-label">URL สถานที่</label>
                     </div>
                     <div class="col-4">
-                        <iframe width="600" height="450" frameborder="0" style="border:0"
+                        <iframe width="600" height="400" frameborder="0" style="border:0"
   src="https://www.google.com/maps/embed/v1/place?q=<%= URL %>&key=AIzaSyD0L1mq9oNzqPEepFbHk0iARm-yzX0ok8A" allowfullscreen>
 </iframe>
                     </div>

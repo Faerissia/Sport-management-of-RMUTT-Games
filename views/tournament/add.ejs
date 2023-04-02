@@ -109,7 +109,7 @@
                                     </div>
                                     <!--  -->
                                     
-                                    <div class="row my-2   row-cols-2">
+                                    <!-- <div class="row my-2   row-cols-2">
                                         <div class="col-2 ">
                                             <label for="validationFile_doc"
                                                 class="col-form-label">เอกสารที่ใช้ในการสมัคร</label>
@@ -118,14 +118,61 @@
                                             <select class="form-select border-dark" id="validationFile_doc"
                                                 name="tnmUrl" required>
                                                 <option selected disabled value="">เอกสารที่ใช้ในการสมัคร</option>
-                                                <option value="บัตรประชาชน และ บัตรประจำตัวนักศึกษา">บัตรประชาชน และ
-                                                    บัตรประจำตัวนักศึกษา</option>
                                                 <option value="บัตรประชาชน">บัตรประชาชน</option>
                                                 <option value="บัตรประจำตัวนักศึกษา">บัตรประจำตัวนักศึกษา</option>
+                                                <option value="บัตรประชาชน และ บัตรประจำตัวนักศึกษา">บัตรประชาชน และ
+                                                    บัตรประจำตัวนักศึกษา</option>
 
                                             </select>
                                         </div>
-                                    </div>
+                                    </div> -->
+                                    <div class="row my-2 row-cols-2">
+                                    <div class="col-2">
+                                          <label for="validationFile_doc" class="col-form-label">เอกสารที่ใช้ในการสมัคร</label>
+                                        </div>
+                                        <div class="col-auto my-auto">
+                                          <div class="form-check form-check-inline">
+                                            <input type="hidden" name="tnmUrl" id="tnmUrl" value="">
+                                            <input class="form-check-input" type="checkbox" value="บัตรประชาชน" id="idcard" name="idcard">
+                                            <label class="form-check-label" for="validationFile_id">บัตรประชาชน</label>
+                                          </div>
+                                          <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" value="บัตรประจำตัวนักศึกษา" id="idstudent" name="idstudent">
+                                            <label class="form-check-label" for="validationFile_student">บัตรประจำตัวนักศึกษา</label>
+                                          </div>
+                                        </div>
+                                        <script>
+                                            const idcardCheckbox = document.getElementById('idcard');
+                                            const idstudentCheckbox = document.getElementById('idstudent');
+                                            const hiddenInput = document.querySelector('input[name="tnmUrl"]');
+                                          
+                                            idcardCheckbox.addEventListener('change', () => {
+                                              if (idcardCheckbox.checked && !idstudentCheckbox.checked) {
+                                                hiddenInput.value = 'บัตรประชาชน';
+                                              } else if (!idcardCheckbox.checked && idstudentCheckbox.checked) {
+                                                hiddenInput.value = 'บัตรประจำตัวนักศึกษา';
+                                              } else if (idcardCheckbox.checked && idstudentCheckbox.checked) {
+                                                hiddenInput.value = 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา';
+                                              } else {
+                                                hiddenInput.value = '';
+                                              }
+                                            });
+                                          
+                                            idstudentCheckbox.addEventListener('change', () => {
+                                              if (idcardCheckbox.checked && !idstudentCheckbox.checked) {
+                                                hiddenInput.value = 'บัตรประชาชน';
+                                              } else if (!idcardCheckbox.checked && idstudentCheckbox.checked) {
+                                                hiddenInput.value = 'บัตรประจำตัวนักศึกษา';
+                                              } else if (idcardCheckbox.checked && idstudentCheckbox.checked) {
+                                                hiddenInput.value = 'บัตรประชาชน และ บัตรประจำตัวนักศึกษา';
+                                              } else {
+                                                hiddenInput.value = '';
+                                              }
+                                            });
+                                          </script>
+                                          
+                                      
+                                        </div>
                                     <!--  -->
                                     <div class="row my-2   row-cols-2">
                                         <div class="col-2 ">
@@ -154,8 +201,6 @@
                                             maxlength="4000000" accept=".png, .jpg, .pdf"  value="" name="tnmFile3">
                                         </div>
                                     </div>
-                                    </div>
-                                    <!--  -->
                                     <div class="row row-cols-2">
                                         <div class="col-2 my-auto  ">
                                             <label for="validationImage" class=" col-form-label">รูปภาพปก<br> (ขนาด
@@ -166,7 +211,7 @@
                                             function preview() {
                                                 imgpreview.src = URL.createObjectURL(event.target.files[0]);
                                                 imgpreview.style.display = "block";
-
+    
                                             }
                                         </script>
                                         <div class="col-3 my-auto ">
@@ -181,8 +226,10 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
                                     <!--  -->
-                                    <div class="row row-cols-2 mt-5 text-center d-flex justify-content-center">
+                                    <!--  -->
+                                    <div class="row row-cols-2 my-3 text-center d-flex justify-content-center">
                                         <div class="col-2">
                                             <a href="javascript:history.back()" class="btn btn-primary">ย้อนกลับ</a>
                                         </div>
