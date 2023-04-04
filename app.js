@@ -46,6 +46,8 @@ app.use(session({
 app.use(function(req, res, next) {
   res.locals.username = req.session.username;
   res.locals.level = req.session.level;
+  res.locals.accountID = req.session.accountID;
+
   next();
 });
 
@@ -82,6 +84,8 @@ app.post('/login', function(req, res, next) {
           if(active === 'ใช้งาน'){
           req.session.username = results[0].name + " " + results[0].lname;
           req.session.level = results[0].level;
+          req.session.accountID = results[0].accountID;
+
           console.log(role)
           if(role === 'ผู้ดูแลระบบ'){
             res.redirect("/account");

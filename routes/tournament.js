@@ -122,7 +122,7 @@ router.post('/add', function(req, res, next) {
 // display edit tournament page
 router.get('/edit/(:tnmID)', function(req, res, next) {
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportID,s.sportName,t.Rstartdate,t.Renddate,t.tnmStartdate,t.tnmEnddate,t.tnmDetail,t.tnmPicture,t.tnmFile1 FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID =  ' + tnmID, (err, rows, fields) => {
+    dbConnection.query('SELECT t.tnmID, t.tnmName,s.sportID,s.sportName,t.Rstartdate,t.Renddate,t.tnmStartdate,t.tnmEnddate,t.tnmUrl,t.tnmDetail,t.tnmPicture,t.tnmFile1 FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID WHERE t.tnmID =  ' + tnmID, (err, rows, fields) => {
         if(req.session.level === 'เจ้าหน้าที่'){
         if (rows.length <= 0) {
             req.flash('error', 'tournament not found with id = ' + tnmID)
@@ -608,7 +608,7 @@ router.get('/match/(:tnmID)', function(req, res, next) {
 //หน้าไฮไลท์
 router.get('/highlight/(:tnmID)', function(req, res, next) {
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT t.tnmID,t.tnmName,h.tnmID,h.linkvid,h.filePic,h.date,h.description FROM tournament t LEFT JOIN highlight h ON t.tnmID = h.tnmID WHERE t.tnmID = '+tnmID, (err, rows) => {
+    dbConnection.query('SELECT t.tnmID,t.tnmName,h.tnmID,h.linkvid,h.filePic,h.date,h.description ,h.highlightID FROM tournament t LEFT JOIN highlight h ON t.tnmID = h.tnmID WHERE t.tnmID = '+tnmID, (err, rows) => {
         if(req.session.username){
         if(req.session.level === 'เจ้าหน้าที่'){
             tournamentName = rows[0].tnmName;
@@ -638,6 +638,24 @@ router.get('/highlight/add/(:tnmID)', function(req, res, next) {
     res.redirect('/error404');
     }
     })
+})
+router.get('/highlight/delete/(:highlightID)', function(req, res, next) {
+  let highlightID = req.params.highlightID;
+  console.log(highlightID);
+    dbConnection.query('SELECT tnmID FROM highlight WHERE highlightID ='+highlightID, (err, data) => {
+      console.log(data);
+      if (err) throw err
+      dbConnection.query('DELETE FROM highlight WHERE highlightID ='+highlightID, (err, rows) => {
+        if (err) {
+          req.flash('error', err);
+          res.redirect('/tournament/highlight/'+data[0].tnmID)
+      } else {
+          req.flash('success', 'ลบ Highlight เรียบร้อยแล้ว');
+          res.redirect('/tournament/highlight/'+data[0].tnmID)
+      }
+      })
+    })
+ 
 })
 
 router.post('/highlight/add/(:tnmID)', function(req, res, next) {

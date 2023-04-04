@@ -140,18 +140,26 @@
               </tr>
             </thead>
             <tbody>
-              <% const data1 = data.filter(item => (item.accountID) !== (accountID));%> 
-              <% console.table( data1)%> <% console.log("🚀 ~ file: index.ejs:62 ~ username:", username)%> 
-              <%for(let i=0; i < data1.length; i++) { %>
+             
+              <% console.table( data)%> <% console.log("🚀 ~ file: index.ejs:62 ~ username:", username)%> 
+              <%for(let i=0; i < data.length; i++) { %>
               <tr>
-                <th scope="row" class="fw-normal"><%= data1[i].thelevel %></th>
-                <td><%= data1[i].name %> <%= data1[i].lname %></td>
-                <td><%= data1[i].phone %></td>
-                <td><%= data1[i].status %></td>
+                <th scope="row" class="fw-normal"><%= data[i].thelevel %></th>
+                <td><%= data[i].name %> <%= data[i].lname %></td>
+                <td><%= data[i].phone %></td>
+                <td><%= data[i].status %></td>
                 <td class="text-center">
-                  <a href="../account/delete/<%= data1[i].accountID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
-                  <a href="../account/edit/<%= data1[i].accountID %>" class="btn btn-warning edit">แก้ไข</a>
-                  <a href="../account/page/<%= data1[i].accountID %>" class="btn btn-primary">ดูข้อมูล</a>
+                  
+                  <% if (data[i].accountID !== (accountID)) { %>
+                    <a href="../account/delete/<%= data[i].accountID %> "   onclick="return confirm_delete()" class="btn btn-danger delete ">ลบ</a>
+                    <a href="../account/edit/<%= data[i].accountID %>" class="btn btn-warning edit">แก้ไข</a>
+                    <a href="../account/page/<%= data[i].accountID %>" class="btn btn-primary">ดูข้อมูล</a>
+                    <% }else{%>
+                    <a href="../account/delete/<%= data[i].accountID %> "   onclick="return confirm_delete()" class="btn btn-danger delete disabled">ลบ</a>
+                    <a href="../account/edit/<%= data[i].accountID %>" class="btn btn-warning edit">แก้ไข</a>
+                    <a href="../account/page/<%= data[i].accountID %>" class="btn btn-primary">ดูข้อมูล</a>
+                
+                    <% } %>
                 </td>
               </tr>
               <% } %>

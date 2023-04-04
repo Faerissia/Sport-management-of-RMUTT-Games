@@ -1,6 +1,6 @@
 <%- include("../partials/header") %>
 <%- include("../partials/sidebar") %>
-    <div class="col-10 py-3 mx-auto">
+    <div class="col-10 py-12 mx-auto">
 
         <!DOCTYPE html>
         <html lang="en">
@@ -89,208 +89,183 @@
                                         <label class="col-form-label ">วันที่ทำการ</label>
 
                                     </div>
-                                    <div class="col-5 ">
-                                        <div class="row row-cols-1 ">
-                                            <div class="col-3">
-                                                <div class="form-check ">
-                                                    <input class="" type="checkbox" name="day" value="จันทร์" style=" width: 20px;
-                                                        height: 20px;" id="mondayCheckbox">
-                                                    <label class="col-form-label ">
-                                                        จันทร์
-                                                    </label>
+                                    <div class="col-10 ">
+                                        <div class="row row-cols-1 mt-1 ">
+                                            <div class="col-12">
+                                                <div class="form-check  ">
+                                                    <div class="row">
+                                                        <div class="col-2">
+                                                            <input class="" type="checkbox" name="day" value="จันทร์" style=" width: 20px;
+                                                            height: 20px;" id="mondayCheckbox">
+                                                        <label class="col-form-label ">
+                                                            จันทร์
+                                                        </label>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="justify-content-evenly" id="monday" style="display:none;">
+                                                                <label class="col-form-label">เวลาทำการ</label>
+                                                                <input type="time" class="form-control border-dark w-auto" name="timeOpen"
+                                                                autocomplete="off" >
+                                                                <label class="col-form-label">ถึง</label>
+                                                                <input type="time" class="form-control border-dark w-auto"" name="timeClose"
+                                                                autocomplete="off">
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </div>
+                                        </div>
+                                        <div class="row row-cols-1 mt-1 ">
+                                            <div class="col-12">
+                                                <div class="form-check  ">
+                                                    <div class="row">
+                                                        <div class="col-2">
+                                                            <input class="" type="checkbox" name="day" value="อังคาร" style=" width: 20px;
+                                                            height: 20px;" id="tuesdayCheckbox">
+                                                        <label class="col-form-label">
+                                                            อังคาร
+                                                        </label>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="justify-content-evenly" id="tuesday" style="display:none;">
+                                                                <label class="col-form-label">เวลาทำการ</label>
+                                                                <input type="time" class="form-control border-dark w-auto" name="timeOpen"
+                                                                autocomplete="off" >
+                                                                <label class="col-form-label">ถึง</label>
+                                                                <input type="time" class="form-control border-dark w-auto"" name="timeClose"
+                                                                autocomplete="off">
+                                                        </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div id="monday" style="display:none;">
-                                            <div class="col-auto">
-                                                <label class="col-form-label">เวลาทำการ</label>
-
-                                            </div>
-                                            <div class="col-auto">
-                                                <input type="time" class="form-control border-dark" name="timeOpen"
-                                                    autocomplete="off">
-                                            </div>
-                                            <div class="col-auto">
-                                                <label class="col-form-label">ถึง</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <input type="time" class="form-control border-dark" name="timeClose"
-                                                    autocomplete="off">
-                                            </div>
                                         </div>
-                                        </div>
-                                        <div class="row row-cols-1 ">
-                                            <div class="col-3">
-                                                <div class="form-check ">
-                                                    <input class="" type="checkbox" name="day" value="อังคาร" style=" width: 20px;
-                                                        height: 20px;" id="tuesdayCheckbox">
-                                                    <label class="col-form-label">
-                                                        อังคาร
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div id="tuesday" style="display:none;">
-                                            <div class="col-auto">
-                                                <label class="col-form-label">เวลาทำการ</label>
-
-                                            </div>
-                                            <div class="col-auto">
-                                                <input type="time" class="form-control border-dark" name="timeOpen"
-                                                    autocomplete="off">
-                                            </div>
-                                            <div class="col-auto">
-                                                <label class="col-form-label">ถึง</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <input type="time" class="form-control border-dark" name="timeClose"
-                                                    autocomplete="off">
-                                            </div>
-                                        </div>
-
-                                        </div>
-                                        <div class="row row-cols-1 ">
-                                            <div class="col-3">
-                                                <div class="form-check ">
-                                                    <input class="" type="checkbox" name="day" value="พุธ" style=" width: 20px;
-                                                        height: 20px;" id="wednesdayCheckbox">
-                                                    <label class="col-form-label ">
-                                                        พุธ
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div id="wednesday" style="display:none;">
-                                            <div class="col-auto">
-                                                <label class="col-form-label">เวลาทำการ</label>
-
-                                            </div>
-                                            <div class="col-auto">
-                                                <input type="time" class="form-control border-dark" name="timeOpen"
-                                                    autocomplete="off">
-                                            </div>
-                                            <div class="col-auto">
-                                                <label class="col-form-label">ถึง</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <input type="time" class="form-control border-dark" name="timeClose"
-                                                    autocomplete="off">
-                                            </div>
-                                        </div>
-
-                                        </div>
-                                        <div class="row row-cols-1 ">
-                                            <div class="col-3">
-                                                <div class="form-check ">
-                                                    <input class="" type="checkbox" name="day" value="พฤหัสบดี" style=" width: 20px;
-                                                        height: 20px;" id="thursdayCheckbox">
-                                                    <label class="col-form-label ">
-                                                        พฤหัสบดี
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div id="thursday" style="display:none;">
-                                            <div class="col-auto">
-                                                <label class="col-form-label">เวลาทำการ</label>
-
-                                            </div>
-                                            <div class="col-auto">
-                                                <input type="time" class="form-control border-dark" name="timeOpen"
-                                                    autocomplete="off">
-                                            </div>
-                                            <div class="col-auto">
-                                                <label class="col-form-label">ถึง</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <input type="time" class="form-control border-dark" name="timeClose"
-                                                    autocomplete="off">
-                                            </div>
-                                        </div>
-
-                                        </div>
-                                        <div class="row row-cols-1 ">
-                                            <div class="col-3">
-                                                <div class="form-check ">
-                                                    <input class="" type="checkbox" name="day" value="ศุกร์" style=" width: 20px;
-                                                        height: 20px;" id="fridayCheckbox">
-                                                    <label class="col-form-label ">
-                                                        ศุกร์
-                                                    </label>
+                                        <div class="row row-cols-1 mt-1 ">
+                                            <div class="col-12">
+                                                <div class="form-check  ">
+                                                    <div class="row">
+                                                        <div class="col-2">
+                                                            <input class="" type="checkbox" name="day" value="พุธ" style=" width: 20px;
+                                                            height: 20px;" id="wednesdayCheckbox">
+                                                        <label class="col-form-label ">
+                                                            พุธ
+                                                        </label>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="justify-content-evenly" id="wednesday" style="display:none;">
+                                                                <label class="col-form-label">เวลาทำการ</label>
+                                                                <input type="time" class="form-control border-dark w-auto" name="timeOpen"
+                                                                autocomplete="off" >
+                                                                <label class="col-form-label">ถึง</label>
+                                                                <input type="time" class="form-control border-dark w-auto"" name="timeClose"
+                                                                autocomplete="off">
+                                                        </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <div id="friday" style="display:none;">
-                                            <div class="col-auto">
-                                                <label class="col-form-label">เวลาทำการ</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <input type="time" class="form-control border-dark" name="timeOpen"
-                                                    autocomplete="off">
-                                            </div>
-                                            <div class="col-auto">
-                                                <label class="col-form-label">ถึง</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <input type="time" class="form-control border-dark" name="timeClose"
-                                                    autocomplete="off">
-                                            </div>
-                                            </div>
-
                                         </div>
-                                        <div class="row row-cols-1 ">
-                                            <div class="col-3">
-                                                <div class="form-check ">
-                                                    <input class="" type="checkbox" name="day" value="เสาร์" style=" width: 20px;
-                                                        height: 20px;" id="saturdayCheckbox">
-                                                    <label class="col-form-label ">
-                                                        เสาร์
-                                                    </label>
+                                        <div class="row row-cols-1 mt-1 ">
+                                            <div class="col-12">
+                                                <div class="form-check  ">
+                                                    <div class="row">
+                                                        <div class="col-2">
+                                                            <input class="" type="checkbox" name="day" value="พฤหัสบดี" style=" width: 20px;
+                                                            height: 20px;" id="thursdayCheckbox">
+                                                        <label class="col-form-label ">
+                                                            พฤหัสบดี
+                                                        </label>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="justify-content-evenly" id="thursday" style="display:none;">
+                                                                <label class="col-form-label">เวลาทำการ</label>
+                                                                <input type="time" class="form-control border-dark w-auto" name="timeOpen"
+                                                                autocomplete="off" >
+                                                                <label class="col-form-label">ถึง</label>
+                                                                <input type="time" class="form-control border-dark w-auto"" name="timeClose"
+                                                                autocomplete="off">
+                                                        </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-
-                                            <div id="saturday" style="display:none;">
-                                            <div class="col-auto">
-                                                <label class="col-form-label">เวลาทำการ</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <input type="time" class="form-control border-dark" name="timeOpen"
-                                                    autocomplete="off">
-                                            </div>
-                                            <div class="col-auto">
-                                                <label class="col-form-label">ถึง</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <input type="time" class="form-control border-dark" name="timeClose"
-                                                    autocomplete="off">
-                                            </div>
                                         </div>
-
-                                        </div>
-                                        <div class="row row-cols-1 ">
-                                            <div class="col-3">
-                                                <div class="form-check ">
-                                                    <input class="" type="checkbox" name="day" value="อาทิตย์" style=" width: 20px;
-                                                        height: 20px;" id="sundayCheckbox">
-                                                    <label class="col-form-label ">
-                                                        อาทิตย์
-                                                    </label>
+                                        <div class="row row-cols-1 mt-1 ">
+                                            <div class="col-12">
+                                                <div class="form-check  ">
+                                                    <div class="row">
+                                                        <div class="col-2">
+                                                            <input class="" type="checkbox" name="day" value="ศุกร์" style=" width: 20px;
+                                                            height: 20px;" id="fridayCheckbox">
+                                                        <label class="col-form-label ">
+                                                            ศุกร์
+                                                        </label>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="justify-content-evenly" id="friday" style="display:none;">
+                                                                <label class="col-form-label">เวลาทำการ</label>
+                                                                <input type="time" class="form-control border-dark w-auto" name="timeOpen"
+                                                                autocomplete="off" >
+                                                                <label class="col-form-label">ถึง</label>
+                                                                <input type="time" class="form-control border-dark w-auto"" name="timeClose"
+                                                                autocomplete="off">
+                                                        </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-
-                                            <div id="sunday" style="display:none;">
-                                            <div class="col-auto">
-                                                <label class="col-form-label">เวลาทำการ</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <input type="time" class="form-control border-dark" name="timeOpen"
-                                                    autocomplete="off">
-                                            </div>
-                                            <div class="col-auto">
-                                                <label class="col-form-label">ถึง</label>
-                                            </div>
-                                            <div class="col-auto">
-                                                <input type="time" class="form-control border-dark" name="timeClose"
-                                                    autocomplete="off">
+                                        </div>
+                                        <div class="row row-cols-1 mt-1 ">
+                                            <div class="col-12">
+                                                <div class="form-check  ">
+                                                    <div class="row">
+                                                        <div class="col-2">
+                                                            <input class="" type="checkbox" name="day" value="เสาร์" style=" width: 20px;
+                                                            height: 20px;" id="saturdayCheckbox">
+                                                        <label class="col-form-label ">
+                                                            เสาร์
+                                                        </label>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="justify-content-evenly" id="saturday" style="display:none;">
+                                                                <label class="col-form-label">เวลาทำการ</label>
+                                                                <input type="time" class="form-control border-dark w-auto" name="timeOpen"
+                                                                autocomplete="off" >
+                                                                <label class="col-form-label">ถึง</label>
+                                                                <input type="time" class="form-control border-dark w-auto"" name="timeClose"
+                                                                autocomplete="off">
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                </div>
                                             </div>
                                         </div>
-
+                                        <div class="row row-cols-1 mt-1 ">
+                                            <div class="col-12">
+                                                <div class="form-check  ">
+                                                    <div class="row">
+                                                        <div class="col-2">
+                                                            <input class="" type="checkbox" name="day" value="อาทิตย์" style=" width: 20px;
+                                                            height: 20px;" id="sundayCheckbox">
+                                                        <label class="col-form-label ">
+                                                            อาทิตย์
+                                                        </label>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="justify-content-evenly" id="sunday" style="display:none;">
+                                                                <label class="col-form-label">เวลาทำการ</label>
+                                                                <input type="time" class="form-control border-dark w-auto" name="timeOpen"
+                                                                autocomplete="off" >
+                                                                <label class="col-form-label">ถึง</label>
+                                                                <input type="time" class="form-control border-dark w-auto"" name="timeClose"
+                                                                autocomplete="off">
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -309,7 +284,7 @@
 document.getElementById("mondayCheckbox").addEventListener("change", function(){
   var valueDiv = document.getElementById("monday");
   if(this.checked){
-    valueDiv.style.display = "block";
+    valueDiv.style.display = "flex";
   } else {
     valueDiv.style.display = "none";
   }
@@ -318,7 +293,7 @@ document.getElementById("mondayCheckbox").addEventListener("change", function(){
 document.getElementById("tuesdayCheckbox").addEventListener("change", function(){
   var valueDiv = document.getElementById("tuesday");
   if(this.checked){
-    valueDiv.style.display = "block";
+    valueDiv.style.display = "flex";
   } else {
     valueDiv.style.display = "none";
   }
@@ -327,7 +302,7 @@ document.getElementById("tuesdayCheckbox").addEventListener("change", function()
 document.getElementById("wednesdayCheckbox").addEventListener("change", function(){
   var valueDiv = document.getElementById("wednesday");
   if(this.checked){
-    valueDiv.style.display = "block";
+    valueDiv.style.display = "flex";
   } else {
     valueDiv.style.display = "none";
   }
@@ -336,7 +311,7 @@ document.getElementById("wednesdayCheckbox").addEventListener("change", function
 document.getElementById("thursdayCheckbox").addEventListener("change", function(){
   var valueDiv = document.getElementById("thursday");
   if(this.checked){
-    valueDiv.style.display = "block";
+    valueDiv.style.display = "flex";
   } else {
     valueDiv.style.display = "none";
   }
@@ -345,7 +320,7 @@ document.getElementById("thursdayCheckbox").addEventListener("change", function(
 document.getElementById("fridayCheckbox").addEventListener("change", function(){
   var valueDiv = document.getElementById("friday");
   if(this.checked){
-    valueDiv.style.display = "block";
+    valueDiv.style.display = "flex";
   } else {
     valueDiv.style.display = "none";
   }
@@ -354,7 +329,7 @@ document.getElementById("fridayCheckbox").addEventListener("change", function(){
 document.getElementById("saturdayCheckbox").addEventListener("change", function(){
   var valueDiv = document.getElementById("saturday");
   if(this.checked){
-    valueDiv.style.display = "block";
+    valueDiv.style.display = "flex";
   } else {
     valueDiv.style.display = "none";
   }
@@ -363,7 +338,7 @@ document.getElementById("saturdayCheckbox").addEventListener("change", function(
 document.getElementById("sundayCheckbox").addEventListener("change", function(){
   var valueDiv = document.getElementById("sunday");
   if(this.checked){
-    valueDiv.style.display = "block";
+    valueDiv.style.display = "flex";
   } else {
     valueDiv.style.display = "none";
   }
