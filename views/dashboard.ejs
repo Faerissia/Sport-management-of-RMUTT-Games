@@ -37,7 +37,7 @@
                                             <div class="text-end  my-2  ">
                                                 <div class="row row-cols-1  ">
                                                     <div class="col-auto  mx-auto text-center">
-                                                        <div class="row   p-3 bg-body rounded pt-2 ">
+                                                        <div class="row   px-3 bg-body rounded pt-2 ">
                                                             <form action="/dashboard/value_date" id="myForm"
                                                                 method="post">
                                                                 <div class="row ">
@@ -76,17 +76,17 @@
                                                                             class="form-control border-dark"
                                                                             name="value_enddate" id="value_enddate">
                                                                     </div>
-                                                                    <div class="col text-end">
+                                                                    <!-- <div class="col text-end">
                                                                         <label for="value_startdate"
                                                                             class="col-form-label"></label>
-                                                                    </div>
+                                                                    </div> -->
                                                                 </div>
                                                             </form>
-                                                            <div class="col-12 mx-auto text-center">
+                                                            <!-- <div class="col-12 mx-auto text-center">
                                                                 <label for="value_startdate "
                                                                     class="col-form-label ">หมายเหตุ ( ช่วงเวลาไม่เกิน
                                                                     1 ปี )</label>
-                                                            </div>
+                                                            </div> -->
 
                                                         </div>
                                                         <script>
@@ -108,7 +108,6 @@
 
                                                             // Set the  minimum values for value_enddate
                                                             valueStartdate.addEventListener('input', function () {
-                                                                // console.log('valueStartdate changed: ' + valueStartdate.value);
                                                                 valueEnddate.min = valueStartdate.value;
                                                                 valueEnddate.value = "";
 
@@ -151,16 +150,12 @@
                                                             // set value after reset
                                                             const value_select = JSON.parse('<%-JSON.stringify(value_select) %>');
                                                             if (value_select && value_select.length > 0) {
-                                                                // console.log(value_select);
                                                                 if (value_select[0]?.sport) {
                                                                     document.getElementById('value_sport').value = value_select[0].sport
                                                                 }
                                                                 document.getElementById('value_startdate').value = value_select[0].date_S
-                                                                // console.log(value_select[0].date_S);
                                                                 document.getElementById('value_enddate').value = value_select[0].date_E
-                                                                // console.log(value_select[0].date_E);
-                                                                // document.getElementById('value_sport').value = value_select[0].sport
-                                                                // console.log(value_select[0].sport);
+                                                               
                                                             }
                                                         </script>
 
@@ -228,11 +223,20 @@
 
                                                 <script>
                                                     const display_month = JSON.parse('<%-JSON.stringify(display_month) %>');
-                                                    // console.log(display_month);
+                                                    const display_month_do = JSON.parse('<%-JSON.stringify(display_month_do) %>');
+                                                    const display_month_wait = JSON.parse('<%-JSON.stringify(display_month_wait) %>');
+                                                
+                                                    const label_fs = display_month.map((item) => { return item.value })
+                                                    let maxValue = Math.max(...label_fs);
+                                                    const label_do = display_month_do.map((item) => { return item.value })
+                                                    let maxValuedo = Math.max(...label_do);
+                                                    const label_wait = display_month_wait.map((item) => { return item.value })
+                                                    let maxValuewait = Math.max(...label_wait);
 
-                                                    // const label_x = display_month.map((item) => { return item.month })
-                                                    const label_y = display_month.map((item) => { return item.value })
-                                                    let maxValue = Math.max(...label_y);
+                                                    const totalmaxvalue =maxValue+maxValuedo+maxValuewait+2;
+                                                    
+
+                                                    
 
                                                     const ctx = document.getElementById('myChart');
 
@@ -254,30 +258,50 @@
                                                                 "Dec",
                                                             ]
                                                             , datasets: [{
-                                                                label: 'จำนวนการแข่งขัน',
-                                                                data: label_y
-                                                                ,
-                                                                borderWidth: 3,
-                                                                
-                                                            }]
+                                                                label: 'ยังไม่เริ่มการแข่งขัน',
+                                                                data: label_wait,
+                                                                backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                                                                borderColor: 'rgba(255, 220, 20, 1)',
+                                                                borderWidth: 1,
+                                                                stack: 'Stack 1'
+                                                              
+                                                            }, {
+                                                                label: 'อยู่ระหว่างแข่งขัน',
+                                                                data: label_do ,
+                                                                backgroundColor: 'rgba(1, 206, 86, 0.2)',
+                                                                borderColor: 'rgba(1, 190, 86, 1)',
+                                                                borderWidth: 1,
+                                                                stack: 'Stack 1'
+                                                            }, {
+                                                                label: 'การแข่งขันที่เสร็จสิ้น',
+                                                                data: label_fs,
+                                                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                                                borderColor: 'rgba(54, 162, 235, 1)',
+                                                                borderWidth: 1,
+                                                                stack: 'Stack 1'
+                                                            }
+                                                        ]
                                                         },
                                                         options: {
                                                             responsive: true,
                                                             maintainAspectRatio: false,
                                                             scales: {
                                                                 y: {
+                                                                    max: totalmaxvalue,
+                                                                    stacked: true ,
                                                                     ticks: {
+                                                                        
                                                                         color: 'dark'
                                                                     },
 
                                                                     beginAtZero: true,
                                                                     min: 0,
-                                                                    max: maxValue + 3,
                                                                     ticks: {
                                                                         precision: 0,
                                                                     }
                                                                 },
                                                                 x: {
+                                                                    stacked: true ,
                                                                     ticks: {
                                                                         color: 'dark'
                                                                     },
@@ -288,11 +312,22 @@
                                                                 }
                                                             }
                                                             , plugins: {
+                                                                title: {
+                                                                            display: true,
+                                                                            text: 'การแข่งขันในแต่ละเดือน',
+                                                                            font: {
+                                                                        family: "Kodchasan-Regular",
+                                                                        size: 16,
+                                                                        }
+                                                                        ,color: 'dark'
+                                                                        },
+
                                                                 legend: {
                                                                     labels: { 
+                                                                        display:false,
                                                                     font: {
                                                                         family: "Kodchasan-Regular",
-                                                                        size: 15,
+                                                                        size: 12,
                                                                         }
                                                                         ,color: 'dark'
                                                                     }
@@ -305,11 +340,15 @@
                                                                         size: 12,
                                                                         weight: 'bold'
                                                                     },
-                                                                    align: 'end',
-                                                                    anchor: 'end',
+                                                                    align: 'center',
+                                                                    anchor: 'center',
                                                                     color: 'dark',
                                                                     formatter: function (value, context) {
-                                                                        return value;
+                                                                        if (value > 0) {
+                                                                                return value;
+                                                                            } else {
+                                                                                return '';
+                                                                            }
                                                                     }
                                                                 }
                                                             },
@@ -323,11 +362,7 @@
                                                         ]
                                                     });
 
-                                                    //         barThickness: 30,
-                                                    //         barSpacing: 2
-                                                    //     }
-
-                                                    // });
+                                               
                                                 </script>
 
 
@@ -341,15 +376,40 @@
                                                 </div>
 
                                                 <script>
+
+
                                                     const sport_count = JSON.parse('<%-JSON.stringify(sport_count) %>');
-                                                    // console.log("🚀 ~ file: dashboard.ejs:265 ~ sport_count", sport_count)
+                                                    const sport_count_do = JSON.parse('<%-JSON.stringify(sport_count_do) %>');
+                                                    const sport_count_wait = JSON.parse('<%-JSON.stringify(sport_count_wait) %>');
 
-
+                                                    //name
                                                     const sport_x = sport_count.map((item) => { return item.sportName })
-                                                    const sport_y = sport_count.map((item) => { return item.count_sportID })
-                                                    let maxValuesport = Math.max(...sport_y);
+                                                    //value
+                                                    const sport_fs = sport_count.map((item) => { return item.count_sportID })
+                                                    
+                                                    const sport_do = sport_count_do.map((item) => { return item.count_sportID })
+                                                    const sport_wait = sport_count_wait.map((item) => { return item.count_sportID })
+                                                    let maxValue_fs
+                                                    let maxValue_do
+                                                    let maxValue_wait
+                                                
+                                                         maxValue_fs= Math.max(...sport_fs)
+                                                   
+                                                        maxValue_fs=0;
+                                                    
+                                                   
+                                                        maxValue_do= Math.max(...sport_do)
+                                                  
+                                                
+                                                        maxValue_wait= Math.max(...sport_wait);
+                                                        
+                                                        if (maxValue_fs === -Infinity&& maxValue_fs<0 ) maxValue_fs = 0;
+                                                        if (maxValue_do === -Infinity&& maxValue_do<0) maxValue_do = 0;
+                                                        if (maxValue_wait === -Infinity&& maxValue_wait<0) maxValue_wait = 0;
+                                                    const  maxValuesport = maxValue_fs+maxValue_do+maxValue_wait+2
+                                                    
 
-                                                    // console.log("🚀 ~ file: dashboard.ejs:258 ~ sport_y", sport_y)
+
 
                                                     const ctx1 = document.getElementById('myChart1');
                                                     // Chart.defaults.font.family ="Kodchasan-Regular"
@@ -359,13 +419,27 @@
                                                         data: {
                                                             labels: sport_x,
                                                             datasets: [{
-                                                                label: 'จำนวนที่ชนิดกีฬา',
-                                                                data: sport_y
-                                                                , borderWidth: 1,
-                                                                backgroundColor: 'rgba(179, 158, 232, 0.93)',
-                                                                borderColor: 'rgba(115, 99, 132, 1)',
-                                                                borderWidth: 3,
-                                                                
+                                                                label: 'ยังไม่เริ่มการแข่งขัน',
+                                                                data: sport_wait,
+                                                                backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                                                                borderColor: 'rgba(255, 220, 20, 1)',
+                                                                borderWidth: 1,
+                                                                stack: 'Stack 1'
+                                                              
+                                                            }, {
+                                                                label: 'อยู่ระหว่างแข่งขัน',
+                                                                data: sport_do ,
+                                                                backgroundColor: 'rgba(1, 206, 86, 0.2)',
+                                                                borderColor: 'rgba(1, 190, 86, 1)',
+                                                                borderWidth: 1,
+                                                                stack: 'Stack 1'
+                                                            }, {
+                                                                label: 'การแข่งขันที่เสร็จสิ้น',
+                                                                data: sport_fs,
+                                                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                                                borderColor: 'rgba(54, 162, 235, 1)',
+                                                                borderWidth: 1,
+                                                                stack: 'Stack 1'
                                                             }]
                                                         },
                                                         options: {
@@ -374,10 +448,10 @@
                                                             indexAxis: 'y',
                                                             scales: {
                                                                    
-                                                                padding: 200,
+                                                            
 
                                                                 y: {
-
+                                                                    stacked: true ,
                                                                     ticks: {
                                                                         font: {
                                                                                 // family: 'Kodchasan-Regular', 
@@ -390,6 +464,7 @@
                                                                     beginAtZero: true,
                                                                     
                                                                 }, x: {
+                                                                    stacked: true ,
                                                                     ticks: {
                                                                         color: 'dark'
                                                                     }, grid: {
@@ -398,14 +473,23 @@
                                                                     display: false,
                                                                     beginAtZero: true,
                                                                     min: 0,
-                                                                    max: maxValuesport + 1,
+                                                                    max:maxValuesport,
                                                                 }
                                                             }, plugins: {
+                                                                title: {
+                                                                            display: true,
+                                                                            text: 'ประเภทกีฬา',
+                                                                            font: {
+                                                                        family: "Kodchasan-Regular",
+                                                                        size: 16,
+                                                                        }
+                                                                        ,color: 'dark'
+                                                                        },
                                                                 legend: {
                                                                     labels: { 
                                                                     font: {
                                                                         family: "Kodchasan-Regular",
-                                                                        size: 15,
+                                                                        size: 12,
                                                                         }
                                                                         ,color: 'dark'
                                                                 }
@@ -414,26 +498,28 @@
                                                                     display: true,
                                                                     color: 'dark',
                                                                     font: {
-                                                                        size: 14,
+                                                                        size: 12,
                                                                         weight: 'bold'
                                                                     },
-                                                                    align: 'end',
-                                                                    anchor: 'end',
+                                                                    align: 'center',
+                                                                    anchor: 'center',
                                                                     color: 'dark',
                                                                     formatter: function (value, context) {
-                                                                        return value;
+                                                                        if (value > 0) {
+                                                                                return value;
+                                                                            } else {
+                                                                                return '';
+                                                                            }
                                                                     }
                                                                 }
                                                             },
                                                             barThickness: 30,
                                                             barSpacing: 2
                                                         }, barThickness: 30,
-                                                        barSpacing: 2
-                                                        , layout: {
-                                                            padding: {
-                                                                left: 50
-                                                            }
-                                                        },
+                                                        barSpacing: 2,
+                                                        //  layout: {
+                                                         
+                                                        // },
                                                         plugins: [
                                                             ChartDataLabels
                                                         ]
