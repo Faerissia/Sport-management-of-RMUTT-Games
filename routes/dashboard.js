@@ -11,6 +11,21 @@ function formatDate(dateString) {
   return `${year}-${month}-${day}`;
 }
 
+
+
+
+function getUpdatedDataSportName(dataSportName, sportCount) {
+  const updatedDataSportName = dataSportName.map((sport) => {
+    const countObj = sportCount.find((item) => item.sportID === sport.sportID);
+    return {
+      ...sport,
+      count_sportID: countObj ? countObj.count_sportID : 0,
+    };
+  });
+
+  return updatedDataSportName;
+}
+
 // let defaultdate_S = new Date();
 // defaultdate_S.setFullYear(defaultdate_S.getFullYear() - 1);
 // let defaultdate_E = new Date();
@@ -18,10 +33,15 @@ function formatDate(dateString) {
 let defaultdate_S = new Date(new Date().getFullYear(), 0, 1);
 let defaultdate_E = new Date(new Date().getFullYear(), 11, 31);
 
+let data_sportname = [];
 let value_select = [];
 let sport_count = [];
 let sport_count_wait = [];
 let sport_count_do = [];
+
+var success = [];
+var ongoing = [];
+var waiting = [];
 
 let display_month = [];
 let display_month_wait = [];
@@ -115,6 +135,14 @@ router.post("/value_date", (req, res) => {
       selcetsport = selcetsport1;
     }
   );
+  dbConnection.query("SELECT `sportName`,`sportID`FROM `sport`",(err,rows)=>{
+    if (err) {
+      console.log( "==========================================================================");
+      console.log(err);
+      console.log( "==========================================================================");
+    }
+    data_sportname = rows
+  });
 
   
 
@@ -324,7 +352,7 @@ router.post("/value_date", (req, res) => {
         result.push({
           Datamath: index,
           Name: rows[index].tnmName,
-          chack: "In competition",
+          chack: "In",
           tnmID: rows[index].tnmID,
           sportID: rows[index].sportID,
           Rstartdate: rows[index].Rstartdate,
@@ -339,7 +367,7 @@ router.post("/value_date", (req, res) => {
           result.push({
             Datamath: index,
             Name: rows[index].tnmName,
-            chack: "competition is over",
+            chack: "Success",
             tnmID: rows[index].tnmID,
             sportID: rows[index].sportID,
             Rstartdate: rows[index].Rstartdate,
@@ -374,7 +402,7 @@ router.post("/value_date", (req, res) => {
         result.push({
           Datamath: index,
           Name: rows[index].tnmName,
-          chack: "Waiting to register",
+          chack: "Waiting",
           tnmID: rows[index].tnmID,
           sportID: rows[index].sportID,
           Rstartdate: rows[index].Rstartdate,
@@ -387,6 +415,16 @@ router.post("/value_date", (req, res) => {
     }
     value = [];
     value.push({ In: count_In, Out: count_Out, fin: count_fin });
+
+    success = getUpdatedDataSportName(data_sportname, sport_count);
+    console.log(success);
+
+    ongoing = getUpdatedDataSportName(data_sportname, sport_count_do);
+    console.log(ongoing);
+
+     waiting = getUpdatedDataSportName(data_sportname, sport_count_wait);
+    console.log(waiting);
+
 
     // display result total
     console.log("\ntable result");
@@ -405,7 +443,11 @@ router.post("/value_date", (req, res) => {
       sport_count,
       sport_count_do,
       sport_count_wait,
+      success,
+      ongoing,
+      waiting,
       value_select,
+      data_sportname
     });
   });
 });
@@ -415,6 +457,22 @@ router.post("/value_date", (req, res) => {
 router.get("/", (req, res, err) => {
   if (req.session.username) {
     if (req.session.level === "เจ้าหน้าที่") {
+      dbConnection.query("SELECT `sportName`,`sportID`FROM `sport`",(err,rows)=>{
+        if (err) {
+          console.log( "==========================================================================");
+          console.log(err);
+          console.log( "==========================================================================");
+        }
+        data_sportname = rows
+        console.log(data_sportname);
+      });
+      
+       
+
+      
+      
+
+
       value_select= []
       let value = [];
       //default date
@@ -481,7 +539,7 @@ router.get("/", (req, res, err) => {
         const count_do = Object.entries(counts).map(([month, value]) => {
           return { month, value };
         });
-        console.table(count_do);
+        // console.table(count_do);
 
         display_month_do = count_do;
         // console.group
@@ -508,7 +566,7 @@ router.get("/", (req, res, err) => {
         const countwait = Object.entries(counts).map(([month, value]) => {
           return { month, value };
         });
-        console.table(countwait);
+        // console.table(countwait);
 
         display_month_wait = countwait;
         // console.group
@@ -529,6 +587,8 @@ router.get("/", (req, res, err) => {
           }
           sport_count = [];
           sport_count = rowsport;
+          console.log("sport_count");
+          console.table(sport_count);
         }
       );
 
@@ -542,6 +602,8 @@ router.get("/", (req, res, err) => {
           }
           sport_count_wait = [];
           sport_count_wait = rowsport;
+          console.log("sport_count_wait");
+          console.table(sport_count_wait);
         }
       );
       /* ------------------------------- zone sport ------------------------------- */
@@ -554,8 +616,12 @@ router.get("/", (req, res, err) => {
           }
           sport_count_do = [];
           sport_count_do = rowsport;
+          console.log("sport_count_do");
+          console.table(sport_count_do);
         }
       );
+
+     
 
       /* -------------------------------- zone card ------------------------------- */
       let result = [];
@@ -587,7 +653,7 @@ router.get("/", (req, res, err) => {
             result.push({
               Datamath: index,
               Name: rows[index].tnmName,
-              chack: "In competition",
+              chack: "In",
               tnmID: rows[index].tnmID,
               sportID: rows[index].sportID,
               Rstartdate: rows[index].Rstartdate,
@@ -602,7 +668,7 @@ router.get("/", (req, res, err) => {
               result.push({
                 Datamath: index,
                 Name: rows[index].tnmName,
-                chack: "competition is over",
+                chack: "Success",
                 tnmID: rows[index].tnmID,
                 sportID: rows[index].sportID,
                 Rstartdate: rows[index].Rstartdate,
@@ -623,6 +689,25 @@ router.get("/", (req, res, err) => {
           console.log(err);
           console.log( "==========================================================================");
         }
+
+        
+
+
+
+         success = getUpdatedDataSportName(data_sportname, sport_count);
+        console.log(success);
+
+        ongoing = getUpdatedDataSportName(data_sportname, sport_count_do);
+        console.log(ongoing);
+
+         waiting = getUpdatedDataSportName(data_sportname, sport_count_wait);
+        console.log(waiting);
+
+
+     
+
+
+        
         // console.log("\t Rstartdate");
         // console.table(rows);
 
@@ -638,7 +723,7 @@ router.get("/", (req, res, err) => {
             result.push({
               Datamath: index,
               Name: rows[index].tnmName,
-              chack: "Waiting to register",
+              chack: "Wait",
               tnmID: rows[index].tnmID,
               sportID: rows[index].sportID,
               Rstartdate: rows[index].Rstartdate,
@@ -657,6 +742,9 @@ router.get("/", (req, res, err) => {
           date_S: formatDate(sql_S),
           date_E: formatDate(sql_E),
         });
+
+        
+
         // display result total
         // console.log("result");
         // console.table(result);
@@ -673,6 +761,10 @@ router.get("/", (req, res, err) => {
           sport_count_do,
           sport_count_wait,
           value_select,
+          data_sportname,
+          success,
+          ongoing,
+          waiting,
           
         });
       });

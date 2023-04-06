@@ -374,16 +374,21 @@
                                                 <div>
                                                     <canvas id="myChart1" style="height:500px; width:600px"></canvas>
                                                 </div>
-
+                                                <% console.log(success); %>
                                                 <script>
 
 
-                                                    const sport_count = JSON.parse('<%-JSON.stringify(sport_count) %>');
-                                                    const sport_count_do = JSON.parse('<%-JSON.stringify(sport_count_do) %>');
-                                                    const sport_count_wait = JSON.parse('<%-JSON.stringify(sport_count_wait) %>');
+                                                    const sport_count = JSON.parse('<%-JSON.stringify(success) %>');
+                                                    console.log("🚀 ~ file: dashboard.ejs:382 ~ sport_count:", sport_count)
+                                                    const sport_count_do = JSON.parse('<%-JSON.stringify(ongoing) %>');
+                                                    console.log("🚀 ~ file: dashboard.ejs:384 ~ sport_count_do:", sport_count_do)
+                                                    const sport_count_wait = JSON.parse('<%-JSON.stringify(waiting) %>');
+                                                    console.log("🚀 ~ file: dashboard.ejs:386 ~ sport_count_wait:", sport_count_wait)
 
                                                     //name
-                                                    const sport_x = sport_count.map((item) => { return item.sportName })
+
+                                                    // const newsport_x =sport_x.concat(sport_x_wait,sport_x_do);
+
                                                     //value
                                                     const sport_fs = sport_count.map((item) => { return item.count_sportID })
                                                     
@@ -394,8 +399,6 @@
                                                     let maxValue_wait
                                                 
                                                          maxValue_fs= Math.max(...sport_fs)
-                                                   
-                                                        maxValue_fs=0;
                                                     
                                                    
                                                         maxValue_do= Math.max(...sport_do)
@@ -408,16 +411,16 @@
                                                         if (maxValue_wait === -Infinity&& maxValue_wait<0) maxValue_wait = 0;
                                                     const  maxValuesport = maxValue_fs+maxValue_do+maxValue_wait+2
                                                     
-
-
-
+                                                    const data_sportname = JSON.parse('<%-JSON.stringify(data_sportname) %>');
+                                                    console.log("🚀 ~ file: dashboard.ejs:416 ~ data_sportname:", data_sportname)
+                                                    const lable_sportname = data_sportname.map((item) => { return item.sportName })
                                                     const ctx1 = document.getElementById('myChart1');
                                                     // Chart.defaults.font.family ="Kodchasan-Regular"
 
                                                     myChart1 = new Chart(ctx1, {
                                                         type: 'bar',
                                                         data: {
-                                                            labels: sport_x,
+                                                            labels: lable_sportname,
                                                             datasets: [{
                                                                 label: 'ยังไม่เริ่มการแข่งขัน',
                                                                 data: sport_wait,
