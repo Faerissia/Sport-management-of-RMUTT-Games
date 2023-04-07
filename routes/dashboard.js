@@ -221,7 +221,7 @@ router.post("/value_date", (req, res) => {
       console.log(err);
       console.log( "==========================================================================");
     }
-    console.log("\ntable sql 2 chart_1");
+    // console.log("\ntable sql 2 chart_1");
     
     
     // console.table(rows);
@@ -249,7 +249,7 @@ router.post("/value_date", (req, res) => {
       console.log(err);
       console.log( "==========================================================================");
     }
-    console.log("\ntable sql 3 chart_1");
+    // console.log("\ntable sql 3 chart_1");
     
     
     // console.table(rows);
@@ -285,8 +285,8 @@ router.post("/value_date", (req, res) => {
         console.log(err);
         console.log( "==========================================================================");
       }
-      console.table(rowsport);
-      console.log("table 4\n",rowsport);
+      // console.table(rowsport);
+      // console.log("table 4\n",rowsport);
       sport_count = [];
       sport_count = rowsport;
     }
@@ -300,8 +300,8 @@ router.post("/value_date", (req, res) => {
         console.log(err);
         console.log( "==========================================================================");
       }
-      console.table(rowsport);
-      console.log("table 5\n",rowsport);
+      // console.table(rowsport);
+      // console.log("table 5\n",rowsport);
       sport_count_wait = [];
       sport_count_wait = rowsport;
     }
@@ -335,8 +335,8 @@ router.post("/value_date", (req, res) => {
       console.log(err);
       console.log( "==========================================================================");
     }
-    console.log("\t tnmStartdate");
-    console.table(rows);
+    // console.log("\t tnmStartdate");
+    // console.table(rows);
     
 
     for (let index = 0; index < rows.length; index++) {
@@ -387,8 +387,8 @@ router.post("/value_date", (req, res) => {
       console.log(err);
       console.log( "==========================================================================");
     }
-    console.log("\t Rstartdate");
-    console.table(rows);
+    // console.log("\t Rstartdate");
+    // console.table(rows);
 
     for (let index = 0; index < rows.length; index++) {
       var RStrdate = rows[index].Rstartdate;
@@ -417,21 +417,21 @@ router.post("/value_date", (req, res) => {
     value.push({ In: count_In, Out: count_Out, fin: count_fin });
 
     success = getUpdatedDataSportName(data_sportname, sport_count);
-    console.log(success);
+    // console.log(success);
 
     ongoing = getUpdatedDataSportName(data_sportname, sport_count_do);
-    console.log(ongoing);
+    // console.log(ongoing);
 
      waiting = getUpdatedDataSportName(data_sportname, sport_count_wait);
-    console.log(waiting);
+    // console.log(waiting);
 
 
     // display result total
     console.log("\ntable result");
     console.table(result);
     
-    console.log("\ntable value");
-    console.table(value);
+    // console.log("\ntable value");
+    // console.table(value);
 
     res.render("dashboard", {
       result: result,
@@ -464,7 +464,7 @@ router.get("/", (req, res, err) => {
           console.log( "==========================================================================");
         }
         data_sportname = rows
-        console.log(data_sportname);
+        // console.log(data_sportname);
       });
       
        
@@ -519,6 +519,8 @@ router.get("/", (req, res, err) => {
         });
 
         display_month = count;
+        console.log("แข่งเสร็จแล้ว");
+        console.table(rows);
       });
 
       dbConnection.query("SELECT LEFT(MONTHNAME(tnmStartdate), 3) AS Month, COUNT(tnmStartdate) AS Count  FROM tournament WHERE  tnmStartdate  BETWEEN  " +sql_S + " AND " +sql_E + "  AND st1 IS null AND  NOW()  BETWEEN `tnmStartdate` AND `tnmEnddate` GROUP BY  Month ORDER BY Month", (err, rows) => {
@@ -542,10 +544,11 @@ router.get("/", (req, res, err) => {
         // console.table(count_do);
 
         display_month_do = count_do;
-        // console.group
-        // console.log("log do");
+        console.group
+        console.log("อยู่ในแข่งขัน");
+        console.table(rows);
         // console.log(display_month_do);
-        // console.groupEnd
+        console.groupEnd
       });
 
       dbConnection.query("SELECT LEFT(MONTHNAME(`Rstartdate`), 3) AS Month, COUNT(`Rstartdate`) AS Count  FROM tournament WHERE  `Rstartdate`  BETWEEN  " +sql_S + "  AND  " +sql_E + " AND st1 IS null AND NOW()  BETWEEN `Rstartdate` AND `Renddate` GROUP BY  Month ORDER BY Month", (err, rows) => {
@@ -569,10 +572,11 @@ router.get("/", (req, res, err) => {
         // console.table(countwait);
 
         display_month_wait = countwait;
-        // console.group
-        // console.log("log wait");
+        console.group
+        console.log("ยังไม่ได้แข่งขัน");
+        console.table(rows);
         // console.log(display_month_wait);
-        // console.groupEnd
+        console.groupEnd
       });
 
 
@@ -587,8 +591,8 @@ router.get("/", (req, res, err) => {
           }
           sport_count = [];
           sport_count = rowsport;
-          console.log("sport_count");
-          console.table(sport_count);
+          // console.log("sport_count");
+          // console.table(sport_count);
         }
       );
 
@@ -602,8 +606,8 @@ router.get("/", (req, res, err) => {
           }
           sport_count_wait = [];
           sport_count_wait = rowsport;
-          console.log("sport_count_wait");
-          console.table(sport_count_wait);
+          // console.log("sport_count_wait");
+          // console.table(sport_count_wait);
         }
       );
       /* ------------------------------- zone sport ------------------------------- */
@@ -616,8 +620,8 @@ router.get("/", (req, res, err) => {
           }
           sport_count_do = [];
           sport_count_do = rowsport;
-          console.log("sport_count_do");
-          console.table(sport_count_do);
+          // console.log("sport_count_do");
+          // console.table(sport_count_do);
         }
       );
 
@@ -695,13 +699,13 @@ router.get("/", (req, res, err) => {
 
 
          success = getUpdatedDataSportName(data_sportname, sport_count);
-        console.log(success);
+        // console.log(success);
 
         ongoing = getUpdatedDataSportName(data_sportname, sport_count_do);
-        console.log(ongoing);
+        // console.log(ongoing);
 
          waiting = getUpdatedDataSportName(data_sportname, sport_count_wait);
-        console.log(waiting);
+        // console.log(waiting);
 
 
      

@@ -225,6 +225,9 @@
                                                     const display_month = JSON.parse('<%-JSON.stringify(display_month) %>');
                                                     const display_month_do = JSON.parse('<%-JSON.stringify(display_month_do) %>');
                                                     const display_month_wait = JSON.parse('<%-JSON.stringify(display_month_wait) %>');
+                                                    console.log("อยู่ระหว่างแข่งขัน",display_month_do);
+                                                    console.log("ยังไม่เริ่มแข่งขัน",display_month_wait);
+                                                    console.log("แข่งเสร็จแล้ว",display_month);
                                                 
                                                     const label_fs = display_month.map((item) => { return item.value })
                                                     let maxValue = Math.max(...label_fs);
@@ -374,7 +377,6 @@
                                                 <div>
                                                     <canvas id="myChart1" style="height:500px; width:600px"></canvas>
                                                 </div>
-                                                <% console.log(success); %>
                                                 <script>
 
 
