@@ -335,8 +335,8 @@ router.post("/value_date", (req, res) => {
       console.log(err);
       console.log( "==========================================================================");
     }
-    // console.log("\t tnmStartdate");
-    // console.table(rows);
+    console.log("\t tnmStartdate");
+    console.table(rows);
     
 
     for (let index = 0; index < rows.length; index++) {
@@ -353,7 +353,7 @@ router.post("/value_date", (req, res) => {
           Datamath: index,
           Name: rows[index].tnmName,
           chack: "In",
-          tnmID: rows[index].tnmID,
+          // tnmID: rows[index].tnmID,
           sportID: rows[index].sportID,
           Rstartdate: rows[index].Rstartdate,
           Renddate: rows[index].Renddate,
@@ -368,7 +368,7 @@ router.post("/value_date", (req, res) => {
             Datamath: index,
             Name: rows[index].tnmName,
             chack: "Success",
-            tnmID: rows[index].tnmID,
+            // tnmID: rows[index].tnmID,
             sportID: rows[index].sportID,
             Rstartdate: rows[index].Rstartdate,
             Renddate: rows[index].Renddate,
@@ -387,8 +387,8 @@ router.post("/value_date", (req, res) => {
       console.log(err);
       console.log( "==========================================================================");
     }
-    // console.log("\t Rstartdate");
-    // console.table(rows);
+    console.log("\t Rstartdate");
+    console.table(rows);
 
     for (let index = 0; index < rows.length; index++) {
       var RStrdate = rows[index].Rstartdate;
@@ -403,7 +403,7 @@ router.post("/value_date", (req, res) => {
           Datamath: index,
           Name: rows[index].tnmName,
           chack: "Waiting",
-          tnmID: rows[index].tnmID,
+          // tnmID: rows[index].tnmID,
           sportID: rows[index].sportID,
           Rstartdate: rows[index].Rstartdate,
           Renddate: rows[index].Renddate,
@@ -641,8 +641,8 @@ router.get("/", (req, res, err) => {
           console.log(err);
           console.log( "==========================================================================");
         }
-        // console.log("\t tnmStartdate");
-        // console.table(rows);
+        console.log("\t tnmStartdate");
+        console.table(rows);
 
         for (let index = 0; index < rows.length; index++) {
           var tnmStartdate = rows[index].tnmStartdate;
@@ -658,7 +658,7 @@ router.get("/", (req, res, err) => {
               Datamath: index,
               Name: rows[index].tnmName,
               chack: "In",
-              tnmID: rows[index].tnmID,
+              // tnmID: rows[index].tnmID,
               sportID: rows[index].sportID,
               Rstartdate: rows[index].Rstartdate,
               Renddate: rows[index].Renddate,
@@ -673,7 +673,7 @@ router.get("/", (req, res, err) => {
                 Datamath: index,
                 Name: rows[index].tnmName,
                 chack: "Success",
-                tnmID: rows[index].tnmID,
+                // tnmID: rows[index].tnmID,
                 sportID: rows[index].sportID,
                 Rstartdate: rows[index].Rstartdate,
                 Renddate: rows[index].Renddate,
@@ -712,8 +712,8 @@ router.get("/", (req, res, err) => {
 
 
         
-        // console.log("\t Rstartdate");
-        // console.table(rows);
+        console.log("\t Rstartdate");
+        console.table(rows);
 
         for (let index = 0; index < rows.length; index++) {
           var RStrdate = rows[index].Rstartdate;
@@ -728,7 +728,7 @@ router.get("/", (req, res, err) => {
               Datamath: index,
               Name: rows[index].tnmName,
               chack: "Wait",
-              tnmID: rows[index].tnmID,
+              // tnmID: rows[index].tnmID,
               sportID: rows[index].sportID,
               Rstartdate: rows[index].Rstartdate,
               Renddate: rows[index].Renddate,
