@@ -159,9 +159,9 @@ router.post("/value_date", (req, res) => {
       if (sport_input) {
         // console.log("fillter");
         //sql fillter 
-        sql_1 = "SELECT LEFT(MONTHNAME(tnmEnddate), 3) AS Month, COUNT(tnmEnddate) AS Count FROM tournament WHERE tnmEnddate BETWEEN " +sql_S +" AND " +sql_E + "AND sportID = "+sql_sport_input+" AND st1 IS NOT NULL  GROUP BY  Month ORDER BY Month ";
-        sql_2 = "SELECT LEFT(MONTHNAME(tnmStartdate), 3) AS Month, COUNT(tnmStartdate) AS Count  FROM tournament WHERE  tnmStartdate  BETWEEN  " +sql_S + " AND " +sql_E + "  AND st1 IS null AND  NOW()  BETWEEN `tnmStartdate` AND `tnmEnddate`  AND sportID = "+sql_sport_input+" GROUP BY  Month ORDER BY Month";
-        sql_3 = "SELECT LEFT(MONTHNAME(`Rstartdate`), 3) AS Month, COUNT(`Rstartdate`) AS Count  FROM tournament WHERE  `Rstartdate`  BETWEEN  " +sql_S + "  AND  " +sql_E + " AND st1 IS null AND NOW()  BETWEEN `Rstartdate` AND `Renddate`  AND sportID = "+sql_sport_input+" GROUP BY  Month ORDER BY Month";
+        sql_1 = "SELECT LEFT(MONTHNAME(IF(NOW() <= tnmStartdate, tnmStartdate, IF(NOW() >= tnmEnddate, tnmEnddate, NOW()))),3) AS Month, COUNT(tnmEnddate) AS Count FROM tournament WHERE tnmEnddate BETWEEN " +sql_S +" AND " +sql_E + "AND sportID = "+sql_sport_input+" AND st1 IS NOT NULL  GROUP BY  Month ORDER BY Month ";
+        sql_2 = "SELECT LEFT(MONTHNAME(IF(NOW() <= tnmStartdate, tnmStartdate, IF(NOW() >= tnmEnddate, tnmEnddate, NOW()))), 3) AS Month, COUNT(tnmStartdate) AS Count  FROM tournament WHERE  tnmStartdate  BETWEEN  " +sql_S + " AND " +sql_E + "  AND st1 IS null AND  NOW()  BETWEEN `tnmStartdate` AND `tnmEnddate`  AND sportID = "+sql_sport_input+" GROUP BY  Month ORDER BY Month";
+        sql_3 = "SELECT LEFT(MONTHNAME(IF(NOW() <= Rstartdate, Rstartdate, IF(NOW() >= Renddate, Renddate, NOW()))), 3) AS Month, COUNT(`Rstartdate`) AS Count  FROM tournament WHERE  `Rstartdate`  BETWEEN  " +sql_S + "  AND  " +sql_E + " AND st1 IS null AND NOW()  BETWEEN `Rstartdate` AND `Renddate`  AND sportID = "+sql_sport_input+" GROUP BY  Month ORDER BY Month";
         sql_4 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmEnddate BETWEEN " + sql_S + " AND " +sql_E + " AND t.sportID = "+sql_sport_input+" AND t.st1 IS NOT NULL  GROUP BY t.sportID;";
         sql_5 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.Rstartdate BETWEEN  " +sql_S +" AND " + sql_E +" AND t.sportID = "+sql_sport_input+" AND t.st1 IS NULL AND NOW()  BETWEEN t.Rstartdate AND t.Renddate GROUP BY t.sportID" ;
         sql_6 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmStartdate BETWEEN  " +sql_S +" AND " +sql_E +" AND t.sportID = "+sql_sport_input+" AND t.st1 IS NULL AND NOW()  BETWEEN t.`tnmStartdate` AND t.`tnmEnddate` GROUP BY t.sportID;";
@@ -172,12 +172,12 @@ router.post("/value_date", (req, res) => {
         // console.log("default");
         // sql default
 
-        sql_1 = "SELECT LEFT(MONTHNAME(tnmEnddate), 3) AS Month, COUNT(tnmEnddate) AS Count FROM tournament WHERE tnmEnddate BETWEEN " +sql_S +" AND " +sql_E +" AND st1 IS NOT NULL GROUP BY  Month ORDER BY Month ";
-        sql_2 = "SELECT LEFT(MONTHNAME(tnmStartdate), 3) AS Month, COUNT(tnmStartdate) AS Count  FROM tournament WHERE  tnmStartdate  BETWEEN  " +sql_S + " AND " +sql_E + "  AND st1 IS null AND  NOW()  BETWEEN `tnmStartdate` AND `tnmEnddate` GROUP BY  Month ORDER BY Month";
-        sql_3 = "SELECT LEFT(MONTHNAME(`Rstartdate`), 3) AS Month, COUNT(`Rstartdate`) AS Count  FROM tournament WHERE  `Rstartdate`  BETWEEN  " +sql_S + "  AND  " +sql_E + " AND st1 IS null AND NOW()  BETWEEN `Rstartdate` AND `Renddate` GROUP BY  Month ORDER BY Month";
+        sql_1 = "SELECT LEFT(MONTHNAME(IF('2023-04-09' <= tnmStartdate, tnmStartdate, IF('2023-04-09' >= tnmEnddate, tnmEnddate, '2023-04-09'))), 3) AS Month, COUNT(tnmEnddate) AS Count FROM tournament WHERE tnmEnddate BETWEEN " +sql_S +" AND " +sql_E +" AND st1 IS NOT NULL GROUP BY  Month ORDER BY Month ";
+        sql_2 = "SELECT LEFT(MONTHNAME(IF('2023-04-09' <= tnmStartdate, tnmStartdate, IF('2023-04-09' >= tnmEnddate, tnmEnddate, '2023-04-09'))), 3) AS Month, COUNT(tnmStartdate) AS Count  FROM tournament WHERE  tnmStartdate  BETWEEN  " +sql_S + " AND " +sql_E + "  AND st1 IS null AND  '2023-04-09'  BETWEEN `tnmStartdate` AND `tnmEnddate` GROUP BY  Month ORDER BY Month";
+        sql_3 = "SELECT LEFT(MONTHNAME(IF('2023-04-09' <= Rstartdate, Rstartdate, IF('2023-04-09' >= Renddate, Renddate, '2023-04-09'))), 3) AS Month, COUNT(`Rstartdate`) AS Count  FROM tournament WHERE  `Rstartdate`  BETWEEN  " +sql_S + "  AND  " +sql_E + " AND st1 IS null AND '2023-04-09'  BETWEEN `Rstartdate` AND `Renddate` GROUP BY  Month ORDER BY Month";
         sql_4 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmEnddate BETWEEN " + sql_S + " AND " +sql_E + " AND t.st1 IS NOT NULL  GROUP BY t.sportID;";
-        sql_5 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.Rstartdate BETWEEN  " +sql_S +" AND " + sql_E +" AND t.st1 IS NULL AND NOW()  BETWEEN t.Rstartdate AND t.Renddate GROUP BY t.sportID" ;
-        sql_6 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.`tnmStartdate` BETWEEN  " +sql_S +" AND " +sql_E +" AND t.st1 IS NULL AND NOW()  BETWEEN t.`tnmStartdate` AND t.`tnmEnddate` GROUP BY t.sportID;";
+        sql_5 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.Rstartdate BETWEEN  " +sql_S +" AND " + sql_E +" AND t.st1 IS NULL AND '2023-04-09'  BETWEEN t.Rstartdate AND t.Renddate GROUP BY t.sportID" ;
+        sql_6 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.`tnmStartdate` BETWEEN  " +sql_S +" AND " +sql_E +" AND t.st1 IS NULL AND '2023-04-09'  BETWEEN t.`tnmStartdate` AND t.`tnmEnddate` GROUP BY t.sportID;";
         sql_7 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE tnmStartdate  BETWEEN " +sql_S +" AND " +sql_E +" ";
         sql_8 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE Rstartdate  BETWEEN " +sql_S +" AND " +sql_E + " ";
 
@@ -327,7 +327,8 @@ router.post("/value_date", (req, res) => {
   let count_In = 0;
   let count_Out = 0;
   let count_fin = 0;
-  let date = new Date();
+  let date = new Date('2023-04-09');
+  console.log("🚀 ~ file: dashboard.js:331 ~ router.post ~ date:", date)
 
   dbConnection.query(sql_7, (err, rows) => {
     if (err) {
@@ -412,6 +413,7 @@ router.post("/value_date", (req, res) => {
           rank: rows[index].st1,
         });
       }
+      
     }
     value = [];
     value.push({ In: count_In, Out: count_Out, fin: count_fin });
@@ -498,7 +500,7 @@ router.get("/", (req, res, err) => {
 
       /* ------------------------------ zone chart_1 ------------------------------ */
 
-      dbConnection.query("SELECT LEFT(MONTHNAME(tnmEnddate), 3) AS Month, COUNT(tnmEnddate) AS Count FROM tournament WHERE tnmEnddate BETWEEN " +sql_S + " AND " +sql_E + "  AND st1 IS NOT NULL GROUP BY  Month ORDER BY Month ", (err, rows) => {
+      dbConnection.query("SELECT LEFT(MONTHNAME(IF(NOW() <= tnmStartdate, tnmStartdate, IF(NOW() >= tnmEnddate, tnmEnddate, NOW()))), 3) AS Month, COUNT(tnmEnddate) AS Count FROM tournament WHERE tnmEnddate BETWEEN " +sql_S + " AND " +sql_E + "  AND st1 IS NOT NULL GROUP BY  Month ORDER BY Month ", (err, rows) => {
         if (err) {
           console.log( "==========================================================================");
           console.log(err);
@@ -523,7 +525,7 @@ router.get("/", (req, res, err) => {
         console.table(rows);
       });
 
-      dbConnection.query("SELECT LEFT(MONTHNAME(tnmStartdate), 3) AS Month, COUNT(tnmStartdate) AS Count  FROM tournament WHERE  tnmStartdate  BETWEEN  " +sql_S + " AND " +sql_E + "  AND st1 IS null AND  NOW()  BETWEEN `tnmStartdate` AND `tnmEnddate` GROUP BY  Month ORDER BY Month", (err, rows) => {
+      dbConnection.query("SELECT LEFT(MONTHNAME(IF(NOW() <= tnmStartdate, tnmStartdate, IF(NOW() >= tnmEnddate, tnmEnddate, NOW()))), 3) AS Month, COUNT(tnmStartdate) AS Count  FROM tournament WHERE  tnmStartdate  BETWEEN  " +sql_S + " AND " +sql_E + "  AND st1 IS null AND  NOW()  BETWEEN `tnmStartdate` AND `tnmEnddate` GROUP BY  Month ORDER BY Month", (err, rows) => {
         if (err) {
           console.log( "==========================================================================");
           console.log(err);
@@ -551,7 +553,7 @@ router.get("/", (req, res, err) => {
         console.groupEnd
       });
 
-      dbConnection.query("SELECT LEFT(MONTHNAME(`Rstartdate`), 3) AS Month, COUNT(`Rstartdate`) AS Count  FROM tournament WHERE  `Rstartdate`  BETWEEN  " +sql_S + "  AND  " +sql_E + " AND st1 IS null AND NOW()  BETWEEN `Rstartdate` AND `Renddate` GROUP BY  Month ORDER BY Month", (err, rows) => {
+      dbConnection.query("SELECT LEFT(MONTHNAME(IF(NOW() <= Rstartdate, Rstartdate, IF(NOW() >= Renddate, Renddate, NOW()))),3) AS Month, COUNT(`Rstartdate`) AS Count  FROM tournament WHERE  `Rstartdate`  BETWEEN  " +sql_S + "  AND  " +sql_E + " AND st1 IS null AND NOW()  BETWEEN `Rstartdate` AND `Renddate` GROUP BY  Month ORDER BY Month", (err, rows) => {
         if (err) {
           console.log( "==========================================================================");
           console.log(err);
