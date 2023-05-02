@@ -66,6 +66,7 @@
                                 <% if(data[i].sportPlaynum > 1){ %>
                                     <% data[i].accept_count = data[i].accept_count / data[i].sportPlaynum %>
                                     <% } %>
+                                
 
                                 <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
@@ -75,6 +76,7 @@
                                     <a href="../tournament/delete/<%= data[i].tnmID %>" onclick="return confirm_delete()" class="btn btn-danger delete">ลบ</a>
                                     <a href="../tournament/bracket/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
                                 </td>
+                               
                             </tr>
                         <% } %>
                     </tbody>

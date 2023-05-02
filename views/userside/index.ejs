@@ -39,38 +39,38 @@
                                     <div class="card-body bg-secondary bg-opacity-25 pb-2">
                 
                                             
-                                            <% if(opening.length) { %>
-                                                <div class="row row-cols-1 row-cols-md-4 g-4 p-4">
-                                                    <% for(let i=0; i < opening.length; i++) { %>
-                                
-                                                                <div class="col">
-                                                                    <a href="/tnmdetail/<%= opening[i].tnmID %>"
-                                                                        class="text-decoration-none text-dark  fw-bolder">
-                                                                    <div class="card border-dark mb-3" style="max-width: 18rem;">
-                                                                        <div class="card-header bg-transparent border-dark d-flex justify-content-center align-items-center" style="height: 65px;"> <%= opening[i].tnmName %></div>
-                                                                        <img class="p-1 card-img" src="images/<%= opening[i].tnmPicture %>"
-                                                                        class="card-img-top img-fluid rounded-0" style="height: 16rem">
-                                                                        <div class="card-body text-dark">
-                                                                          <p class="card-title">เปิดรับสมัคร </p>
-                                                                          <p class="card-text">  
-                                                                            <%= opening[i].Rstartdate.toLocaleDateString('th-TH',{day: '2-digit', month: 'short' , year:'2-digit'}) %> -
-                                                                           <%= opening[i].Renddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'short' , year:'2-digit'}) %> </label>
-                                                                           <% if(opening[i].sportPlaynum > 1 ){ %>
-                                                                               <% opening[i].nop = opening[i].nop / opening[i].sportPlaynum %>
-                                                                               <% } %></p>
-                                                                        </div>
-                                                                        <div class="card-footer bg-transparent border-dark">จำนวนผู้สมัคร <%= opening[i].nop %>  คน</div>
-                                                                      </div>
-                                                                    </a>
+                                    <% if(opening.length) { %>
+                                        <div class="row row-cols-1 row-cols-md-4 g-4 p-4">
+                                            <% for(let i=0; i < opening.length; i++) { %>
+                        
+                                                        <div class="col">
+                                                            <a href="/tnmdetail/<%= opening[i].tnmID %>"
+                                                                class="text-decoration-none text-dark  fw-bolder">
+                                                            <div class="card border-dark mb-3" style="max-width: 18rem;">
+                                                                <div class="card-header bg-transparent border-dark d-flex justify-content-center align-items-center" style="height: 65px;"> <%= opening[i].tnmName %></div>
+                                                                <img class="p-1 card-img" src="images/<%= opening[i].tnmPicture %>"
+                                                                class="card-img-top img-fluid rounded-0" style="height: 16rem">
+                                                                <div class="card-body text-dark">
+                                                                    <p class="card-title">เปิดรับสมัคร </p>
+                                                                    <p class="card-text">  
+                                                                    <%= opening[i].Rstartdate.toLocaleDateString('th-TH',{day: '2-digit', month: 'short' , year:'2-digit'}) %> -
+                                                                    <%= opening[i].Renddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'short' , year:'2-digit'}) %> </label>
+                                                                    <% if(opening[i].sportPlaynum > 1 ){ %>
+                                                                        <% opening[i].nop = opening[i].nop / opening[i].sportPlaynum %>
+                                                                        <% } %></p>
                                                                 </div>
-                                                                
-                                                            <% } %>
+                                                                <div class="card-footer bg-transparent border-dark">จำนวนผู้สมัคร <%= opening[i].nop %>  คน</div>
+                                                                </div>
+                                                            </a>
                                                         </div>
-                                                            <% } %>
-                
-                                                                    <% if(!opening.length) { %>
-                                                                        <h4 class="text-center text-wrap" style="margin-top: 50px; margin-bottom: 50px;">ไม่พบรายการแข่งขัน</h4>
-                                                                        <% } %>
+                                                        
+                                                    <% } %>
+                                                </div>
+                                                    <% } %>
+        
+                                                            <% if(!opening.length) { %>
+                                                                <h4 class="text-center text-wrap" style="margin-top: 50px; margin-bottom: 50px;">ไม่พบรายการแข่งขัน</h4>
+                                                                <% } %>
                 
                                     </div>
                                 </div>

@@ -20,7 +20,7 @@ router.post('/search-tournament', function(req, res, next)  {
 
 // display tournament page
 router.get('/', function(req, res, next) {
-    sql = "SELECT t.tnmID, t.tnmName,s.sportName,t.tnmStartdate,s.sportPlaynum,t.tnmTypegame, SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmTypegame IS NULL GROUP BY t.tnmID;";
+    sql = "SELECT t.tnmID, t.tnmName,s.sportName,t.tnmStartdate,s.sportPlaynum,t.tnmTypegame, SUM(CASE p.playerStatus WHEN 'accept' THEN 1 ELSE 0 END) AS accept_count FROM tournament t LEFT JOIN sport s ON t.sportID = s.sportID LEFT JOIN player p ON t.tnmID = p.tnmID WHERE t.tnmTypegame IS NULL AND p.playerStatus IS NOT NULL GROUP BY t.tnmID;";
 
     dbConnection.query(sql, (err, rows) => {
     if(req.session.username){
@@ -2669,6 +2669,8 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
                   if(error) throw error;
               })
             }
+
+            //query ไปยัง SQL และตรวจว่ากรอกครบพร้อมที่จะ single รึยัง
           dbConnection.query('SELECT * FROM matchplay WHERE seed IS NULL AND score1 IS NULL AND score2 IS NULL AND tnmID ='+tnmID,(error,checkrobin)=>{
             if(!checkrobin.length){
               console.log('single ได้แล้ว')
