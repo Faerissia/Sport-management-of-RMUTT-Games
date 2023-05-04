@@ -76,51 +76,22 @@
                                                                             class="form-control border-dark"
                                                                             name="value_enddate" id="value_enddate">
                                                                     </div>
-                                                                    <!-- <div class="col text-end">
-                                                                        <label for="value_startdate"
-                                                                            class="col-form-label"></label>
-                                                                    </div> -->
+                                                                  
                                                                 </div>
                                                             </form>
-                                                            <!-- <div class="col-12 mx-auto text-center">
-                                                                <label for="value_startdate "
-                                                                    class="col-form-label ">หมายเหตุ ( ช่วงเวลาไม่เกิน
-                                                                    1 ปี )</label>
-                                                            </div> -->
+                                                          
 
                                                         </div>
                                                         <script>
 
                                                             //<!-- ----------------------------------------------------------------------- -->
-                                                            // Get today's date
-                                                            const today = new Date();
-                                                            // Calculate the date 12 months ago
-                                                            const twelveMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 12, today.getDate());
-                                                            // Set the maximum and minimum values for value_startdate
                                                             const valueStartdate = document.getElementById('value_startdate');
-                                                            valueStartdate.max = today.toISOString().slice(0, 10);
-                                                            // valueStartdate.min = twelveMonthsAgo.toISOString().slice(0, 10);         
-
-                                                          
                                                             const valueEnddate = document.getElementById('value_enddate');
-                                                            
-
 
                                                             // Set the  minimum values for value_enddate
                                                             valueStartdate.addEventListener('input', function () {
                                                                 valueEnddate.min = valueStartdate.value;
                                                                 valueEnddate.value = "";
-
-                                                                // // Set the maximum  values for value_enddate
-                                                                valueEnddate.max = today.toISOString().slice(0, 10);
-                                                            
-
-                                                                // Set maximum date to one year from value_startdate
-                                                                const oneYearLater = new Date(valueStartdate.value);
-                                                                oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
-                                                                valueEnddate.max = oneYearLater.toISOString().slice(0, 10);
-
-                                                                
                                                             });
 
                                                             // <!-- ----------------------------------------------------------------------- -->
@@ -222,21 +193,24 @@
                                                 </div>
 
                                                 <script>
-                                                    const display_month = JSON.parse('<%-JSON.stringify(display_month) %>');
-                                                    const display_month_do = JSON.parse('<%-JSON.stringify(display_month_do) %>');
-                                                    const display_month_wait = JSON.parse('<%-JSON.stringify(display_month_wait) %>');
-                                                    console.log("อยู่ระหว่างแข่งขัน",display_month_do);
-                                                    console.log("ยังไม่เริ่มแข่งขัน",display_month_wait);
-                                                    console.log("แข่งเสร็จแล้ว",display_month);
-                                                
-                                                    const label_fs = display_month.map((item) => { return item.value })
+                                                    const chart_data = JSON.parse('<%-JSON.stringify(chart_data) %>');
+                                                  
+                                                 
+                                                    const label_fs = chart_data.map((item) => { return item.done })
                                                     let maxValue = Math.max(...label_fs);
-                                                    const label_do = display_month_do.map((item) => { return item.value })
+                                                    const label_do = chart_data.map((item) => { return item.inProcess })
                                                     let maxValuedo = Math.max(...label_do);
-                                                    const label_wait = display_month_wait.map((item) => { return item.value })
+                                                    const label_wait = chart_data.map((item) => { return item.notStart })
                                                     let maxValuewait = Math.max(...label_wait);
 
+                                                    const label_yearmonth = chart_data.map((item) => { return item.yearMonth  })
+                                                    console.log("🚀 ~ file: dashboard.ejs:236 ~ label_yearmonth:", label_yearmonth)
+                                                  
+
                                                     const totalmaxvalue =maxValue+maxValuedo+maxValuewait+2;
+
+
+                                                
                                                     
 
                                                     
@@ -246,20 +220,8 @@
                                                     new Chart(ctx, {
                                                         type: 'bar',
                                                         data: {
-                                                            labels: [
-                                                                "Jan",
-                                                                "Feb",
-                                                                "Mar",
-                                                                "Apr",
-                                                                "May",
-                                                                "Jun",
-                                                                "Jul",
-                                                                "Aug",
-                                                                "Sep",
-                                                                "Oct",
-                                                                "Nov",
-                                                                "Dec",
-                                                            ]
+                                                            labels:  label_yearmonth 
+                                                            
                                                             , datasets: [{
                                                                 label: 'ยังไม่เริ่มการแข่งขัน',
                                                                 data: label_wait,

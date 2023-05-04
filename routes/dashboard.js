@@ -43,9 +43,9 @@ var success = [];
 var ongoing = [];
 var waiting = [];
 
-let display_month = [];
-let display_month_wait = [];
-let display_month_do = [];
+
+let chart_data =[];
+
 let single_quote = "'";
 
 const monthNames = [
@@ -87,16 +87,13 @@ router.post("/value_date", (req, res) => {
   sport_count_wait = [];
   sport_count_do = [];
   
-  display_month = [];
-  display_month_wait = [];
-  display_month_do = [];
   // input
   date_S = new Date(req.body.value_startdate);
   date_E = new Date(req.body.value_enddate);
   let sport_input = req.body.value_sport;
-  console.log("Received startdate: ", date_S);
-  console.log("Received enddate: ", date_E);
-  console.log("Received sport: ", sport_input);
+  // console.log("Received startdate: ", date_S);
+  // console.log("Received enddate: ", date_E);
+  // console.log("Received sport: ", sport_input);
 
   if (!req.body.value_startdate && !req.body.value_enddate) {
     date_S = defaultdate_S
@@ -147,9 +144,7 @@ router.post("/value_date", (req, res) => {
   
 
   //sql
-  let sql_1 // for chart_1
-  let sql_2 // for chart_1_wait
-  let sql_3 // for chart_1_do
+  
   let sql_4 // for sport
   let sql_5 // for sport_wait
   let sql_6 // for sport_do
@@ -157,11 +152,46 @@ router.post("/value_date", (req, res) => {
   let sql_8 // for card Waiting to register
 
       if (sport_input) {
-        // console.log("fillter");
+         
+        let data = '';
+        let startDate = new Date(sql_S);
+        let endDate = new Date(sql_E);
+
+        while (startDate <= endDate) {
+          let yearMonth = startDate.toLocaleString('en-US', { month: 'short', year: 'numeric' }).split(' ').slice(0,2).join('-');
+          let firstDay = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+          let lastDay = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+          let sDate = formatDate(firstDay);
+          let eDate = formatDate(lastDay);
+
+          data += `SELECT '${yearMonth}' AS yearMonth, '${sDate}' AS sDate, '${eDate}' AS eDate, now() AS chkDate \n`;
+          if (startDate.getMonth() !== endDate.getMonth() || startDate.getFullYear() !== endDate.getFullYear()) { // เพิ่มเงื่อนไขว่าถ้าเดือนไม่ใช่เดือนเดียวกันให้เติม UNION
+            data += 'UNION ';
+          }
+          startDate.setMonth(startDate.getMonth() + 1);
+        }
+
+        // console.log(data);
+                
+        let sql_chart_1 = `select A.*, (select count(*)  from tournament T where T.sportID = ${sql_sport_input} AND (A.chkDate < T.tnmStartdate) and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as notStart, (select count(*)  from tournament T where T.sportID = ${sql_sport_input} AND  (A.chkDate between T.tnmStartdate and T.tnmEnddate) and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as inProcess, (select count(*)  from tournament T where T.sportID = ${sql_sport_input} AND  (A.chkDate > T.tnmEnddate) and t.st1 is NOT null and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as done from ( ${data} ) A `
+        
+        // console.log("\n",sql_chart_1);
+
+        dbConnection.query(sql_chart_1,(err_chart,chart_count)=>{
+          if (err_chart) {
+            console.log( "==========================================================================");
+            console.log(err_chart);
+            console.log( "==========================================================================");
+          }
+          chart_data = chart_count
+          // console.table(chart_data);
+
+
+        })
+         
+
+        // console.log("fillter sport");
         //sql fillter 
-        sql_1 = "SELECT LEFT(MONTHNAME(IF(NOW() <= tnmStartdate, tnmStartdate, IF(NOW() >= tnmEnddate, tnmEnddate, NOW()))),3) AS Month, COUNT(tnmEnddate) AS Count FROM tournament WHERE tnmEnddate BETWEEN " +sql_S +" AND " +sql_E + "AND sportID = "+sql_sport_input+" AND st1 IS NOT NULL  GROUP BY  Month ORDER BY Month ";
-        sql_2 = "SELECT LEFT(MONTHNAME(IF(NOW() <= tnmStartdate, tnmStartdate, IF(NOW() >= tnmEnddate, tnmEnddate, NOW()))), 3) AS Month, COUNT(tnmStartdate) AS Count  FROM tournament WHERE  tnmStartdate  BETWEEN  " +sql_S + " AND " +sql_E + "  AND st1 IS null AND  NOW()  BETWEEN `tnmStartdate` AND `tnmEnddate`  AND sportID = "+sql_sport_input+" GROUP BY  Month ORDER BY Month";
-        sql_3 = "SELECT LEFT(MONTHNAME(IF(NOW() <= Rstartdate, Rstartdate, IF(NOW() >= Renddate, Renddate, NOW()))), 3) AS Month, COUNT(`Rstartdate`) AS Count  FROM tournament WHERE  `Rstartdate`  BETWEEN  " +sql_S + "  AND  " +sql_E + " AND st1 IS null AND NOW()  BETWEEN `Rstartdate` AND `Renddate`  AND sportID = "+sql_sport_input+" GROUP BY  Month ORDER BY Month";
         sql_4 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmEnddate BETWEEN " + sql_S + " AND " +sql_E + " AND t.sportID = "+sql_sport_input+" AND t.st1 IS NOT NULL  GROUP BY t.sportID;";
         sql_5 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.Rstartdate BETWEEN  " +sql_S +" AND " + sql_E +" AND t.sportID = "+sql_sport_input+" AND t.st1 IS NULL AND NOW()  BETWEEN t.Rstartdate AND t.Renddate GROUP BY t.sportID" ;
         sql_6 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmStartdate BETWEEN  " +sql_S +" AND " +sql_E +" AND t.sportID = "+sql_sport_input+" AND t.st1 IS NULL AND NOW()  BETWEEN t.`tnmStartdate` AND t.`tnmEnddate` GROUP BY t.sportID;";
@@ -169,12 +199,8 @@ router.post("/value_date", (req, res) => {
         sql_8 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE Rstartdate  BETWEEN " +sql_S +" AND " +sql_E + " AND sportID = "+sql_sport_input+" ";
 
       }else {
-        // console.log("default");
+        // console.log("default all sport");
         // sql default
-
-        sql_1 = "SELECT LEFT(MONTHNAME(IF('2023-04-09' <= tnmStartdate, tnmStartdate, IF('2023-04-09' >= tnmEnddate, tnmEnddate, '2023-04-09'))), 3) AS Month, COUNT(tnmEnddate) AS Count FROM tournament WHERE tnmEnddate BETWEEN " +sql_S +" AND " +sql_E +" AND st1 IS NOT NULL GROUP BY  Month ORDER BY Month ";
-        sql_2 = "SELECT LEFT(MONTHNAME(IF('2023-04-09' <= tnmStartdate, tnmStartdate, IF('2023-04-09' >= tnmEnddate, tnmEnddate, '2023-04-09'))), 3) AS Month, COUNT(tnmStartdate) AS Count  FROM tournament WHERE  tnmStartdate  BETWEEN  " +sql_S + " AND " +sql_E + "  AND st1 IS null AND  '2023-04-09'  BETWEEN `tnmStartdate` AND `tnmEnddate` GROUP BY  Month ORDER BY Month";
-        sql_3 = "SELECT LEFT(MONTHNAME(IF('2023-04-09' <= Rstartdate, Rstartdate, IF('2023-04-09' >= Renddate, Renddate, '2023-04-09'))), 3) AS Month, COUNT(`Rstartdate`) AS Count  FROM tournament WHERE  `Rstartdate`  BETWEEN  " +sql_S + "  AND  " +sql_E + " AND st1 IS null AND '2023-04-09'  BETWEEN `Rstartdate` AND `Renddate` GROUP BY  Month ORDER BY Month";
         sql_4 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmEnddate BETWEEN " + sql_S + " AND " +sql_E + " AND t.st1 IS NOT NULL  GROUP BY t.sportID;";
         sql_5 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.Rstartdate BETWEEN  " +sql_S +" AND " + sql_E +" AND t.st1 IS NULL AND '2023-04-09'  BETWEEN t.Rstartdate AND t.Renddate GROUP BY t.sportID" ;
         sql_6 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.`tnmStartdate` BETWEEN  " +sql_S +" AND " +sql_E +" AND t.st1 IS NULL AND '2023-04-09'  BETWEEN t.`tnmStartdate` AND t.`tnmEnddate` GROUP BY t.sportID;";
@@ -182,99 +208,51 @@ router.post("/value_date", (req, res) => {
         sql_8 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE Rstartdate  BETWEEN " +sql_S +" AND " +sql_E + " ";
 
 
+ 
 
+      /* ------------------------------ zone chart_1 ------------------------------ */
+let data = '';
+let startDate = new Date(sql_S);
+let endDate = new Date(sql_E);
+
+while (startDate <= endDate) {
+  let yearMonth = startDate.toLocaleString('en-US', { month: 'short', year: 'numeric' }).split(' ').slice(0,2).join('-');
+  let firstDay = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+  let lastDay = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+  let sDate = formatDate(firstDay);
+  let eDate = formatDate(lastDay);
+
+  data += `SELECT '${yearMonth}' AS yearMonth, '${sDate}' AS sDate, '${eDate}' AS eDate, '2023-04-09' AS chkDate \n`;
+  if (startDate.getMonth() !== endDate.getMonth() || startDate.getFullYear() !== endDate.getFullYear()) { // เพิ่มเงื่อนไขว่าถ้าเดือนไม่ใช่เดือนเดียวกันให้เติม UNION
+    data += 'UNION ';
+  }
+  startDate.setMonth(startDate.getMonth() + 1);
+}
+
+// console.log(data);
+        
+let sql_chart_1 = `select A.*, (select count(*)  from tournament T where  (A.chkDate < T.tnmStartdate) and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as notStart, (select count(*)  from tournament T where   (A.chkDate between T.tnmStartdate and T.tnmEnddate) and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as inProcess, (select count(*)  from tournament T where   (A.chkDate > T.tnmEnddate) and t.st1 is NOT null and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as done from ( ${data} ) A `
+// console.log("\n",sql_chart_1);
+
+dbConnection.query(sql_chart_1,(err_chart,chart_count)=>{
+  if (err_chart) {
+    console.log( "==========================================================================");
+    console.log(err_chart);
+    console.log( "==========================================================================");
+  }
+  chart_data = chart_count
+  // console.table(chart_data);
+
+
+})
+
+
+
+
+ 
       }
 
       /* ------------------------------ zone chart_1 ------------------------------ */
-  dbConnection.query(sql_1, (err, rows) => {
-    if (err) {
-      console.log( "==========================================================================");
-      console.log(err);
-      console.log( "==========================================================================");
-    }
-    // console.log("\ntable sql chart_1");
-    
-    
-    // console.table(rows);
-    // console.log("table 1\n",rows);
-
-    const counts = {};
-
-    monthNames.forEach((month) => {
-      counts[month] = 0;
-    });
-
-    rows.forEach((rows) => {
-      counts[rows.Month] = rows.Count;
-    });
-
-    const count = Object.entries(counts).map(([month, value]) => {
-      return { month, value };
-    });
-
-    display_month = count;
-  });
-
-  dbConnection.query(sql_2, (err, rows) => {
-    if (err) {
-      console.log( "==========================================================================");
-      console.log(err);
-      console.log( "==========================================================================");
-    }
-    // console.log("\ntable sql 2 chart_1");
-    
-    
-    // console.table(rows);
-    // console.log("table 1\n",rows);
-
-    const counts = {};
-
-    monthNames.forEach((month) => {
-      counts[month] = 0;
-    });
-
-    rows.forEach((rows) => {
-      counts[rows.Month] = rows.Count;
-    });
-
-    const count_do = Object.entries(counts).map(([month, value]) => {
-      return { month, value };
-    });
-
-    display_month_do = count_do;
-  });
-  dbConnection.query(sql_3, (err, rows) => {
-    if (err) {
-      console.log( "==========================================================================");
-      console.log(err);
-      console.log( "==========================================================================");
-    }
-    // console.log("\ntable sql 3 chart_1");
-    
-    
-    // console.table(rows);
-    // console.log("table 1\n",rows);
-
-    const counts = {};
-
-    monthNames.forEach((month) => {
-      counts[month] = 0;
-    });
-
-    rows.forEach((rows) => {
-      counts[rows.Month] = rows.Count;
-    });
-
-    const count_wait = Object.entries(counts).map(([month, value]) => {
-      return { month, value };
-    });
-
-    display_month_wait = count_wait;
-  });
-
-  
-
-  
 
   /* ------------------------------- zone sport ------------------------------- */
   dbConnection.query(
@@ -315,8 +293,8 @@ router.post("/value_date", (req, res) => {
         console.log(err);
         console.log( "==========================================================================");
       }
-      console.table(rowsport);
-      console.log("table 6\n",rowsport);
+      // console.table(rowsport);
+      // console.log("table 6\n",rowsport);
       sport_count_do = [];
       sport_count_do = rowsport;
     }
@@ -327,8 +305,17 @@ router.post("/value_date", (req, res) => {
   let count_In = 0;
   let count_Out = 0;
   let count_fin = 0;
-  let date = new Date('2023-04-09');
-  console.log("🚀 ~ file: dashboard.js:331 ~ router.post ~ date:", date)
+  let date
+  if (sport_input) {
+     date = new Date();
+  } else {
+     date = new Date('2023-04-09');
+  }
+  
+  // ต้องลบ1วัน เพราะ เรื่องทามโซน ทำให้คิวรี่ที่ดึงมาลด1 วัน จึงต้องลดวันตาม เพื่อให้ตรง
+  date.setDate(date.getDate() - 1) 
+  
+  // console.log("🚀 ~ file: dashboard.js:331 ~ router.post ~ date:", date)
 
   dbConnection.query(sql_7, (err, rows) => {
     if (err) {
@@ -336,8 +323,8 @@ router.post("/value_date", (req, res) => {
       console.log(err);
       console.log( "==========================================================================");
     }
-    console.log("\t tnmStartdate");
-    console.table(rows);
+    // console.log("\t tnmStartdate");
+    // console.table(rows);
     
 
     for (let index = 0; index < rows.length; index++) {
@@ -388,8 +375,8 @@ router.post("/value_date", (req, res) => {
       console.log(err);
       console.log( "==========================================================================");
     }
-    console.log("\t Rstartdate");
-    console.table(rows);
+    // console.log("\t Rstartdate");
+    // console.table(rows);
 
     for (let index = 0; index < rows.length; index++) {
       var RStrdate = rows[index].Rstartdate;
@@ -429,8 +416,8 @@ router.post("/value_date", (req, res) => {
 
 
     // display result total
-    console.log("\ntable result");
-    console.table(result);
+    // console.log("\ntable result");
+    // console.table(result);
     
     // console.log("\ntable value");
     // console.table(value);
@@ -438,9 +425,6 @@ router.post("/value_date", (req, res) => {
     res.render("dashboard", {
       result: result,
       count: value,
-      display_month,
-      display_month_wait,
-      display_month_do,
       selcetsport,
       sport_count,
       sport_count_do,
@@ -449,7 +433,8 @@ router.post("/value_date", (req, res) => {
       ongoing,
       waiting,
       value_select,
-      data_sportname
+      data_sportname,
+      chart_data,
     });
   });
 });
@@ -468,10 +453,6 @@ router.get("/", (req, res, err) => {
         data_sportname = rows
         // console.log(data_sportname);
       });
-      
-       
-
-      
       
 
 
@@ -500,87 +481,52 @@ router.get("/", (req, res, err) => {
 
       /* ------------------------------ zone chart_1 ------------------------------ */
 
-      dbConnection.query("SELECT LEFT(MONTHNAME(IF(NOW() <= tnmStartdate, tnmStartdate, IF(NOW() >= tnmEnddate, tnmEnddate, NOW()))), 3) AS Month, COUNT(tnmEnddate) AS Count FROM tournament WHERE tnmEnddate BETWEEN " +sql_S + " AND " +sql_E + "  AND st1 IS NOT NULL GROUP BY  Month ORDER BY Month ", (err, rows) => {
-        if (err) {
+       
+      let data = '';
+      let startDate = new Date(sql_S);
+      let endDate = new Date(sql_E);
+      
+      while (startDate <= endDate) {
+        // let yearMonth = startDate.toISOString().substr(0, 7);
+        let yearMonth = startDate.toLocaleString('en-US', { month: 'short', year: 'numeric' }).split(' ').slice(0,2).join('-');
+        let firstDay = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+        let lastDay = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+        // let sDate = firstDay.toISOString().substr(0, 10);
+        // let eDate = lastDay.toISOString().substr(0, 10);
+        let sDate = formatDate(firstDay);
+        let eDate = formatDate(lastDay);
+      
+        data += `SELECT '${yearMonth}' AS yearMonth, '${sDate}' AS sDate, '${eDate}' AS eDate, now() AS chkDate \n`;
+        if (startDate.getMonth() !== endDate.getMonth() || startDate.getFullYear() !== endDate.getFullYear()) { // เพิ่มเงื่อนไขว่าถ้าเดือนไม่ใช่เดือนเดียวกันให้เติม UNION
+          data += 'UNION ';
+        }
+        startDate.setMonth(startDate.getMonth() + 1);
+      }
+      
+      // console.log(data);
+              
+      let sql_chart_1 = `select A.*, (select count(*)  from tournament T where  (A.chkDate < T.tnmStartdate) and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as notStart, (select count(*)  from tournament T where   (A.chkDate between T.tnmStartdate and T.tnmEnddate) and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as inProcess, (select count(*)  from tournament T where   (A.chkDate > T.tnmEnddate) and t.st1 is NOT null and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as done from ( ${data} ) A `
+      // let sql_chart_1 = `select A.*, (select count(*)  from tournament T where  T.sportID ="1" AND(A.chkDate < T.tnmStartdate) and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as notStart, (select count(*)  from tournament T where  T.sportID ="1" AND (A.chkDate between T.tnmStartdate and T.tnmEnddate) and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as inProcess, (select count(*)  from tournament T where  T.sportID ="1" AND (A.chkDate > T.tnmEnddate) and t.st1 is NOT null and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as done from ( ${data} ) A `
+      // console.log("\n",sql_chart_1);
+      
+      dbConnection.query(sql_chart_1,(err_chart,chart_count)=>{
+        if (err_chart) {
           console.log( "==========================================================================");
-          console.log(err);
+          console.log(err_chart);
           console.log( "==========================================================================");
         }
-        const counts = {};
-
-        monthNames.forEach((month) => {
-          counts[month] = 0;
-        });
-
-        rows.forEach((rows) => {
-          counts[rows.Month] = rows.Count;
-        });
-
-        const count = Object.entries(counts).map(([month, value]) => {
-          return { month, value };
-        });
-
-        display_month = count;
-        console.log("แข่งเสร็จแล้ว");
-        console.table(rows);
-      });
-
-      dbConnection.query("SELECT LEFT(MONTHNAME(IF(NOW() <= tnmStartdate, tnmStartdate, IF(NOW() >= tnmEnddate, tnmEnddate, NOW()))), 3) AS Month, COUNT(tnmStartdate) AS Count  FROM tournament WHERE  tnmStartdate  BETWEEN  " +sql_S + " AND " +sql_E + "  AND st1 IS null AND  NOW()  BETWEEN `tnmStartdate` AND `tnmEnddate` GROUP BY  Month ORDER BY Month", (err, rows) => {
-        if (err) {
-          console.log( "==========================================================================");
-          console.log(err);
-          console.log( "==========================================================================");
-        }
-        const counts = {};
-        monthNames.forEach((month) => {
-          counts[month] = 0;
-        });
-
-        rows.forEach((rows) => {
-          counts[rows.Month] = rows.Count;
-        });
-
-        const count_do = Object.entries(counts).map(([month, value]) => {
-          return { month, value };
-        });
-        // console.table(count_do);
-
-        display_month_do = count_do;
-        console.group
-        console.log("อยู่ในแข่งขัน");
-        console.table(rows);
-        // console.log(display_month_do);
-        console.groupEnd
-      });
-
-      dbConnection.query("SELECT LEFT(MONTHNAME(IF(NOW() <= Rstartdate, Rstartdate, IF(NOW() >= Renddate, Renddate, NOW()))),3) AS Month, COUNT(`Rstartdate`) AS Count  FROM tournament WHERE  `Rstartdate`  BETWEEN  " +sql_S + "  AND  " +sql_E + " AND st1 IS null AND NOW()  BETWEEN `Rstartdate` AND `Renddate` GROUP BY  Month ORDER BY Month", (err, rows) => {
-        if (err) {
-          console.log( "==========================================================================");
-          console.log(err);
-          console.log( "==========================================================================");
-        }
-        const counts = {};
-        monthNames.forEach((month) => {
-          counts[month] = 0;
-        });
-
-        rows.forEach((rows) => {
-          counts[rows.Month] = rows.Count;
-        });
-
-        const countwait = Object.entries(counts).map(([month, value]) => {
-          return { month, value };
-        });
-        // console.table(countwait);
-
-        display_month_wait = countwait;
-        console.group
-        console.log("ยังไม่ได้แข่งขัน");
-        console.table(rows);
-        // console.log(display_month_wait);
-        console.groupEnd
-      });
-
+      
+      
+        chart_data = chart_count
+        // console.table(chart_data);
+      
+      
+      })
+      
+      
+      
+      
+       
 
 
       /* ------------------------------- zone sport ------------------------------- */
@@ -643,8 +589,8 @@ router.get("/", (req, res, err) => {
           console.log(err);
           console.log( "==========================================================================");
         }
-        console.log("\t tnmStartdate");
-        console.table(rows);
+        // console.log("\t tnmStartdate");
+        // console.table(rows);
 
         for (let index = 0; index < rows.length; index++) {
           var tnmStartdate = rows[index].tnmStartdate;
@@ -714,8 +660,8 @@ router.get("/", (req, res, err) => {
 
 
         
-        console.log("\t Rstartdate");
-        console.table(rows);
+        // console.log("\t Rstartdate");
+        // console.table(rows);
 
         for (let index = 0; index < rows.length; index++) {
           var RStrdate = rows[index].Rstartdate;
@@ -759,9 +705,6 @@ router.get("/", (req, res, err) => {
         res.render("dashboard", {
           result: result,
           count: value,
-          display_month_wait,
-          display_month_do,
-          display_month,
           selcetsport,
           sport_count,
           sport_count_do,
@@ -771,7 +714,7 @@ router.get("/", (req, res, err) => {
           success,
           ongoing,
           waiting,
-          
+          chart_data,
         });
       });
     } else {
