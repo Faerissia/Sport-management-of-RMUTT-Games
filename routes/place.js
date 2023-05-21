@@ -23,6 +23,9 @@ router.get('/', function(req, res, next) {
     dbConnection.query('SELECT * FROM place ORDER BY placeID asc', (err, rows) => {
         if(req.session.username){
         if(req.session.level === 'เจ้าหน้าที่'){
+            let url1 = rows[0].placeUrl;
+            let url2 = url1.split('/')[5];
+    console.log(url2);
             res.render('place', { data: rows});
         }else{
             req.flash('error','ไม่สามารถเข้าถึงได้');
@@ -68,6 +71,7 @@ router.post('/add', function(req, res, next) {
     let timeClose = req.body.timeClose;
 
     let url2 = placeUrl.split('/')[5];
+    console.log(url2);
 
     var sql_place = "INSERT INTO place (placeName,typeID,placeUrl,placeFile,placeDetail) VALUES ?";
     var sql_day = "INSERT INTO place_opening (day,timeOpen,timeClose,placeID) VALUES ?";

@@ -6,15 +6,13 @@
 <html lang="en">
 <head>
     <title>สายการแข่งขัน 2</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
     th, td {
   border: 1px solid black;
   padding: 8px;
   text-align: center;
 }
-
-</style>
-  <style>
   .wrapper {
     position: relative;
     display: flex;
@@ -193,43 +191,114 @@
             <tr>
               <th>ชื่อ</th>
               <th>ชนะ(ครั้ง)</th>
+              <th>เสมอ(ครั้ง)</th>
               <th>แพ้(ครั้ง)</th>
             </tr>
           </thead>
           <tbody>
             <% 
-              let scoreboard = {};
-              data.forEach(function(match) {
-                if(match.seed == null){
-                if (!scoreboard[match.team1]) {
-                  scoreboard[match.team1] = { wins: 0, losses: 0 };
-                }
-                if (!scoreboard[match.team2]) {
-                  scoreboard[match.team2] = { wins: 0, losses: 0 };
-                }
-                if (match.score1 > match.score2) {
-                  scoreboard[match.team1].wins++;
-                  scoreboard[match.team2].losses++;
-                }
-                if (match.score2 > match.score1) {
-                  scoreboard[match.team2].wins++;
-                  scoreboard[match.team1].losses++;
-                }
-              }
-              });
-               let sortedScoreboard = Object.entries(scoreboard).sort((a, b) => b[1].wins - a[1].wins);%>
-        <% sortedScoreboard.forEach(function(team) { %>
-          <tr>
-            <td><%= team[0] %></td>
-            <td><%= team[1].wins %></td>
-            <td><%= team[1].losses %></td>
-          </tr>
-        <% }); %>
+  let scoreboard = {};
+  data.forEach(function(match) {
+    if (match.seed == null) {
+      if (!scoreboard[match.team1]) {
+        scoreboard[match.team1] = { wins: 0, losses: 0, draws: 0 };
+      }
+      if (!scoreboard[match.team2]) {
+        scoreboard[match.team2] = { wins: 0, losses: 0, draws: 0 };
+      }
+      let score1 = match.score1 == null ? 0 : match.score1;
+      let score2 = match.score2 == null ? 0 : match.score2;
+      if (score1 > score2) {
+        scoreboard[match.team1].wins++;
+        scoreboard[match.team2].losses++;
+      } else if (score2 > score1) {
+        scoreboard[match.team2].wins++;
+        scoreboard[match.team1].losses++;
+      } else if(match.score1 == match.score2 && match.score1 != null){
+        scoreboard[match.team1].draws++;
+        scoreboard[match.team2].draws++;
+      }
+    }
+  });
+  let sortedScoreboard = Object.entries(scoreboard).sort((a, b) => {
+    if (b[1].wins !== a[1].wins) {
+      return b[1].wins - a[1].wins;
+    } else if (b[1].draws !== a[1].draws) {
+      return b[1].draws - a[1].draws;
+    } else {
+      return a[0].localeCompare(b[0]);
+    }
+  });
+%>
+<% sortedScoreboard.forEach(function(team) { %>
+  <tr>
+    <td><%= team[0] %></td>
+    <td><%= team[1].wins %></td>
+    <td><%= team[1].draws %></td>
+    <td><%= team[1].losses %></td>
+  </tr>
+<% }); %>
       </tbody>
     </table>
 
+    <% let rsnum = Math.pow(2,Math.floor(Math.log2(player.length))) %>
+
+    <div class="modal fade" id="editpoint" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">จัดสายการแข่งขันรอบที่ 2</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form action="/tournament/roundsingle/<%= tnmID %>" method="post" encType="multipart/border-dark form-data">
+
+              <div class="mx-auto w-75">
+                <div class="box">
+                  <div class="row text-center border">
+                    <div class="col-8">เลือกผู้เล่นที่จะได้เล่นรอบที่ 2</div>
+                  </div>
+                  
+                  <div class="row text-center">
+                    
+                    <div class="col-8">
+                      <% for(var k =0;k<rsnum;k++){ %>
+                      <select name="playerID" class="form-control">
+                        <option value="blank">--เลือก--</option>
+                        <% for(var i= 0;i<player.length;i++){ %>
+                        <option value="<%= player[i].teamID %>"><%= player[i].teamName%></option>
+                        <% } %>
+                      </select>
+                      <% } %>
+                    </div>
+                    
+                </div>
+                
+          </div>
+  </div>
+  
+              <div class="modal-footer mt-3">
+                <button value="sunbmit" class="btn btn-success" onclick="return check_input()">บันทึก</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    
+    
 
     <p class="display-5 text-start ms-2"> สายการแข่งรอบที่2<p>
+      <% const checkseed = data[data.length -1].seed != null %>
+      <% const checkscorelastvalue = data[data.length -1].score1 %>
+
+      <% let roundatemp = numpar*(numpar-1)/2 ; %>
+    <% if(roundatemp == data.length && checkscorelastvalue != null){ %>
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editpoint">กำหนดผู้เข้าแข่งขันรอบที่ 2</button>
+      <% } %>
+      <% if(checkseed){ %>
       <div class=" mx-auto w-50">
         <div class="container-md ">
           <% const datasingle = data.filter(item => item.seed !== null);%>
@@ -425,8 +494,21 @@
 
 </div>
 
-
+<% } %>
+<script>
+  $(document).ready(function(){  
   
+  $("select").on('focus', function () {
+        $("select").find("option[value='"+ $(this).val() + "']").attr('disabled', false);
+    }).change(function() {
+  
+        $("select").not(this).find("option[value='"+ $(this).val() + "']").attr('disabled', true);
+  
+    });
+  
+  
+  }); 
+  </script>
           
 
 </body>

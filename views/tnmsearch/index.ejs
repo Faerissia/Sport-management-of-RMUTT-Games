@@ -80,7 +80,7 @@
     
     
     <div class="col-auto text-end">
-        <button class="btn btn-success " id="download-button">Download CSV</button>
+        <a href="../tnmsearch/downloadcsv" class="btn btn-success ">Download CSV</a>
     
     </div>
 </div>
@@ -141,18 +141,6 @@
         </div>
     </div>
 
-<script>
-document.getElementById("download-button").addEventListener("click", function(){
-    var fileUrl = "data.csv";
-    var a = document.createElement("a");
-    a.href = fileUrl;
-    a.download = fileUrl.substr(fileUrl.lastIndexOf("/") + 1);
-    a.setAttribute("charset", "UTF-8");
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-});
-</script>
 
 </body>
 </html>

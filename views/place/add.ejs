@@ -57,7 +57,7 @@
                                 <!--  -->
                                 <div class="row my-2  p row-cols-2">
                                     <div class="col-2 ">
-                                        <label class="col-form-label">URL Google Map</label>
+                                        <label class="col-form-label">URL Google Map <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#urlmapinfo">?</button></label>
                                     </div>
                                     <div class="col-4">
                                         <input type="text" class="form-control border-dark" name="placeUrl"
@@ -278,6 +278,30 @@
                             </form>
                         </div>
                     </div>
+
+
+                    <div class="modal fade" id="urlmapinfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h1 class="fs-5" id="staticBackdropLabel">วิธีคัดลอก URL Google Map</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <p>1.เข้า Google map และค้นหาสถานที่ต้องการ</p>
+                                <image src="/place/url info/1.png" width="600px"></image>
+                                <p class="mt-5">2.เลือกสถานที่ ที่ต้องการจะเพิ่ม</p>
+                                <image src="/place/url info/2.png" width="600px"></image>
+                                <p class="mt-5">3.คัดลอก Link URL ด้านบน</p>
+                                <image src="/place/url info/3.png" width="600px"></image>
+                                <p class="mt-5">4.นำมาใส่ในช่อง URL Google Map</p>
+                                <image src="/place/url info/4.png" width="600px"></image>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+
+
 
         </body>
 <script>

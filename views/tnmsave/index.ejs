@@ -24,9 +24,22 @@
 
     <script type="text/javascript">
         function confirm_delete() {
-          return confirm('are you sure?');
+          return confirm('คุณแน่ใจแล้วหรือไม่?\nถ้าบันทึกคะแนนแล้วไม่สามารถแก้ไขคะแนนได้');
         }
-        </script>
+
+        function check_input() {
+          var inputs = document.querySelectorAll('[id^="score"]');
+          for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].value) {
+              if (!confirm_delete()) {
+                return false; // Cancel form submission
+              }
+              break; // Stop looping after displaying confirmation message
+            }
+          }
+          return true;
+        }
+      </script>
 
         <h1>รายการแข่งขันที่ต้องบันทึกผล</h1>
         <div class="row">
@@ -84,33 +97,211 @@
                             <th class="text-center" width="50px" >รอบ</th>
                             <th scope="col">วันเวลา</th>
                             <th scope="col">สถานที่</th>
-                            <th width="130px" class="text-center">ตัวเลือก</th>
+                            <th width="200px" class="text-center">ตัวเลือก</th>
                         </tr>
                     </thead>
                     <tbody>
                         
                         <% for(let i = 0; i < data.length; i++) { %>
-                            <% if(data[i].tnmTypegame === 'leaderboard'){%>
-                                
-                                <%}else if(!data[i].score1  || !data[i].score2 ){ %>
-                                    <% if(data[i].pDate !== null && data[i].time !== null && data[i].timeend !== null){ %>
-                            <tr class="align-middle"">
+
+                            <tr class="align-middle">
                                 <td class="text-center" ><%= i+1 %></td>
-                                <td><%= data[i].tnmTypegame %></td>
+                                <td><%= data[i].tnmName %></td>
                                 <td><%= data[i].sportName %></td>
                                 <td class="text-center"><%= data[i].round %></td>
                                 <td><%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %> <%= data[i].time.slice(0, 5); %> - <%= 			data[i].timeend.slice(0, 5); %></td>
                                 <td><%= data[i].placeName %></td>
                                 <td>
-                                    <a href="../doc/scoresheet.png" download="scoresheet.png" class="btn btn-warning">ใบคะแนน</a>
-                                    <a href="../tournament/match/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
+                                    <a href="../scoresheet/scoresheettnmsave/<%=data[i].matchID %>" class="btn btn-success">ใบคะแนน</a>
+                                    <% if(data[i].tnmTypegame == 'leaderboard'){ %>
+                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdropview<%= i %>">กรอกผล</button>
+                                    <%}else{ %>
+                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editpoint<%= i %>">กรอกผล</button>
+                                    <% } %>
                                 </td>
                             </tr>
-                                <% } %>
-                                <% }%> 
-                        <% } %>
+
+                            
+
+                  
                     </tbody>
+
+                    <!-- Modal other -->
+                <div class="modal fade" id="editpoint<%= i %>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h1 class="modal-title fs-5" id="staticBackdropLabel">บันทึกคะแนน</h1>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form action="/tournament/matchedit/<%= data[i].tnmID %>" method="post" encType="multipart/form-data">
+  
+                            <div class="row mt-0">
+                                <div class="text-center"><h4><%= data[i].tnmName %></h4></div>
+                                <div class="text-center">วันที่ : <%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></div>
+                                <div class="text-center">เวลา : <%= data[i].time.slice(0, 5); %> - <%=data[i].timeend.slice(0, 5); %></div>
+                                <div class="text-center">สถานที่ : <%= data[i].placeName %></div>
+                              <div class="text-center mt-3"><h5>ผลการแข่งขัน</h5></div>
+
+                              <!-- เดี่ยว -->
+                              <% if(data[i].sportPlaynum == 1){ %>
+                              <% for(var j=0;j<player.length;j++){%>
+                                <%if(data[i].matchID == player[j].matchID){%>
+                              <input type="hidden" name="participant1" value="<%= player[j].participant1 %>" />
+                              <div class="row mt-3">
+                                <div class="d-flex justify-content-center">
+                                  <p class="align-self-center mb-0 me-3"><%= player[j].p1FName %> <%= player[j].p1LName %></p>
+                                  <input type="text" class="border-dark form-control" name="score1" id="score1<%= i%>" style="width: 70px" />
+
+                                  <p class="align-self-center mb-0 mx-3">-</p>
+                                  <input type="hidden" name="participant2" value="<%= player[j].participant2 %>" />
+                                  <input type="text" class="border-dark form-control" name="score2" id="score2<%= i%>" style="width: 70px" />
+                                  <p class="mb-0 mt-2 ms-3"><%= player[j].p2FName %> <%= player[j].p2LName %></p>
+                                </div>
+                              </div>
+                              <% } %>
+                              <% } %>
+                              <!-- ทีม -->
+                                <% }else{ %>
+
+                                    <% for(var j=0;j<team.length;j++){%>
+                                        <%if(data[i].matchID == team[j].matchID){%>
+                                      <input type="hidden" name="participant1" value="<%= data[i].participant1 %>" />
+                                      <div class="row mt-3">
+                                        <div class="d-flex justify-content-center">
+                                          <p class="align-self-center mb-0 me-3"><%= team[j].t1Name %></p>
+                                          <input type="text" class="border-dark form-control" name="score1" id="score1<%= i%>" style="width: 70px" />
+        
+                                          <p class="align-self-center mb-0 mx-3">-</p>
+                                          <input type="hidden" name="participant2" value="<%= data[i].participant2 %>" />
+                                          <input type="text" class="border-dark form-control" name="score2" id="score2<%= i%>" style="width: 70px" />
+                                          <p class="mb-0 mt-2 ms-3"><%= team[j].t2Name %></p>
+                                        </div>
+                                      </div>
+                                      <% } %>
+                                      <% } %>
+
+                                    <% } %>
+
+  
+                              <input type="hidden" name="matchID" value="<%= data[i].matchID %>" />
+                              <input type="hidden" name="round" value="<%= data[i].round %>" />
+                              <input type="hidden" name="seed" value="<%= data[i].seed %>" />
+                              <input type="hidden" name="placeID" value="<%= data[i].placeID %>" />
+                              <% let dateParts = data[i].pDate.toLocaleDateString('en-US',{ month: '2-digit',day: '2-digit', year:'numeric'}).split('/') %>
+                              <% let matchday = new Date(`${dateParts[2]}-${dateParts[0]}-${dateParts[1]}`).toISOString().slice(0, 10); %>
+                              <input type="hidden" name="pDate" value="<%= matchday %>" />
+                              <input type="hidden" name="time" value="<%= data[i].time %>" />
+                              <input type="hidden" name="Endtime" value="<%= data[i].timeend %>" />
+                            </div>
+                            <div class="row mt-3">
+                              <div class="col-3 text-center align-self-center">ไฟล์ (ถ้ามี)</div>
+                              <div class="col-9">
+                                <input type="file" class="border-dark form-control" name="scoresheet" maxlength="4000000" accept="image/jpg,image/png,application/pdf" style="width: 230px" />
+                              </div>
+                            </div>
+  
+                            <div class="modal-footer mt-3">
+                              <button value="sunbmit" class="btn btn-success" onclick="return check_input()">บันทึก</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+                  <!-- Modal leaderboard -->
+                <div class="modal fade" id="staticBackdropview<%= i %>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h1 class="fs-5" id="staticBackdropLabel">บันทึกคะแนน</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                            <form action="/tournament/editteamleader/<%= data[i].tnmID %>" method="post" encType="multipart/form-data">
+    
+                              <div class="row mt-0">
+                                <div class="text-center"><h4><%= data[i].tnmName %></h4></div>
+                                <div class="text-center">วันที่ : <%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit', month: 'long', year:'numeric'}) %></div>
+                                <div class="text-center">เวลา : <%= data[i].time.slice(0, 5); %> - <%=data[i].timeend.slice(0, 5); %></div>
+                                <div class="text-center">สถานที่ : <%= data[i].placeName %></div>
+                                <div class="text-center"><h5>ผลการแข่งขัน</h5></div>
+                                <div class="row mt-3">
+                                    
+                                    <% if(data[i].sportPlaynum == 1){ %>
+                                        <div class="mx-auto w-75">
+                                            <div class="box">
+                                              <div class="row text-center border">
+                                                <div class="col-2">ลำดับที่</div>
+                                                <div class="col-8">ชื่อผู้เล่น</div>
+                                                <div class="col-2">คะแนน</div>
+                                              </div>
+                                                <% for(var k =0;k<singlelead.length;k++){%>
+                                                <% if(data[i].tnmID == singlelead[k].tnmID){ %>
+                                              <div class="row text-center">
+                                                <div class="col-2"><%= k+1 %></div>
+                                                <div class="col-8"><%= singlelead[k].playerFName %> <%= singlelead[k].playerLName %></div>
+                                                <div class="col-md-2"><input type="number" name="score" class="form-control"></div>
+                                                <input type="hidden" name="matchID" value="<%= singlelead[k].matchID%>">
+                                            </div>
+                                            <% } %>
+                                                <% } %>
+                                                <% }else{ %>
+
+                                                    <div class="mx-auto w-75">
+                                                        <div class="box">
+                                                          <div class="row text-center border">
+                                                            <div class="col-2">ลำดับที่</div>
+                                                            <div class="col-8">ชื่อทีม</div>
+                                                            <div class="col-2">คะแนน</div>
+                                                          </div>
+                                                            <% for(var k =0;k<teamlead.length;k++){%>
+                                                            <% if(data[i].tnmID == teamlead[k].tnmID){ %>
+                                                          <div class="row text-center">
+                                                            <div class="col-2"><%= k+1 %></div>
+                                                            <div class="col-8"><%= teamlead[k].teamName %></div>
+                                                            <div class="col-md-2"><input type="number" name="score" class="form-control"></div>
+                                                            <input type="hidden" name="matchID" value="<%= teamlead[k].matchID%>">
+                                                        </div>
+                                                        <% } %>
+                                                            <% } %>
+
+
+                                                <% } %>
+
+                                              
+                                            </div>
+                                          </div>
+                                        
+
+                                      </div>
+
+
+                              </div>
+                              <div class="row mt-3">
+                                <div class="col-3 text-center align-self-center">ไฟล์ (ถ้ามี)</div>
+                                <div class="col-9">
+                                  <input type="file" class="border-dark form-control" name="scoresheet" maxlength="4000000" accept="image/jpg,image/png,application/pdf" style="width: 230px" />
+                                </div>
+                              </div>
+    
+                              <div class="modal-footer mt-3">
+                                <button value="sunbmit" class="btn btn-success" onclick="return check_input()">บันทึก</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                    <% } %>   
                 </table>
+                
+
+
                 <script>
                     $(document).ready(function () {
                       $('#mytable').DataTable({
@@ -126,6 +317,8 @@
             <% } %>
         </div>
     </div>
+
+    
 
 </body>
 </html>

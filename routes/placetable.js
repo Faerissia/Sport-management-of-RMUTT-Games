@@ -127,7 +127,7 @@ router.post('/search-placetable', function(req, res, next) {
 // display place page
 router.get('/', function(req, res, next) {
     dbConnection.query('SELECT * FROM place', (err, place) => {
-        dbConnection.query('SELECT * FROM matchplay WHERE pDate AND time AND timeend AND placeID IS NOT NULL',(err,match)=>{
+        dbConnection.query('SELECT * FROM matchplay WHERE pDate AND time AND timeend AND placeID IS NOT NULL AND pDate = CURDATE();',(err,match)=>{
             dbConnection.query('SELECT * FROM place_opening',(err,opening)=>{
                 dbConnection.query('SELECT * FROM sport_type',(err,sporttype)=>{    
         if(req.session.username){

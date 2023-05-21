@@ -532,8 +532,12 @@ router.get('/tnmplace/(:placeID)', function (req, res, next){
 
 router.get('/singlereg/(:tnmID)', function(req, res, next) {
     let tnmID = req.params.tnmID;
-    dbConnection.query('SELECT u.name, u.uniID,t.tnmID, t.tnmName,t.tnmUrl FROM university u INNER JOIN tournament t WHERE tnmID =' +tnmID, (err, rows) => {
-                res.render('userside/regform/singlereg', { data: rows,tnmID: tnmID });
+    dbConnection.query('SELECT * FROM tournament WHERE tnmID = ?',tnmID, (err, rows) => {
+        dbConnection.query('SELECT * FROM university',(err, uni)=>{
+            dbConnection.query('SELECT * FROM faculty',(err, fac)=>{
+                res.render('userside/regform/singlereg', { data: rows,tnmID: tnmID,uni:uni,fac:fac });
+            })
+        })
     })
 })
 
@@ -939,19 +943,19 @@ console.log(rows)
    })
 
    router.get('/opening', function(req,res,next){
-    dbConnection.query(`SELECT t.*,s.sportPlaynum,COUNT(p.playerID) as nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON p.tnmID = t.tnmID WHERE CURRENT_DATE() BETWEEN t.Rstartdate AND t.Renddate GROUP BY t.tnmID ORDER BY t.Rstartdate DESC LIMIT 4`,(error,results)=>{
+    dbConnection.query(`SELECT t.*,s.sportPlaynum,COUNT(p.playerID) as nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON p.tnmID = t.tnmID WHERE CURRENT_DATE() BETWEEN t.Rstartdate AND t.Renddate GROUP BY t.tnmID ORDER BY t.Rstartdate DESC`,(error,results)=>{
         res.render('userside/status/opening',{data:results})
     })
    })
 
    router.get('/ongoing', function(req,res,next){
-    dbConnection.query(`SELECT t.*,s.sportPlaynum,COUNT(p.playerID) as nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON p.tnmID = t.tnmID WHERE CURRENT_DATE() BETWEEN t.tnmStartdate AND t.tnmEnddate GROUP BY t.tnmID ORDER BY t.tnmStartdate DESC LIMIT 4`,(error,results)=>{
+    dbConnection.query(`SELECT t.*,s.sportPlaynum,COUNT(p.playerID) as nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON p.tnmID = t.tnmID WHERE CURRENT_DATE() BETWEEN t.tnmStartdate AND t.tnmEnddate GROUP BY t.tnmID ORDER BY t.tnmStartdate DESC`,(error,results)=>{
         res.render('userside/status/ongoing',{data:results})
     })
    })
 
    router.get('/ending', function(req,res,next){
-    dbConnection.query(`SELECT t.*,s.sportPlaynum,COUNT(p.playerID) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON p.tnmID = t.tnmID WHERE t.st1 IS NOT NULL GROUP BY t.tnmID ORDER BY t.tnmEnddate DESC LIMIT 4`,(error,results)=>{
+    dbConnection.query(`SELECT t.*,s.sportPlaynum,COUNT(p.playerID) AS nop FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID LEFT JOIN player p ON p.tnmID = t.tnmID WHERE t.st1 IS NOT NULL GROUP BY t.tnmID ORDER BY t.tnmEnddate DESC`,(error,results)=>{
        res.render('userside/status/ending',{data:results})
     })
    })

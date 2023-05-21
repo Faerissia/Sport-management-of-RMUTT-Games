@@ -88,7 +88,7 @@
                                 <select data-index="<%= 0 %>" name="university" id="university_<%= 0 %>"
                                     class="form-select border-dark w-auto" required>
                                     <option selected disabled value="">เลือกมหาวิทยาลัย</option>
-                                    <% data.forEach(function(university) { %>
+                                    <% uni.forEach(function(university) { %>
                                         <option value="<%= university.uniID %>">
                                             <%= university.name %>
                                         </option>

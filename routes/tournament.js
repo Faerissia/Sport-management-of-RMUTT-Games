@@ -352,15 +352,15 @@ router.get('/bracket/(:tnmID)', function(req, res, next) {
 
                   if(rsnum === 4){
                   dbConnection.query(`SELECT p1.playerFName AS team1,m.seed, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
-                    res.render('tournament/bracket/roundsingle/roundsingle4', {tournamentName,data: rows, tnmID:tnmID});
+                    res.render('tournament/bracket/roundsingle/roundsingle4', {tournamentName,data: rows, tnmID:tnmID,numpar:roundsingle.length,player:roundsingle});
                 })
               }else if(rsnum === 8){
                 dbConnection.query(`SELECT p1.playerFName AS team1,m.seed, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
-                  res.render('tournament/bracket/roundsingle/roundsingle8', {tournamentName,data: rows, tnmID:tnmID});
+                  res.render('tournament/bracket/roundsingle/roundsingle8', {tournamentName,data: rows, tnmID:tnmID,numpar:roundsingle.length,player:roundsingle});
               })
               }else{
                 dbConnection.query(`SELECT p1.playerFName AS team1,m.seed, p2.playerFName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN player p1 ON p1.playerID = m.participant1 LEFT JOIN player p2 ON p2.playerID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
-                  res.render('tournament/bracket/roundsingle/roundsingle', {tournamentName,data: rows, tnmID:tnmID});
+                  res.render('tournament/bracket/roundsingle/roundsingle', {tournamentName,data: rows, tnmID:tnmID,numpar:roundsingle.length,player:roundsingle});
                 })
               }
               })
@@ -452,11 +452,11 @@ router.get('/bracket/(:tnmID)', function(req, res, next) {
     
                       if(rsnum === 4){
                       dbConnection.query(`SELECT t1.teamName AS team1,m.seed, t2.teamName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
-                        res.render('tournament/bracket/roundsingle/roundsingle4', {tournamentName,data: rows, tnmID:tnmID});
+                        res.render('tournament/bracket/roundsingle/roundsingle4', {tournamentName,data: rows, tnmID:tnmID,numpar:roundsingle.length,player:roundsingle});
                     })
                   }else if(rsnum === 8){
                     dbConnection.query(`SELECT t1.teamName AS team1,m.seed, t2.teamName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
-                      res.render('tournament/bracket/roundsingle/roundsingle8', {tournamentName,data: rows, tnmID:tnmID});
+                      res.render('tournament/bracket/roundsingle/roundsingle8', {tournamentName,data: rows, tnmID:tnmID,numpar:roundsingle.length,player:roundsingle});
                   })
                   }else{
                     dbConnection.query(`SELECT t1.teamName AS team1,m.seed, t2.teamName AS team2, m.score1, m.score2 FROM matchplay m LEFT JOIN team t1 ON t1.teamID = m.participant1 LEFT JOIN team t2 ON t2.teamID = m.participant2 WHERE m.tnmID =`+tnmID,(error, rows)=> {
@@ -763,6 +763,7 @@ router.post('/createbracket/:tnmID', function(req, res, next) {
     let otherteam = req.body.otherteam;
 
     let round;
+
 
 
     dbConnection.query('SELECT t.*,s.* FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE tnmID ='+tnmID,(err,rows) =>{
@@ -1341,17 +1342,20 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
     const today = new Date(pDate);
     const currentDay = daysOfWeek[today.getDay()];
 
-    dbConnection.query('SELECT * FROM place_opening WHERE day = ? AND placeID ='+placeID,currentDay,(error,placeopen)=>{
+    console.log(req.body);
+    console.log(currentDay);
+
+    dbConnection.query('SELECT * FROM place_opening WHERE day = ? AND placeID = ?',[currentDay,placeID],(error,placeopen)=>{
 
     dbConnection.query('SELECT * FROM matchplay WHERE pDate = ? AND ? BETWEEN time AND timeend AND ? BETWEEN time and timeend AND placeID = ?;',[pDate,time,Endtime,placeID],(err,checkmatch)=>{
-      if(checkmatch.length){
+      if(checkmatch.length && checkmatch[0].matchID != matchID){
         req.flash('error','สถานที่เลือกถูกใช้งานโดยการแข่งขันอื่นแล้ว');
         res.redirect('/tournament/match/'+tnmID);
 
       }else if(time < placeopen[0].timeOpen || Endtime > placeopen[0].timeClose || time > placeopen[0].timeClose || Endtime < placeopen[0].timeOpen || time > Endtime){
         req.flash('error','เวลาที่เลือกไม่ถูกต้อง');
         res.redirect('/tournament/match/'+tnmID);
-      }else if(!checkmatch.length){
+      }else{
     dbConnection.query('SELECT * FROM tournament WHERE tnmID = '+tnmID,(error,typeoftour)=>{
        
         if(typeoftour[0].tnmTypegame === 'single'){
@@ -1614,14 +1618,14 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
                         })
                         break;
                         }else if(result[i].participant1 && !result[i].participant2){
-                          console.log('เข้า 1')
+                          console.log('เข้า 12')
                             let nextmatch = { participant2:participant1}
                             dbConnection.query('UPDATE matchplay SET ? WHERE matchID = '+dataid,nextmatch,(err,rows)=>{
                               if(err) throw err;
                             })
                             break;
                           }else if(result[i].participant2 && !result[i].participant1){
-                            console.log('เข้า2')
+                            console.log('เข้า22')
                             let nextmatch = { participant1:participant1}
                             dbConnection.query('UPDATE matchplay SET ? WHERE matchID = '+dataid,nextmatch,(err,rows)=>{
                               if(err) throw err;
@@ -2347,6 +2351,7 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
           }else{
             console.log('ไม่มีไฟล์')
             let form_data={score1:score1,score2:score2,placeID:placeID,time:time,timeend:Endtime,pDate:pDate}
+            console.log(form_data);
             console.log(matchID)
             dbConnection.query('UPDATE matchplay SET ? WHERE matchID = ?',[form_data,matchID],(error,rows)=>{
               if(error) throw error;
@@ -2360,41 +2365,60 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
                       if (err) throw err;
                   let wins = {};
                   let losses = {};
+                  let draws = {};
                   result.forEach(match => {
-                    if (match.score1 > match.score2) {
-                      if (wins[match.participant1]) {
-                        wins[match.participant1]++;
-                      } else {
-                        wins[match.participant1] = 1;
-                      }
-                      if (losses[match.participant2]) {
-                        losses[match.participant2]++;
-                      } else {
-                        losses[match.participant2] = 1;
-                      }
-                    } else {
-                      if (wins[match.participant2]) {
-                        wins[match.participant2]++;
-                      } else {
-                        wins[match.participant2] = 1;
-                      }
-                      if (losses[match.participant1]) {
-                        losses[match.participant1]++;
-                      } else {
-                        losses[match.participant1] = 1;
-                      }
-                    }
-                  });
+          if (match.score1 > match.score2) {
+            if (wins[match.participant1]) {
+              wins[match.participant1]++;
+            } else {
+              wins[match.participant1] = 1;
+            }
+            if (losses[match.participant2]) {
+              losses[match.participant2]++;
+            } else {
+              losses[match.participant2] = 1;
+            }
+          } else if (match.score2 > match.score1) {
+            if (wins[match.participant2]) {
+              wins[match.participant2]++;
+            } else {
+              wins[match.participant2] = 1;
+            }
+            if (losses[match.participant1]) {
+              losses[match.participant1]++;
+            } else {
+              losses[match.participant1] = 1;
+            }
+          } else {
+            // If the match is a draw, increment the draw count for both participants
+            if (draws[match.participant1]) {
+              draws[match.participant1]++;
+            } else {
+              draws[match.participant1] = 1;
+            }
+            if (draws[match.participant2]) {
+              draws[match.participant2]++;
+            } else {
+              draws[match.participant2] = 1;
+            }
+          }
+        });
                   let participants = Object.keys(wins);
                   let output = [];
                   let count = 1;
-                  participants.sort((a, b) => {
-                    if (wins[b] !== wins[a]) {
-                      return wins[b] - wins[a];
-                    } else {
-                      return losses[a] - losses[b];
-                    }
-                  });
+                 participants.sort((a, b) => {
+          if (wins[b] !== wins[a]) {
+            return wins[b] - wins[a];
+          } else if (losses[a] !== losses[b]) {
+            return losses[a] - losses[b];
+          } else {
+            if (draws[b] !== draws[a]) {
+              return draws[b] - draws[a];
+            } else {
+              return a.localeCompare(b);
+            }
+          }
+        });
                   for (let i = 0; i < participants.length; i++) {
                     output.push(participants[i]);
                     count++;
@@ -2670,7 +2694,7 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
               })
             }
 
-            //query ไปยัง SQL และตรวจว่ากรอกครบพร้อมที่จะ single รึยัง
+            //query ไปยัง SQL และตรวจว่ากรอกครบพร้อมที่จะ single รึยัง teammmmmmmmmmmm
           dbConnection.query('SELECT * FROM matchplay WHERE seed IS NULL AND score1 IS NULL AND score2 IS NULL AND tnmID ='+tnmID,(error,checkrobin)=>{
             if(!checkrobin.length){
               console.log('single ได้แล้ว')
@@ -2682,61 +2706,89 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
                  if (err) throw err;
              let wins = {};
              let losses = {};
+             let draws = {};
              result.forEach(match => {
-               if (match.score1 > match.score2) {
-                 if (wins[match.participant1]) {
-                   wins[match.participant1]++;
-                 } else {
-                   wins[match.participant1] = 1;
-                 }
-                 if (losses[match.participant2]) {
-                   losses[match.participant2]++;
-                 } else {
-                   losses[match.participant2] = 1;
-                 }
-               } else {
-                 if (wins[match.participant2]) {
-                   wins[match.participant2]++;
-                 } else {
-                   wins[match.participant2] = 1;
-                 }
-                 if (losses[match.participant1]) {
-                   losses[match.participant1]++;
-                 } else {
-                   losses[match.participant1] = 1;
-                 }
-               }
-             });
+          if (match.score1 > match.score2) {
+            if (wins[match.participant1]) {
+              wins[match.participant1]++;
+            } else {
+              wins[match.participant1] = 1;
+            }
+            if (losses[match.participant2]) {
+              losses[match.participant2]++;
+            } else {
+              losses[match.participant2] = 1;
+            }
+          } else if (match.score2 > match.score1) {
+            if (wins[match.participant2]) {
+              wins[match.participant2]++;
+            } else {
+              wins[match.participant2] = 1;
+            }
+            if (losses[match.participant1]) {
+              losses[match.participant1]++;
+            } else {
+              losses[match.participant1] = 1;
+            }
+          } else {
+            // If the match is a draw, increment the draw count for both participants
+            if (draws[match.participant1]) {
+              draws[match.participant1]++;
+            } else {
+              draws[match.participant1] = 1;
+            }
+            if (draws[match.participant2]) {
+              draws[match.participant2]++;
+            } else {
+              draws[match.participant2] = 1;
+            }
+          }
+        });
              let participants = Object.keys(wins);
+             console.log('เช็คจำนวนชนะ',wins);
+         console.log('เช็คจำนวนแพ้',losses);
+         console.log('เช็คจำนวนเสมอ',draws);
              let output = [];
              let count = 1;
              participants.sort((a, b) => {
-               if (wins[b] !== wins[a]) {
-                 return wins[b] - wins[a];
-               } else {
-                 return losses[a] - losses[b];
-               }
-             });
+          if (wins[b] !== wins[a]) {
+            return wins[b] - wins[a];
+          } else if (losses[a] !== losses[b]) {
+            return losses[a] - losses[b];
+          } else {
+            if (draws[b] !== draws[a]) {
+              return draws[b] - draws[a];
+            } else {
+              return a.localeCompare(b);
+            }
+          }
+        });
+
+          console.log(participants);
 
              for (let i = 0; i < participants.length; i++) {
-               output.push(participants[i]);
-               count++;
-               if (count > rsnum) {
-                 break;
-               }
-             }
-             console.log(output)
-
-             let seed = 1;
-                  for(let i=0; i<output.length;i+=2){
-                    
-                    let values = [output[i],output[i+1],1,seed,tnmID];
-                    seed++;
-                    dbConnection.query('INSERT INTO matchplay (participant1,participant2,round,seed,tnmID) VALUES (?,?,?,?,?)',values,(errors,rows)=>{
-                      if(errors) throw errors;
-                      
-                    })
-                  }
+          output.push(participants[i]);
+          count++;
+          if (count > rsnum) {
+            if (i < participants.length - 1 && wins[participants[i]] === wins[participants[i+1]] && losses[participants[i]] === losses[participants[i+1]] && draws[participants[i]] === draws[participants[i+1]]) {
+              console.log('stopworking now');
+            }else{
+              console.log('do single');
+              let seed = 1;
+              for(let i=0; i<output.length;i+=2){
+                
+                let values = [output[i],output[i+1],1,seed,tnmID];
+                seed++;
+                dbConnection.query('INSERT INTO matchplay (participant1,participant2,round,seed,tnmID) VALUES (?,?,?,?,?)',values,(errors,rows)=>{
+                  if(errors) throw errors;
+                  
+                })
+              }
+            }
+            break;
+          }
+        }
+         console.log(output)
 
             })
 
@@ -2994,6 +3046,8 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
               if(error) throw error;
           })
         }
+
+       //query ไปยัง SQL และตรวจว่ากรอกครบพร้อมที่จะ single รึยัง เดี่ยวววววววววววว
       dbConnection.query('SELECT * FROM matchplay WHERE seed IS NULL AND score1 IS NULL AND score2 IS NULL AND tnmID ='+tnmID,(error,checkrobin)=>{
         if(!checkrobin.length){
           console.log('single ได้แล้ว')
@@ -3005,52 +3059,76 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
              if (err) throw err;
          let wins = {};
          let losses = {};
+         let draws = {};
          result.forEach(match => {
-           if (match.score1 > match.score2) {
-             if (wins[match.participant1]) {
-               wins[match.participant1]++;
-             } else {
-               wins[match.participant1] = 1;
-             }
-             if (losses[match.participant2]) {
-               losses[match.participant2]++;
-             } else {
-               losses[match.participant2] = 1;
-             }
-           } else {
-             if (wins[match.participant2]) {
-               wins[match.participant2]++;
-             } else {
-               wins[match.participant2] = 1;
-             }
-             if (losses[match.participant1]) {
-               losses[match.participant1]++;
-             } else {
-               losses[match.participant1] = 1;
-             }
-           }
-         });
+          if (match.score1 > match.score2) {
+            if (wins[match.participant1]) {
+              wins[match.participant1]++;
+            } else {
+              wins[match.participant1] = 1;
+            }
+            if (losses[match.participant2]) {
+              losses[match.participant2]++;
+            } else {
+              losses[match.participant2] = 1;
+            }
+          } else if (match.score2 > match.score1) {
+            if (wins[match.participant2]) {
+              wins[match.participant2]++;
+            } else {
+              wins[match.participant2] = 1;
+            }
+            if (losses[match.participant1]) {
+              losses[match.participant1]++;
+            } else {
+              losses[match.participant1] = 1;
+            }
+          } else {
+            // If the match is a draw, increment the draw count for both participants
+            if (draws[match.participant1]) {
+              draws[match.participant1]++;
+            } else {
+              draws[match.participant1] = 1;
+            }
+            if (draws[match.participant2]) {
+              draws[match.participant2]++;
+            } else {
+              draws[match.participant2] = 1;
+            }
+          }
+        });
          let participants = Object.keys(wins);
+         console.log('เช็คจำนวนชนะ',wins);
+         console.log('เช็คจำนวนแพ้',losses);
+         console.log('เช็คจำนวนเสมอ',draws);
          let output = [];
          let count = 1;
          participants.sort((a, b) => {
-           if (wins[b] !== wins[a]) {
-             return wins[b] - wins[a];
-           } else {
-             return losses[a] - losses[b];
-           }
-         });
+          if (wins[b] !== wins[a]) {
+            return wins[b] - wins[a];
+          } else if (losses[a] !== losses[b]) {
+            return losses[a] - losses[b];
+          } else {
+            if (draws[b] !== draws[a]) {
+              return draws[b] - draws[a];
+            } else {
+              return a.localeCompare(b);
+            }
+          }
+        });
 
-         for (let i = 0; i < participants.length; i++) {
-           output.push(participants[i]);
-           count++;
-           if (count > rsnum) {
-             break;
-           }
-         }
-         console.log(output)
+        console.log(participants);
 
-         let seed = 1;
+         
+        for (let i = 0; i < participants.length; i++) {
+          output.push(participants[i]);
+          count++;
+          if (count > rsnum) {
+            if (i < participants.length - 1 && wins[participants[i]] === wins[participants[i+1]] && losses[participants[i]] === losses[participants[i+1]] && draws[participants[i]] === draws[participants[i+1]]) {
+              console.log('stopworking now');
+            }else{
+              console.log('do single');
+              let seed = 1;
               for(let i=0; i<output.length;i+=2){
                 
                 let values = [output[i],output[i+1],1,seed,tnmID];
@@ -3060,6 +3138,13 @@ router.post('/matchedit/(:tnmID)', async function(req,res,next){
                   
                 })
               }
+            }
+            break;
+          }
+        }
+         console.log(output)
+
+        
 
         })
 
@@ -3110,7 +3195,7 @@ router.post('/editsingleleader/(:tnmID)', function(req,res,next){
     let matchID = req.body.matchID;
     let score = req.body.score;
 
-    console.log('test');
+    console.log(req.body);
 
     for(let i = 0; i < matchID.length; i++) {
     dbConnection.query('UPDATE matchplay SET score = '+score[i]+' WHERE matchID = '+matchID[i], function (error, rows) {
@@ -3210,5 +3295,22 @@ router.post('/datetime',function(req,res,next){
 
 })
 
+router.post('/roundsingle/(:tnmID)',function(req,res,next){
+ let tnmID = req.params.tnmID;
+ let playerID = req.body.playerID;
+
+ let seed = 1;
+              for(let i=0; i<playerID.length;i+=2){
+                
+                let values = [playerID[i],playerID[i+1],1,seed,tnmID];
+                seed++;
+                dbConnection.query('INSERT INTO matchplay (participant1,participant2,round,seed,tnmID) VALUES (?,?,?,?,?)',values,(errors,rows)=>{
+                  if(errors) throw errors;
+                  console.log(rows);
+
+                })
+              }
+
+})
 
 module.exports = router;

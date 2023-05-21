@@ -8,16 +8,29 @@
                 <title>sport</title>
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-	<style>
-        @font-face {
-      font-family: "Kodchasan-Regular";
-  src: url('/font/Kodchasan-Regular.ttf') format('truetype');
-    }
-
-    body {
-      font-family: "Kodchasan-Regular", sans-serif !important;
-    }
-	</style>
+                <style>
+                  @font-face {
+                font-family: "Kodchasan-Regular";
+            src: url('/font/Kodchasan-Regular.ttf') format('truetype');
+              }
+          
+              body {
+                font-family: "Kodchasan-Regular", sans-serif !important;
+              }
+            @media print {
+              .table td, .table th {
+                padding: 4px !important;
+                font-size: 11px;
+              }
+              h1 {
+                font-size: 14px;
+              }
+            }
+            .center {
+            margin-left: auto;
+            margin-right: auto;
+          }
+            </style>
             </head>
 
             <body>
@@ -26,15 +39,15 @@
                     <h1 class="text-center">ใบลงคะแนนกีฬาบาสเกตบอล</h1>
                     <table class="table">
                         <tr>
-                            <td>ชื่อการแข่งขัน</td>
-                            <td>สนาม</td>
-                            <td>วันที่แข่งขัน</td>
+                            <td>ชื่อการแข่งขัน <%= data.name %></td>
+                            <td>สนาม <%= data.place %></td>
+                            <td>วันที่แข่งขัน <%= data.date %></td>
                         </tr>
 
                     </table>
                     <div class="row">
                       <div class="col-sm-6">
-                        <h2>(A) ทีม ผลไม้</h2>
+                        <h1>(A) ทีม : <%= data.team1 %></h1>
                         <table class="table table-bordered">
                           <thead>
                             <tr class="text-center">
@@ -47,35 +60,35 @@
                           </thead>
                           <tbody>
                             <tr>
-                              <td>Player 1</td>
+                              <td><%= data.p1 %></td>
                               <td contenteditable="true"></td>
                               <td contenteditable="true"></td>
                               <td contenteditable="true"></td>
                               <td></td>
                             </tr>
                             <tr>
-                              <td>Player 2</td>
+                              <td><%= data.p2 %></td>
                               <td contenteditable="true"></td>
                               <td contenteditable="true"></td>
                               <td contenteditable="true"></td>
                               <td></td>
                             </tr>
                             <tr>
-                              <td>Player 3</td>
+                              <td><%= data.p3 %></td>
                               <td contenteditable="true"></td>
                               <td contenteditable="true"></td>
                               <td contenteditable="true"></td>
                               <td></td>
                             </tr>
                             <tr>
-                              <td>Player 4</td>
+                              <td><%= data.p4 %></td>
                               <td contenteditable="true"></td>
                               <td contenteditable="true"></td>
                               <td contenteditable="true"></td>
                               <td></td>
                             </tr>
                             <tr>
-                              <td>Player 5</td>
+                              <td><%= data.p5 %></td>
                               <td contenteditable="true"></td>
                               <td contenteditable="true"></td>
                               <td contenteditable="true"></td>
@@ -85,7 +98,7 @@
                         </table>
                       </div>
                       <div class="col-sm-6">
-                        <h2>(B) ทีม แตงโม</h2>
+                        <h1>(ฺB) ทีม : <%= data.team2 %></h1>
                         <table class="table table-bordered">
                           <thead>
                             <tr class="text-center">
@@ -98,7 +111,7 @@
                           </thead>
                           <tbody>
                             <tr>
-                              <td>Player 1</td>
+                              <td><%= data.p6 %></td>
                               <td contenteditable="true"></td>
                               <td contenteditable="true"></td>
                               <td contenteditable="true"></td>
@@ -106,28 +119,28 @@
                             </tr>
                             <tr>
                                 <tr>
-                                    <td>Player 2</td>
+                                    <td><%= data.p7 %></td>
                                     <td contenteditable="true"></td>
                                     <td contenteditable="true"></td>
                                     <td contenteditable="true"></td>
                                     <td></td>
                                   </tr>
                                   <tr>
-                                    <td>Player 3</td>
+                                    <td><%= data.p8 %></td>
                                     <td contenteditable="true"></td>
                                     <td contenteditable="true"></td>
                                     <td contenteditable="true"></td>
                                     <td></td>
                                   </tr>
                                   <tr>
-                                    <td>Player 4</td>
+                                    <td><%= data.p9 %></td>
                                     <td contenteditable="true"></td>
                                     <td contenteditable="true"></td>
                                     <td contenteditable="true"></td>
                                     <td></td>
                                   </tr>
                                   <tr>
-                                    <td>Player 5</td>
+                                    <td><%= data.p10 %></td>
                                     <td contenteditable="true"></td>
                                     <td contenteditable="true"></td>
                                     <td contenteditable="true"></td>
@@ -157,30 +170,30 @@
                             </tr>
                             <% for(var i=0;i<15;i++){ %>
                             <tr class="text-center" style="height: 30px;">
-                                <td></td>
+                                <td width="50px"></td>
                                 <td width="50px"><%= i+1 %></td>
                                 <td width="50px"><%= i+1 %></td>
-                                <td></td>
-                                <td></td>
+                                <td width="50px"></td>
+                                <td width="50px"></td>
                                 <td width="50px"><%= i+16 %></td>
                                 <td width="50px"><%= i+16 %></td>
-                                <td></td>
-                                <td></td>
+                                <td width="50px"></td>
+                                <td width="50px"></td>
                                 <td width="50px"><%= i+31 %></td>
                                 <td width="50px"><%= i+31 %></td>
-                                <td></td>
-                                <td></td>
+                                <td width="50px"></td>
+                                <td width="50px"></td>
                                 <td width="50px"><%= i+46 %></td>
                                 <td width="50px"><%= i+46 %></td>
-                                <td></td>
-                                <td></td>
+                                <td width="50px"></td>
+                                <td width="50px"></td>
                                 <td width="50px"><%= i+61 %></td>
                                 <td width="50px"><%= i+61 %></td>
-                                <td></td>
-                                <td></td>
+                                <td width="50px"></td>
+                                <td width="50px"></td>
                                 <td width="50px"><%= i+76 %></td>
                                 <td width="50px"><%= i+76 %></td>
-                                <td></td>
+                                <td width="50px"></td>
                             </tr>
                             <% } %>
                           </table>
@@ -188,18 +201,18 @@
                             <div class="col-sm-12">
                               <table class="table table-bordered">
                                 <thead>
-                                  <tr>
-                                    <th>ทีม</th>
-                                    <th>1</th>
-                                    <th>2</th>
-                                    <th>3</th>
-                                    <th>4</th>
-                                    <th>ทั้งหมด</th>
+                                  <tr class="text-center">
+                                    <th width="300px">ทีม</th>
+                                    <th width="150px">1</th>
+                                    <th width="150px">2</th>
+                                    <th width="150px">3</th>
+                                    <th width="150px">4</th>
+                                    <th width="300px">ทั้งหมด</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <tr>
-                                    <td>Home</td>
+                                    <td><%= data.team1 %></td>
                                     <td contenteditable="true"></td>
                                     <td contenteditable="true"></td>
                                     <td contenteditable="true"></td>
@@ -207,7 +220,7 @@
                                     <td></td>
                                   </tr>
                                   <tr>
-                                    <td>Away</td>
+                                    <td><%= data.team2 %></td>
                                     <td contenteditable="true"></td>
                                     <td contenteditable="true"></td>
                                     <td contenteditable="true"></td>

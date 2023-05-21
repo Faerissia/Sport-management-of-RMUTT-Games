@@ -11,7 +11,7 @@
 <body>
     
     <% if(data && data[0]) { %>
-    <h1>หน้าผู้เข้าร่วม <%= tournamentName %></h1>
+    <h1> <%= tournamentName %></h1>
     <%- include("../partials/menu_staff.ejs") %>
 
     <script type="text/javascript">
@@ -19,7 +19,7 @@
           return confirm('คุณแน่ใจใช่หรือไม่ที่จะลบผู้เล่น?');
         }
         </script>
-
+    <h1 class="text-center mt-3">ผู้เข้าร่วม</h1>
  <% if(!data[0].teamID) { %>
         <!-- //แบบเดี่ยว -->
         <div class="card-body">
