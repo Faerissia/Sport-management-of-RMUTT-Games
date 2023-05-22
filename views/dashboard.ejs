@@ -90,8 +90,37 @@
 
                                                             // Set the  minimum values for value_enddate
                                                             valueStartdate.addEventListener('input', function () {
+                                                                const startDate = new Date(valueStartdate.value);
+                                                                const endDate = new Date(startDate.getFullYear() + 1, startDate.getMonth(), startDate.getDate());
+                                                                
+                                                                const formattedEndDate = endDate.toISOString().split('T')[0];
+                                                                
+                                                                valueEnddate.max = formattedEndDate;
+                                                                                                                                
                                                                 valueEnddate.min = valueStartdate.value;
                                                                 valueEnddate.value = "";
+                                                            });
+
+                                                            document.addEventListener('DOMContentLoaded', function () {
+                                                            const valueStartdate = document.getElementById('value_startdate');
+                                                            const valueEnddate = document.getElementById('value_enddate');
+
+                                                            // Set the minimum and maximum values for value_enddate
+                                                            const setEnddateMinMax = function () {
+                                                                const startDate = new Date(valueStartdate.value);
+                                                                const endDate = new Date(startDate.getFullYear() + 1, startDate.getMonth(), startDate.getDate());
+
+                                                                const formattedEndDate = endDate.toISOString().split('T')[0];
+
+                                                                valueEnddate.min = valueStartdate.value;
+                                                                valueEnddate.max = formattedEndDate;
+                                                            };
+
+                                                            // Set initial min and max values
+                                                            setEnddateMinMax();
+
+                                                            // Set the minimum and maximum values whenever value_startdate changes
+                                                            valueStartdate.addEventListener('input', setEnddateMinMax);
                                                             });
 
                                                             // <!-- ----------------------------------------------------------------------- -->
@@ -148,7 +177,12 @@
                                                             <%=count[0].Out%>
                                                         </h5>
 
-                                                        <p class="card-text text-center"></p>
+                                                        
+                                                    </div>
+                                                    <div class="card-footer bg-white ">
+                                                        <p class="card-text text-center ">
+                                                            <a href="../dashboard/notstart/<%=value_select[0].date_S%>&<%=value_select[0].date_E%>"  class="text-decoration-none text-dark">รายละเอียด</a>
+                                                        </p>
                                                     </div>
 
                                                 </div>
@@ -162,7 +196,12 @@
                                                         <h5 class="card-title " style="font-size:3vw">
                                                             <%=count[0].In%>
                                                         </h5>
-                                                        <p class="card-text text-center"></p>
+                                                        
+                                                    </div>
+                                                    <div class="card-footer bg-white">
+                                                        <p class="card-text text-center ">
+                                                            <a href="../dashboard/inprocess/<%=value_select[0].date_S%>&<%=value_select[0].date_E%>" class="text-decoration-none text-dark">รายละเอียด</a>
+                                                        </p>
                                                     </div>
 
                                                 </div>
@@ -176,7 +215,12 @@
                                                         <h5 class="card-title " style="font-size:3vw">
                                                             <%=count[0].fin%>
                                                         </h5>
-                                                        <p class="card-text text-center"></p>
+                                                        
+                                                    </div>
+                                                    <div class="card-footer bg-white">
+                                                        <p class="card-text text-center ">
+                                                            <a href="../dashboard/done/<%=value_select[0].date_S%>&<%=value_select[0].date_E%>" class="text-decoration-none text-dark">รายละเอียด</a>
+                                                        </p>
                                                     </div>
 
                                                 </div>

@@ -156,19 +156,27 @@ router.post("/value_date", (req, res) => {
         let data = '';
         let startDate = new Date(sql_S);
         let endDate = new Date(sql_E);
-
-        while (startDate <= endDate) {
-          let yearMonth = startDate.toLocaleString('en-US', { month: 'short', year: 'numeric' }).split(' ').slice(0,2).join('-');
-          let firstDay = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
-          let lastDay = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
-          let sDate = formatDate(firstDay);
-          let eDate = formatDate(lastDay);
-
-          data += `SELECT '${yearMonth}' AS yearMonth, '${sDate}' AS sDate, '${eDate}' AS eDate, now() AS chkDate \n`;
-          if (startDate.getMonth() !== endDate.getMonth() || startDate.getFullYear() !== endDate.getFullYear()) { // เพิ่มเงื่อนไขว่าถ้าเดือนไม่ใช่เดือนเดียวกันให้เติม UNION
-            data += 'UNION ';
+        if (startDate <=endDate) {  
+          
+          let diffYears = endDate.getFullYear() - startDate.getFullYear();
+          let diffMonths = diffYears * 12 + endDate.getMonth() - startDate.getMonth();
+          
+          while ((diffMonths+1) > 0) {
+            let yearMonth = startDate.toLocaleString('en-US', { month: 'short', year: 'numeric' }).split(' ').slice(0,2).join('-');
+            let firstDay = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+            let lastDay = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+            let sDate = formatDate(firstDay);
+            let eDate = formatDate(lastDay);
+  
+            data += `SELECT '${yearMonth}' AS yearMonth, '${sDate}' AS sDate, '${eDate}' AS eDate, now() AS chkDate \n`;
+            if (startDate.getMonth() !== endDate.getMonth() || startDate.getFullYear() !== endDate.getFullYear()) { // เพิ่มเงื่อนไขว่าถ้าเดือนไม่ใช่เดือนเดียวกันให้เติม UNION
+              data += 'UNION ';
+            }
+            startDate.setMonth(startDate.getMonth() + 1);
+            diffMonths--;
           }
-          startDate.setMonth(startDate.getMonth() + 1);
+        } else {
+          console.log('endDate ต้องมากกว่า startDate');
         }
 
         // console.log(data);
@@ -215,21 +223,31 @@ let data = '';
 let startDate = new Date(sql_S);
 let endDate = new Date(sql_E);
 
-while (startDate <= endDate) {
-  let yearMonth = startDate.toLocaleString('en-US', { month: 'short', year: 'numeric' }).split(' ').slice(0,2).join('-');
-  let firstDay = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
-  let lastDay = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
-  let sDate = formatDate(firstDay);
-  let eDate = formatDate(lastDay);
-
-  data += `SELECT '${yearMonth}' AS yearMonth, '${sDate}' AS sDate, '${eDate}' AS eDate, '2023-04-09' AS chkDate \n`;
-  if (startDate.getMonth() !== endDate.getMonth() || startDate.getFullYear() !== endDate.getFullYear()) { // เพิ่มเงื่อนไขว่าถ้าเดือนไม่ใช่เดือนเดียวกันให้เติม UNION
-    data += 'UNION ';
+if (startDate <=endDate) {  
+  
+  let diffYears = endDate.getFullYear() - startDate.getFullYear();
+  let diffMonths = diffYears * 12 + endDate.getMonth() - startDate.getMonth();
+  
+  while ((diffMonths+1) > 0) {
+    let yearMonth = startDate.toLocaleString('en-US', { month: 'short', year: 'numeric' }).split(' ').slice(0,2).join('-');
+    let firstDay = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+    let lastDay = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+    let sDate = formatDate(firstDay);
+    let eDate = formatDate(lastDay);
+  
+    data += `SELECT '${yearMonth}' AS yearMonth, '${sDate}' AS sDate, '${eDate}' AS eDate, '2023-04-09' AS chkDate \n`;
+    if (startDate.getMonth() !== endDate.getMonth() || startDate.getFullYear() !== endDate.getFullYear()) { // เพิ่มเงื่อนไขว่าถ้าเดือนไม่ใช่เดือนเดียวกันให้เติม UNION
+      data += 'UNION ';
+    }
+    startDate.setMonth(startDate.getMonth() + 1);
+    diffMonths--;
   }
-  startDate.setMonth(startDate.getMonth() + 1);
+
+} else {
+  console.log('endDate ต้องมากกว่า startDate');
 }
 
-// console.log(data);
+console.log(data);
         
 let sql_chart_1 = `select A.*, (select count(*)  from tournament T where  (A.chkDate < T.tnmStartdate) and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as notStart, (select count(*)  from tournament T where   (A.chkDate between T.tnmStartdate and T.tnmEnddate) and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as inProcess, (select count(*)  from tournament T where   (A.chkDate > T.tnmEnddate) and t.st1 is NOT null and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as done from ( ${data} ) A `
 // console.log("\n",sql_chart_1);
@@ -440,6 +458,8 @@ dbConnection.query(sql_chart_1,(err_chart,chart_count)=>{
 });
 
 
+
+
 // default 
 router.get("/", (req, res, err) => {
   if (req.session.username) {
@@ -485,23 +505,31 @@ router.get("/", (req, res, err) => {
       let data = '';
       let startDate = new Date(sql_S);
       let endDate = new Date(sql_E);
-      
-      while (startDate <= endDate) {
-        // let yearMonth = startDate.toISOString().substr(0, 7);
-        let yearMonth = startDate.toLocaleString('en-US', { month: 'short', year: 'numeric' }).split(' ').slice(0,2).join('-');
-        let firstDay = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
-        let lastDay = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
-        // let sDate = firstDay.toISOString().substr(0, 10);
-        // let eDate = lastDay.toISOString().substr(0, 10);
-        let sDate = formatDate(firstDay);
-        let eDate = formatDate(lastDay);
-      
-        data += `SELECT '${yearMonth}' AS yearMonth, '${sDate}' AS sDate, '${eDate}' AS eDate, now() AS chkDate \n`;
-        if (startDate.getMonth() !== endDate.getMonth() || startDate.getFullYear() !== endDate.getFullYear()) { // เพิ่มเงื่อนไขว่าถ้าเดือนไม่ใช่เดือนเดียวกันให้เติม UNION
-          data += 'UNION ';
+
+      if (startDate <=endDate) {  
+        let diffYears = endDate.getFullYear() - startDate.getFullYear();
+        let diffMonths = diffYears * 12 + endDate.getMonth() - startDate.getMonth();
+        
+        while ((diffMonths+1) > 0) {
+          // let yearMonth = startDate.toISOString().substr(0, 7);
+          let yearMonth = startDate.toLocaleString('en-US', { month: 'short', year: 'numeric' }).split(' ').slice(0,2).join('-');
+          let firstDay = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+          let lastDay = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+          // let sDate = firstDay.toISOString().substr(0, 10);
+          // let eDate = lastDay.toISOString().substr(0, 10);
+          let sDate = formatDate(firstDay);
+          let eDate = formatDate(lastDay);
+        
+          data += `SELECT '${yearMonth}' AS yearMonth, '${sDate}' AS sDate, '${eDate}' AS eDate, now() AS chkDate \n`;
+          if (startDate.getMonth() !== endDate.getMonth() || startDate.getFullYear() !== endDate.getFullYear()) { // เพิ่มเงื่อนไขว่าถ้าเดือนไม่ใช่เดือนเดียวกันให้เติม UNION
+            data += 'UNION ';
+          }
+          startDate.setMonth(startDate.getMonth() + 1);
+          diffMonths--;
         }
-        startDate.setMonth(startDate.getMonth() + 1);
-      }
+    } else {
+      console.log('endDate ต้องมากกว่า startDate');
+    }
       
       // console.log(data);
               
@@ -725,5 +753,79 @@ router.get("/", (req, res, err) => {
     res.redirect("error404");
   }
 });
+
+router.get('/done/:Datedata', function(req, res, next) {
+  let date = req.params.Datedata.split('&');
+  const date_start = date[0]
+  const date_end = date[1]
+  
+  const value_date = {
+    start:date_start,
+    end:date_end
+  };
+  dbConnection.query(`SELECT tnmID, tnmName,tnmTypegame,Rstartdate,Renddate,tnmStartdate,tnmEnddate,tnmDetail FROM tournament WHERE '2023-04-09' NOT BETWEEN tnmStartdate AND tnmEnddate and '2023-04-09' NOT BETWEEN Rstartdate AND Renddate  and st1 is not null`, (err, rows) => {
+  if(req.session.username){
+      if(req.session.level === 'เจ้าหน้าที่'){
+          res.render('status_dashboard/done', { data: rows,value_date,} );
+      }else{
+          req.flash('error','ไม่สามารถเข้าถึงได้');
+          res.redirect('login');
+      }
+  }else{
+      res.redirect('error404');
+  }
+  })
+})
+
+router.get('/inprocess/:Datedata', function(req, res, next) {
+  let date = req.params.Datedata.split('&');
+  const date_start = date[0]
+  const date_end = date[1]
+  
+  const value_date = {
+    start:date_start,
+    end:date_end
+  };
+  dbConnection.query(`SELECT tnmID, tnmName,tnmTypegame,Rstartdate,Renddate,tnmStartdate,tnmEnddate,tnmDetail FROM tournament WHERE '2023-04-09' BETWEEN tnmStartdate AND tnmEnddate AND tnmStartdate BETWEEN '2023-01-01' AND '2023-12-31' AND tnmEnddate BETWEEN '${date_start}' AND '${date_end}' `, (err, rows) => {
+  if(req.session.username){
+      if(req.session.level === 'เจ้าหน้าที่'){
+       
+          res.render('status_dashboard/inprocess', { data: rows,value_date,} );
+      }else{
+          req.flash('error','ไม่สามารถเข้าถึงได้');
+          res.redirect('login');
+      }
+  }else{
+      res.redirect('error404');
+  }
+  })
+})
+
+router.get('/notstart/:Datedata', function(req, res, next) {
+  let date = req.params.Datedata.split('&');
+  const date_start = date[0]
+  const date_end = date[1]
+  
+  const value_date = {
+    start:date_start,
+    end:date_end
+  };
+  dbConnection.query(`SELECT tnmID,tnmName,tnmTypegame,Rstartdate,Renddate,tnmStartdate,tnmEnddate,tnmDetail FROM tournament WHERE '2023-04-09' BETWEEN Rstartdate AND Renddate AND Rstartdate BETWEEN '2023-01-01' AND '2023-12-31' AND Renddate BETWEEN '${date_start}' AND '${date_end}' `, (err, rows) => {
+  if(req.session.username){
+      if(req.session.level === 'เจ้าหน้าที่'){
+        res.render('status_dashboard/notstart', { data: rows,value_date,} );
+      }else{
+          req.flash('error','ไม่สามารถเข้าถึงได้');
+          res.redirect('login');
+      }
+  }else{
+      res.redirect('error404');
+  }
+  })
+})
+
+
+
+
 
 module.exports = router;

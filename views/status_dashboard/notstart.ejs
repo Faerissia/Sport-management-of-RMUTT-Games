@@ -1,0 +1,112 @@
+<%- include("../partials/header") %>
+<%- include("../partials/sidebar") %>
+        <div class="col-10 py-3 mx-auto">
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ยังไม่เริ่มการแข่งขัน</title>
+    <meta charset="UTF-8">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet"/>
+      <link href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+      <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+      <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
+      <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
+</head>
+<body>
+
+    <% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert"><%= messages.error %></div>
+    <% } %>
+    
+    <% if (messages.success) { %>
+        <div class="alert alert-success" role="alert"><%= messages.success %></div>
+    <% } %>
+
+    <script type="text/javascript">
+        function confirm_delete() {
+          return confirm('are you sure?');
+        }
+        </script>
+
+       
+
+    <div class="card w-100">
+        <div class="card-header">
+            <ul class="nav nav-pills w-100">
+                <li class="nav-link ml-auto">
+                    
+                      <h4 class="text-dark">
+                        ยังไม่เริ่มการแข่งขันในช่วงที่ตั้งแต่  <%=value_date.start %>  ถึง <%=value_date.end %>
+                      </h4> 
+
+                       
+                    
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+           
+            <% if(data.length) { %>
+                <table id="mytable" class="table  table-striped table-hover table-bordered ">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text-center">ลำดับที่</th>
+                            <th scope="col">ชื่อการแข่งขัน</th>
+                            <th scope="col">วันที่เปิดรับสมัคร</th>
+                            <th scope="col">วันที่ปิดรับสมัคร</th>
+                            <th scope="col">วันที่เริ่มแข่งขัน</th>
+                            <th scope="col">วันที่สิ้นสุดการแข่งขัน</th>
+                           
+
+                            <th width="80px" class="text-center">ตัวเลือก</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(let i = 0; i < data.length; i++) { %>
+                            <tr class="align-middle">
+                                <th scope="row" class="text-center"><%= i+1 %></th>
+                                <td><%= data[i].tnmName %></td>
+                                <td><%= data[i].Rstartdate.toLocaleDateString('th-TH',{day: '2-digit', month: 'short', year:'numeric'})%></td>
+                                <td><%= data[i].Renddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'short', year:'numeric'})%></td>
+                                <td><%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit', month: 'short', year:'numeric'})%></td>
+                                <td><%= data[i].tnmEnddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'short', year:'numeric'})%></td>
+                                <td class="text-center">
+                                    <a href="../tournament/detail/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+                <script>
+                    $(document).ready(function () {
+                      $('#mytable').DataTable({
+                        "dom": '<"row"<"col text-start"l>> rt <"row"<"col text-start"i><"col "p>>     <"clear">'
+                        ,language: {
+                          search: 'ค้นหา:',
+                          searchPlaceholder: 'ชื่อมหาวิทยาลัย',
+                          lengthMenu: 'แสดง _MENU_ รายการต่อหน้า',
+                          info: 'แสดงผล _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ',
+                          paginate: {
+                            first: 'หน้าแรก',
+                            last: 'หน้าสุดท้าย',
+                            next: 'ถัดไป',
+                            previous: 'ก่อนหน้า',
+                          },
+                        },
+                      });
+                    });
+                  </script>
+            <% } %>
+
+            <!-- if result is empty-->
+            <% if(!data.length) { %>
+                <p class="text-center">ไม่พบรายการของการแข่งขัน</p>
+            <% } %>
+        </div>
+    </div>
+
+
+</body>
+</html>
+</div>
