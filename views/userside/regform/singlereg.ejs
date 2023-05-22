@@ -88,7 +88,7 @@
                                 <select data-index="<%= 0 %>" name="university" id="university_<%= 0 %>"
                                     class="form-select border-dark w-auto" required>
                                     <option selected disabled value="">เลือกมหาวิทยาลัย</option>
-                                    <% data.forEach(function(university) { %>
+                                    <% uni.forEach(function(university) { %>
                                         <option value="<%= university.uniID %>">
                                             <%= university.name %>
                                         </option>
@@ -179,7 +179,7 @@
                         var uniID = $(this).val();
                         var index = $(this).data('index');
                         $.ajax({
-                            url: "http://141.98.17.47:4000/fetch_faculty",
+                            url: "http://localhost:3000/fetch_faculty",
                             method: "POST",
                             data: { uniID: uniID },
                             dataType: "json",

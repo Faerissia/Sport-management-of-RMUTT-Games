@@ -23,6 +23,7 @@ const tnmsetdp = require('./routes/tnmsetdp');
 const tnmsave = require('./routes/tnmsave');
 const uindex = require('./routes/userside/uindex');
 const placetable = require('./routes/placetable');
+const scoresheet = require('./routes/scoresheet');
 
 
 
@@ -136,6 +137,7 @@ app.use('/tnmcheck',tnmcheck);
 app.use('/tnmsetdp',tnmsetdp);
 app.use('/tnmsave',tnmsave);
 app.use('/placetable',placetable);
+app.use('/scoresheet',scoresheet);
 
 
 //Middleware

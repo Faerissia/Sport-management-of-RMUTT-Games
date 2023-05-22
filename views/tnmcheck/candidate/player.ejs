@@ -44,8 +44,10 @@
                     <label for="validationplayerBirthday" class="col-form-label">วัน/เดือน/เกิด</label>
                 </div>
                 <div class="col-auto ">
+                    <% let dateParts = data[0].playerBirthday.toLocaleDateString('en-US',{ month: '2-digit',day: '2-digit', year:'numeric'}).split('/') %>
+                              <% let matchday = new Date(`${dateParts[2]}-${dateParts[0]}-${dateParts[1]}`).toISOString().slice(0, 10); %>
                     <input disabled type="date" class="form-control border-dark" id="validationplayerBirthday"
-                        value="<%= data[0].playerBirthday.toLocaleDateString('en-CA',{day: '2-digit', month: '2-digit', year:'numeric'}) %>" name="playerBirthday" autocomplete="off" required>
+                        value="<%= matchday %>" name="playerBirthday" autocomplete="off" required>
                 </div>
             </div>
            

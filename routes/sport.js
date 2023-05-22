@@ -4,7 +4,7 @@ let dbConnection = require('../util/db');
 
 // display sport page
 router.get('/', function(req, res, next) {
-    dbConnection.query('SELECT * FROM sport ORDER BY sportID asc', (err, rows) => {
+    dbConnection.query('SELECT * FROM sport ORDER BY sportID ASC', (err, rows) => {
         if(req.session.username){
             if(req.session.level === 'เจ้าหน้าที่'){
                 res.render('sport', { data: rows});

@@ -1,0 +1,106 @@
+
+        <div class="col py-3 mx-auto">
+
+            <!DOCTYPE html>
+            <html lang="en">
+
+            <head>
+                <title>sport</title>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+	<style>
+        @font-face {
+      font-family: "Kodchasan-Regular";
+  src: url('/font/Kodchasan-Regular.ttf') format('truetype');
+    }
+
+    body {
+      font-family: "Kodchasan-Regular", sans-serif !important;
+    }
+	@media print {
+		.table td, .table th {
+			padding: 4px !important;
+			font-size: 12px;
+		}
+		h1 {
+			font-size: 18px;
+		}
+	}
+	</style>
+            </head>
+
+            <body>
+                <div class="container">
+                    <h1 class="text-center">ใบลงคะแนนกีฬาเปตอง</h1>
+                    <table class="table">
+                        <tr>
+                            <td>ชื่อการแข่งขัน <%= data.name %></td>
+                            <td>สนาม <%= data.place %></td>
+                            <td>วันที่แข่งขัน <%= data.date %></td>
+                        </tr>
+
+                    </table>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center align-middle" width="300px" rowspan="3">ชื่อ</th>
+                                <th class="text-center" colspan="16">ตารางคะแนน</th>
+                            </tr>
+                            <tr>
+                                
+                            </tr>
+                            <tr>
+                                <% for(var i =0; i< 13;i++){ %>
+                                <th class="text-center"><%= i+1 %></th>
+                                <% } %>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr height="40px">
+                                <td><%= data.p1 %></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+                            </tr>
+                            <tr height="40px">
+                                <td><%= data.p2 %></td>
+                                <td width="60px"></td>
+                                <td width="60px"></td>
+                                <td width="60px"></td>
+                                <td width="60px"></td>
+                                <td width="60px"></td>
+                                <td width="60px"></td>
+                                <td width="60px"></td>
+                                <td width="60px"></td>
+                                <td width="60px"></td>
+                                <td width="60px"></td>
+                                <td width="60px"></td>
+                                <td width="60px"></td>
+                                <td width="60px"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <div class="bs-example">
+                    <div class=" d-flex justify-content-between">
+                        <div>ผู้ชนะ..........................................................................</div>
+                        <div>ผู้แพ้..........................................................................</div>
+                    </div>
+                </div>
+                </div>
+
+            </body>
+
+            </html>
+        </div>

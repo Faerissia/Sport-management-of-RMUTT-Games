@@ -6,7 +6,7 @@
       <title>match</title>
     </head>
     <body>
-      <h1>หน้าผู้เข้าร่วม <%= tournamentName %></h1>
+      <h1> <%= tournamentName %></h1>
       <%- include("../../partials/menu_staff.ejs") %> <% if (messages.error) { %>
       <div class="alert alert-danger" role="alert"><%= messages.error %></div>
       <% } %>
@@ -32,6 +32,7 @@
 
       <!-- //แบบเดี่ยว -->
       <div class="card-body">
+        <h1 class="text-center mt-3">กำหนดวันและสถานที่ของแมทช์การแข่งขัน</h1>
         <table class="table w-75 mx-auto my-5 border border-dark table-striped table-hover text-center align-middle">
           <thead style="background-color: rgb(96, 166, 253)">
             <tr>
@@ -97,7 +98,9 @@
                           <div class="row mt-3">
                             <div class="col-3 text-center align-self-center">วันที่</div>
                             <div class="col-auto">
-                              <input type="date" class="border-dark form-control" name="pDate" value="<%= data[i].pDate.toISOString().substring(0, 10); %>" required />
+                              <% let dateParts = data[i].pDate.toLocaleDateString('en-US',{ month: '2-digit',day: '2-digit', year:'numeric'}).split('/') %>
+                              <% let matchday = new Date(`${dateParts[2]}-${dateParts[0]}-${dateParts[1]}`).toISOString().slice(0, 10); %>
+                              <input type="date" class="border-dark form-control" name="pDate" value="<%= matchday %>" required />
                             </div>
                           </div>
 
@@ -124,8 +127,9 @@
                               </div>
                             </div>
                           </div>
+                          <input type="hidden" name="matchID" value="<%= data[i].matchID %>" />
 
-                          <div class="row mt-3">
+                          <!-- <div class="row mt-3">
                             <div class="mt-3">ผลการแข่งขัน</div>
                             <input type="hidden" name="participant1" value="<%= data[i].p1ID %>" />
                             <div class="row mt-3">
@@ -141,7 +145,7 @@
                               </div>
                             </div>
 
-                            <input type="hidden" name="matchID" value="<%= data[i].matchID %>" />
+                            
                             <input type="hidden" name="round" value="<%= data[i].round %>" />
                             <input type="hidden" name="seed" value="<%= data[i].seed %>" />
                           </div>
@@ -150,7 +154,7 @@
                             <div class="col-9">
                               <input type="file" class="border-dark form-control" name="scoresheet" maxlength="4000000" accept="image/jpg,image/png,application/pdf" style="width: 230px" />
                             </div>
-                          </div>
+                          </div> -->
 
                           <div class="modal-footer mt-3">
                             <button value="sunbmit" class="btn btn-success" onclick="return check_input()">บันทึก</button>

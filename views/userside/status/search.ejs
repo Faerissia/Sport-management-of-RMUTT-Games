@@ -30,8 +30,8 @@
                     <div class="col me-2">
                         <select name="sport" class="form-control border border-dark">
                             <option value="">เลือกประเภทกีฬา</option>
-                                <% for(a=0;a<data.length;a++){ %>
-                                    <option value="<%= data[a].sportID %>"><%= data[a].sportName %></option>
+                                <% for(a=0;a<sport.length;a++){ %>
+                                    <option value="<%= sport[a].sportID %>"><%= sport[a].sportName %></option>
                                     <% } %>
                             </select>
                         </div>

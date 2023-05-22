@@ -88,36 +88,51 @@ td:first-child {
             <tr>
               <th>ชื่อ</th>
               <th>ชนะ(ครั้ง)</th>
+              <th>เสมอ(ครั้ง)</th>
               <th>แพ้(ครั้ง)</th>
             </tr>
           </thead>
           <tbody>
             <% 
-              let scoreboard = {};
-              data.forEach(function(match) {
+            let scoreboard = {};
+            data.forEach(function(match) {
+              if(match.seed == null){
                 if (!scoreboard[match.team1]) {
-                  scoreboard[match.team1] = { wins: 0, losses: 0 };
+                  scoreboard[match.team1] = { wins: 0, losses: 0, draws: 0 };
                 }
                 if (!scoreboard[match.team2]) {
-                  scoreboard[match.team2] = { wins: 0, losses: 0 };
+                  scoreboard[match.team2] = { wins: 0, losses: 0, draws: 0 };
                 }
                 if (match.score1 > match.score2) {
                   scoreboard[match.team1].wins++;
                   scoreboard[match.team2].losses++;
-                }
-                if (match.score2 > match.score1) {
+                } else if (match.score2 > match.score1) {
                   scoreboard[match.team2].wins++;
                   scoreboard[match.team1].losses++;
+                } else if(match.score1 == match.score2 && match.score1 != null){
+                  scoreboard[match.team1].draws++;
+                  scoreboard[match.team2].draws++;
                 }
-              });
-               let sortedScoreboard = Object.entries(scoreboard).sort((a, b) => b[1].wins - a[1].wins);%>
-        <% sortedScoreboard.forEach(function(team) { %>
-          <tr>
-            <td><%= team[0] %></td>
-            <td><%= team[1].wins %></td>
-            <td><%= team[1].losses %></td>
-          </tr>
-        <% }); %>
+              }
+            });
+            let sortedScoreboard = Object.entries(scoreboard).sort((a, b) => {
+    if (b[1].wins !== a[1].wins) {
+      return b[1].wins - a[1].wins;
+    } else if (b[1].draws !== a[1].draws) {
+      return b[1].draws - a[1].draws;
+    } else {
+      return a[0].localeCompare(b[0]);
+    }
+  });
+%>
+<% sortedScoreboard.forEach(function(team) { %>
+  <tr>
+    <td><%= team[0] %></td>
+    <td><%= team[1].wins %></td>
+    <td><%= team[1].draws %></td>
+    <td><%= team[1].losses %></td>
+  </tr>
+<% }); %>
       </tbody>
     </table>
           

@@ -1,0 +1,136 @@
+
+        <div class="col py-3 mx-auto">
+
+            <!DOCTYPE html>
+            <html lang="en">
+
+            <head>
+                <title>sport</title>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+	<style>
+        @font-face {
+      font-family: "Kodchasan-Regular";
+  src: url('/font/Kodchasan-Regular.ttf') format('truetype');
+    }
+
+    body {
+      font-family: "Kodchasan-Regular", sans-serif !important;
+    }
+	@media print {
+		.table td, .table th {
+			padding: 4px !important;
+			font-size: 11px;
+		}
+		h1 {
+			font-size: 15px;
+		}
+	}
+  .center {
+  margin-left: auto;
+  margin-right: auto;
+}
+	</style>
+            </head>
+
+            <body>
+                
+                <div class="container mt-7">
+                    <h1 class="text-center mb-4">ใบลงคะแนนกีฬาแบดมินตัน</h1>
+
+                    <table class="table">
+                      <tr>
+                          <td>ชื่อการแข่งขัน <%= data.name %></td>
+                          <td>สนาม <%= data.place %></td>
+                          <td>วันที่แข่งขัน <%= data.date %></td>
+                      </tr>
+                  </table>
+
+                  <table class="table">
+                    <tr>
+                        <td>ชื่อกรรมการ</td>
+                        <td>เริ่ม <%= data.tstart %></td>
+                        <td>สิ้นสุด <%= data.tend %></td>
+                        <td>จำนวนเวลาที่ใช้แข่ง</td>
+                        <td>จำนวนลูกที่ใช้</td>
+                    </tr>
+                </table>
+
+                  <div>
+                  <table class="table-bordered center" style="width:40%">
+                    <tr>
+                      <td class="text-center" >A1</td>
+                      <td class="text-center" >คะแนน</td>
+                      <td class="text-center" >A2</td>
+                  </tr>
+                    <tr>
+                        <td height="30px"><%= data.p1 %></td>
+                        <td class="text-center">:</td>
+                        <td style="background-color: rgb(234, 234, 234);"><%= data.p3 %></td>
+                    </tr>
+                    <tr>
+                      <td height="30px"><%= data.p2 %></td>
+                      <td class="text-center">:</td>
+                        <td style="background-color: rgb(234, 234, 234);"><%= data.p4 %></td>
+                  </tr>
+                  <tr >
+                    <td  height="30px"><%=data.team1%></td>
+                    <td class="text-center">:</td>
+                        <td style="background-color: rgb(234, 234, 234);"><%= data.team2 %></td>
+                </tr>
+                </table>
+                  <% for(var j =0;j<6;j++){ %>
+                    <table class="table table-bordered">
+                      <thead >
+                        <tr class="border-dark">
+                          <td></td>
+                          <% for(var i=0;i<30;i++){ %>
+                            <th width="50px" class="text-center"><%= i+1 %></th>
+                            <% } %>
+                            <th class="text-center" width="200px">รวม</th>
+                        </tr>
+                        <tr class="border-dark">
+                          <td width="1000px" height="30px"><%= data.p1 %></td>
+                          <% for(var i=0;i<30;i++){ %>
+                            <th width="50px"></th>
+                            <% } %>
+                            <th class="text-center" width="200px"></th>
+                        </tr>
+                        <tr class="border-dark">
+                          <td width="300px" height="30px"><%= data.p2 %></td>
+                          <% for(var i=0;i<30;i++){ %>
+                            <th width="50px"></th>
+                            <% } %>
+                            <th class="text-center" width="200px"></th>
+                        </tr>
+                        <tr class="border-dark" style="background-color: rgb(234, 234, 234);">
+                          <td width="150px" height="30px"><%= data.p3 %></td>
+                          <% for(var i=0;i<30;i++){ %>
+                            <th width="50px"></th>
+                            <% } %>
+                            <th class="text-center" width="200px"></th>
+                        </tr>
+                        <tr class="border-dark" style="background-color: rgb(234, 234, 234);">
+                          <td width="150px" height="30px"><%= data.p4 %></td>
+                          <% for(var i=0;i<30;i++){ %>
+                            <th width="50px"></th>
+                            <% } %>
+                            <th class="text-center" width="200px"></th>
+                        </tr>
+                      </thead>
+                    </table>
+                    <% } %>
+
+                    
+                  
+                  <div class="bs-example">
+                    <div class=" d-flex justify-content-between">
+                        <div>กรรมการ..........................................................................</div>
+                        <div>ผู้ชี้ขาด..........................................................................</div>
+                    </div>
+                </div>
+              </div>
+            </body>
+
+            </html>
+        </div>

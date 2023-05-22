@@ -67,7 +67,7 @@
 
                     <div class="row my-2   row-cols-2"  id="text-input">
                         <div class="col-2 " >
-                            <label for="validationDate_start" class="col-form-label">ลิงก์วิดีโอ</label>
+                            <label for="validationDate_start" class="col-form-label">ลิงก์วิดีโอ <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#linkvidinfo">?</button></label>
                         </div>
                         <div class="col-auto">
                             <input class="form-control w-auto border-dark"  type="text"  name="linkvid">
@@ -89,6 +89,26 @@
                     </div>
                 </form>
             </div>
+
+
+            <div class="modal fade" id="linkvidinfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="fs-5" id="staticBackdropLabel">วิธีคัดลอก link URL video จาก youtube</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <p>1.เลือกวิดีโอที่ต้องการจากใน youtube</p>
+                        <image src="/images/infoyoutube/1.png" width="600px"></image>
+                        <p class="mt-5">2.คลิ๊กขวาที่วิดีโอและเลือก "คัดลอก URL ของวิดีโอ"</p>
+                        <image src="/images/infoyoutube/2.png" width="600px"></image>
+                        <p class="mt-5">3.วาง Url ที่คัดลอกมาลงไปในช่อง "ลิงก์วิดีโอ"</p>
+                        <image src="/images/infoyoutube/3.png" width="600px"></image>
+                      </div>
+                    </div>
+                  </div>
+              </div>
             
             
 <script>
