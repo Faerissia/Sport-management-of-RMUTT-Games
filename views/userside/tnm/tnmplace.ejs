@@ -23,44 +23,45 @@
 
 
 <div class="card">
-        <div class="card-header display-6 text-start">
+        <div class="card-header display-6 text-start ">
             ข้อมูลสถานที่
         </div>
-        <div class="card-body">
+        <div class="card-body text-start">
                 <!--  -->
-                <div class="row my-2  p row-cols-2">
-                    <div class="col-2 ">
-                        <label class="col-form-label">ชื่อสถานที่</label>
+                <div class="row my-2   row-cols-2">
+                    <div class="col-3 ">
+                        <label class="col-form-label ms-5">ชื่อสถานที่</label>
                     </div>
                     <div class="col-4">
-                        <label class="col-form-label"><%= data[0].placeName %></label>
+                        <label class="col-form-label "><%= data[0].placeName %></label>
                     </div>
                 </div>
                 <!--  -->
-                <div class="row my-2  p row-cols-2">
-                    <div class="col-2 ">
-                        <label style="margin-top: 15px;">กีฬา</label>
+                <div class="row my-2   row-cols-2">
+                    <div class="col-3 ">
+                        <label class="col-form-label ms-5">กีฬา</label>
                     </div>
-                    <div class="col-auto">
-                        <%= data[0].nameType %>
+                    <div class="col-4">
+                        <label class="col-form-label ">  <%= data[0].nameType %></label>
+                      
                     </div>
                 </div>
                 <!--  -->
-                <div class="row my-2  p row-cols-2">
-                    <div class="col-2 ">
-                        <label class="col-form-label">URL สถานที่</label>
-                        <iframe width="600" height="450" frameborder="0" style="border:0"
-  src="https://www.google.com/maps/embed/v1/place?q=<%= URL %>&key=AIzaSyD0L1mq9oNzqPEepFbHk0iARm-yzX0ok8A" allowfullscreen>
-</iframe>
+                <div class="row my-2  p row-cols-2 mt-3">
+                    <div class="col-3 ">
+                        <label class="col-form-label ms-5">URL Google Map</label>
                     </div>
-                    <div class="col-4">
+                    <div class="col">
                         
+                        <iframe width="600" height="450" frameborder="0" style="border:0"
+                        src="https://www.google.com/maps/embed/v1/place?q=<%= URL %>&key=AIzaSyD0L1mq9oNzqPEepFbHk0iARm-yzX0ok8A" allowfullscreen>
+                        </iframe>
                     </div>
                 </div>
                 <!--  -->
-                <div class="row my-2  p row-cols-2">
-                    <div class="col-2 ">
-                        <label class="col-form-label">รูปภาพ</label>
+                <div class="row my-2  p row-cols-2 mt-4">
+                    <div class="col-3 ">
+                        <label class="col-form-label ms-5">รูปภาพ</label>
                     </div>
                     <div class="col-4 ">
                         <image src="/place/<%= data[0].placeFile %>" id="imgpreview" class="form-control" name="placeFile"
@@ -68,9 +69,9 @@
                     </div>
                 </div>
                 <!--  -->
-                <div class="row my-2  p row-cols-2">
-                    <div class="col-2 h-auto" style="max-height: 300px; min-height: 100px;">
-                        <label class="col-form-label">รายละเอียดสถานที่</label>
+                <div class="row my-2  p row-cols-2 mt-3">
+                    <div class="col-3 h-auto" style="max-height: 300px; min-height: 100px;">
+                        <label class="col-form-label ms-5">รายละเอียดสถานที่</label>
                     </div>
                     <div class="col-4">
                         <label class="col-form-label"><%= data[0].placeDetail %></label>
@@ -78,7 +79,7 @@
                 </div>
                <!--  -->
                <div class="row row-cols-2 mt-5 text-center d-flex justify-content-center">
-                <div class="col-2">
+                <div class="col-3">
                     <a href="javascript:history.back()" class="btn btn-danger">ย้อนกลับ</a>
                 </div>
             </div>

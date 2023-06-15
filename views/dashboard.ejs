@@ -1,6 +1,6 @@
 <%- include("partials/header") %>
     <%- include("partials/sidebar") %>
-        <div class="col-10 py-3 mx-auto container-xxl ">
+          <div class="col py-3 mx-auto container-xxl ">
 
             <html lang="en">
 
@@ -148,6 +148,7 @@
                                                             });
 
                                                             // set value after reset
+                                                            
                                                             const value_select = JSON.parse('<%-JSON.stringify(value_select) %>');
                                                             if (value_select && value_select.length > 0) {
                                                                 if (value_select[0]?.sport) {
@@ -181,7 +182,7 @@
                                                     </div>
                                                     <div class="card-footer bg-white ">
                                                         <p class="card-text text-center ">
-                                                            <a href="../dashboard/notstart/<%=value_select[0].date_S%>&<%=value_select[0].date_E%>"  class="text-decoration-none text-dark">รายละเอียด</a>
+                                                            <a href="../dashboard/notstart/<%=value_select[0].date_S%>&<%=value_select[0].date_E%>&<%=value_select[0].sport%>"  class="text-decoration-none text-dark">รายละเอียด</a>
                                                         </p>
                                                     </div>
 
@@ -200,7 +201,7 @@
                                                     </div>
                                                     <div class="card-footer bg-white">
                                                         <p class="card-text text-center ">
-                                                            <a href="../dashboard/inprocess/<%=value_select[0].date_S%>&<%=value_select[0].date_E%>" class="text-decoration-none text-dark">รายละเอียด</a>
+                                                            <a href="../dashboard/inprocess/<%=value_select[0].date_S%>&<%=value_select[0].date_E%>&<%=value_select[0].sport%>" class="text-decoration-none text-dark">รายละเอียด</a>
                                                         </p>
                                                     </div>
 
@@ -219,7 +220,7 @@
                                                     </div>
                                                     <div class="card-footer bg-white">
                                                         <p class="card-text text-center ">
-                                                            <a href="../dashboard/done/<%=value_select[0].date_S%>&<%=value_select[0].date_E%>" class="text-decoration-none text-dark">รายละเอียด</a>
+                                                            <a href="../dashboard/done/<%=value_select[0].date_S%>&<%=value_select[0].date_E%>&<%=value_select[0].sport%>" class="text-decoration-none text-dark">รายละเอียด</a>
                                                         </p>
                                                     </div>
 
@@ -547,7 +548,7 @@
 
 
 
-
+                                
             </body>
 
             </html>

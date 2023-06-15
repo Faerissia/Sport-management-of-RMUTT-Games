@@ -1,6 +1,6 @@
 <%- include("../partials/header") %>
 <%- include("../partials/sidebar") %>
-        <div class="col-10 py-3 mx-auto">
+           <div class="col py-3 mx-auto container-xxl ">
 
 <!DOCTYPE html>
 <html lang="en">
@@ -72,7 +72,7 @@
                                 <td><%= data[i].tnmStartdate.toLocaleDateString('th-TH',{day: '2-digit', month: 'short', year:'numeric'})%></td>
                                 <td><%= data[i].tnmEnddate.toLocaleDateString('th-TH',{day: '2-digit', month: 'short', year:'numeric'})%></td>
                                 <td class="text-center">
-                                    <a href="../tournament/detail/<%= data[i].tnmID %>" class="btn btn-primary page">ดู</a>
+                                    <a href="/tournament/detail/<%= data[i].tnmID%>" class="btn btn-primary page">ดู</a>
                                 </td>
                             </tr>
                         <% } %>

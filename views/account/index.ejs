@@ -1,5 +1,5 @@
 <%- include("../partials/header") %> <%- include("../partials/sidebar") %>
-<div class="col py-3 mx-auto">
+   <div class="col py-3 mx-auto container-xxl ">
   <!DOCTYPE html>
   <html lang="en">
     <head>
@@ -9,6 +9,7 @@
       <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
       <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
       <script src="https://cdn.datatables.net/1.13.3/js/dataTables.bootstrap5.min.js"></script>
+      
     </head>
 
     <body>
@@ -107,7 +108,7 @@
               </div>
              </div>
         
-             <div class="row " style="margin-top: 20%;">
+             <div class="row " style="margin-top: 5%;">
            
               <div class="col">
                 <a href="../account/edit/<%= data2[0]?.accountID %>" class="btn btn-warning edit">แก้ไข</a>
@@ -148,14 +149,14 @@
                 <td><%= data[i].name %> <%= data[i].lname %></td>
                 <td><%= data[i].phone %></td>
                 <td><%= data[i].status %></td>
-                <td class="text-center">
+                <td class="text-center w-auto">
                   
                   <% if (data[i].accountID !== (accountID)) { %>
                     <a href="../account/delete/<%= data[i].accountID %> "   onclick="return confirm_delete()" class="btn btn-danger delete ">ลบ</a>
                     <a href="../account/edit/<%= data[i].accountID %>" class="btn btn-warning edit">แก้ไข</a>
                     <a href="../account/page/<%= data[i].accountID %>" class="btn btn-primary">ดูข้อมูล</a>
                     <% }else{%>
-                    <a href="../account/delete/<%= data[i].accountID %> "   onclick="return confirm_delete()" class="btn btn-danger delete disabled">ลบ</a>
+                    <!-- <a href="../account/delete/<%= data[i].accountID %> "   onclick="return confirm_delete()" class="btn btn-danger delete disabled">ลบ</a> -->
                     <a href="../account/edit/<%= data[i].accountID %>" class="btn btn-warning edit">แก้ไข</a>
                     <a href="../account/page/<%= data[i].accountID %>" class="btn btn-primary">ดูข้อมูล</a>
                 
@@ -166,24 +167,45 @@
             </tbody>
           </table>
           <script>
-            $(document).ready(function () {
-              $('#mytable').DataTable({
-                dom: '<"row"<"col text-start"l><"col"f>> rt <"row"<"col text-start"i><"col "p>>     <"clear">',
-                language: {
-                  search: 'ค้นหา:',
-                  searchPlaceholder: 'ชื่อ/นามสกุล',
-                  lengthMenu: 'แสดง _MENU_ รายการต่อหน้า',
-                  info: 'แสดงผล _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ',
-                  paginate: {
-                    first: 'หน้าแรก',
-                    last: 'หน้าสุดท้าย',
-                    next: 'ถัดไป',
-                    previous: 'ก่อนหน้า',
-                  },
-                },
-              });
-            });
+            $(document).ready(function() {
+  var table = $('#mytable').DataTable({
+    dom: '<"row"<"col text-start"l><"col"f>> rt <"row"<"col text-start"i><"col "p>>     <"clear">',
+    language: {
+      search: 'ค้นหา:',
+      searchPlaceholder: 'ชื่อ/นามสกุล',
+      lengthMenu: 'แสดง _MENU_ รายการต่อหน้า',
+      info: 'แสดงผล _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ',
+      paginate: {
+        first: 'หน้าแรก',
+        last: 'หน้าสุดท้าย',
+        next: 'ถัดไป',
+        previous: 'ก่อนหน้า',
+      },
+    },
+  });
+
+  // เพิ่ม dropdown select
+  $('<div class=" w-auto d-flex align-middle ">' +
+    '<label class="me-2"> ระดับผู้ใช้งาน :</label>' +
+    '<select id="levelSelect1" class="form-select form-select-sm me-2" style="max-height: 31px; ">'+
+    '<option value="">ทั้งหมด</option>'+
+    '<option value="ผู้ดูแลระบบ">ผู้ดูแลระบบ</option>'+
+    '<option value="เจ้าหน้าที่">เจ้าหน้าที่</option>'+
+    '</select>' + 
+    '</div>').appendTo("#mytable_filter");
+
+  // เพิ่มคลาส d-flex w-auto และปรับให้ตัวกรองอยู่ในบรรทัดเดียวกับ dropdown select
+  $("#mytable_filter label").addClass("d-flex w-auto  align-items-center");
+  $("#mytable_filter").addClass("d-flex flex-wrap flex-row-reverse justify-content-start align-items-center");
+
+  // เมื่อมีการเปลี่ยนแปลงค่าใน dropdown select
+  $('#levelSelect1').on('change', function () {
+    var level = $(this).val();
+    table.columns(0).search(level).draw();
+  });
+});
           </script>
+       
           <% } %>
 
           <!-- if result is empty-->

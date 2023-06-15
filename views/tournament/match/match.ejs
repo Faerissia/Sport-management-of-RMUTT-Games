@@ -1,5 +1,5 @@
 <%- include("../../partials/header") %> <%- include("../../partials/sidebar") %>
-<div class="col-10 py-3 mx-auto">
+   <div class="col py-3 mx-auto container-xxl ">
   <!DOCTYPE html>
   <html lang="en">
     <head>
@@ -32,7 +32,7 @@
 
       <!-- //แบบเดี่ยว -->
       <div class="card-body">
-        <h1 class="text-center mt-3">กำหนดวันและสถานที่ของแมทช์การแข่งขัน</h1>
+        <h1 class="text-center mt-3">กำหนดวันและสถานที่ของแมตช์การแข่งขัน</h1>
         <table class="table w-75 mx-auto my-5 border border-dark table-striped table-hover text-center align-middle">
           <thead style="background-color: rgb(96, 166, 253)">
             <tr>
@@ -178,7 +178,30 @@
                         <p class="p-1">วันที่ : <%= data[i].pDate.toLocaleDateString('th-TH',{day: '2-digit' , month: 'long' , year:'numeric'}) %> <% } %></p>
                         <p class="p-1">สถานที่ : <%=data[i].placeName %></p>
                         <p class="p-1"><% if(data[i].time && data[i].timeend){ %> เวลา : <%= data[i].time.slice(0, 5); %> - <%= data[i].timeend.slice(0, 5); %> <% } %></p>
-                        <p class="p-1">ผลการแข่งขัน <%= data[i].player1_name %><%= data[i].score1 %> <%= data[i].player2_name %><%= data[i].score2 %></p>
+                        
+                        <div class="row">
+                          <div class="col text-center">
+                            <div class="col mb-1"> <span class="mb-5">ผลการแข่งขัน</span></div>
+                             
+                            <div class="col">
+                             <p class="fw-bold">
+                              <%= data[i].player1_name %>
+                              <% if ( data[i].score1> data[i].score2 ) {%>
+                              <span class="text-success"><%= data[i].score1 %></span> 
+                              VS 
+                              <span class="text-danger"><%= data[i].score2 %></span> 
+                              <%} else if(data[i].score1< data[i].score2 ) {%>
+                              <span class="text-danger"><%= data[i].score1 %></span> 
+                              VS 
+                              <span class="text-success"><%= data[i].score2 %></span> 
+                              <%} %> 
+                              <%= data[i].player2_name %></p> 
+                            </div>
+                            </div>
+                        </div>
+
+                          
+                        
                         <p class="p-1">ไฟล์ : <a href="../../scoresheet/<%= data[i].matchfile %>" download="">ใบกรอกคะแนน</a></p>
                       </div>
                     </div>

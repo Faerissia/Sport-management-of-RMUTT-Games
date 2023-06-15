@@ -1,5 +1,5 @@
 <%- include("../../partials/header") %>
-    <div class="col-10 py-3 mx-auto">
+       <div class="col py-3 mx-auto container-xxl ">
         <!DOCTYPE html>
         <html lang="en">
 
@@ -17,18 +17,24 @@
                 <form onsubmit="return validateFile()" action="/singlereg/" method="post" encType="multipart/form-data" class="needs-validation ">
                     <div class="form-group">
                         <div class="row my-2   row-cols-2">
-                            <div class="col-2 text-start">
+                            <div class="col-3 text-start">
+                               
                                 <label for="validationFname" class="col-form-label">ชื่อ</label>
+                                <span class="text-danger">*</span>
+                                
+                           
                             </div>
                             <div class="col-4">
                                 <input type="text" class="form-control border-dark" id="validationFname" value=""
                                     name="playerFName" autocomplete="off" required>
+                                    
                             </div>
                         </div>
                         <!-- -------------------------------------------------------------- -->
                         <div class="row my-2   row-cols-2">
-                            <div class="col-2 text-start">
+                            <div class="col-3 text-start">
                                 <label for="validationLname" class="col-form-label">นามสกุล</label>
+                                <span class="text-danger">*</span>
                             </div>
                             <div class="col-4">
                                 <input type="text" class="form-control border-dark" id="validationLname" value=""
@@ -37,8 +43,9 @@
                         </div>
                         <!-- -------------------------------------------------------------- -->
                         <div class="row my-2   row-cols-2">
-                            <div class="col-2 text-start">
+                            <div class="col-3 text-start">
                                 <label for="validation" class="col-form-label">เพศ</label>
+                                <span class="text-danger">*</span>
                             </div>
                             <div class="col-auto">
                                 <select class="form-select border-dark" id="validation" name="playerGender" required>
@@ -50,8 +57,9 @@
                         </div>
                         <!-- -------------------------------------------------------------- -->
                         <div class="row my-2   row-cols-2">
-                            <div class="col-2 text-start">
+                            <div class="col-3 text-start">
                                 <label for="validationplayerBirthday" class="col-form-label">วัน/เดือน/เกิด</label>
+                                <span class="text-danger">*</span>
                             </div>
                             <div class="col-auto">
                                 <input type="date" class="form-control border-dark" id="validationplayerBirthday"
@@ -60,10 +68,11 @@
                         </div>
                         <!-- -------------------------------------------------------------- -->
                         <div class="row my-2   row-cols-2">
-                            <div class="col-2 text-start">
+                            <div class="col-3 text-start">
                                 <label for="validationTel" class="col-form-label">เบอร์โทรติดต่อ</label>
+                                <span class="text-danger">*</span>
                             </div>
-                            <div class="col-2">
+                            <div class="col-3">
                                 <input type="text" class="form-control border-dark" id="validationTel" value=""
                                     name="playerPhone" autocomplete="off" pattern="[0-9]{10}" minlength="10"
                                     maxlength="10" required>
@@ -71,18 +80,20 @@
                         </div>
                         <!-- -------------------------------------------------------------- -->
                         <div class="row my-2   row-cols-2">
-                            <div class="col-2 text-start">
+                            <div class="col-3 text-start">
                                 <label for="validationEmail" class="col-form-label">อีเมล</label>
+                                <span class="text-danger">*</span>
                             </div>
-                            <div class="col-2">
+                            <div class="col-3">
                                 <input type="email" class="form-control border-dark" id="validationEmail" value=""
                                     name="playerEmail" autocomplete="off" required>
                             </div>
                         </div>
                         <!-- -------------------------------------------------------------- -->
                         <div class="row my-2   row-cols-2">
-                            <div class="col-2 text-start">
+                            <div class="col-3 text-start">
                                 <label for="validationUni" class="col-form-label">มหาวิทยาลัย</label>
+                                <span class="text-danger">*</span>
                             </div>
                             <div class="col-auto">
                                 <select data-index="<%= 0 %>" name="university" id="university_<%= 0 %>"
@@ -98,8 +109,9 @@
                         </div>
                         <!-- -------------------------------------------------------------- -->
                         <div class="row my-2   row-cols-2">
-                            <div class="col-2 text-start">
+                            <div class="col-3 text-start">
                                 <label for="validation" class="col-form-label">คณะ</label>
+                                <span class="text-danger">*</span>
                             </div>
                             <div class="col-auto">
                                 <select data-index="<%= 0 %>" name="facultyID" id="faculty_<%= 0 %>"
@@ -110,10 +122,11 @@
                         </div>
                         <!-- -------------------------------------------------------------- -->
                         <div class="row my-2   row-cols-2">
-                            <div class="col-2 text-start">
+                            <div class="col-3 text-start">
                                 <label for="validationCard" class="col-form-label">เลขประจำตัวประชาชน</label>
+                                <span class="text-danger">*</span>
                             </div>
-                            <div class="col-2" text-start>
+                            <div class="col-3" text-start>
                                 <input type="text" class="form-control border-dark" id="validationCard" value=""
                                     name="playerIDCard" autocomplete="off" pattern="[0-9]{13}" minlength="13"
                                     maxlength="13" required>
@@ -121,9 +134,10 @@
                         </div>
                         <!-- -------------------------------------------------------------- -->
                 
-                        <div class="row my-2   row-cols-2">
-                            <div class="col-2 text-start">
+                        <div class="row mt-2   row-cols-2">
+                            <div class="col-3 text-start">
                                 <label for="validationFile" class="col-form-label">เอกสารยืนยันตัวตน</label>
+                                <span class="text-danger">*</span>
                             </div>
                             <div class="col-3">
                                 <input type="file" class="form-control border-dark" accept=".png, .jpg, .pdf" id="validationFile" 
@@ -133,9 +147,11 @@
 
                         <!-- -------------------------------------------------------------- -->
                 
-                        <div class="row my-2   row-cols-2">
-                            <div class="col-2 text-start">
-                                <label for="validationFile" class="col-form-label">(<%= data[0].tnmUrl %>)</label>
+                        <div class="row mt-2   row-cols-2">
+                            <div class="col-3 text-start">
+                              
+                                <label for="validationFile" class="col-form-label">( <%= data[0].tnmUrl %> )</label>
+                           
                             </div>
                             <div class="col-3">
                                 <input type="file" class="form-control border-dark" accept=".png, .jpg, .pdf" id="validationFile" 
@@ -145,8 +161,8 @@
 
                         <!-- -------------------------------------------------------------- -->
                 
-                        <div class="row my-2   row-cols-2">
-                            <div class="col-2 text-start">
+                        <div class="row    row-cols-2">
+                            <div class="col-3 text-start">
                             </div>
                             <div class="col-3">
                                 <input type="file" class="form-control border-dark" accept=".png, .jpg, .pdf" id="validationFile" 

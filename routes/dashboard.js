@@ -168,7 +168,7 @@ router.post("/value_date", (req, res) => {
             let sDate = formatDate(firstDay);
             let eDate = formatDate(lastDay);
   
-            data += `SELECT '${yearMonth}' AS yearMonth, '${sDate}' AS sDate, '${eDate}' AS eDate, now() AS chkDate \n`;
+            data += `SELECT '${yearMonth}' AS yearMonth, '${sDate}' AS sDate, '${eDate}' AS eDate, NOW() AS chkDate \n`;
             if (startDate.getMonth() !== endDate.getMonth() || startDate.getFullYear() !== endDate.getFullYear()) { // เพิ่มเงื่อนไขว่าถ้าเดือนไม่ใช่เดือนเดียวกันให้เติม UNION
               data += 'UNION ';
             }
@@ -210,8 +210,8 @@ router.post("/value_date", (req, res) => {
         // console.log("default all sport");
         // sql default
         sql_4 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmEnddate BETWEEN " + sql_S + " AND " +sql_E + " AND t.st1 IS NOT NULL  GROUP BY t.sportID;";
-        sql_5 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.Rstartdate BETWEEN  " +sql_S +" AND " + sql_E +" AND t.st1 IS NULL AND '2023-04-09'  BETWEEN t.Rstartdate AND t.Renddate GROUP BY t.sportID" ;
-        sql_6 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.`tnmStartdate` BETWEEN  " +sql_S +" AND " +sql_E +" AND t.st1 IS NULL AND '2023-04-09'  BETWEEN t.`tnmStartdate` AND t.`tnmEnddate` GROUP BY t.sportID;";
+        sql_5 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.Rstartdate BETWEEN  " +sql_S +" AND " + sql_E +" AND t.st1 IS NULL AND NOW()  BETWEEN t.Rstartdate AND t.Renddate GROUP BY t.sportID" ;
+        sql_6 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.`tnmStartdate` BETWEEN  " +sql_S +" AND " +sql_E +" AND t.st1 IS NULL AND NOW()  BETWEEN t.`tnmStartdate` AND t.`tnmEnddate` GROUP BY t.sportID;";
         sql_7 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE tnmStartdate  BETWEEN " +sql_S +" AND " +sql_E +" ";
         sql_8 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE Rstartdate  BETWEEN " +sql_S +" AND " +sql_E + " ";
 
@@ -235,7 +235,7 @@ if (startDate <=endDate) {
     let sDate = formatDate(firstDay);
     let eDate = formatDate(lastDay);
   
-    data += `SELECT '${yearMonth}' AS yearMonth, '${sDate}' AS sDate, '${eDate}' AS eDate, '2023-04-09' AS chkDate \n`;
+    data += `SELECT '${yearMonth}' AS yearMonth, '${sDate}' AS sDate, '${eDate}' AS eDate, NOW() AS chkDate \n`;
     if (startDate.getMonth() !== endDate.getMonth() || startDate.getFullYear() !== endDate.getFullYear()) { // เพิ่มเงื่อนไขว่าถ้าเดือนไม่ใช่เดือนเดียวกันให้เติม UNION
       data += 'UNION ';
     }
@@ -247,7 +247,7 @@ if (startDate <=endDate) {
   console.log('endDate ต้องมากกว่า startDate');
 }
 
-console.log(data);
+// console.log(data);
         
 let sql_chart_1 = `select A.*, (select count(*)  from tournament T where  (A.chkDate < T.tnmStartdate) and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as notStart, (select count(*)  from tournament T where   (A.chkDate between T.tnmStartdate and T.tnmEnddate) and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as inProcess, (select count(*)  from tournament T where   (A.chkDate > T.tnmEnddate) and t.st1 is NOT null and ( A.sDate <= T.Rstartdate or A.sDate <= T.Renddate or A.sDate <= T.tnmStartdate or A.sDate <= T.tnmEnddate ) and (A.eDate >= T.Rstartdate or A.eDate >= T.Renddate or A.eDate >= T.tnmStartdate or A.eDate >= T.tnmEnddate)) as done from ( ${data} ) A `
 // console.log("\n",sql_chart_1);
@@ -327,7 +327,7 @@ dbConnection.query(sql_chart_1,(err_chart,chart_count)=>{
   if (sport_input) {
      date = new Date();
   } else {
-     date = new Date('2023-04-09');
+     date = new Date();
   }
   
   // ต้องลบ1วัน เพราะ เรื่องทามโซน ทำให้คิวรี่ที่ดึงมาลด1 วัน จึงต้องลดวันตาม เพื่อให้ตรง
@@ -354,6 +354,7 @@ dbConnection.query(sql_chart_1,(err_chart,chart_count)=>{
         date <= tnmEnddate &&
         rows[index].st1 === null
       ) {
+
         count_In += 1;
         result.push({
           Datamath: index,
@@ -369,6 +370,7 @@ dbConnection.query(sql_chart_1,(err_chart,chart_count)=>{
         });
       } else {
         if (rows[index].st1 !== null) {
+  
           count_fin += 1;
           result.push({
             Datamath: index,
@@ -422,6 +424,7 @@ dbConnection.query(sql_chart_1,(err_chart,chart_count)=>{
     }
     value = [];
     value.push({ In: count_In, Out: count_Out, fin: count_fin });
+    console.log("🚀 ~ file: dashboard.js:425 ~ dbConnection.query ~ value:", value)
 
     success = getUpdatedDataSportName(data_sportname, sport_count);
     // console.log(success);
@@ -520,7 +523,7 @@ router.get("/", (req, res, err) => {
           let sDate = formatDate(firstDay);
           let eDate = formatDate(lastDay);
         
-          data += `SELECT '${yearMonth}' AS yearMonth, '${sDate}' AS sDate, '${eDate}' AS eDate, now() AS chkDate \n`;
+          data += `SELECT '${yearMonth}' AS yearMonth, '${sDate}' AS sDate, '${eDate}' AS eDate, NOW() AS chkDate \n`;
           if (startDate.getMonth() !== endDate.getMonth() || startDate.getFullYear() !== endDate.getFullYear()) { // เพิ่มเงื่อนไขว่าถ้าเดือนไม่ใช่เดือนเดียวกันให้เติม UNION
             data += 'UNION ';
           }
@@ -556,9 +559,10 @@ router.get("/", (req, res, err) => {
       
        
 
+      let sql_s4 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmEnddate BETWEEN " + sql_S + " AND " +sql_E + " AND t.st1 IS NOT NULL  GROUP BY t.sportID;";
 
       /* ------------------------------- zone sport ------------------------------- */
-      dbConnection.query("SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.tnmEnddate BETWEEN " +sql_S +" AND " + sql_E +" AND t.st1 IS NOT NULL GROUP BY t.sportID;",
+      dbConnection.query(sql_s4,
         (err, rowsport) => {
           if (err) {
             console.log( "==========================================================================");
@@ -571,9 +575,10 @@ router.get("/", (req, res, err) => {
           // console.table(sport_count);
         }
       );
+      let sql_s5 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.Rstartdate BETWEEN  " +sql_S +" AND " + sql_E +" AND t.st1 IS NULL AND NOW()  BETWEEN t.Rstartdate AND t.Renddate GROUP BY t.sportID" ;
 
       /* ------------------------------- zone sport ------------------------------- */
-      dbConnection.query("SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.Rstartdate BETWEEN  " +sql_S +" AND " + sql_E +" AND t.st1 IS NULL AND NOW()  BETWEEN t.Rstartdate AND t.Renddate GROUP BY t.sportID;",
+      dbConnection.query(sql_s5,
         (err, rowsport) => {
           if (err) {
             console.log( "==========================================================================");
@@ -587,7 +592,9 @@ router.get("/", (req, res, err) => {
         }
       );
       /* ------------------------------- zone sport ------------------------------- */
-      dbConnection.query("SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.`tnmStartdate` BETWEEN  " +sql_S +" AND " +sql_E +" AND t.st1 IS NULL AND NOW()  BETWEEN t.`tnmStartdate` AND t.`tnmEnddate` GROUP BY t.sportID;",
+      let sql_s6 = "SELECT s.sportName,t.sportID, COUNT(t.sportID) as count_sportID FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE t.`tnmStartdate` BETWEEN  " +sql_S +" AND " +sql_E +" AND t.st1 IS NULL AND NOW()  BETWEEN t.`tnmStartdate` AND t.`tnmEnddate` GROUP BY t.sportID;";
+
+      dbConnection.query(sql_s6,
         (err, rowsport) => {
           if (err) {
             console.log( "==========================================================================");
@@ -609,9 +616,13 @@ router.get("/", (req, res, err) => {
       let count_Out = 0;
       let count_fin = 0;
       let date = new Date();
+      date.setDate(date.getDate() - 1) 
 
-      dbConnection.query("SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE tnmStartdate  BETWEEN " +sql_S +" AND " +sql_E +" ",
-      (err, rows) => {
+
+      let sql_c7 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE tnmStartdate  BETWEEN " +sql_S +" AND " +sql_E +" ";
+      let sql_c7_1 = "SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE tnmStartdate  BETWEEN  '2023-01-01' AND '2023-12-31' ";
+
+      dbConnection.query(sql_c7_1, (err, rows) => {
         if (err) {
           console.log( "==========================================================================");
           console.log(err);
@@ -619,77 +630,63 @@ router.get("/", (req, res, err) => {
         }
         // console.log("\t tnmStartdate");
         // console.table(rows);
-
-        for (let index = 0; index < rows.length; index++) {
-          var tnmStartdate = rows[index].tnmStartdate;
-          var tnmEnddate = rows[index].tnmEnddate;
-
-          if (
-            date >= tnmStartdate &&
-            date <= tnmEnddate &&
-            rows[index].st1 === null
-          ) {
-            count_In += 1;
-            result.push({
-              Datamath: index,
-              Name: rows[index].tnmName,
-              chack: "In",
-              // tnmID: rows[index].tnmID,
-              sportID: rows[index].sportID,
-              Rstartdate: rows[index].Rstartdate,
-              Renddate: rows[index].Renddate,
-              tnmStartdate: rows[index].tnmStartdate,
-              tnmEnddate: rows[index].tnmEnddate,
-              rank: rows[index].st1,
-            });
-          } else {
-            if (rows[index].st1 !== null) {
-              count_fin += 1;
-              result.push({
-                Datamath: index,
-                Name: rows[index].tnmName,
-                chack: "Success",
-                // tnmID: rows[index].tnmID,
-                sportID: rows[index].sportID,
-                Rstartdate: rows[index].Rstartdate,
-                Renddate: rows[index].Renddate,
-                tnmStartdate: rows[index].tnmStartdate,
-                tnmEnddate: rows[index].tnmEnddate,
-                rank: rows[index].st1,
-              });
-            }
-          }
+        
+    
+       for (let index = 0; index < rows.length; index++) {
+      var tnmStartdate = rows[index].tnmStartdate;
+      var tnmEnddate = rows[index].tnmEnddate;
+       
+      if (
+        date >= tnmStartdate &&
+        date <= tnmEnddate &&
+        rows[index].st1 === null
+      ) {
+        
+        count_In += 1;
+        result.push({
+          Datamath: index,
+          Name: rows[index].tnmName,
+          chack: "In",
+          // tnmID: rows[index].tnmID,
+          sportID: rows[index].sportID,
+          Rstartdate: rows[index].Rstartdate,
+          Renddate: rows[index].Renddate,
+          tnmStartdate: rows[index].tnmStartdate,
+          tnmEnddate: rows[index].tnmEnddate,
+          rank: rows[index].st1,
+        });
+      } else {
+        if (rows[index].st1 !== null) {
+          
+          count_fin += 1;
+          result.push({
+            Datamath: index,
+            Name: rows[index].tnmName,
+            chack: "Success",
+            // tnmID: rows[index].tnmID,
+            sportID: rows[index].sportID,
+            Rstartdate: rows[index].Rstartdate,
+            Renddate: rows[index].Renddate,
+            tnmStartdate: rows[index].tnmStartdate,
+            tnmEnddate: rows[index].tnmEnddate,
+            rank: rows[index].st1,
+          });
         }
+      }
+    }
       });
+    
 
-      dbConnection.query("SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE Rstartdate  BETWEEN " +sql_S +" AND " +sql_E +" ", 
+      dbConnection.query("SELECT tnmName, sportID, Rstartdate, Renddate, tnmStartdate, tnmEnddate, st1 FROM tournament WHERE Rstartdate  BETWEEN " +sql_S +" AND " +sql_E + " ", 
       (err, rows) => {
         if (err) {
           console.log( "==========================================================================");
           console.log(err);
           console.log( "==========================================================================");
         }
-
         
 
 
-
-         success = getUpdatedDataSportName(data_sportname, sport_count);
-        // console.log(success);
-
-        ongoing = getUpdatedDataSportName(data_sportname, sport_count_do);
-        // console.log(ongoing);
-
-         waiting = getUpdatedDataSportName(data_sportname, sport_count_wait);
-        // console.log(waiting);
-
-
-     
-
-
-        
-        // console.log("\t Rstartdate");
-        // console.table(rows);
 
         for (let index = 0; index < rows.length; index++) {
           var RStrdate = rows[index].Rstartdate;
@@ -703,7 +700,7 @@ router.get("/", (req, res, err) => {
             result.push({
               Datamath: index,
               Name: rows[index].tnmName,
-              chack: "Wait",
+              chack: "Waiting",
               // tnmID: rows[index].tnmID,
               sportID: rows[index].sportID,
               Rstartdate: rows[index].Rstartdate,
@@ -713,10 +710,18 @@ router.get("/", (req, res, err) => {
               rank: rows[index].st1,
             });
           }
+          
         }
         value = [];
         value.push({ In: count_In, Out: count_Out, fin: count_fin });
-        
+    
+        success = getUpdatedDataSportName(data_sportname, sport_count);
+        // console.log(success);
+    
+        ongoing = getUpdatedDataSportName(data_sportname, sport_count_do);
+        // console.log(ongoing);
+    
+         waiting = getUpdatedDataSportName(data_sportname, sport_count_wait);
 
         value_select.push({
           date_S: formatDate(sql_S),
@@ -756,14 +761,22 @@ router.get("/", (req, res, err) => {
 
 router.get('/done/:Datedata', function(req, res, next) {
   let date = req.params.Datedata.split('&');
-  const date_start = date[0]
-  const date_end = date[1]
-  
+  const date_start = `${single_quote}${date[0]}${single_quote}`
+  const date_end = `${single_quote}${date[1]}${single_quote}`
+  const sql_sport_input = `${single_quote}${date[2]}${single_quote}`
+  let sql_done;
   const value_date = {
     start:date_start,
     end:date_end
   };
-  dbConnection.query(`SELECT tnmID, tnmName,tnmTypegame,Rstartdate,Renddate,tnmStartdate,tnmEnddate,tnmDetail FROM tournament WHERE '2023-04-09' NOT BETWEEN tnmStartdate AND tnmEnddate and '2023-04-09' NOT BETWEEN Rstartdate AND Renddate  and st1 is not null`, (err, rows) => {
+
+  if (date[2].length===0) {
+  sql_done=`SELECT t.tnmID, t.tnmName, t.tnmTypegame, t.Rstartdate, t.Renddate, t.tnmStartdate, t.tnmEnddate, t.tnmDetail FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE NOW() NOT BETWEEN t.tnmStartdate AND t.tnmEnddate AND NOW() NOT BETWEEN t.Rstartdate AND t.Renddate AND t.st1 IS NOT NULL AND t.tnmStartdate BETWEEN ${date_start} AND ${date_end} AND t.Renddate BETWEEN ${date_start} AND ${date_end};`
+  } else{
+  sql_done=`SELECT t.tnmID, t.tnmName, t.tnmTypegame, t.Rstartdate, t.Renddate, t.tnmStartdate, t.tnmEnddate, t.tnmDetail FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE s.sportID = ${sql_sport_input} AND NOW() NOT BETWEEN t.tnmStartdate AND t.tnmEnddate AND NOW() NOT BETWEEN t.Rstartdate AND t.Renddate AND t.st1 IS NOT NULL AND t.tnmStartdate BETWEEN ${date_start} AND ${date_end} AND t.Renddate BETWEEN ${date_start} AND ${date_end};`
+  }
+  dbConnection.query(sql_done, (err, rows) => {
+    console.table(rows);
   if(req.session.username){
       if(req.session.level === 'เจ้าหน้าที่'){
           res.render('status_dashboard/done', { data: rows,value_date,} );
@@ -779,14 +792,22 @@ router.get('/done/:Datedata', function(req, res, next) {
 
 router.get('/inprocess/:Datedata', function(req, res, next) {
   let date = req.params.Datedata.split('&');
-  const date_start = date[0]
-  const date_end = date[1]
-  
+  const date_start = `${single_quote}${date[0]}${single_quote}`
+  const date_end = `${single_quote}${date[1]}${single_quote}`
+  const sql_sport_input = `${single_quote}${date[2]}${single_quote}`
+  let sql_in;
   const value_date = {
     start:date_start,
     end:date_end
   };
-  dbConnection.query(`SELECT tnmID, tnmName,tnmTypegame,Rstartdate,Renddate,tnmStartdate,tnmEnddate,tnmDetail FROM tournament WHERE '2023-04-09' BETWEEN tnmStartdate AND tnmEnddate AND tnmStartdate BETWEEN '2023-01-01' AND '2023-12-31' AND tnmEnddate BETWEEN '${date_start}' AND '${date_end}' `, (err, rows) => {
+  if (date[2].length===0) {
+    
+    sql_in =`SELECT t.tnmID, t.tnmName, t.tnmTypegame, t.Rstartdate, t.Renddate, t.tnmStartdate, t.tnmEnddate, t.tnmDetail, t.st1 FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE NOW() BETWEEN t.tnmStartdate AND t.tnmEnddate AND t.tnmStartdate BETWEEN ${date_start} AND ${date_end} AND t.tnmEnddate BETWEEN ${date_start} AND ${date_end} AND t.st1 IS NULL;`
+  }else{
+    sql_in =`SELECT t.tnmID, t.tnmName, t.tnmTypegame, t.Rstartdate, t.Renddate, t.tnmStartdate, t.tnmEnddate, t.tnmDetail, t.st1 FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE s.sportID = ${sql_sport_input} AND NOW() BETWEEN t.tnmStartdate AND t.tnmEnddate AND t.tnmStartdate BETWEEN ${date_start} AND ${date_end} AND t.tnmEnddate BETWEEN ${date_start} AND ${date_end} AND t.st1 IS NULL;`
+  }
+  
+  dbConnection.query(sql_in, (err, rows) => {
   if(req.session.username){
       if(req.session.level === 'เจ้าหน้าที่'){
        
@@ -803,14 +824,22 @@ router.get('/inprocess/:Datedata', function(req, res, next) {
 
 router.get('/notstart/:Datedata', function(req, res, next) {
   let date = req.params.Datedata.split('&');
-  const date_start = date[0]
-  const date_end = date[1]
-  
+  const date_start = `${single_quote}${date[0]}${single_quote}`
+  const date_end = `${single_quote}${date[1]}${single_quote}`
+  const sql_sport_input = `${single_quote}${date[2]}${single_quote}`
+  let sql_notstart;
   const value_date = {
     start:date_start,
     end:date_end
   };
-  dbConnection.query(`SELECT tnmID,tnmName,tnmTypegame,Rstartdate,Renddate,tnmStartdate,tnmEnddate,tnmDetail FROM tournament WHERE '2023-04-09' BETWEEN Rstartdate AND Renddate AND Rstartdate BETWEEN '2023-01-01' AND '2023-12-31' AND Renddate BETWEEN '${date_start}' AND '${date_end}' `, (err, rows) => {
+  if (date[2].length===0) {
+    
+    sql_notstart=`SELECT t.tnmID, t.tnmName, t.tnmTypegame, t.Rstartdate, t.Renddate, t.tnmStartdate, t.tnmEnddate, t.tnmDetail,t.st1 FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE NOW() BETWEEN t.Rstartdate AND t.Renddate AND t.Rstartdate BETWEEN ${date_start} AND ${date_end} AND t.Renddate BETWEEN ${date_start} AND ${date_end}  AND t.st1 IS NULL;`
+  }else{
+    sql_notstart=`SELECT t.tnmID, t.tnmName, t.tnmTypegame, t.Rstartdate, t.Renddate, t.tnmStartdate, t.tnmEnddate, t.tnmDetail,t.st1 FROM tournament t LEFT JOIN sport s ON s.sportID = t.sportID WHERE s.sportID = ${sql_sport_input} AND NOW() BETWEEN t.Rstartdate AND t.Renddate AND t.Rstartdate BETWEEN ${date_start} AND ${date_end} AND t.Renddate BETWEEN ${date_start} AND ${date_end}  AND t.st1 IS NULL;`
+
+  }
+  dbConnection.query(sql_notstart, (err, rows) => {
   if(req.session.username){
       if(req.session.level === 'เจ้าหน้าที่'){
         res.render('status_dashboard/notstart', { data: rows,value_date,} );
